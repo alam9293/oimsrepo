@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: MOHD ALAM
+Build-Jdk: 16.0.1
+Implementation-Title: springboot2-jpa
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: oims
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/oims
+Created-By: Maven Integration for Eclipse
+

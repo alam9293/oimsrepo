@@ -1,0 +1,71 @@
+package com.webapp.ims.login.service.impl;
+
+import java.util.List;
+import java.util.Random;
+
+import javax.persistence.EntityManager;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.webapp.ims.login.model.Login;
+import com.webapp.ims.login.service.LoginService;
+import com.webapp.ims.repository.LoginRepository;
+
+@Service
+@Transactional
+public class LoginServiceImpl implements LoginService {
+
+	@Autowired
+	LoginRepository loginRepository;
+
+	@Autowired
+	EntityManager em;
+
+	@Override
+	@Query(" from Login where userName = :userName ")
+	public Login getLoginNameByuserName(String userName, String department) {
+
+		return loginRepository.getLoginNameByuserNameAndDepartment(userName, department);
+	}
+
+	@Override
+	@Query(" from Login where userId = :userId ")
+	public Login getLoginIdById(String userId) {
+
+		return loginRepository.getLoginIdById(userId);
+	}
+
+//gopal
+	@Override
+	public char[] getRandomPassword() {
+		String Capital_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String Small_chars = "abcdefghijklmnopqrstuvwxyz";
+		String numbers = "0123456789";
+		String symbols = "!@#$%&";
+		String values = Capital_chars + Small_chars + numbers + symbols;
+		Random rndm_method = new Random();
+		char[] password = new char[8];
+		for (int i = 0; i < 8; i++) {
+			password[i] = values.charAt(rndm_method.nextInt(values.length()));
+		}
+		return password;
+	}
+
+	// gopal
+	@Override
+	public List<Login> saveLoginList(List<Login> login) {
+		return loginRepository.saveAll(login);
+	}
+
+	@Override
+	public void insertWithQuery(Login login) {
+		String str = "INSERT INTO  oims_dev.loc.\"Users\" (\"User_Name\", \"Password\",  \"Department_Name\",  \"Status\",\"User_First_Name\", \"User_Middle_Name\", \"User_Last_Name\",\"Captcha\",\"Created_By\") "
+				+ "VALUES(?1, ?2, ?3, ?4,'','','','','')";
+		em.createNativeQuery(str).setParameter(1, login.getUserName()).setParameter(2, login.getPassword())
+				.setParameter(3, login.getDepartment()).setParameter(4, "active").executeUpdate();
+	}
+
+}

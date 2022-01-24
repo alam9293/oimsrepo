@@ -1,0 +1,86 @@
+package com.rule
+
+import com.oims.rule_creation.CIS
+import com.oims.rule_creation.LOCIOSheet
+import com.oims.rule_creation.model.Product
+//from row number: 0
+rule "Row 1 Eligiblity"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(capital_Interest_Subsidy_to_the_extent_of_5_p__per_annum_for_5_years_in_the_form_of_reimbursement_on_loan_taken_for_procurement_of_plant_machinery_subject_to_an_annual_ceiling_of_Rs_50_lacs_CIS == "Yes" , overall_Eligibility_under_IIEPP_2017 == "Eligible" )
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Eligible");
+       end
+
+rule "Row 2 Eligiblity"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(capital_Interest_Subsidy_to_the_extent_of_5_p__per_annum_for_5_years_in_the_form_of_reimbursement_on_loan_taken_for_procurement_of_plant_machinery_subject_to_an_annual_ceiling_of_Rs_50_lacs_CIS == "No" , overall_Eligibility_under_IIEPP_2017 == "Eligible" )
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end
+       
+              rule "Row 3 Eligiblity"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(capital_Interest_Subsidy_to_the_extent_of_5_p__per_annum_for_5_years_in_the_form_of_reimbursement_on_loan_taken_for_procurement_of_plant_machinery_subject_to_an_annual_ceiling_of_Rs_50_lacs_CIS == "No" , overall_Eligibility_under_IIEPP_2017 == "Not Eligible" )
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end
+       
+rule "Row 4 Eligiblity"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(capital_Interest_Subsidy_to_the_extent_of_5_p__per_annum_for_5_years_in_the_form_of_reimbursement_on_loan_taken_for_procurement_of_plant_machinery_subject_to_an_annual_ceiling_of_Rs_50_lacs_CIS == "Yes" , overall_Eligibility_under_IIEPP_2017 == "Not Eligible" )
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end
+
+rule "Row 1 business_type"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(Eligibility_of_25_p_Gross_Block_in_case_of_expansion_diversification == "Not Eligible" )
+              
+       then
+              
+              lOCIOSheetObject.setCapital_Investment_in_Rs_including_New_Expansion_Diversification(0);
+       end
+
+rule "Row 2 business_type"
+       dialect "mvel"
+       when
+                 lOCIOSheetObject: LOCIOSheet(Eligibility_of_25_p_Gross_Block_in_case_of_expansion_diversification == "Eligible" )
+              
+       then
+              
+              lOCIOSheetObject.setCapital_Investment_in_Rs_including_New_Expansion_Diversification(2037000000);
+       end
+       
+rule "Category as per policy_Not applicable"
+      dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(region == "Madhyanchal" , eligible_category_as_per_policy_investment_employment_combined_Madhyanchal == "Not Applicable" )
+              
+       then
+              
+              lOCIOSheetObject.setCategory_as_per_policy("Not Applicable");
+       end
+       
+rule "Category as per policy_ applicable"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(region == "Madhyanchal" ,  eligible_category_as_per_policy_investment_employment_combined_Madhyanchal == "Applicable" )
+              
+       then
+              
+              lOCIOSheetObject.setCategory_as_per_policy("Applicable");
+       end
+       

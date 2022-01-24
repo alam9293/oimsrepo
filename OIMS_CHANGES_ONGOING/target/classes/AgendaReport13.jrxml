@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AgendaReport111" pageWidth="845" pageHeight="842" columnWidth="805" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d039bbe4-f485-44b6-9460-3d918b3a398e">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="phaseNo" class="java.lang.String"/>
+	<field name="particulars" class="java.lang.String"/>
+	<field name="mofAmount" class="java.lang.Double"/>
+	<variable name="g_total_mofamount" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{mofAmount}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="94">
+			<staticText>
+				<reportElement x="75" y="34" width="485" height="58" uuid="36f2afc3-da45-4ed5-858b-5e25aec6ce84">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7ff92a1f-6cef-46b1-9b94-5d2f4b1a9a68"/>
+				</reportElement>
+				<box padding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Particulars]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="3" width="247" height="29" uuid="5fee0a5a-d5f8-4f79-b006-977c49b9d8b6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7ff92a1f-6cef-46b1-9b94-5d2f4b1a9a68"/>
+				</reportElement>
+				<box padding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Means of Financing]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="34" width="244" height="58" uuid="0715937c-945b-408b-8c11-1dffd4c24a80">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2637a010-9cba-4d44-ae7e-7610f3408814"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proposed Investment in the project (As per DPR)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="34" width="72" height="58" uuid="3bd43e5c-c39f-4d94-a576-0eb49fc3b708">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7ff92a1f-6cef-46b1-9b94-5d2f4b1a9a68"/>
+				</reportElement>
+				<box padding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Phase No]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="75" y="0" width="485" height="30" uuid="88198c88-bfd8-4442-a983-52df493117b0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7ff92a1f-6cef-46b1-9b94-5d2f4b1a9a68"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{particulars}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="244" height="30" uuid="ffedfd94-d2a8-4532-ae74-b3598a946b77">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2637a010-9cba-4d44-ae7e-7610f3408814"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[((INRNumberFormat)value).getValue($F{mofAmount})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="2" y="0" width="72" height="30" uuid="20839c7f-8598-4202-8654-526d8cdee924">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7ff92a1f-6cef-46b1-9b94-5d2f4b1a9a68"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{phaseNo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="35">
+			<staticText>
+				<reportElement x="75" y="0" width="485" height="35" uuid="25f70eaf-d50f-43ee-b3b8-aece4595d087">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7ff92a1f-6cef-46b1-9b94-5d2f4b1a9a68"/>
+				</reportElement>
+				<box padding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="244" height="35" uuid="39ae451d-48ae-4f0a-9798-7be1d9a8bb8e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2637a010-9cba-4d44-ae7e-7610f3408814"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[((INRNumberFormat)value).getValue($V{g_total_mofamount})]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

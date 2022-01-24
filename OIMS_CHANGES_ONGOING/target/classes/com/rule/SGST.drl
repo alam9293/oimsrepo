@@ -1,0 +1,34 @@
+package com.rule
+
+import com.webapp.ims.model.ProposedEmploymentDetails
+import com.webapp.ims.model.SkilledEmployemnt
+import com.webapp.ims.model.model.UnSkilledEmployemnt
+import com.webapp.ims.model.ProjectDetails
+
+
+
+//from row number: 0
+rule "Row 1 Eligiblity"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , ePF_reimbursement_facility_to_the_extent_of_50_p__of_employer_contribution_to_all_such_new_Industrial_units_providing_direct_employment_to_100_or_more_unskilled_workers_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(number_of_Unskilled_Workers >= 100)
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Eligible");
+       end
+
+rule "Row 2 Eligiblity"
+       dialect "mvel"
+       when
+                 lOCIOSheetObject: LOCIOSheet(Eligibility_of_25_p_Gross_Block_in_case_of_expansion_diversification == "Eligible" )
+              
+       then
+              
+              lOCIOSheetObject.setCapital_Investment_in_Rs_including_New_Expansion_Diversification(3033000000);
+       end
+       
+        
+
+

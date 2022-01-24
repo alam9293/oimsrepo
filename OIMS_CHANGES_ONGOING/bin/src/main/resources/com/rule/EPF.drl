@@ -1,0 +1,272 @@
+package com.rule
+
+import com.oims.rule_creation.Inv_Employ_Input_sheet
+import com.oims.rule_creation.LOCIOSheet
+
+
+
+//from row number: 0
+rule "Row 1 Eligiblity @ 50% reimbursement"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , ePF_reimbursement_facility_to_the_extent_of_50_p__of_employer_contribution_to_all_such_new_Industrial_units_providing_direct_employment_to_100_or_more_unskilled_workers_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(number_of_Unskilled_Workers >= 100)
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Eligible");
+       end
+ 
+rule "Row 2 Eligiblity @ 50% reimbursement"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , ePF_reimbursement_facility_to_the_extent_of_50_p__of_employer_contribution_to_all_such_new_Industrial_units_providing_direct_employment_to_100_or_more_unskilled_workers_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(number_of_Unskilled_Workers <100)
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end
+       
+ rule "Row 3 Eligiblity @ 50% reimbursement"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , ePF_reimbursement_facility_to_the_extent_of_50_p__of_employer_contribution_to_all_such_new_Industrial_units_providing_direct_employment_to_100_or_more_unskilled_workers_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(number_of_Unskilled_Workers >= 100)
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end
+       
+ rule "Row 4 Eligiblity @ 50% reimbursement"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , ePF_reimbursement_facility_to_the_extent_of_50_p__of_employer_contribution_to_all_such_new_Industrial_units_providing_direct_employment_to_100_or_more_unskilled_workers_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(number_of_Unskilled_Workers >= 100)
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end   
+       
+ rule "Row 5 Eligiblity @ 50% reimbursement"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , ePF_reimbursement_facility_to_the_extent_of_50_p__of_employer_contribution_to_all_such_new_Industrial_units_providing_direct_employment_to_100_or_more_unskilled_workers_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(number_of_Unskilled_Workers >= 100)
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end 
+       
+  rule "Row 6 Eligiblity @ 50% reimbursement"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , ePF_reimbursement_facility_to_the_extent_of_50_p__of_employer_contribution_to_all_such_new_Industrial_units_providing_direct_employment_to_100_or_more_unskilled_workers_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(number_of_Unskilled_Workers < 100)
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end
+       
+ rule "Row 7 Eligiblity @ 50% reimbursement"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , ePF_reimbursement_facility_to_the_extent_of_50_p__of_employer_contribution_to_all_such_new_Industrial_units_providing_direct_employment_to_100_or_more_unskilled_workers_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(number_of_Unskilled_Workers < 100)
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end   
+       
+ rule "Row 8 Eligiblity @ 50% reimbursement"
+       dialect "mvel"
+       when
+              lOCIOSheetObject: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , ePF_reimbursement_facility_to_the_extent_of_50_p__of_employer_contribution_to_all_such_new_Industrial_units_providing_direct_employment_to_100_or_more_unskilled_workers_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(number_of_Unskilled_Workers < 100)
+              
+       then
+              
+              lOCIOSheetObject.setEligiblity("Not Eligible");
+       end 
+       
+rule "Row 9 Eligibility for 200 or more workers"
+       dialect "mvel"
+       when
+              lOCIOSheetObject1: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , units_generating_minimum_employment_of_200_direct_workers_including_skilled_and_unskilled_will_be_provided_10_p__additional_EPF_reimbursement_facility_on_employee_contribution_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(total_No_of_Workers >= 200)
+              
+       then
+              
+              lOCIOSheetObject1.setEligibility_for_200_or_more_workers ("Eligible");
+       end
+ 
+rule "Row 10 Eligibility for 200 or more workers"
+       dialect "mvel"
+       when
+              lOCIOSheetObject1: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , units_generating_minimum_employment_of_200_direct_workers_including_skilled_and_unskilled_will_be_provided_10_p__additional_EPF_reimbursement_facility_on_employee_contribution_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(total_No_of_Workers < 200)
+              
+       then
+              
+              lOCIOSheetObject1.setEligibility_for_200_or_more_workers ("Not Eligible");
+       end
+       
+ rule "Row 11 Eligibility for 200 or more workers"
+       dialect "mvel"
+       when
+              lOCIOSheetObject1: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , units_generating_minimum_employment_of_200_direct_workers_including_skilled_and_unskilled_will_be_provided_10_p__additional_EPF_reimbursement_facility_on_employee_contribution_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(total_No_of_Workers >= 200)
+              
+       then
+              
+              lOCIOSheetObject1.setEligibility_for_200_or_more_workers ("Not Eligible");
+       end
+       
+ rule "Row 12 Eligibility for 200 or more workers"
+       dialect "mvel"
+       when
+              lOCIOSheetObject1: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , units_generating_minimum_employment_of_200_direct_workers_including_skilled_and_unskilled_will_be_provided_10_p__additional_EPF_reimbursement_facility_on_employee_contribution_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(total_No_of_Workers >= 200)
+              
+       then
+              
+              lOCIOSheetObject1.setEligibility_for_200_or_more_workers ("Not Eligible");
+       end   
+       
+ rule "Row 13 Eligibility for 200 or more workers"
+       dialect "mvel"
+       when
+              lOCIOSheetObject1: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , units_generating_minimum_employment_of_200_direct_workers_including_skilled_and_unskilled_will_be_provided_10_p__additional_EPF_reimbursement_facility_on_employee_contribution_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(total_No_of_Workers >= 200)
+              
+       then
+              
+              lOCIOSheetObject1.setEligibility_for_200_or_more_workers ("Not Eligible");
+       end 
+       
+  rule "Row 14 Eligibility for 200 or more workers"
+       dialect "mvel"
+       when
+              lOCIOSheetObject1: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , units_generating_minimum_employment_of_200_direct_workers_including_skilled_and_unskilled_will_be_provided_10_p__additional_EPF_reimbursement_facility_on_employee_contribution_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(total_No_of_Workers < 200)
+              
+       then
+              
+              lOCIOSheetObject1.setEligibility_for_200_or_more_workers ("Not Eligible");
+       end
+       
+ rule "Row 15 Eligibility for 200 or more workers"
+       dialect "mvel"
+       when
+              lOCIOSheetObject1: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , units_generating_minimum_employment_of_200_direct_workers_including_skilled_and_unskilled_will_be_provided_10_p__additional_EPF_reimbursement_facility_on_employee_contribution_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(total_No_of_Workers < 200)
+              
+       then
+              
+              lOCIOSheetObject1.setEligibility_for_200_or_more_workers ("Not Eligible");
+       end   
+       
+ rule "Row 16 Eligibility for 200 or more workers"
+       dialect "mvel"
+       when
+              lOCIOSheetObject1: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , units_generating_minimum_employment_of_200_direct_workers_including_skilled_and_unskilled_will_be_provided_10_p__additional_EPF_reimbursement_facility_on_employee_contribution_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(total_No_of_Workers < 200)
+              
+       then
+              
+              lOCIOSheetObject1.setEligibility_for_200_or_more_workers ("Not Eligible");
+       end  
+ 
+ rule "Row 17 Eligibility for 75%  equity owned by Divyang/SC/CT/Females Promoters"
+       dialect "mvel"
+       when
+              lOCIOSheetObject2: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , additional_10_p__EPF_Reimbursement__upto_maximum_of_70_p__in_case_of_industrial_undertakings_having_75_p__equity_owned_by_Divyang_SC_CT_Females_Promoters_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(equity_owned_by_Divyang_SC_CT_Females_Promoters_in_p >= 0.75)
+              
+       then
+              
+              lOCIOSheetObject2.setEligibility_for_75_p_equity_owned_by_Divyang_SC_CT_Females_Promoters ("Eligible");
+       end
+ 
+rule "Row 18 Eligibility for 75%  equity owned by Divyang/SC/CT/Females Promoters"
+       dialect "mvel"
+       when
+              lOCIOSheetObject2: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , additional_10_p__EPF_Reimbursement__upto_maximum_of_70_p__in_case_of_industrial_undertakings_having_75_p__equity_owned_by_Divyang_SC_CT_Females_Promoters_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(equity_owned_by_Divyang_SC_CT_Females_Promoters_in_p < 0.75)
+              
+       then
+              
+              lOCIOSheetObject2.setEligibility_for_75_p_equity_owned_by_Divyang_SC_CT_Females_Promoters ("Not Eligible");
+       end
+       
+ rule "Row 19 Eligibility for 75%  equity owned by Divyang/SC/CT/Females Promoters"
+       dialect "mvel"
+       when
+              lOCIOSheetObject2: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , additional_10_p__EPF_Reimbursement__upto_maximum_of_70_p__in_case_of_industrial_undertakings_having_75_p__equity_owned_by_Divyang_SC_CT_Females_Promoters_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(equity_owned_by_Divyang_SC_CT_Females_Promoters_in_p >= 0.75)
+              
+       then
+              
+              lOCIOSheetObject2.setEligibility_for_75_p_equity_owned_by_Divyang_SC_CT_Females_Promoters ("Not Eligible");
+       end
+       
+ rule "Row 20 Eligibility for 75%  equity owned by Divyang/SC/CT/Females Promoters"
+       dialect "mvel"
+       when
+              lOCIOSheetObject2: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , additional_10_p__EPF_Reimbursement__upto_maximum_of_70_p__in_case_of_industrial_undertakings_having_75_p__equity_owned_by_Divyang_SC_CT_Females_Promoters_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(equity_owned_by_Divyang_SC_CT_Females_Promoters_in_p >= 0.75)
+              
+       then
+              
+              lOCIOSheetObject2.setEligibility_for_75_p_equity_owned_by_Divyang_SC_CT_Females_Promoters ("Not Eligible");
+       end   
+       
+ rule "Row 21 Eligibility for 75%  equity owned by Divyang/SC/CT/Females Promoters"
+       dialect "mvel"
+       when
+              lOCIOSheetObject2: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , additional_10_p__EPF_Reimbursement__upto_maximum_of_70_p__in_case_of_industrial_undertakings_having_75_p__equity_owned_by_Divyang_SC_CT_Females_Promoters_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(equity_owned_by_Divyang_SC_CT_Females_Promoters_in_p >= 0.75)
+              
+       then
+              
+              lOCIOSheetObject2.setEligibility_for_75_p_equity_owned_by_Divyang_SC_CT_Females_Promoters ("Not Eligible");
+       end 
+       
+  rule "Row 22 Eligibility for 75%  equity owned by Divyang/SC/CT/Females Promoters"
+       dialect "mvel"
+       when
+              lOCIOSheetObject2: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , additional_10_p__EPF_Reimbursement__upto_maximum_of_70_p__in_case_of_industrial_undertakings_having_75_p__equity_owned_by_Divyang_SC_CT_Females_Promoters_EPF == "Yes") 
+              ieis: Inv_Employ_Input_sheet(equity_owned_by_Divyang_SC_CT_Females_Promoters_in_p < 0.75)
+              
+       then
+              
+              lOCIOSheetObject2.setEligibility_for_75_p_equity_owned_by_Divyang_SC_CT_Females_Promoters ("Not Eligible");
+       end
+       
+ rule "Row 23 Eligibility for 75%  equity owned by Divyang/SC/CT/Females Promoters"
+       dialect "mvel"
+       when
+              lOCIOSheetObject2: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Eligible" , additional_10_p__EPF_Reimbursement__upto_maximum_of_70_p__in_case_of_industrial_undertakings_having_75_p__equity_owned_by_Divyang_SC_CT_Females_Promoters_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(equity_owned_by_Divyang_SC_CT_Females_Promoters_in_p < 0.75)
+              
+       then
+              
+              lOCIOSheetObject2.setEligibility_for_75_p_equity_owned_by_Divyang_SC_CT_Females_Promoters ("Not Eligible");
+       end   
+       
+ rule "Row 24 Eligibility for 75%  equity owned by Divyang/SC/CT/Females Promoters"
+       dialect "mvel"
+       when
+              lOCIOSheetObject2: LOCIOSheet(overall_Eligibility_under_IIEPP_2017 == "Not Eligible" , additional_10_p__EPF_Reimbursement__upto_maximum_of_70_p__in_case_of_industrial_undertakings_having_75_p__equity_owned_by_Divyang_SC_CT_Females_Promoters_EPF == "No") 
+              ieis: Inv_Employ_Input_sheet(equity_owned_by_Divyang_SC_CT_Females_Promoters_in_p < 0.75)
+              
+       then
+              
+              lOCIOSheetObject2.setEligibility_for_75_p_equity_owned_by_Divyang_SC_CT_Females_Promoters ("Not Eligible");
+       end    
+       

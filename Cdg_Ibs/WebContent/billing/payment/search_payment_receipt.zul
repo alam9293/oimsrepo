@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="searchPaymentReceiptWindow" border="normal" use="com.cdgtaxi.ibs.billing.ui.SearchPaymentReceiptWindow"
+	title="Search Payment Receipt"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	width="98%">
+
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+   		<rows>
+   			<row>
+   				<label sclass="fieldLabel">Account No</label>
+   				<intbox id="accountNoIntBox"
+   					maxlength="6" 
+   					onChange="searchPaymentReceiptWindow.searchBillableAccountByAccountNo()"
+   					onOK="searchPaymentReceiptWindow.searchBillableAccountByAccountNo()" 
+   					width="98.75%"
+   				/>
+				<label sclass="fieldLabel">Account Name</label>
+   				<combobox id="accountNameComboBox"
+   					rows="1" 
+   					style="text-transform:uppercase"
+   					autodrop="true"
+   					autocomplete="false"
+   					width="91.5%"
+   					onChanging="searchPaymentReceiptWindow.searchBillableAccountByAccountName(event.value)"
+   					onSelect="searchPaymentReceiptWindow.onSelectAccountName()"
+   					tooltiptext="Minimum search criteria is 3 characters" 
+   				/>
+   			</row>
+   			<row id="divisionDepartmentRow" visible="false">
+   				<label id="divisionLabel" visible="false" sclass="fieldLabel">Division</label>
+   				<listbox id="divisionListBox" 
+   					mold="select"
+   					multiple="false"
+   					visible="false"
+   					width="100%"
+   					onSelect="searchPaymentReceiptWindow.onSelectDivision(self)"
+   				/>
+   				<label id="departmentLabel" visible="false" sclass="fieldLabel">Department</label>
+   				<listbox id="departmentListBox" 
+   					mold="select"
+   					multiple="false"
+   					visible="false"
+   					width="100%"
+   					onSelect="searchPaymentReceiptWindow.onSelectDepartment(self)"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Receipt No</label>
+   				<longbox id="receiptNoLongBox" 
+   					width="98.75%"
+   				/>
+   				<label sclass="fieldLabel">Payment Mode</label>
+   				<listbox id="paymentModeListBox"
+   					mold="select"
+   					multiple="false"
+   					width="99%"
+   					onCreate="searchPaymentReceiptWindow.populatePaymentMode(self)"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Cheque No</label>
+   				<capstextbox id="chequeNoTextBox" 
+   					width="98.75%"
+   					maxlength="20"
+   				/>
+   				<label sclass="fieldLabel">Transaction Ref No.</label>
+   				<capstextbox id="txnRefNoTextBox" 
+   					width="98.75%"
+   					maxlength="30"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Receipt Date From</label>
+   				<datebox id="receiptDateFromDateBox" 
+   					width="91.5%" 
+   					format="dd/MM/yyyy"
+   				/>
+   				<label sclass="fieldLabel">Receipt Date To</label>
+   				<datebox id="receiptDateToDateBox" 
+   					width="91.5%" 
+   					format="dd/MM/yyyy"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Receipt Status</label>
+   				<listbox id="receiptStatusListBox"
+   					mold="select"
+   					multiple="false"
+   					width="99%"
+   					onCreate="searchPaymentReceiptWindow.populateReceiptStatus(self)"
+   				/>
+   				<label/>
+   				<label/>
+   			</row>
+   			<row spans="4">
+   				<hbox>
+   					<button label="Search" onClick="searchPaymentReceiptWindow.searchPaymentReceipt()" />
+   					<button label="Reset" onClick="searchPaymentReceiptWindow.reset()" />
+   				</hbox>
+   			</row>
+   		</rows>
+   	</grid>
+   	<h:br/>
+   	<!--  The below grid is for Labeling Purpose 	-->
+   	<grid>
+	   	<columns>
+	   		<column>Result</column>
+	   	</columns>
+   	</grid>
+   	<listbox id="resultList" onSelect="searchPaymentReceiptWindow.viewReceipt()">
+   		<listhead sizable="true">
+			<listheader label="Receipt No." sort="auto"/>
+			<listheader label="Account No" sort="auto"/>
+			<listheader label="Account Name" sort="auto"/>
+			<listheader label="Receipt Date" sort="auto"/>
+			<listheader label="Payment Date" sort="auto"/>
+			<listheader label="Payment Mode" sort="auto"/>
+			<listheader label="Payment Amount($)" sort="auto" align="right"/>
+			<listheader label="Excess Amount($)" sort="auto" align="right"/>
+			<listheader label="Applied Amount($)" sort="auto" align="right"/>
+			<listheader label="Receipt Status" sort="auto"/>
+		</listhead>
+		<listfoot>
+			<listfooter span="10">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+   	</listbox>
+</window>

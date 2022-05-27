@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.master.model.LrtbRewardTier" 
+    table="LRTB_REWARD_TIER"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="rewardPlanTierNo"
+        type="java.lang.Integer"
+        column="REWARD_PLAN_TIER_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">LRTB_REWARD_TIER_SQ1</param>
+        </generator>
+    </id>
+	<version name="version" column="VERSION"/>
+
+    <property
+        name="startRange"
+        type="java.math.BigDecimal"
+        column="START_RANGE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="endRange"
+        type="java.math.BigDecimal"
+        column="END_RANGE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="ptsPerValue"
+        type="int"
+        column="PTS_PER_VALUE"
+        not-null="true"
+        length="4"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to LrtbRewardDetail -->
+    <many-to-one
+        name="lrtbRewardDetail"
+        class="com.cdgtaxi.ibs.master.model.LrtbRewardDetail"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="REWARD_PLAN_DETAIL_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

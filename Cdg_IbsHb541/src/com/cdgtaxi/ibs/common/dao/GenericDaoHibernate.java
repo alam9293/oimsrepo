@@ -331,7 +331,7 @@ public class GenericDaoHibernate extends HibernateDaoSupport implements GenericD
 	
 	public <T> T firstResult(DetachedCriteria dc) {
 		
-		getActiveDBTransaction();
+		this.getActiveDBTransaction();
 		List<T> list = findAllByCriteria(dc);
 		this.currentSession().close();
 		return firstResult(list);
@@ -344,6 +344,24 @@ public class GenericDaoHibernate extends HibernateDaoSupport implements GenericD
 		}
 		
 		return null;
+	}
+	
+	public List findResultByNamedQueryAndNamedParam(String namedquery,String[] paramNames,String[] values)
+	{
+		this.getActiveDBTransaction();
+		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("softCopyInvoiceAndTripsDetailByInvoiceNoCSV", paramNames, values);
+		this.currentSession().close();
+		return results;
+		
+	}
+	
+	public List findResultByNamedQueryAndNamedParam(String namedquery,String[] paramNames,Object[] values)
+	{
+		this.getActiveDBTransaction();
+		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("softCopyInvoiceAndTripsDetailByInvoiceNoCSV", paramNames, values);
+		this.currentSession().close();
+		return results;
+		
 	}
 	
     public void getActiveDBTransaction(){

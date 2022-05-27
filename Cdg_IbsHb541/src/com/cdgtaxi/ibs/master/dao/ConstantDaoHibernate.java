@@ -14,7 +14,8 @@ public class ConstantDaoHibernate extends GenericDaoHibernate implements Constan
 	public List<MstbMasterTable> getAllMasterTable() {
 		DetachedCriteria masterCriteria = DetachedCriteria.forClass(MstbMasterTable.class);
 		masterCriteria.addOrder(Order.asc("masterValue"));
-		return (List<MstbMasterTable>) this.getHibernateTemplate().findByCriteria(masterCriteria);
+		//return (List<MstbMasterTable>) this.getHibernateTemplate().findByCriteria(masterCriteria);
+		return (List<MstbMasterTable>) this.findAllByCriteria(masterCriteria);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -22,6 +23,6 @@ public class ConstantDaoHibernate extends GenericDaoHibernate implements Constan
 		DetachedCriteria masterCriteria = DetachedCriteria.forClass(MstbMasterTable.class);
 		masterCriteria.add(Restrictions.eq("masterStatus", "A"));
 		masterCriteria.addOrder(Order.asc("masterValue"));
-		return (List<MstbMasterTable>) this.getHibernateTemplate().findByCriteria(masterCriteria);
+		return (List<MstbMasterTable>) this.findAllByCriteria(masterCriteria);
 	}
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.master.model.MstbProdDiscDetail" 
+    table="MSTB_PROD_DISC_DETAIL"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="prodDiscountPlanDetailNo"
+        type="java.lang.Integer"
+        column="PROD_DISCOUNT_PLAN_DETAIL_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">MSTB_PROD_DISC_DETAIL_SQ1</param>
+        </generator>
+    </id>
+	<version name="version" column="VERSION"/>
+	
+    <property
+        name="effectiveDt"
+        type="java.sql.Timestamp"
+        column="EFFECTIVE_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="productDiscount"
+        type="java.math.BigDecimal"
+        column="PRODUCT_DISCOUNT"
+        not-null="true"
+        length="5"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to MstbProdDiscMaster -->
+    <many-to-one
+        name="mstbProdDiscMaster"
+        class="com.cdgtaxi.ibs.master.model.MstbProdDiscMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PRODUCT_DISCOUNT_PLAN_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

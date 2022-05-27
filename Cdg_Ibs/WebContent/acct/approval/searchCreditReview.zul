@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="searchCreditReviewWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.SearchCreditReviewWindow"
+	title=""
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Search Credit Review Request History"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Account No"/>
+				<capstextbox id="custNo" width="98%"/>
+				<label sclass="fieldLabel" value="Name"/>
+				<capstextbox id="acctName" width="98%"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Request Date(From)"/>
+				<datebox id="requestDateFrom" width="91.5%" format="dd/MM/yyyy"/>
+				<label sclass="fieldLabel" value="Request Date(To)"/>
+				<datebox id="requestDateTo" width="91.5%" format="dd/MM/yyyy"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Request Status"/>
+				<listbox id="requestStatusList" width="100%" rows="1" mold="select" onCreate="self.getChildren().addAll(searchCreditReviewWindow.getRequestStatuses())"/>
+				<label sclass="fieldLabel" value="Requester"/>
+				<capstextbox id="requester" width="98%" maxlength="35"/>
+			</row><row spans="4"><hbox>
+				<button label="Search" onClick="searchCreditReviewWindow.search()"/>
+				<button label="Back" onClick="searchCreditReviewWindow.back()"/>
+			</hbox></row>
+		</rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Credit Review Requests"/></column>
+		</columns>
+	</grid>
+	<listbox id="creditReviewRequests" mold="paging" onSelect="searchCreditReviewWindow.selectRequest(self.getSelectedItem())">
+		<listhead sizable="false">
+			<listheader label="Account No" width="9%" sort="auto"/>
+			<listheader label="Name" width="auto" sort="auto"/>
+			<listheader label="Requested By" width="auto" sort="auto"/>
+			<listheader label="Request Date" width="auto" sort="auto"/>
+			<listheader label="Approval By" width="auto" sort="auto"/>
+			<listheader label="Approval Date" width="auto" sort="auto"/>
+			<listheader label="Request Status" width="auto" sort="auto"/>
+		</listhead>
+		<listfoot id="footer" visible="false"><listfooter span="7">No Requests Found</listfooter></listfoot>
+	</listbox>
+</window>

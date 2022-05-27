@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="PaymentType" type="JDBC" path="/IBS_Reports/Non Billable/Cashless Bank Collection Detailed/datasource/PaymentType.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="MASTER_VALUE" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select MASTER_VALUE from MSTB_MASTER_TABLE where MASTER_CODE = '${08. Payment Type#choice(A,D,J,M,N,V)#CC:APT}' and MASTER_TYPE = 'APT'</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

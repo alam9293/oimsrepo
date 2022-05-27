@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="viewNonBillableBatchWindow" border="normal" use="com.cdgtaxi.ibs.nonbillable.ui.ViewNonBillableBatchWindow"
+		title="Batch of Non Billable Trips"
+		xmlns:h="http://www.w3.org/1999/xhtml"
+		width="98%">
+
+	<grid id="batchDetails">
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel">Batch No</label>
+				<label id="batchNoLabel"/>
+				<label sclass="fieldLabel">Batch Date</label>
+				<label id="uploadDateLabel"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Batch Status</label>
+				<label id="batchStatusLabel"/>
+				<label sclass="fieldLabel">Acquirer</label>
+				<label id="acquirerLabel"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">MID</label>
+				<label id="midLabel"/>
+				<label sclass="fieldLabel">TID</label>
+				<label id="tidLabel"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Trips Count</label>
+				<label id="tripsCountLabel"/>
+				<label sclass="fieldLabel">Trips Amount($)</label>
+				<label id="tripsAmtLabel"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Credit Count</label>
+				<label id="creditCountLabel"/>
+				<label sclass="fieldLabel">Credit Amount($)</label>
+				<label id="creditAmtLabel"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Credit Date</label>
+				<label id="creditDateLabel"/>
+				<label />
+				<label />
+			</row>
+		</rows>
+	</grid>
+
+	<h:br/>
+	<!--  The below grid is for Labeling Purpose 	-->
+	<grid >
+		<columns>
+			<column>Search Trips</column>
+		</columns>
+	</grid>
+	<grid id="searchTripsGrid">
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel">Payment Type</label>
+				<listbox id="paymentTypeListBox"
+						 mold="select"
+						 multiple="false"
+						 width="100%"
+				/>
+				<label sclass="fieldLabel">Txn Status</label>
+				<listbox id="txnStatusListBox"
+						 mold="select"
+						 multiple="false"
+						 width="100%"
+				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Taxi No</label>
+				<capstextbox id="taxiNoTextBox"
+							 width="98.75%"
+							 maxlength="10"
+				/>
+				<label sclass="fieldLabel">Driver ID</label>
+				<capstextbox id="driverIdTextBox"
+							 width="98.75%"
+							 maxlength="15"
+				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Trip Date From</label>
+				<datebox id="tripDateFromDateBox"
+						 width="91.5%"
+						 format="dd/MM/yyyy"
+				/>
+				<label sclass="fieldLabel">Trip Date To</label>
+				<datebox id="tripDateToDateBox"
+						 width="91.5%"
+						 format="dd/MM/yyyy"
+				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Total Amount($)</label>
+				<decimalbox id="totalAmountDecimalBox"
+							format="#,##0.00"
+							maxlength="15"
+							width="98%"
+							constraint="${c:new('com.cdgtaxi.ibs.web.constraint.GreaterThanZeroConstraint')}"
+				/>
+				<label sclass="fieldLabel">Offline</label>
+				<listbox id="offlineLB"
+						 mold="select"
+						 multiple="false"
+						 width="100%"
+				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Policy No</label>
+				<capstextbox id="policyNoTextBox"
+							 width="98.75%"
+							 maxlength="30"
+				/>
+				<label sclass="fieldLabel">Policy Status</label>
+				<listbox id="policyStatusLB"
+						 mold="select"
+						 multiple="false"
+						 width="100%"
+				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Psp Reference No</label>
+				<capstextbox id="pspRefNoTextBox"
+							 width="98.75%"
+							 maxlength="16"
+				/>
+				<label sclass="fieldLabel">Matching Status</label>
+				<listbox id="matchingStatusListBox"
+						 mold="select"
+						 multiple="false"
+						 width="100%"
+				/>
+			</row>
+			<row spans="4">
+				<hbox>
+					<button label="Search" onClick="viewNonBillableBatchWindow.search()" />
+					<button label="Reset" onClick="viewNonBillableBatchWindow.reset()" />
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+
+	<h:br/>
+
+	<grid id="paymentDetailsLabelGrid1" visible="false">
+		<columns>
+			<column>Payment Details 1</column>
+		</columns>
+	</grid>
+	<grid id="paymentDetailsGrid1" visible="false">
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel">Psp Reference No</label>
+				<label id="pspReferenceNoLabel1"/>
+				<label sclass="fieldLabel">Ayden Merchant Id</label>
+				<label id="aydenMerchantIdLabel1"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Gross Debit (GC)</label>
+				<label id="grossDebitLabel1"/>
+				<label sclass="fieldLabel">Gross Credit (GC)</label>
+				<label id="grossCreditLabel1"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Markup (NC)</label>
+				<label id="markupLabel1"/>
+				<label sclass="fieldLabel">Commission (NC)</label>
+				<label id="commissionNoLabel1"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Scheme Fees (NC)</label>
+				<label id="schemeFeeLabel1"/>
+				<label sclass="fieldLabel">Interchange (NC)</label>
+				<label id="interchangeLabel1"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Gross Amount (GC)</label>
+				<label id="grossAmountLabel1"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+
+	<grid id="paymentDetailsLabelGrid2" visible="false">
+		<columns>
+			<column>Payment Details 2</column>
+		</columns>
+	</grid>
+
+	<grid id="paymentDetailsGrid2" visible="false">
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel">Psp Reference No</label>
+				<label id="pspReferenceNoLabel2"/>
+				<label sclass="fieldLabel">Ayden Merchant Id</label>
+				<label id="aydenMerchantIdLabel2"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Gross Debit (GC)</label>
+				<label id="grossDebitLabel2"/>
+				<label sclass="fieldLabel">Gross Credit (GC)</label>
+				<label id="grossCreditLabel2"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Markup (NC)</label>
+				<label id="markupLabel2"/>
+				<label sclass="fieldLabel">Commission (NC)</label>
+				<label id="commissionNoLabel2"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Scheme Fees (NC)</label>
+				<label id="schemeFeeLabel2"/>
+				<label sclass="fieldLabel">Interchange (NC)</label>
+				<label id="interchangeLabel2"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Gross Amount (GC)</label>
+				<label id="grossAmountLabel2"/>
+			</row>
+
+		</rows>
+	</grid>
+	<h:br/>
+
+	<grid id="paymentDetailsLabelGrid3" visible="false">
+		<columns>
+			<column>Payment Details 3</column>
+		</columns>
+	</grid>
+
+	<grid id="paymentDetailsGrid3" visible="false">
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel">Paid Status</label>
+				<label id="paidStatusLabel"/>
+				<label sclass="fieldLabel">Detail</label>
+				<label id="detailLabel"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Payment Reference Id</label>
+				<label id="paymentReferenceLabel"/>
+				<label sclass="fieldLabel">Transaction No</label>
+				<label id="transactionNoLabel"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">Paid Date</label>
+				<label id="paidDateLabel"/>
+				<label sclass="fieldLabel">Source</label>
+				<label id="sourceLabel"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+
+	<!--  The below grid is for Labeling Purpose 	-->
+	<grid>
+		<columns>
+			<column>Result</column>
+		</columns>
+	</grid>
+
+	<listbox id="resultList"
+			 onSelect="viewNonBillableBatchWindow.viewTxn()"
+			 fixedLayout="true"
+	>
+		<listhead sizable="true">
+			<listheader label="Card No" 		     width="150px" 	sort="auto"/>
+			<listheader label="Payment Type" 	   sort="auto"/>
+			<listheader label="Trip Date Time" 	 sort="auto"/>
+			<listheader label="Company Code" 	   sort="auto"/>
+			<listheader label="Taxi No" 		     width="100px"	sort="auto"/>
+			<listheader label="Driver ID" 		   sort="auto"/>
+			<listheader label="Fare Amount($)" 	 sort="auto" 	 align="right"/>
+			<listheader label="Admin Fee($)" 	   sort="auto"	 align="right"/>
+			<listheader label="GST($)" 			     sort="auto" 	 align="right"/>
+			<listheader label="Premium($)" 			     sort="auto" 	 align="right"/>
+			<listheader label="Premium GST($)" 			     sort="auto" 	 align="right"/>
+			<listheader label="Total Amount($)"  sort="auto" 	 align="right"/>
+			<listheader label="Offline"          sort="auto"   align="right"/>
+			<listheader label="Job No"          sort="auto"   align="right"/>
+			<listheader label="Psp Ref No 1"          sort="auto"   align="right"/>
+			<listheader label="Txn Amount 1"          sort="auto"   align="right"/>
+			<listheader label="Psp Ref No 2"          sort="auto"   align="right"/>
+			<listheader label="Txn Amount 2"          sort="auto"   align="right"/>
+			<listheader label="Policy No."          sort="auto"   align="right"/>
+			<listheader label="Policy Status"          sort="auto"   align="right"/>
+			<listheader label="Matching	Status"     sort="auto"   align="right"/>
+			<listheader label="Txn Status" 		   sort="auto" align="right"/>
+		</listhead>
+		<listfoot>
+			<listfooter span="12">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+	</listbox>
+
+	<h:br/>
+	<button label="Back" onClick="viewNonBillableBatchWindow.backToPreviousPage()" />
+	<button label="Export To PDF" id="pdfPreviewBtn" onClick="viewNonBillableBatchWindow.exportResult()"/>
+	<button label="Export Results To CSV" id="csvPreviewBtn" onClick="viewNonBillableBatchWindow.exportCSVResult()"/>
+
+</window>

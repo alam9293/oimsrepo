@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageGLBankWindow"
+	title="Manage GL Banks" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ManageGLBankWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
+	width="98%">
+	
+   	<!--  The below grid is for Labeling Purpose 	-->
+   	<grid>
+	   	<columns>
+	   		<column>Search Bank Code</column>
+	   	</columns>
+   	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel" value="Entity"/>
+   				<combobox id="entityCB"
+					autodrop="true"
+					readonly="true"
+   					width="91.5%"
+   					style="background-color:white"
+   					onChanging="self.open()"
+   				/>
+   				<label/>
+   				<label/>
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Bank Code"/>
+   				<capstextbox id="bankCodeTB" width="98.75%" maxlength="10"/>
+   				<label sclass="fieldLabel" value="Branch Code"/>
+   				<capstextbox id="branchCodeTB" width="98.75%" maxlength="10"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Effective Date From:" />
+				<datebox id="effDateFromDatebox" 
+   					width="91.5%" 
+   					format="dd/MM/yyyy"
+   				/>
+				<label sclass="fieldLabel" value="Effective Date To:" />
+				<datebox id="effDateToDatebox" 
+   					width="91.5%" 
+   					format="dd/MM/yyyy"
+   				/>
+			</row>
+			<row spans="4">
+				<hbox>
+					<button label="Search" onClick="manageGLBankWindow.search()" />
+					<button label="Reset"  onClick="manageGLBankWindow.reset() "/>
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+	
+	<h:br/>
+	<!--  The below grid is for Labeling Purpose 	-->
+   	<grid>
+	   	<columns>
+	   		<column>Bank Codes</column>
+	   	</columns>
+   	</grid>
+	<listbox id="resultList" 
+		onSelect="manageGLBankWindow.editPlan()"
+		mold="paging"
+		fixedLayout="true"
+	>
+		<listhead sizable="true">
+			<listheader label="Entity" 			sort="auto" />
+			<listheader label="Bank Code" 		sort="auto" width="100px"/>
+			<listheader label="Bank Name" 		sort="auto" />
+			<listheader label="Branch Code" 	sort="auto" width="100px"/>
+			<listheader label="Branch Name" 	sort="auto" />
+			<listheader label="GL Code" 		sort="auto" width="150px"/>
+			<listheader label="Tax Type" 		sort="auto" />
+			<listheader label="Cost Centre" 	sort="auto" width="150px"/>
+			<listheader label="Default Collection Bank?" 	sort="auto" width="60px"/>
+			<listheader label="Default GIRO Bank?"	 		sort="auto" width="60px"/>
+			<listheader label="Effective Date" 	sort="auto" width="100px"/>
+			<listheader label="Bank Acct No" 	sort="auto" />
+			<listheader label="Delete" 			sort="none"	width="60px"/>
+		</listhead>
+		<listfoot>
+			<listfooter span="12">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+	</listbox>
+	
+	<h:br/>
+	<button id="createBtn" label="New GL Bank" onClick="manageGLBankWindow.createPlan()" />
+</window>

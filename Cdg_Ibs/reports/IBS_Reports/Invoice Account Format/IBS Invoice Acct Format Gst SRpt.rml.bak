@@ -1,0 +1,162 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="100" grid-y="100" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/Invoice Account Format/IBS Invoice Acct Format Gst SRpt.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="iso-a4" page-width="11905" page-height="16837" orientation="Portrait" horizontal-page-count="1" margin-top="400" margin-left="400" margin-bottom="400" margin-right="400" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="invoiceDetailNo" enabled="Yes">${invoiceDetailNo}</rml:param><rml:param xml:space="preserve" key="invoiceHeaderNo" enabled="Yes">${invoiceHeaderNo}</rml:param><rml:param xml:space="preserve" key="invoiceDetailTbl" enabled="Yes">${invoiceDetailTbl}</rml:param><rml:param xml:space="preserve" key="invoiceHeaderTbl" enabled="Yes">${invoiceHeaderTbl}</rml:param><rml:param xml:space="preserve" key="invoiceSummaryTbl" enabled="Yes">${invoiceSummaryTbl}</rml:param><rml:param xml:space="preserve" key="invoiceTxnTbl" enabled="Yes">${invoiceTxnTbl}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+    <rml:datasource name="Default" datasource-name="/IBS_Reports/Invoice Account Format/datasource/IBS Invoice Acct Format Txn Detail Filter 1.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="invoiceHeaderNo">${invoiceHeaderNo}</rml:param><rml:param xml:space="preserve" key="invoiceDetailNo">${invoiceDetailNo}</rml:param><rml:param xml:space="preserve" key="invoiceDetailTbl">${invoiceDetailTbl}</rml:param><rml:param xml:space="preserve" key="invoiceSummaryTbl">${invoiceSummaryTbl}</rml:param><rml:param xml:space="preserve" key="invoiceHeaderTbl">${invoiceHeaderTbl}</rml:param><rml:param xml:space="preserve" key="invoiceTxnTbl">${invoiceTxnTbl}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="default">
+      <rml:item name="TextElement.FontName" value="Arial">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="160">
+      </rml:item>
+    </rml:style>
+    <rml:style name="detail">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" data-source="Default" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:watermark report="" section="" enabled="No">
+        <rml:parameters>
+        </rml:parameters>
+      </rml:watermark>
+      <rml:section-header table-of-contents="No" height="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" height="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:detail>
+      <rml:group field="GST_PERCENT" sort-order="Ascending" group-header-visible="Yes" group-footer-visible="Yes" group-on="Each Value" group-data="">
+        <rml:group-header table-of-contents="No" height="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-header>
+        <rml:group-footer table-of-contents="No" height="200" style="">
+          <rml:field left="8000" top="0" width="800" height="200" style="default"><rml:control-source xml:space="preserve" type="Literal" running-value="No">GST</rml:control-source>
+          </rml:field>
+          <rml:field text-align="Right" left="8900" top="0" width="400" height="199" style="default"><rml:render-if xml:space="preserve" language="javascript">if(!GST_PERCENT) GST_PERCENT = 0.0</rml:render-if><rml:control-source xml:space="preserve" type="Field" field="GST_PERCENT" running-value="No">GST_PERCENT</rml:control-source>
+          </rml:field>
+          <rml:field left="8800" top="0" width="105" height="200" style="default"><rml:control-source xml:space="preserve" type="Literal" running-value="No">(</rml:control-source>
+          </rml:field>
+          <rml:field left="9300" top="0" width="200" height="200" style="default"><rml:control-source xml:space="preserve" type="Literal" running-value="No">%)</rml:control-source>
+          </rml:field>
+          <rml:field text-align="Right" left="9900" top="0" width="1200" height="200" style="default">
+            <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+            </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("GST").getValueOverGroup()</rml:control-source>
+          </rml:field>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-footer>
+      </rml:group>
+      <rml:ruler>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation report="" section="Section 1" data-source="Default" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+    <rml:render-details mime-type="application/x-glint">
+      <rml:parameters><rml:param xml:space="preserve" key="Tree">No</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+  </rml:rendering></rml:report>
+

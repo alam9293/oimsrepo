@@ -387,7 +387,7 @@ public class InvoiceDaoHibernate extends GenericDaoHibernate implements InvoiceD
 		Object[] values = new Object[] { accountNo, paidInvoiceDueDate };
 
 		// Query using named query - BmtbInvoiceHeader.hbm.xml
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"getTotalDueOutstandingAmount", paramNames, values);
 
 		if (results.isEmpty()) {
@@ -409,7 +409,7 @@ public class InvoiceDaoHibernate extends GenericDaoHibernate implements InvoiceD
 		Object[] values = new Object[] { accountNo };
 
 		// Query using named query - BmtbInvoiceHeader.hbm.xml
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("getTotalOutstandingAmount",
+		List results = this.findResultByNamedQueryAndNamedParam("getTotalOutstandingAmount",
 				paramNames, values);
 
 		if (results.isEmpty()) {
@@ -431,7 +431,7 @@ public class InvoiceDaoHibernate extends GenericDaoHibernate implements InvoiceD
 		Object[] values = new Object[] { accountNo };
 
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"getInvoicesToRewardEarlyPayment", paramNames, values);
 		return results;
 	}
@@ -449,7 +449,7 @@ public class InvoiceDaoHibernate extends GenericDaoHibernate implements InvoiceD
 		Object[] values = new Object[] { accountNo, cancelInvoiceDueDate };
 
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"getNotBilledEarlyPaymentInvoices", paramNames, values);
 		return results;
 	}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageAcquirerWindow"
+	title="Manage Acquirer" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ManageAcquirerWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<grid width="99.7%">
+		<columns sizable="false">
+			<column width="10%"/>
+			<column width="90%"/>
+		</columns>
+		<rows>
+   			<row>
+				<label sclass="fieldLabel" value="Name:" />
+				<capstextbox id="nameTextBox" maxlength="80" width="30%" />
+			</row>
+			<row spans="2"><hbox>
+   				<button label="Search" onClick="manageAcquirerWindow.search()" />
+   				<button label="Reset" onClick="manageAcquirerWindow.reset()" />
+   			</hbox></row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid>
+   		<columns sizable="false">
+			<column><label value="Result(s)"/></column>
+		</columns>
+	</grid>
+	
+	<listbox id="resultList" onSelect="manageAcquirerWindow.edit()">
+   		<listhead sizable="true">
+			<listheader label="Name" 	width="600" sort="auto"/>
+			<listheader label="Delete" 	sort="none"	width="60px"/>
+		</listhead>
+		<listfoot>
+			<listfooter span="2">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+   	</listbox>
+   	
+   	<h:br/>
+	<button id="createBtn" label="Create New Acquirer" onClick="manageAcquirerWindow.create()" />
+</window>

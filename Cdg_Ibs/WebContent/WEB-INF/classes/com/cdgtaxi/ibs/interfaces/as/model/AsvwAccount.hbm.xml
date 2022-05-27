@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.interfaces.as.model.AsvwAccount" 
+    table="ASVW_ACCOUNT"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="acctId"
+        type="java.lang.String"
+        column="ACCT_ID"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">ASVW_ACCOUNT_SQ1</param>
+        </generator>
+    </id>
+
+    <property
+        name="acctType"
+        type="java.lang.String"
+        column="ACCT_TYPE"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="creditLimit"
+        type="java.math.BigDecimal"
+        column="CREDIT_LIMIT"
+        length="22"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="totalTxnAmt"
+        type="java.math.BigDecimal"
+        column="TOTAL_TXN_AMT"
+        length="22"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createDate"
+        type="java.sql.Timestamp"
+        column="CREATE_DATE"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createBy"
+        type="java.lang.String"
+        column="CREATE_BY"
+        length="50"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updateDate"
+        type="java.sql.Timestamp"
+        column="UPDATE_DATE"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updateBy"
+        type="java.lang.String"
+        column="UPDATE_BY"
+        length="50"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to AsvwAccount -->
+    <set
+        name="asvwAccounts"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PARENT_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.interfaces.as.model.AsvwAccount"
+        />
+    </set>
+    <!-- bi-directional many-to-one association to AsvwAccount -->
+    <many-to-one
+        name="asvwAccount"
+        class="com.cdgtaxi.ibs.interfaces.as.model.AsvwAccount"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PARENT_ID" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to AsvwProduct -->
+    <set
+        name="asvwProducts"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="ACCT_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.interfaces.as.model.AsvwProduct"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>

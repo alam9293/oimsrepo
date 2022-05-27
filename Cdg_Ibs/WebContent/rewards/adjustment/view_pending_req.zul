@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="viewPendingAdjReqWin" border="normal" use="com.cdgtaxi.ibs.reward.ui.ViewPendingAdjustmentRequestWindow"
+	title="Pending Adjustment Request"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	width="98%">
+	
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Approve Rewards Adjustment Requests"/></column>
+		</columns>
+	</grid>
+	<listbox id="requestLB" mold="paging" onSelect="viewPendingAdjReqWin.proceedToApproval()">
+		<listhead sizable="false">
+			<listheader label="Adj Req No" 		width="auto" sort="auto"/>
+			<listheader label="Account No" 		width="auto" sort="auto"/>
+			<listheader label="Name" 			width="auto" sort="auto"/>
+			<listheader label="Requested By" 	width="auto" sort="auto"/>
+			<listheader label="Request Date" 	width="auto" sort="auto"/>
+		</listhead>
+		<listfoot id="footer"><listfooter span="5">No Pending Requests</listfooter></listfoot>
+	</listbox>
+	<button id="viewHistoryBtn" label="View History" onClick="viewPendingAdjReqWin.viewHistory()"/>
+</window>

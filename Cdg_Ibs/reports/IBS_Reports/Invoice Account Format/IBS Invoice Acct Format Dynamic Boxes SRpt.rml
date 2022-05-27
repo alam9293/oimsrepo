@@ -1,0 +1,231 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="100" grid-y="100" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/Invoice Account Format/IBS Invoice Acct Format Dynamic Boxes SRpt.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="iso-a4" page-width="11905" page-height="16837" orientation="Portrait" horizontal-page-count="1" margin-top="400" margin-left="400" margin-bottom="400" margin-right="400" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="bufferDays" enabled="Yes">${bufferDays}</rml:param><rml:param xml:space="preserve" key="invoiceHeaderNo" enabled="Yes">${invoiceHeaderNo}</rml:param><rml:param xml:space="preserve" key="invoiceHeaderTbl" enabled="Yes">${invoiceHeaderTbl}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+    <rml:datasource name="Default" datasource-name="/IBS_Reports/Invoice Account Format/datasource/IBS Invoice Acct Format Header.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="bufferDays">${bufferDays}</rml:param><rml:param xml:space="preserve" key="invoiceHeaderNo">${invoiceHeaderNo}</rml:param><rml:param xml:space="preserve" key="invoiceHeaderTbl">${invoiceHeaderTbl}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="default billgen style">
+      <rml:item name="TextElement.FontName" value="Arial">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="160">
+      </rml:item>
+    </rml:style>
+    <rml:style name="detail">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" data-source="Default" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:watermark report="" section="" enabled="No">
+        <rml:parameters>
+        </rml:parameters>
+      </rml:watermark>
+      <rml:section-header table-of-contents="No" height="800" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:shape-group left="0" top="200" width="7300" height="600" style="default billgen style"><rml:render-if xml:space="preserve" language="javascript">DISPLAY_REWARDS_GROUP==1</rml:render-if>
+          <rml:shape-group left="0" top="200" width="1600" height="600" style="default billgen font style"><rml:render-if xml:space="preserve" language="javascript"></rml:render-if>
+            <rml:rect name="box" left="0" top="400" width="1600" height="400" style="">
+            </rml:rect>
+            <rml:field left="100" top="200" width="1300" height="200" style="default"><rml:control-source xml:space="preserve" type="Literal" running-value="No">Prev Points</rml:control-source>
+            </rml:field>
+            <rml:field text-align="Right" name="prev rewards" left="100" top="500" width="1400" height="200" style="default">
+              <rml:format type="Number" min-integer-digits="1" max-integer-digits="8" min-fraction-digits="0" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="No" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="invoice header ds" field="PREV_REWARDS_PTS" running-value="No">invoice header ds:PREV_REWARDS_PTS</rml:control-source>
+            </rml:field>
+          </rml:shape-group>
+          <rml:shape-group left="1900" top="200" width="1600" height="600" style="default billgen font style">
+            <rml:rect left="1900" top="400" width="1600" height="400" style="">
+            </rml:rect>
+            <rml:field font-size="160" left="2000" top="200" width="1400" height="200" padding-top="0" style="default"><rml:control-source xml:space="preserve" type="Literal" running-value="No">Redeemed Points</rml:control-source>
+            </rml:field>
+            <rml:field text-align="Right" name="redeemed" left="2000" top="500" width="1400" height="200" style="default">
+              <rml:format type="Number" min-integer-digits="1" max-integer-digits="8" min-fraction-digits="0" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="No" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="invoice header ds" field="REDEEMED_REWARDS_PTS" running-value="No">invoice header ds:REDEEMED_REWARDS_PTS</rml:control-source>
+            </rml:field>
+          </rml:shape-group>
+          <rml:shape-group left="3800" top="200" width="1600" height="600" style="default billgen font style">
+            <rml:rect left="3800" top="400" width="1600" height="400" style="">
+            </rml:rect>
+            <rml:field left="3900" top="200" width="1300" height="200" style="default"><rml:control-source xml:space="preserve" type="Literal" running-value="No">Earned Points</rml:control-source>
+            </rml:field>
+            <rml:field text-align="Right" name="new rewards" left="3900" top="500" width="1400" height="200" style="default">
+              <rml:format type="Number" min-integer-digits="1" max-integer-digits="8" min-fraction-digits="0" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="No" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="invoice header ds" field="NEW_REWARDS_PTS" running-value="No">invoice header ds:NEW_REWARDS_PTS</rml:control-source>
+            </rml:field>
+          </rml:shape-group>
+          <rml:shape-group left="5700" top="200" width="1600" height="600" style="default billgen font style">
+            <rml:rect left="5700" top="400" width="1600" height="400" style="">
+            </rml:rect>
+            <rml:field left="5800" top="200" width="1400" height="200" style="default"><rml:control-source xml:space="preserve" type="Literal" running-value="No">Available Points</rml:control-source>
+            </rml:field>
+            <rml:field text-align="Right" name="total rewards" left="5800" top="500" width="1400" height="200" style="default">
+              <rml:format type="Number" min-integer-digits="1" max-integer-digits="8" min-fraction-digits="0" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="No" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="invoice header ds" field="TOTAL_REWARDS_PTS" running-value="No">invoice header ds:TOTAL_REWARDS_PTS</rml:control-source>
+            </rml:field>
+          </rml:shape-group>
+        </rml:shape-group>
+        <rml:shape-group left="7600" top="200" width="1600" height="600" style="default billgen style"><rml:render-if xml:space="preserve" language="javascript">ACCOUNT_DEPOSIT&gt;0</rml:render-if><rml:on-render-begin xml:space="preserve" language="javascript">var groupList = this.getRawElementList();
+var itr = this.getRawElementIterator();
+var position; // in twips
+
+if(DISPLAY_REWARDS_GROUP == 0) position = 0
+else position = 7600;
+
+while(itr.hasNext())
+{
+  var groupItem = itr.next();
+  //groupItem.setBackgroundColor("green");
+  if(groupItem.getName()=="box") groupItem.setLeft(position);
+  else groupItem.setLeft(position+100);
+}</rml:on-render-begin>
+          <rml:rect name="box" left="7600" top="400" width="1600" height="400" style="">
+          </rml:rect>
+          <rml:field left="7700" top="200" width="1500" height="200" style="default"><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account Deposit ($)</rml:control-source>
+          </rml:field>
+          <rml:field text-align="Right" name="account deposit" left="7700" top="500" width="1400" height="200" style="default">
+            <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+            </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="invoice header ds" field="ACCOUNT_DEPOSIT" running-value="No">invoice header ds:ACCOUNT_DEPOSIT</rml:control-source>
+          </rml:field>
+        </rml:shape-group>
+        <rml:shape-group left="9500" top="200" width="1600" height="600" style="default billgen style"><rml:render-if xml:space="preserve" language="javascript">ACCOUNT_EXCESS&gt;0</rml:render-if><rml:on-render-begin xml:space="preserve" language="javascript">var groupList = this.getRawElementList();
+var itr = this.getRawElementIterator();
+var position; // in twips
+
+Log.info("DISPLAY_REWARDS_GROUP:"+DISPLAY_REWARDS_GROUP);
+Log.info("ACCOUNT_DEPOSIT:"+ACCOUNT_DEPOSIT);
+
+if(DISPLAY_REWARDS_GROUP == 0 &amp;&amp; ACCOUNT_DEPOSIT==0) position = 0
+else if(DISPLAY_REWARDS_GROUP == 1 &amp;&amp; ACCOUNT_DEPOSIT==0) position = 7600
+else if(DISPLAY_REWARDS_GROUP == 0 &amp;&amp; ACCOUNT_DEPOSIT&gt;0) position = 1900
+else position = 9500;
+
+while(itr.hasNext())
+{
+  var groupItem = itr.next();
+  //groupItem.setBackgroundColor("green");
+  if(groupItem.getName()=="box") groupItem.setLeft(position);
+  else groupItem.setLeft(position+100);
+}</rml:on-render-begin>
+          <rml:rect name="box" left="9500" top="400" width="1600" height="400" style="">
+          </rml:rect>
+          <rml:field left="9600" top="200" width="1400" height="200" style="default"><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account Excess ($)</rml:control-source>
+          </rml:field>
+          <rml:field text-align="Right" name="account excess" left="9600" top="500" width="1400" height="200" style="default">
+            <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+            </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="invoice header ds" field="ACCOUNT_EXCESS" running-value="No">invoice header ds:ACCOUNT_EXCESS</rml:control-source>
+          </rml:field>
+        </rml:shape-group>
+        <rml:field left="0" top="0" width="11104" height="200" style="default billgen style"><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        </rml:field>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" height="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:detail>
+      <rml:ruler>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation section="Section 1" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+  </rml:rendering></rml:report>
+

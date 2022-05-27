@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="stockupItemWindow"
+	title="Stock Up Gift Item" border="normal" 
+	use="com.cdgtaxi.ibs.reward.ui.StockupItemWindow"
+	closable="true" width="300px"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<grid>
+		<columns sizable="false">
+			<column width="50%" />
+			<column width="50%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Current Stock"/>
+				<label id="currentStockLabel"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel required" value="Stock Up Quantity"/>
+				<intbox id="stockupQtyIB"
+					format="#,###,##0"
+   					width="98%"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredGreaterThanZeroConstraint')}"
+				/>
+			</row>
+		</rows>
+	</grid>
+	
+	<h:br />
+	<button label="OK" onClick="stockupItemWindow.ok()"/>
+	<button label="Cancel" onClick="stockupItemWindow.detach()" />
+</window>

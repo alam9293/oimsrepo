@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="temp5Window" border="normal"
+	title="View Taxi Voucher"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+   		<rows>
+   			<row>
+   				<label sclass="fieldLabel">Account No:</label>
+   				<label>1</label>
+   				<label sclass="fieldLabel">Account Name:</label>
+   				<label>TST</label>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Item Type:</label>
+   				<label>$5 VOUCHER</label>
+   				<label sclass="fieldLabel">Serial No:</label>
+   				<label>2</label>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Expiry Date:</label>
+   				<label>01/01/2013</label>
+   				<label sclass="fieldLabel">Status:</label>
+   				<label>REDEEMED</label>
+   			</row>
+        <row>
+          <label sclass="fieldLabel">Redemption Point:</label>
+          <label>Shell Petrol Station</label>
+          <label sclass="fieldLabel">Redemption Date:</label>
+          <label>01/01/2011</label>
+        </row>
+        <row>
+          <label sclass="fieldLabel">Cashier ID:</label>
+          <label>1</label>
+          <label/>
+          <label/>
+        </row>
+   		</rows>
+   	</grid>
+   	
+   	<h:br/>
+    <grid><columns sizable="false"><column>Created</column></columns></grid>
+  <grid>
+    <columns>
+      <column width="25%"/>
+      <column width="25%"/>
+      <column width="25%"/>
+      <column width="25%"/>
+    </columns>
+    <rows>
+      <row>
+          <label sclass="fieldLabel">By</label>
+          <label id="createdByLabel"/>
+          <label sclass="fieldLabel">Date</label>
+          <label id="createdDateLabel"/>
+        </row>
+        <row>
+          <label sclass="fieldLabel">Time</label>
+          <label id="createdTimeLabel"/>
+        </row>
+    </rows>
+  </grid>
+  <grid><columns sizable="false"><column>Last Updated</column></columns></grid>
+  <grid>
+    <columns>
+      <column width="25%"/>
+      <column width="25%"/>
+      <column width="25%"/>
+      <column width="25%"/>
+    </columns>
+    <rows>
+      <row>
+          <label sclass="fieldLabel">By</label>
+          <label id="lastUpdatedByLabel"/>
+          <label sclass="fieldLabel">Date</label>
+          <label id="lastUpdatedDateLabel"/>
+        </row>
+        <row>
+          <label sclass="fieldLabel">Time</label>
+          <label id="lastUpdatedTimeLabel"/>
+        </row>
+    </rows>
+  </grid>
+  
+  <h:br/>
+  <vbox>
+    <button label="Submit for Change of Redemption Approval"/>
+    <button label="Submit for Void Approval"/>
+    <button label="Submit for Suspension Approval" disabled="true"/>
+    <button label="Submit for Reactivation Approval" disabled="true"/>
+  </vbox>
+</window>

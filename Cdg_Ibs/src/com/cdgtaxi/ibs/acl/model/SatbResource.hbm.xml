@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.acl.model.SatbResource" 
+    table="SATB_RESOURCE"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="rsrcId"
+        type="java.lang.Long"
+        column="RSRC_ID"
+    >
+        <meta attribute="use-in-equals">true</meta>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="rsrcName"
+        type="java.lang.String"
+        column="RSRC_NAME"
+        not-null="true"
+        unique="true"
+        length="64"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="rsrcType"
+        type="java.lang.String"
+        column="RSRC_TYPE"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="uri"
+        type="java.lang.String"
+        column="URI"
+        unique="true"
+        length="128"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="sequence"
+        type="java.lang.Integer"
+        column="SEQUENCE"
+        length="5"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="displayName"
+        type="java.lang.String"
+        column="DISPLAY_NAME"
+        not-null="true"
+        length="64"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="display"
+        type="java.lang.String"
+        column="DISPLAY"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to SatbResource -->
+    <set
+        name="satbResources"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PAR_RSRC_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.acl.model.SatbResource"
+        />
+    </set>
+    <!-- bi-directional many-to-one association to SatbResource -->
+    <many-to-one
+        name="satbResource"
+        class="com.cdgtaxi.ibs.acl.model.SatbResource"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PAR_RSRC_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-many association to SatbRole -->
+    <set
+        name="satbRoles"
+        lazy="true"
+		cascade="all"
+        table="SATB_ROLE_RESOURCE"
+    >
+        <key>
+            <column name="RSRC_ID" />
+        </key>
+        <many-to-many
+            class="com.cdgtaxi.ibs.acl.model.SatbRole"
+        >
+            <column name="ROLE_ID" />
+        </many-to-many>
+    </set>
+
+</class>
+</hibernate-mapping>

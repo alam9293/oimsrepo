@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="ItemType" type="JDBC" path="/IBS_Reports/Non Billable/Inventory Movement Report Detailed/datasource/ItemType.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="TYPE_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select TYPE_NAME from IMTB_ITEM_TYPE where ('${3. Item Type#choice(1,2,3,4,6)#MASTER:IT}' is null or ITEM_TYPE_NO = '${3. Item Type#choice(1,2,3,4,6)#MASTER:IT}')</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

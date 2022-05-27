@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.master.model.MstbPromotion" 
+    table="MSTB_PROMOTION"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="promoNo"
+        type="java.lang.Integer"
+        column="PROMO_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">MSTB_PROMOTION_SQ1</param>
+        </generator>
+    </id>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="lastUpdatedBy"
+        type="java.lang.String"
+        column="LAST_UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="lastUpdatedDt"
+        type="java.sql.Timestamp"
+        column="LAST_UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="currentStatus"
+        type="java.lang.String"
+        column="CURRENT_STATUS"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="version"
+        type="java.lang.Integer"
+        column="VERSION"
+        length="9"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+   	<many-to-one
+        name="lastPromoReq"
+        class="com.cdgtaxi.ibs.master.model.MstbPromoReq"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="LAST_PROMO_REQ_NO" />
+    </many-to-one>
+    <many-to-one
+        name="currentPromoDetail"
+        class="com.cdgtaxi.ibs.master.model.MstbPromoDetail"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="CURRENT_PROMO_DETAIL_NO" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to AmtbAcctPromotion -->
+    <set
+        name="amtbAcctPromotions"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PROMO_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbAcctPromotion"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbAcctPromotionReq -->
+    <set
+        name="amtbAcctPromotionReqs"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PROMO_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbAcctPromotionReq"
+        />
+    </set>
+     <set
+        name="mstbPromoReqs"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PROMO_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.master.model.MstbPromoReq"
+        />
+    </set>
+</class>
+</hibernate-mapping>

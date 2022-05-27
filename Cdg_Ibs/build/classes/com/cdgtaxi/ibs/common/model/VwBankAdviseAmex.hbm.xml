@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <!--
+        Created by the Middlegen Hibernate plugin 2.1
+
+        http://boss.bekk.no/boss/middlegen/
+        http://www.hibernate.org/
+    -->
+
+    <class
+            name="com.cdgtaxi.ibs.common.model.VwBankAdviseAmex"
+            table="RCVW_BANK_ADVICE_AMEX_FOR_IBS"
+            dynamic-update="true"
+            dynamic-insert="true"
+    >
+        <meta attribute="implement-equals" inherit="false">true</meta>
+        <id
+                name="id"
+                type="java.math.BigDecimal"
+                column="ID"
+        >
+            <meta attribute="use-in-equals">true</meta>
+
+        </id>
+        <property
+                name="transactionAmount"
+                type="java.math.BigDecimal"
+                column="TRANSACTION_AMOUNT"
+                length="8"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="feeAmount"
+                type="java.math.BigDecimal"
+                column="FEE_AMOUNT"
+                length="8"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="discountAmount"
+                type="java.math.BigDecimal"
+                column="DISCOUNT_AMOUNT"
+                length="8"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="grossAmount"
+                type="java.math.BigDecimal"
+                column="GROSS_AMOUNT"
+                length="8"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="serviceFeeAmount"
+                type="java.math.BigDecimal"
+                column="SERVICE_FEE_AMOUNT"
+                length="8"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="taxAmount"
+                type="java.math.BigDecimal"
+                column="TAX_AMOUNT"
+                length="8"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="netAmount"
+                type="java.math.BigDecimal"
+                column="NET_AMOUNT"
+                length="8"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="recordType"
+                column="RECORD_TYPE"
+                type="java.lang.String"
+                length="10"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="payeeMerchantId"
+                column="MERCHANT_ID"
+                type="java.lang.String"
+                length="15"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="accountType"
+                column="ACCOUNT_TYPE"
+                type="java.lang.String"
+                length="3"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="paymentNo"
+                column="PAYMENT_NUMBER"
+                type="java.lang.String"
+                length="10"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="paymentCurrency"
+                column="PAYMENT_CURRENCY"
+                type="java.lang.String"
+                length="3"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="pspRefNo"
+                column="REFERENCE_NUMBER"
+                type="java.lang.String"
+                length="30"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="cardmemberAccountNo"
+                column="ACCOUNT_NUMBER"
+                type="java.lang.String"
+                length="19"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="transactionId"
+                column="TRANSACTION_ID"
+                type="java.lang.String"
+                length="15"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="approvalCode"
+                column="APPROVAL_CODE"
+                type="java.lang.String"
+                length="6"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="acquirerRefNo"
+                column="ACQUIRER_REFERENCE_NUMBER"
+                type="java.lang.String"
+                length="23"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="transactionRejectedInd"
+                column="TRANSACTION_REJECTED_IND"
+                type="java.lang.String"
+                length="2"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="feeCode"
+                column="FEE_CODE"
+                type="java.lang.String"
+                length="2"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="discountRate"
+                column="DICOUNT_RATE"
+                type="java.lang.String"
+                length="7"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="submissionInvoiceNo"
+                column="SUBMISSION_INVOICE_NUMBER"
+                type="java.lang.String"
+                length="15"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="submissionCurrency"
+                column="SUBMISSION_CURRENCY"
+                type="java.lang.String"
+                length="3"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="chargebackNo"
+                column="CHARGEBACK_NUMBER"
+                type="java.lang.String"
+                length="30"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="chargebackReasonCode"
+                column="CHARGEBACK_REASON_CODE"
+                type="java.lang.String"
+                length="10"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="chargebackReasonDescription"
+                column="CHARGEBACK_REASON_DESCRIPTION"
+                type="java.lang.String"
+                length="280"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="serviceFeeRate"
+                column="SERVICE_FEE_RATE"
+                type="java.lang.String"
+                length="7"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="batchCode"
+                column="BATCH_CODE"
+                type="java.lang.String"
+                length="3"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="billCode"
+                column="BILL_CODE"
+                type="java.lang.String"
+                length="3"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="adjustmentNo"
+                column="ADJUSTMENT_NUMBER"
+                type="java.lang.String"
+                length="30"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="adjustmentReasonCode"
+                column="ADJUSTMENT_REASON_CODE"
+                type="java.lang.String"
+                length="10"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="adjustmentReasonDescription"
+                column="ADJUSTMENT_REASON_DESCRIPTION"
+                type="java.lang.String"
+                length="280"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="fileName"
+                column="FILE_NAME"
+                type="java.lang.String"
+                length="30"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="paymentDate"
+                column="PAYMENT_DATE"
+                type="java.sql.Date"
+        >
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="transactionDate"
+                column="TRANSACTION_DATE"
+                type="java.sql.Date"
+        >
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="businessSubmissionDate"
+                column="BUSINESS_SUBMISSION_DATE"
+                type="java.sql.Date"
+        >
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="uploadDate"
+                column="UPLOAD_DATE"
+                type="java.sql.Date"
+        >
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="invoiceNo"
+                column="INVOICE_NUMBER"
+                type="java.lang.String"
+                length="30"
+        >
+
+            <meta attribute="use-in-tostring">true</meta>
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="submissionGrossAmount"
+                type="java.math.BigDecimal"
+                column="SUBMISSION_GROSS_AMOUNT"
+                length="8"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="retrievedFlag"
+                type="java.lang.String"
+                column="RETRIEVED_FLAG"
+                length="1"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+        <property
+                name="retrievedDate"
+                column="RETRIEVED_DATE"
+                type="java.sql.Date"
+
+        >
+            <meta attribute="use-in-equals">true</meta>
+        </property>
+    </class>
+
+</hibernate-mapping>

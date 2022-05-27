@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbCniiAcctReq" 
+    table="ITTB_CNII_ACCT_REQ"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="reqId"
+        type="java.lang.String"
+        column="REQ_ID"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="assigned"/>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="reqDate"
+        type="java.sql.Timestamp"
+        column="REQ_DATE"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="reqStatus"
+        type="java.lang.String"
+        column="REQ_STATUS"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="reqErrorRemark"
+        type="java.lang.String"
+        column="REQ_ERROR_REMARK"
+        length="255"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="eventType"
+        type="java.lang.String"
+        column="EVENT_TYPE"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="accountId"
+        type="java.lang.String"
+        column="ACCOUNT_ID"
+        not-null="true"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="accountCd"
+        type="java.lang.String"
+        column="ACCOUNT_CD"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="accountNm"
+        type="java.lang.String"
+        column="ACCOUNT_NM"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="parentId"
+        type="java.lang.String"
+        column="PARENT_ID"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="terminateDt"
+        type="java.sql.Date"
+        column="TERMINATE_DT"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="suspensionStartDt"
+        type="java.sql.Date"
+        column="SUSPENSION_START_DT"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="suspensionEndDt"
+        type="java.sql.Date"
+        column="SUSPENSION_END_DT"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="validFlg"
+        type="java.lang.String"
+        column="VALID_FLG"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>

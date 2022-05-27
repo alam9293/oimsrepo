@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.VwIntfSetlForIb" 
+    table="RCVW_INTF_SETL_FOR_IBS"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+	<id
+        name="setlPk"
+        type="java.math.BigDecimal"
+        column="SETL_PK"
+    >
+        <meta attribute="use-in-equals">true</meta>
+    </id>
+
+	 <property 
+            name="jobNo" 
+            column="JOB_NO" 
+            type="java.lang.String"
+            length="15"
+        >
+    </property>
+    <property 
+            name="vehicleNo" 
+            column="VEHICLE_NO" 
+            type="java.lang.String"
+            length="10"
+        >
+    </property>
+	<property 
+            name="driverIc" 
+            column="DRIVER_IC" 
+            type="java.lang.String"
+            length="10"
+        >
+    </property>
+    <property 
+            name="entity" 
+            column="ENTITY" 
+            type="java.lang.String"
+            length="10"
+        >
+    </property>
+	<property 
+            name="txnDate" 
+            column="TXN_DATE" 
+            type="java.sql.Timestamp"
+            length="7"
+        >
+    </property>
+    <property 
+            name="paymentMode" 
+            column="PAYMENT_MODE" 
+            type="java.lang.String"
+            length="10"
+        >
+    </property>
+    <property 
+            name="cardNo" 
+            column="CARD_NO" 
+            type="java.lang.String"
+            length="20"
+        >
+    </property>
+    <property 
+            name="approvalCode" 
+            column="APPROVAL_CODE" 
+            type="java.lang.String"
+            length="20"
+        >
+    </property>
+    <property 
+            name="txnAmount" 
+            column="TXN_AMOUNT" 
+            type="java.math.BigDecimal"
+            length="6"
+        >
+    </property>
+    <property 
+            name="adminAmount" 
+            column="ADMIN_AMOUNT" 
+            type="java.math.BigDecimal"
+            length="6"
+        >
+    </property>
+    <property 
+            name="gstAmount" 
+            column="GST_AMOUNT" 
+            type="java.math.BigDecimal"
+            length="6"
+        >
+    </property>
+    <property 
+            name="fileId" 
+            column="FILE_ID" 
+            type="java.lang.String"
+            length="30"
+        >
+    </property>
+    <property 
+            name="createdDt" 
+            column="CREATED_DT" 
+            type="java.sql.Timestamp"
+            length="7"
+        >
+    </property>
+    <property 
+            name="jobStatus" 
+            column="JOB_STATUS" 
+            type="java.lang.String"
+            length="10"
+        >
+    </property>
+    <property 
+            name="reconFlag" 
+            column="RECON_FLAG" 
+            type="java.lang.String"
+            length="1"
+        >
+    </property>
+    <property 
+            name="reconDt" 
+            column="RECON_DT" 
+            type="java.sql.Timestamp"
+            length="7"
+        >
+    </property>
+    <property 
+            name="fareAmount" 
+            column="FARE_AMOUNT" 
+            type="java.math.BigDecimal"
+            length="6"
+        >
+    </property>
+    <property 
+            name="tid" 
+            column="TID" 
+            type="java.lang.String"
+            length="8"
+        >
+    </property>
+    <property 
+            name="mid" 
+            column="MID" 
+            type="java.lang.String"
+            length="15"
+        >
+    </property>
+    <property 
+            name="stan" 
+            column="STAN" 
+            type="java.lang.String"
+            length="6"
+        >
+    </property>
+    <property 
+            name="tripStart" 
+            column="TRIP_START" 
+            type="java.sql.Timestamp"
+            length="7"
+        >
+    </property>
+    <property 
+            name="tripEnd" 
+            column="TRIP_END" 
+            type="java.sql.Timestamp"
+            length="7"
+        >
+    </property>
+    <property 
+            name="pickup" 
+            column="PICKUP" 
+            type="java.lang.String"
+            length="80"
+        >
+    </property>
+    <property 
+            name="destination" 
+            column="DESTINATION" 
+            type="java.lang.String"
+            length="80"
+        >
+    </property>
+    <property 
+            name="salesDraftNo" 
+            column="SALES_DRAFT_NO" 
+            type="java.lang.String"
+            length="15"
+        >
+    </property>
+    <property 
+            name="errorCode" 
+            column="ERROR_CODE" 
+            type="java.lang.String"
+            length="10"
+        >
+    </property>
+    <property 
+            name="flowthruAction" 
+            column="FLOWTHRU_ACTION" 
+            type="java.lang.String"
+            length="10"
+        >
+    </property>
+    <property 
+            name="flowthruBy" 
+            column="FLOWTHRU_BY" 
+            type="java.lang.String"
+            length="30"
+        >
+    </property>
+    <property 
+            name="flowthruDt" 
+            column="FLOWTHRU_DT" 
+            type="java.sql.Timestamp"
+            length="7"
+        >
+    </property>
+    <property 
+            name="flowthruComments" 
+            column="FLOWTHRU_COMMENTS" 
+            type="java.lang.String"
+            length="80"
+        >
+    </property>
+    <property 
+            name="flowthruTripIntfPk" 
+            column="FLOWTHRU_TRIP_INTF_PK" 
+            type="java.math.BigDecimal"
+            length="22"
+        >
+    </property>
+    <property 
+            name="setlRef" 
+            column="SETL_REF" 
+            type="java.math.BigDecimal"
+            length="22"
+        >
+    </property>
+    <property 
+            name="cardType" 
+            column="CARD_TYPE" 
+            type="java.lang.String"
+            length="1"
+        >
+    </property>
+    <property 
+            name="setlDate" 
+            column="SETL_DATE" 
+            type="java.sql.Timestamp"
+            length="7"
+        >
+    </property>
+    <property 
+            name="bankTid" 
+            column="BANK_TID" 
+            type="java.lang.String"
+            length="8"
+        >
+    </property>
+    <property 
+            name="bankBatchCloseNo" 
+            column="BANK_BATCH_CLOSE_NO" 
+            type="java.lang.String"
+            length="6"
+        >
+    </property>
+    <property 
+            name="offlineFlag" 
+            column="OFFLINE_FLAG" 
+            type="java.lang.String"
+            length="1"
+        >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property 
+            name="offlineTxnDate" 
+            column="OFFLINE_TXN_DATE" 
+            type="java.sql.Timestamp"
+            length="11"
+        >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+	<property
+        name="productId"
+        type="java.lang.String"
+        column="PRODUCT_ID"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="pspRefNo1"
+            type="java.lang.String"
+            column="PSPREFERENCE1"
+            length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="pspRefNo2"
+            type="java.lang.String"
+            column="PSPREFERENCE2"
+            length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="txnAmount1"
+            type="java.math.BigDecimal"
+            column="TXN_AMOUNT1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="txnAmount2"
+            type="java.math.BigDecimal"
+            column="TXN_AMOUNT2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+	<property
+        name="policyNumber"
+        type="java.lang.String"
+        column="POLICY_NUMBER"
+        length="16"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="startOfInsurance"
+        type="java.sql.Date"
+        column="START_OF_INSURANCE"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="endOfInsurance"
+        type="java.sql.Date"
+        column="END_OF_INSURANCE"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+	<property
+            name="premiumAmount"
+            type="java.lang.String"
+            column="PREMIUM_AMOUNT"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+    <property
+            name="premiumGst"
+            type="java.lang.String"
+            column="PREMIUM_GST"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+    <property
+        name="policyStatus"
+        type="java.lang.String"
+        column="POLICY_STATUS"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>

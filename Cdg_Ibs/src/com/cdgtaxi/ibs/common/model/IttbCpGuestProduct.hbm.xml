@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbCpGuestProduct" 
+    table="ITTB_CP_GUEST_PRODUCT"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="guestProductNo"
+        type="java.lang.Long"
+        column="GUEST_PRODUCT_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">ITTB_CP_GUEST_PRODUCT_SQ1</param>
+        </generator>
+    </id>
+
+    <property
+        name="guestNo"
+        type="java.lang.Long"
+        column="GUEST_NO"
+        not-null="true"
+        length="18"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="activationDt"
+        type="java.sql.Timestamp"
+        column="ACTIVATION_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="deactivationDt"
+        type="java.sql.Timestamp"
+        column="DEACTIVATION_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+        <property
+        name="pmtbProductNo"
+        type="java.math.BigDecimal"
+        column="PRODUCT_NO"
+        not-null="false"
+        length="19"
+        insert="false"
+        update="false"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>       
+    </property>
+
+	<property
+        name="billedFlag"
+        type="java.lang.String"
+        column="BILLED_FLAG"
+        length="1"
+        not-null="true"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+    <!-- Associations -->
+    <many-to-one
+        name="pmtbProduct"
+        class="com.cdgtaxi.ibs.common.model.PmtbProduct" not-null="true">
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PRODUCT_NO" />
+    </many-to-one>
+     <many-to-one
+        name="ittbCpGuest"
+        class="com.cdgtaxi.ibs.common.model.IttbCpGuest" not-null="true" insert="false" update="false">
+        <meta attribute="use-in-equals">true</meta>
+        <column name="GUEST_NO"/>
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

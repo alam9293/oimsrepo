@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
@@ -39,8 +40,8 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				entity, arControl, salesPerson, outstandingAmount, daysLate, type, sortBy};
 
 		//Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("customerAgingDetail", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("customerAgingDetail", paramNames, values);
+		//return results;
 	}
 	
 	public List<Object[]> getCustomerAgingSummary(String accountNo, String accountName, String entityNo,
@@ -53,8 +54,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				entityNo, arControlCodeNo, outstandingAmount, type, sortBy};
 
 		//Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("customerAgingSummary", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("customerAgingSummary", paramNames, values);
 	}
 	
 	public List<Object[]> getSoftCopyInvoiceAndTripsDetailByInvoiceNoCustomize(String accountNo, 
@@ -65,8 +65,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] values = new String[]{accountNo, invoiceNo, invoiceMonthYear, sortBy};
 
 		//Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("softCopyInvoiceAndTripsDetailByInvoiceNoCustomize", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("softCopyInvoiceAndTripsDetailByInvoiceNoCustomize", paramNames, values);
 	}
 	
 	public List<Object[]> getSoftCopyInvoiceAndTripsDetailByInvoiceNoCSV(String selectedAccountNo, 
@@ -83,8 +82,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] values = new String[]{debtToAccountNo,accountNo, invoiceNo, invoiceMonthYear, sortBy};
 
 		//Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("softCopyInvoiceAndTripsDetailByInvoiceNoCSV", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("softCopyInvoiceAndTripsDetailByInvoiceNoCSV", paramNames, values);
 	}
 	
 	public List<Object[]> getSoftCopyInvoiceAndTripsDetailByTransactionStatus(String accountNo, 
@@ -97,8 +95,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				tripStartDate, tripEndDate, sortBy};
 
 		//Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("softCopyInvoiceAndTripsDetailByStatusNo", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("softCopyInvoiceAndTripsDetailByStatusNo", paramNames, values);
 	}
 
 	public List<MstbMasterTable> getASCTDRConfig() {
@@ -119,107 +116,90 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 	public List<Object[]> getCustomerReport(String acctTypeNo, String acctNo, String acctName, String acctStatus, String productTypeId, String industryNo, String joinStart, String joinEnd, String terminateStart, String terminateEnd, String salespersonNo, String sortBy, String entityNo){
 		String[] paramNames = new String[]{"acctTypeNo", "acctNo", "acctName", "acctStatus", "productTypeId", "industryNo", "joinStart", "joinEnd", "terminateStart", "terminateEnd", "salespersonNo", "sortBy", "entityNo"};
 		String[] values = new String[]{acctTypeNo, acctNo, acctName, acctStatus, productTypeId, industryNo, joinStart, joinEnd, terminateStart, terminateEnd, salespersonNo, sortBy, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("customerReport", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("customerReport", paramNames, values);
 	}
 	public List<Object[]> getReceiptByPeriodDetailed(String receiptStart, String receiptEnd, String cancelStart, String cancelEnd, String acctNo, String acctName, String invoiceNo, String receiptNo, String paymentMode, String order, String entityNo, String salespersonNo){
 		String[] paramNames = new String[]{"receiptStart", "receiptEnd", "cancelStart", "cancelEnd", "acctNo", "acctName", "invoiceNo", "receiptNo", "paymentMode", "order", "entityNo", "salespersonNo"};
 		String[] values = new String[]{receiptStart, receiptEnd, cancelStart, cancelEnd, acctNo, acctName, invoiceNo, receiptNo, paymentMode, order, entityNo, salespersonNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("receiptByPeriodDetailed", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("customerReport", paramNames, values);
 	}
 	public List<Object[]> getReceiptByPeriodSummaryDate(String receiptStart, String receiptEnd, String paymentMode, String entityNo, String salespersonNo){
 		String[] paramNames = new String[]{"receiptStart", "receiptEnd", "paymentMode", "entityNo", "salespersonNo"};
 		String[] values = new String[]{receiptStart, receiptEnd, paymentMode, entityNo, salespersonNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("receiptByPeriodSummaryDate", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("receiptByPeriodSummaryDate", paramNames, values);
 	}
 	public List<Object[]> getReceiptByPeriodSummaryPayment(String receiptStart, String receiptEnd, String paymentMode, String entityNo, String salespersonNo){
 		String[] paramNames = new String[]{"receiptStart", "receiptEnd", "paymentMode", "entityNo", "salespersonNo"};
 		String[] values = new String[]{receiptStart, receiptEnd, paymentMode, entityNo, salespersonNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("receiptByPeriodSummaryPayment", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("receiptByPeriodSummaryPayment", paramNames, values);
 	}
 	public List<Object[]> getCreditDebitNote(String noteStart, String noteEnd, String cancelStart, String cancelEnd, String acctNo, String acctName, String noteType, String order, String entityNo){
 		String[] paramNames = new String[]{"noteStart", "noteEnd", "cancelStart", "cancelEnd", "acctNo", "acctName", "noteType", "order", "entityNo"};
 		String[] values = new String[]{noteStart, noteEnd, cancelStart, cancelEnd, acctNo, acctName, noteType, order, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("creditDebitNote", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("creditDebitNote", paramNames, values);
 	}
 	public List<Object[]> getCreditBalance(String creditBalance, String acctNo, String acctName, String divNo, String deptNo, String productType, String salespersonNo, String sort){
 		String[] paramNames = new String[]{"creditBalance", "acctNo", "acctName", "divNo", "deptNo", "productType", "salespersonNo", "sort"};
 		String[] values = new String[]{creditBalance, acctNo, acctName, divNo, deptNo, productType, salespersonNo, sort};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("creditBalance", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("creditBalance", paramNames, values);
 	}
 	public List<Object[]> getCardInProduction(String productType, String issueStart, String issueEnd, String renewStart, String renewEnd, String replaceStart, String replaceEnd, String cardStart, String cardEnd, String cardStatus, String sortBy){
 		String[] paramNames = new String[]{"productType", "issueStart", "issueEnd", "renewStart", "renewEnd", "replaceStart", "replaceEnd", "cardStart", "cardEnd", "cardStatus", "sortBy"};
 		String[] values = new String[]{productType, issueStart, issueEnd, renewStart, renewEnd, replaceStart, replaceEnd, cardStart, cardEnd, cardStatus, sortBy};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cardInProduction", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("cardInProduction", paramNames, values);
 	}
 	public List<Object[]> getCustomerDepositSummary(String acctNo, String acctName, String entity){
 		String[] paramNames = new String[]{"acctNo", "acctName", "entity"};
 		String[] values = new String[]{acctNo, acctName, entity};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("customerDepositSummary", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("customerDepositSummary", paramNames, values);
 	}
 	public List<Object[]> getCustomerDepositDetailedReceipts(String depositStart, String depositEnd, String receiptStart, String receiptEnd, String acctNo, String acctName, String entity, String depositStatus, String sort){
 		String[] paramNames = new String[]{"depositStart", "depositEnd", "receiptStart", "receiptEnd", "acctNo", "acctName", "entity", "depositStatus", "sort"};
 		String[] values = new String[]{depositStart, depositEnd, receiptStart, receiptEnd, acctNo, acctName, entity, depositStatus, sort};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("customerDepositDetailedReceipts", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("customerDepositDetailedReceipts", paramNames, values);
 	}
 	public List<Object[]> getCustomerDepositDetailedRefunds(String depositStart, String depositEnd, String receiptStart, String receiptEnd, String acctNo, String acctName, String entity){
 		String[] paramNames = new String[]{"depositStart", "depositEnd", "receiptStart", "receiptEnd", "acctNo", "acctName", "entity"};
 		String[] values = new String[]{depositStart, depositEnd, receiptStart, receiptEnd, acctNo, acctName, entity};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("customerDepositDetailedRefunds", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("customerDepositDetailedRefunds", paramNames, values);
 	}
 	public List<Object[]> getDailyChequeDepositListing(String receivedStartDate, String receivedEndDate, String entity, String quickCheckDeposit, String order){
 		String[] paramNames = new String[]{"receivedStartDate", "receivedEndDate", "entity", "quickCheckDeposit", "order"};
 		String[] values = new String[]{receivedStartDate, receivedEndDate, entity, quickCheckDeposit, order};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("dailyChequeDepositListing", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("dailyChequeDepositListing", paramNames, values);
 	}
 	public List<Object[]> getCustomerUsage(String accountNo, String accountName, String invoiceStartMonth, String invoiceEndMonth, String productType, String entityNo){
 		String[] paramNames = new String[]{"accountNo", "accountName", "invoiceStartMonth", "invoiceEndMonth", "productType", "entityNo"};
 		String[] values = new String[]{accountNo, accountName, invoiceStartMonth, invoiceEndMonth, productType, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("customerUsage", paramNames, values);
-		return results;	
+		return findResultByNamedQueryAndNamedParam("customerUsage", paramNames, values);
 	}
 	public List<Object[]> getCustomerUsageComparsion(String invoiceMonth, String productType, String sort, String entityNo){
 		String[] paramNames = new String[]{"invoiceMonth", "productType", "sort", "entityNo"};
 		String[] values = new String[]{invoiceMonth, productType, sort, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("customerUsageComparsion", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("customerUsageComparsion", paramNames, values);
 	}
 	public List<Object[]> getRevenueSummary(String entityNo, String invoiceStart, String invoiceEnd){
 		String[] paramNames = new String[]{"entityNo", "invoiceStart", "invoiceEnd"};
 		String[] values = new String[]{entityNo, invoiceStart, invoiceEnd};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("revenueSummary", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("revenueSummary", paramNames, values);
 	}
 	public List<Object[]> getRevenueMisc(String entityNo, String invoiceStart, String invoiceEnd){
 		String[] paramNames = new String[]{"entityNo", "invoiceStart", "invoiceEnd"};
 		String[] values = new String[]{entityNo, invoiceStart, invoiceEnd};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("revenueMisc", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("revenueMisc", paramNames, values);
 	}
 	public List<Object[]> getRevenueHeader(){
 		String[] paramNames = new String[]{};
 		String[] values = new String[]{};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("revenueHeader", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("revenueHeader", paramNames, values);
 	}
 	public List<String> getRevenueHeaderForProductTypeId(String entityNo, String invoiceStart, String invoiceEnd){
 		String[] paramNames = new String[]{"entityNo", "invoiceStart", "invoiceEnd"};
 		String[] values = new String[]{entityNo, invoiceStart, invoiceEnd};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("revenueHeaderForProductTypeId", paramNames, values);
-		return results;
+		return findResultByNamedQueryAndNamedParam("revenueHeaderForProductTypeId", paramNames, values);
 	}
 	public Map<String, String> getRevenueHeaderForMisc(){
-		List<Object[]> results = (List<Object[]>) this.getHibernateTemplate().findByNamedQueryAndNamedParam("revenueHeaderForMisc", new String[]{}, new String[]{});
+		List<Object[]> results = (List<Object[]>) this.findResultByNamedQueryAndNamedParam("revenueHeaderForMisc", new String[]{}, new String[]{});
 		Map resultMap = new LinkedHashMap<String, String>();
 		for(Object[] result : results){
 			resultMap.put(result[0], result[1]);
@@ -229,7 +209,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 	public Map<String, Object[]> getRevenueProductTypeTripInfos(String invoiceHeaderNo, String invoiceStart, String invoiceEnd){
 		String[] paramNames = new String[]{"invoiceHeaderNo", "invoiceStart", "invoiceEnd"};
 		String[] values = new String[]{invoiceHeaderNo, invoiceStart, invoiceEnd};
-		List<Object[]> results = (List<Object[]>) this.getHibernateTemplate().findByNamedQueryAndNamedParam("revenueProductTypeTripInfos", paramNames, values);
+		List<Object[]> results = (List<Object[]>) this.findResultByNamedQueryAndNamedParam("revenueProductTypeTripInfos", paramNames, values);
 		
 		Map<String, Object[]> mappedValues = new HashMap<String, Object[]>();
 		for(Object[] dataArray : results){
@@ -240,7 +220,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 	public Map<String, Object[]> getRevenueProductTypePrepaidInfos(String invoiceHeaderNo, String invoiceStart, String invoiceEnd){
 		String[] paramNames = new String[]{"invoiceHeaderNo", "invoiceStart", "invoiceEnd"};
 		String[] values = new String[]{invoiceHeaderNo, invoiceStart, invoiceEnd};
-		List<Object[]> results = (List<Object[]>) this.getHibernateTemplate().findByNamedQueryAndNamedParam("revenueProductTypePrepaidInfos", paramNames, values);
+		List<Object[]> results = (List<Object[]>) this.findResultByNamedQueryAndNamedParam("revenueProductTypePrepaidInfos", paramNames, values);
 		
 		Map<String, Object[]> mappedValues = new HashMap<String, Object[]>();
 		for(Object[] dataArray : results){
@@ -252,25 +232,25 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 	public List<Object[]> getSalesReportBySalesperson(String invoiceStart, String invoiceEnd, String productType, String sort, String entityNo){
 		String[] paramNames = new String[]{"invoiceStart", "invoiceEnd", "productType", "sort", "entityNo"};
 		String[] values = new String[]{invoiceStart, invoiceEnd, productType, sort, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("salesReportBySalesperson", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("salesReportBySalesperson", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getBankChargebackReport(String chargebackStart, String chargebackEnd, String batchStart, String batchEnd, String entityNo, String providerNo, String acquirerNo, String sort){
 		String[] paramNames = new String[]{"chargebackStart", "chargebackEnd", "batchStart", "batchEnd", "entityNo", "providerNo", "acquirerNo", "sort"};
 		String[] values = new String[]{chargebackStart, chargebackEnd, batchStart, batchEnd, entityNo, providerNo, acquirerNo, sort};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("bankChargebackReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("bankChargebackReport", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCashlessAgingReportDetailed(String agingDate, String batchStart, String batchEnd, String entityNo, String providerNo, String acquirerNo, String sort){
 		String[] paramNames = new String[]{"agingDate", "batchStart", "batchEnd", "entityNo", "providerNo", "acquirerNo", "sort"};
 		String[] values = new String[]{agingDate, batchStart, batchEnd, entityNo, providerNo, acquirerNo, sort};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cashlessAgingReportDetailed", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("cashlessAgingReportDetailed", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCashlessAgingReportSummary(String agingDate, String batchStart, String batchEnd, String entityNo, String providerNo, String acquirerNo){
 		String[] paramNames = new String[]{"agingDate", "batchStart", "batchEnd", "entityNo", "providerNo", "acquirerNo"};
 		String[] values = new String[]{agingDate, batchStart, batchEnd, entityNo, providerNo, acquirerNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cashlessAgingReportSummary", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("cashlessAgingReportSummary", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCashlessBankCollectionSummary(String batchNo, String creditStart, String creditEnd, String batchStart, String batchEnd, String entityNo, String acquirerNo, String paymentTypeNo, String providerNo){
@@ -312,86 +292,98 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				" and (txn.MATCHING_STATUS is NULL or txn.MATCHING_STATUS != 'T') " +
 				" group by acquirer.NAME, batch.SETTLEMENT_DATE, batch.BATCH_NO, pymt.CREDIT_DATE" +
 				" order by acquirer.NAME, batch.SETTLEMENT_DATE, batch.BATCH_NO";
-		Query query = this.currentSession().createSQLQuery(sql);
-		for(int i=0;i<paramNames.length;i++){
-			query.setString(paramNames[i], values[i]);
+		Session session = null;
+		List results =null;
+		try
+		{
+			this.getActiveDBTransaction();
+			session = this.currentSession();
+			Query query = session.createSQLQuery(sql);
+			for(int i=0;i<paramNames.length;i++){
+				query.setString(paramNames[i], values[i]);
+			}
+			results = query.list();
 		}
-		List results = query.list();
+		catch(Exception e)
+		{
+			logger.info(e);
+		}
+		finally{if(session!=null){session.close();}}
 //		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cashlessBankCollectionSummary", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCashlessBankCollectionDetailed(String batchNo, String creditStart, String creditEnd, String batchStart, String batchEnd, String entityNo, String acquirerNo, String paymentTypeNo, String providerNo, String taxiNo, String driverIc, String txnStatus, String sort){
 		String[] paramNames = new String[]{"batchNo", "creditStart", "creditEnd", "batchStart", "batchEnd", "entityNo", "acquirerNo", "paymentTypeNo", "providerNo", "taxiNo", "driverIc", "txnStatus", "sort"};
 		String[] values = new String[]{batchNo, creditStart, creditEnd, batchStart, batchEnd, entityNo, acquirerNo, paymentTypeNo, providerNo, taxiNo, driverIc, txnStatus, sort};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cashlessBankCollectionDetailed", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("cashlessBankCollectionDetailed", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCashlessTxnByAmtRange(String tripStart, String tripEnd, String paymentTypeNo, String entityNo){
 		String[] paramNames = new String[]{"tripStart", "tripEnd", "paymentTypeNo", "entityNo"};
 		String[] values = new String[]{tripStart, tripEnd, paymentTypeNo, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cashlessTxnByAmtRange", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("cashlessTxnByAmtRange", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCashlessCollectionStatisticsSummary(String creditStart, String creditEnd, String entityNo, String acquirerNo){
 		String[] paramNames = new String[]{"creditStart", "creditEnd", "entityNo", "acquirerNo"};
 		String[] values = new String[]{creditStart, creditEnd, entityNo, acquirerNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cashlessCollectionStatisticsSummary", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("cashlessCollectionStatisticsSummary", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCashlessCollectionStatisticsDetailed(String creditStart, String creditEnd, String entityNo, String acquirerNo){
 		String[] paramNames = new String[]{"creditStart", "creditEnd", "entityNo", "acquirerNo"};
 		String[] values = new String[]{creditStart, creditEnd, entityNo, acquirerNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cashlessCollectionStatisticsDetailed", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("cashlessCollectionStatisticsDetailed", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getInvoiceReport(String entity, String invoiceStart, String invoiceEnd, String invoiceType, String eInvoice, String salesPerson, String sortBy){
 		String[] paramNames = new String[]{"entity", "invoiceStart", "invoiceEnd", "invoiceType", "eInvoice", "salesPerson", "sortBy"};
 		String[] values = new String[]{entity, invoiceStart, invoiceEnd, invoiceType, eInvoice, salesPerson, sortBy};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("invoiceReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("invoiceReport", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getRevenueByProductCardType(String revenueStart, String revenueEnd, String entity, String provider, String productType, String paymentType){
 		String[] paramNames = new String[]{"revenueStart", "revenueEnd", "entity", "provider", "productType", "paymentType"};
 		String[] values = new String[]{revenueStart, revenueEnd, entity, provider, productType, paymentType};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("revenueByProductCardType", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("revenueByProductCardType", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getRevenueByProductCardType2(String revenueStart, String revenueEnd, String entity, String provider, String productType, String paymentType){
 		String[] paramNames = new String[]{"revenueStart", "revenueEnd", "entity", "provider", "productType", "paymentType"};
 		String[] values = new String[]{revenueStart, revenueEnd, entity, provider, productType, paymentType};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("revenueByProductCardType2", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("revenueByProductCardType2", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCreditCardPromoDetails(String batchStart, String batchEnd, String tripStart, String tripEnd, String paymentTypeNo, String binStart, String binEnd, String promo, String txnStatus, String batchStatus, String sort){
 		String[] paramNames = new String[]{"batchStart", "batchEnd", "tripStart", "tripEnd", "paymentTypeNo", "binStart", "binEnd", "promo", "txnStatus", "batchStatus", "sort"};
 		String[] values = new String[]{batchStart, batchEnd, tripStart, tripEnd, paymentTypeNo, binStart, binEnd, promo, txnStatus, batchStatus, sort};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("creditCardPromoDetails", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("creditCardPromoDetails", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getTimelyPaymentStatisticsDetailed(String mthYear, String entityNo, String creditTerm, String type){
 		String[] paramNames = new String[]{"mthYear", "entityNo", "creditTerm", "type"};
 		String[] values = new String[]{mthYear, entityNo, creditTerm, type};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("timelyPaymentStatisticsDetailed", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("timelyPaymentStatisticsDetailed", paramNames, values);
 		return results;
 	}
 	
 	public List<Object[]> getInventoryMovementReportDetailed(String stockStart, String stockEnd, String itemTypeNo, String entityNo){
 		String[] paramNames = new String[]{"stockStart", "stockEnd", "itemTypeNo", "entityNo"};
 		String[] values = new String[]{stockStart, stockEnd, itemTypeNo, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("inventoryMovementReportDetailed", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("inventoryMovementReportDetailed", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getTripReconciliationReport(String entity,String accountNo,String accountName,String division,String department,String productType,String startDate,String endDate,String uploadStartDate,String uploadEndDate,String companyCode,String txnStatus,String sortBy){
 		String[] paramNames = new String[]{"entity", "accountNo", "accountName", "division", "department", "productType", "startDate", "endDate", "uploadStartDate", "uploadEndDate", "companyCode", "txnStatus", "sortBy"};
 		String[] values = new String[]{entity,accountNo,accountName,division,department,productType,startDate,endDate,uploadStartDate,uploadEndDate,companyCode,txnStatus,sortBy};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("tripReconciliation", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("tripReconciliation", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getContactPersonReport(String accountNo,String accountName,String division,String department,String accountStatus,String contactPersonName,String typeOfContact,String businessNature,String productType,String salesPerson,String sortBy, String entityNo){
 		String[] paramNames = new String[]{"accountNo", "accountName", "division", "department", "accountStatus", "contactPersonName", "typeOfContact", "businessNature", "productType", "salesPerson", "sortBy", "entityNo"};
 		String[] values = new String[]{accountNo,accountName,division,department,accountStatus,contactPersonName,typeOfContact,businessNature,productType,salesPerson,sortBy, entityNo};
 		
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("contactPerson", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("contactPerson", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCorporateCustomerBreakdownUsageReport(String invoiceMonth,String productType,String accountStatus,String businessNature,String salesPerson,String numberOfRecords,String sortBy, String entityNo){
@@ -399,11 +391,11 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		if(numberOfRecords.length()>0){
 			String[] paramNames = new String[]{"invoiceMonth","productType","accountStatus","businessNature","salesPerson","numberOfRecords","sortBy", "entityNo"};
 			String[] values = new String[]{invoiceMonth,productType,accountStatus,businessNature,salesPerson,numberOfRecords,sortBy, entityNo};
-			results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("corporateCustomerUsageBreakdownLimit", paramNames, values);
+			results = this.findResultByNamedQueryAndNamedParam("corporateCustomerUsageBreakdownLimit", paramNames, values);
 		}else{
 			String[] paramNames = new String[]{"invoiceMonth","productType","accountStatus","businessNature","salesPerson","sortBy", "entityNo"};
 			String[] values = new String[]{invoiceMonth,productType,accountStatus,businessNature,salesPerson,sortBy, entityNo};
-			results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("corporateCustomerUsageBreakdown", paramNames, values);
+			results = this.findResultByNamedQueryAndNamedParam("corporateCustomerUsageBreakdown", paramNames, values);
 		}
 		return results;
 	}
@@ -419,80 +411,80 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				cardStatus, cardNoFrom, cardNoTo, accountTypeNo, accountStatus, entityNo};
 
 		//Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("prepaidProduct", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("prepaidProduct", paramNames, values);
 		return results;
 	}
 	
 	public List<Object[]> getCardStatisticReport(String productStatusDate, String issueStart, String issueEnd, String terminateStart, String terminateEnd, String suspendStart, String suspendEnd, String replaceStart, String replaceEnd, String productType, String productStatus, String acctStatus){
 		String[] paramNames = new String[]{"productStatusDate", "issueStart", "issueEnd", "terminateStart", "terminateEnd", "suspendStart", "suspendEnd", "replaceStart", "replaceEnd", "productType", "productStatus", "acctStatus"};
 		String[] values = new String[]{productStatusDate, issueStart, issueEnd, terminateStart, terminateEnd, suspendStart, suspendEnd, replaceStart, replaceEnd, productType, productStatus, acctStatus};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cardStatisticsReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("cardStatisticsReport", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getCardStatisticReportSummary(String productStatusDate, String issueStart, String issueEnd, String terminateStart, String terminateEnd, String suspendStart, String suspendEnd, String replaceStart, String replaceEnd, String productType, String productStatus, String acctStatus){
 		String[] paramNames = new String[]{"productStatusDate", "issueStart", "issueEnd", "terminateStart", "terminateEnd", "suspendStart", "suspendEnd", "replaceStart", "replaceEnd", "productType", "productStatus", "acctStatus"};
 		String[] values = new String[]{productStatusDate, issueStart, issueEnd, terminateStart, terminateEnd, suspendStart, suspendEnd, replaceStart, replaceEnd, productType, productStatus, acctStatus};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("cardStatisticsReportSummary", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("cardStatisticsReportSummary", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getNewAccountsRevenue(String acctTypeNo, String joinedStart, String joinedEnd, String usageYear, String entityNo, String acctStatus, String industryCode, String salespersonNo){
 		String[] paramNames = new String[]{"acctTypeNo", "joinedStart", "joinedEnd", "usageYear", "entityNo", "acctStatus", "industryCode", "salespersonNo"};
 		String[] values = new String[]{acctTypeNo, joinedStart, joinedEnd, usageYear, entityNo, acctStatus, industryCode, salespersonNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("newAccountsRevenue", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("newAccountsRevenue", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getRefundDepositReport(String acctNo, String acctName, String acctStatus, String terminateStart, String terminateEnd, String refund, String entityNo){
 		String[] paramNames = new String[]{"acctNo", "acctName", "acctStatus", "terminateStart", "terminateEnd", "refund", "entityNo"};
 		String[] values = new String[]{acctNo, acctName, acctStatus, terminateStart, terminateEnd, refund, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("refundDepositReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("refundDepositReport", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getFinancialMemoReport(String acctNo, String acctName, String memoStart, String memoEnd, String memoNo, String invoiceNo, String receiptNo, String memoType, String sort, String entityNo){
 		String[] paramNames = new String[]{"acctNo", "acctName", "memoStart", "memoEnd", "memoNo", "invoiceNo", "receiptNo", "memoType", "sort", "entityNo"};
 		String[] values = new String[]{acctNo, acctName, memoStart, memoEnd, memoNo, invoiceNo, receiptNo, memoType, sort, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("financialMemoReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("financialMemoReport", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getItemTypeRevenueProfitReport(String startMonth, String endMonth, String itemTypeNo, String entityNo){
 		String[] paramNames = new String[]{"startMonth", "endMonth", "itemTypeNo", "entityNo"};
 		String[] values = new String[]{startMonth, endMonth, itemTypeNo, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("itemTypeRevenueProfitReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("itemTypeRevenueProfitReport", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getMonthlyDebtManagementDebt(String acctTypeNo, String acctStatus, String receiptMonth, String industryCode, String salespersonNo, String entityNo){
 		String[] paramNames = new String[]{"acctTypeNo", "acctStatus", "receiptMonth", "industryCode", "salespersonNo", "entityNo"};
 		String[] values = new String[]{acctTypeNo, acctStatus, receiptMonth, industryCode, salespersonNo, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("monthlyDebtManagementDebt", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("monthlyDebtManagementDebt", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getMonthlyDebtManagementReceived(String acctTypeNo, String acctStatus, String receiptMonth, String industryCode, String salespersonNo, String entityNo){
 		String[] paramNames = new String[]{"acctTypeNo", "acctStatus", "receiptMonth", "industryCode", "salespersonNo", "entityNo"};
 		String[] values = new String[]{acctTypeNo, acctStatus, receiptMonth, industryCode, salespersonNo, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("monthlyDebtManagementReceived", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("monthlyDebtManagementReceived", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getMonthlyDebtManagementClosing(String acctTypeNo, String acctStatus, String receiptMonth, String industryCode, String salespersonNo, String entityNo){
 		String[] paramNames = new String[]{"acctTypeNo", "acctStatus", "receiptMonth", "industryCode", "salespersonNo", "entityNo"};
 		String[] values = new String[]{acctTypeNo, acctStatus, receiptMonth, industryCode, salespersonNo, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("monthlyDebtManagementClosing", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("monthlyDebtManagementClosing", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getMovementReport(String entityNo, String productItemType, String acctNo, String acctName, String acctStatus, String productStatus, String mthYear, String type){
 		String[] paramNames = new String[]{"entityNo", "productItemType", "acctNo", "acctName", "acctStatus", "productStatus", "mthYear", "type"};
 		String[] values = new String[]{entityNo, productItemType, acctNo, acctName, acctStatus, productStatus, mthYear, type};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("movementReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("movementReport", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getLoyaltyProgramReport(String acctTypeNo, String acctNo, String acctName, String acctStatus, String productTypeId, String pointStart, String pointEnd, String salespersonNo, String sort, String entityNo){
 		String[] paramNames = new String[]{"acctTypeNo", "acctNo", "acctName", "acctStatus", "productTypeId", "pointStart", "pointEnd", "salespersonNo", "sort", "entityNo"};
 		String[] values = new String[]{acctTypeNo, acctNo, acctName, acctStatus, productTypeId, pointStart, pointEnd, salespersonNo, sort, entityNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("loyaltyProgramReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("loyaltyProgramReport", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getTripAdjustmentReport(String acctNo, String acctName, String paymentType, String createStart, String createEnd, String approveStart, String approveEnd, String entityNo, String providerNo, String approvalStatus, String txnStatus, String action, String fmsUpdate, String sort){
 		String[] paramNames = new String[]{"acctNo", "acctName", "paymentType", "createStart", "createEnd", "approveStart", "approveEnd", "entityNo", "providerNo", "approvalStatus", "txnStatus", "action", "fmsUpdate", "sort"};
 		String[] values = new String[]{acctNo, acctName, paymentType, createStart, createEnd, approveStart, approveEnd, entityNo, providerNo, approvalStatus, txnStatus, action, fmsUpdate, sort};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("tripAdjustmentReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("tripAdjustmentReport", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getGiroSummary(String valueDateFrom, String valueDateTo, String generationDateFrom,
@@ -505,7 +497,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				generationDateTo, uploadDateFrom, uploadDateTo, entityNo};
 
 		//Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("giroSummary", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("giroSummary", paramNames, values);
 		return results;
 	}
 	
@@ -516,7 +508,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] values = new String[]{custNo, divAcct, deptAcct, entityNo, cutOffDate};
 
 		//Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("giroFile", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("giroFile", paramNames, values);
 		return results;
 	}
 	
@@ -534,13 +526,13 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				salesPersonNo, rejectedCode, rejectedBy, entityNo};
 
 		//Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("giroReject", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("giroReject", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getErrorTxnReport(String txnStart, String txnEnd, String uploadStart, String uploadEnd, String errorMsg, String offline, String jobNo, String cardNo, String nric, String taxiNo, String sort){
 		String[] paramNames = new String[]{"txnStart", "txnEnd", "uploadStart", "uploadEnd", "errorMsg", "offline", "jobNo", "cardNo", "nric", "taxiNo", "sort"};
 		String[] values = new String[]{txnStart, txnEnd, uploadStart, uploadEnd, errorMsg, offline, jobNo, cardNo, nric, taxiNo, sort};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("errorTxnReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("errorTxnReport", paramNames, values);
 		return results;
 	}
 	public List<String> getAllTxnErrorMsg(){
@@ -556,7 +548,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		
 		String[] paramNames = new String[]{"txnStart", "txnEnd", "offlineTxnStart", "offlineTxnEnd", "msgTypId", "processCode", "error", "cardNo", "sortBy"};
 		String[] values = new String[]{txnStart, txnEnd, offlineTxnStart, offlineTxnEnd, msgTypId, processCode, error, cardNo, sortBy};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("asOfflineApprovalReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("asOfflineApprovalReport", paramNames, values);
 		return results;
 	}
 	
@@ -701,7 +693,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				"itemTypeNo", "actionType", "approvalStatus", "entityNo" };
 		String[] values = new String[] { actionStartDate, actionEndDate, approvalStartDate,
 				approvalEndDate, serialNoStart, serialNoEnd, itemTypeNo, actionType, approvalStatus, entityNo };
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"suspensionReactivationVoucher", paramNames, values);
 		return results;
 	}
@@ -719,7 +711,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] values = new String[] { batchNo, actionStartDate, actionEndDate,
 				approvalStartDate, approvalEndDate, serialNoStart, serialNoEnd, itemTypeNo,
 				actionType, approvalStatus, entityNo };
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"adjustVoucherRedemption", paramNames, values);
 		return results;
 	}
@@ -737,7 +729,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				requestDateTo, invoiceDateFrom, invoiceDateTo };
 
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("govtEInv", paramNames,
+		List results = this.findResultByNamedQueryAndNamedParam("govtEInv", paramNames,
 				values);
 		return results;
 	}  
@@ -754,7 +746,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				requestDateTo, invoiceDateFrom, invoiceDateTo };
 
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("pubbs", paramNames,
+		List results = this.findResultByNamedQueryAndNamedParam("pubbs", paramNames,
 				values);
 		return results;
 	}
@@ -766,7 +758,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 			"requestStartDate", "requestEndDate", "approvalStartDate", "approvalEndDate", "actionType", "approvalStatus", "entityNo", "sortBy" };
 		String[] values = new String[] {acctType, acctNo, acctName, cardNo,
 						requestStartDate, requestEndDate, approvalStartDate, approvalEndDate, actionType, approvalStatus, entity, sortBy};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"prepaidApproval", paramNames, values);
 		return results;
 		
@@ -795,7 +787,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] values = new String[] {acctType, acctNo, acctName, cardNo,
 				cardStatus, mobileNo, productTypeId, topUpType, promoCode, 
 				topUpStartDate, topUpEndDate, minTopUp, entityNo, sortBy};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"topUp", paramNames, values);
 		return results;
 		
@@ -810,7 +802,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				"acctStatus", "productTypeId",  "joinStartDate", "joinEndDate",
 				"tripStartDate", "tripEndDate", "entityNo", "sortBy"};
 		String[] values = new String[] {acctType, acctNo, acctName, acctStatus, subscribeProductTypeId, joinStartDate, joinEndDate, tripStartDate, tripEndDate, entityNo, sortBy};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"prepaidUsage", paramNames, values);
 		return results;
 
@@ -824,7 +816,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 				"cardStatus", "productTypeId",  "issueStartDate", "issueEndDate",
 				"tripStartDate", "tripEndDate", "entityNo", "sortBy"};
 		String[] values = new String[] {acctType, acctNo, acctName, cardNo, cardStatus, productTypeId, issueStartDate, issueEndDate, tripStartDate, tripEndDate, entityNo, sortBy};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"prepaidUsageDetail", paramNames, values);
 		return results;
 	}
@@ -833,7 +825,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 	public List<Object[]> getPrepaidCardTransactionRecords(String cardNo){
 		String[] paramNames = new String[] {"cardNo"};
 		String[] values = new String[] {cardNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam(
+		List results = this.findResultByNamedQueryAndNamedParam(
 				"prepaidCardTransaction", paramNames, values);
 		return results;
 	}
@@ -841,7 +833,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 	public List<Object[]> getCustomerUsageCardLevel(String accountNo, String accountName, String invoiceStartMonth, String invoiceEndMonth, String productType, String entityNo, String expiryDT, String cardNo){
 		String[] paramNames = new String[]{"accountNo", "accountName", "invoiceStartMonth", "invoiceEndMonth", "productType", "entityNo", "expiryDT", "cardNo"};
 		String[] values = new String[]{accountNo, accountName, invoiceStartMonth, invoiceEndMonth, productType, entityNo, expiryDT, cardNo};
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("customerUsageCardLevel", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("customerUsageCardLevel", paramNames, values);
 		return results;	
 	}
 	
@@ -852,7 +844,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] values = new String[] { dateFrom, dateTo };
 
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("emailAudit", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("emailAudit", paramNames, values);
 		return results;
 	}
 	public List<Object[]> getBirthdayAnnouncement(String birthdayDateFrom, String birthdayDateTo, String joinDateFrom, String joinDateTo, String accountStatus) {
@@ -861,7 +853,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] paramNames = new String[] { "birthdayDateFrom", "birthdayDateTo", "joinDateFrom", "joinDateTo", "accountStatus" };
 		String[] values = new String[] { birthdayDateFrom, birthdayDateTo, joinDateFrom, joinDateTo, accountStatus };
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("birthdayAnnouncement", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("birthdayAnnouncement", paramNames, values);
 		return results;
 	}
 
@@ -870,7 +862,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] paramNames = new String[] {"settlementStartDate", "settlementEndDate", "batchNo","recordType1","recordType2"};
 		String[] values = new String[]{settlementStartDate, settlementEndDate, batchNo, recordType1, recordType2};
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("AydenPaymentMatchingSummaryReport", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("AydenPaymentMatchingSummaryReport", paramNames, values);
 		return results;
 	}
 
@@ -879,7 +871,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] paramNames = new String[] { "settlementStartDate", "settlementEndDate", "batchNo","recordType1","recordType2"};
 		String[] values = new String[] { settlementStartDate, settlementEndDate, batchNo, recordType1, recordType2};
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("AydenPaymentMatchingSummaryReport2", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("AydenPaymentMatchingSummaryReport2", paramNames, values);
 		return results;
 	}
 
@@ -890,7 +882,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] paramNames = new String[] { "settlementStartDate", "settlementEndDate", "batchNo"};
 		String[] values = new String[] { settlementStartDate, settlementEndDate, batchNo};
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("AydenPaymentMatchingExcessAmount", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("AydenPaymentMatchingExcessAmount", paramNames, values);
 		return results;
 	}
 
@@ -901,7 +893,7 @@ public class ReportDaoHibernate extends GenericDaoHibernate implements ReportDao
 		String[] paramNames = new String[] { "settlementStartDate", "settlementEndDate", "batchNo","recordType1","recordType2"};
 		String[] values = new String[] { settlementStartDate, settlementEndDate, batchNo ,recordType1, recordType2};
 		// Query using named query
-		List results = this.getHibernateTemplate().findByNamedQueryAndNamedParam("AydenPaymentMatchingBreakdownAmount", paramNames, values);
+		List results = this.findResultByNamedQueryAndNamedParam("AydenPaymentMatchingBreakdownAmount", paramNames, values);
 		return results;
 	}
 

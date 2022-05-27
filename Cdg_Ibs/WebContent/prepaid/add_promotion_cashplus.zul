@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="prepaidPromotion" title="Add Prepaid Promotion" border="normal"
+	use=" com.cdgtaxi.ibs.prepaid.ui.AddPromotionCashplusWindow" xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+  <vbox>
+    <listbox width="100%" id="resultList" checkmark="true"  multiple="true">
+		<listhead sizable="true">
+			<listheader label="Promo Code" sort="auto"/>
+			<listheader label="CashPlus" sort="auto"/>
+			<listheader label="Eff. Trip Date From" sort="auto"/>
+			<listheader label="Eff. Trip Date To" sort="auto"/>
+		</listhead>
+	</listbox>
+	<hbox>
+    	<button label="Add" onClick="prepaidPromotion.addPrepaidPromotion()"/>
+    	<button label="Cancel" onClick="prepaidPromotion.back()"/>
+    </hbox>
+  </vbox>
+</window>

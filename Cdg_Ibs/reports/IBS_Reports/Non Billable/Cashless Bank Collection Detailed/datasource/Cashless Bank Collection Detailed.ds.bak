@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Cashless Bank Collection Detailed" type="JDBC" path="/IBS_Reports/Non Billable/Cashless Bank Collection Detailed/datasource/Cashless Bank Collection Detailed.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="CARD_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PYMT_TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="BATCH_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="BATCH_NO" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="BATCH_CREATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BATCH_UPDATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PYMT_CREATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PYMT_UPDATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRIP_START_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TAXI_NO" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="JOB_NO" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="POLICY_NUMBER" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="POLICY_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NRIC" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREDIT_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FARE_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="COMMISSION_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="GST" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREMIUM_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PREMIUM_GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="AMT_RECEIVED" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REJECT_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OS_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REMARKS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OFFLINE_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select txn.CARD_NO, acquirer.NAME, pymt_type_master.MASTER_VALUE as pymt_type, batch.SETTLEMENT_DATE as batch_date, batch.BATCH_NO,
+batch.created_dt as batch_created_dt, batch.updated_dt as batch_updated_dt,
+pymt.created_dt as pymt_created_dt, pymt.updated_dt as pymt_updated_dt,
+ txn.TRIP_START_DT, txn.TAXI_NO,   txn.JOB_NO, txn.POLICY_NUMBER, 
+ case when txn.policy_status = 'A' then 'Active' when txn.policy_status = 'C' then 'System cancel' when txn.policy_status = 'M' then 'Manual Cancel' else '-' end as POLICY_STATUS, 
+txn.NRIC, pymt.CREDIT_DATE, txn.FARE_AMT, txn.COMMISSION_AMT,
+    txn.ADMIN_FEE, txn.GST,    case when txn.premium_amount is null then 0 else txn.premium_amount end as PREMIUM_AMOUNT,
+  case when txn.premium_gst is null then 0 else txn.premium_gst end as PREMIUM_GST, txn.TOTAL, case when txn.STATUS in ('C', 'B') then txn.total else 0 end as amt_received,
+    case when txn.STATUS = 'R' then txn.total else 0 end as reject_amt, case when txn.STATUS = 'O' then txn.total else 0 end as os_amt,
+    txn.STATUS, txn.REMARKS, txn.OFFLINE_FLAG
+    from TMTB_NON_BILLABLE_TXN txn
+    inner join TMTB_NON_BILLABLE_BATCH batch on txn.BATCH_ID = batch.BATCH_ID
+    inner join MSTB_ACQUIRER acquirer on batch.ACQUIRER_NO = acquirer.ACQUIRER_NO
+    inner join MSTB_ACQUIRER_PYMT_TYPE pymt_type on txn.PYMT_TYPE_NO = pymt_type.PYMT_TYPE_NO
+    inner join FMTB_NON_BILLABLE_MASTER non_master on non_master.SERVICE_PROVIDER = txn.SERVICE_PROVIDER and non_master.PYMT_TYPE_MASTER_NO = pymt_type.MASTER_NO
+    inner join (select MASTER_NO, max(EFFECTIVE_DATE) as EFFECTIVE_DATE from FMTB_NON_BILLABLE_DETAIL where EFFECTIVE_DATE &lt; current_date group by MASTER_NO) last_non_detail on non_master.MASTER_NO = last_non_detail.MASTER_NO
+    inner join FMTB_NON_BILLABLE_DETAIL non_detail on last_non_detail.MASTER_NO = non_detail.MASTER_NO and last_non_detail.EFFECTIVE_DATE = non_detail.EFFECTIVE_DATE
+    inner join FMTB_AR_CONT_CODE_MASTER ar on non_detail.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    inner join MSTB_MASTER_TABLE pymt_type_master on pymt_type.MASTER_NO = pymt_type_master.MASTER_NO
+    inner join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    left join (select distinct BATCH_ID, PAYMENT_NO from BMTB_BANK_PAYMENT_DETAIL) pymt_detail on pymt_detail.BATCH_ID = batch.BATCH_ID
+    left join BMTB_BANK_PAYMENT pymt on pymt_detail.PAYMENT_NO = pymt.PAYMENT_NO
+    where ('${01. Batch No##ALTERNATE_REQUIRED}' is null or batch.BATCH_NO = '${01. Batch No##ALTERNATE_REQUIRED}')
+    and (('${02. Credit Start Date#date#ALTERNATE_REQUIRED}' is null and '${03. Credit End Date#date}' is null)or(pymt.CREDIT_DATE between case when '${02. Credit Start Date#date#ALTERNATE_REQUIRED}' is null then to_date('${03. Credit End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${02. Credit Start Date#date#ALTERNATE_REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${03. Credit End Date#date}' is null then to_date('${02. Credit Start Date#date#ALTERNATE_REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${03. Credit End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and (('${04. Batch Start Date#date#ALTERNATE_REQUIRED}' is null and '${05. Batch End Date#date}' is null)or(batch.SETTLEMENT_DATE between case when '${04. Batch Start Date#date#ALTERNATE_REQUIRED}' is null then to_date('${05. Batch End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${04. Batch Start Date#date#ALTERNATE_REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${05. Batch End Date#date}' is null then to_date('${04. Batch Start Date#date#ALTERNATE_REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${05. Batch End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and ('${06. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.ENTITY_NO = '${06. Entity#choice(1,2,3)#MASTER:EM}')
+    and ('${07. Acquirer#choice(1,2,3,4,5)#MASTER:ACQ:REQUIRED}' is null or acquirer.ACQUIRER_NO = '${07. Acquirer#choice(1,2,3,4,5)#MASTER:ACQ:REQUIRED}')
+    and ('${08. Payment Type#choice(A,D,J,M,N,V)#CC:APT}' is null or pymt_type_master.MASTER_CODE = '${08. Payment Type#choice(A,D,J,M,N,V)#CC:APT}')
+    and ('${09. Company Code#choice(CCPL,CTPL)#CC:SPR}' is null or provider.MASTER_CODE = '${09. Company Code#choice(CCPL,CTPL)#CC:SPR}')
+    and ('${10. Taxi No}' is null or txn.TAXI_NO = '${10. Taxi No}')
+    and ('${11. Driver IC}' is null or txn.NRIC = '${11. Driver IC}')
+    and ('${12. Txn Status#choice(O,C,R,B)#NC:NON_BILLABLE_TXN_STATUS}' is null or txn.STATUS = '${12. Txn Status#choice(O,C,R,B)#NC:NON_BILLABLE_TXN_STATUS}')
+    and (txn.MATCHING_STATUS is NULL or txn.MATCHING_STATUS != 'T')
+    order by acquirer.NAME, case when '${13. Sort By#choice(BDBNCNTD, DICSR)#NC:CBCD_ORDER:REQUIRED}' = 'BDBNCNTD' then batch.SETTLEMENT_DATE else null end,
+    case when '${13. Sort By#choice(BDBNCNTD, DICSR)#NC:CBCD_ORDER:REQUIRED}' = 'BDBNCNTD' then batch.BATCH_NO else txn.NRIC end,
+    case when '${13. Sort By#choice(BDBNCNTD, DICSR)#NC:CBCD_ORDER:REQUIRED}' = 'BDBNCNTD' then txn.CARD_NO else txn.STATUS end,
+    case when '${13. Sort By#choice(BDBNCNTD, DICSR)#NC:CBCD_ORDER:REQUIRED}' = 'BDBNCNTD' then txn.TRIP_START_DT else null end,
+    case when '${13. Sort By#choice(BDBNCNTD, DICSR)#NC:CBCD_ORDER:REQUIRED}' = 'BDBNCNTD' then null else txn.REMARKS end</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

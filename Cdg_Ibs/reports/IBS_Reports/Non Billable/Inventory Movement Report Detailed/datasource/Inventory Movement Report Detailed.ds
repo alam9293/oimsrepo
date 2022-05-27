@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Inventory Movement Report Detailed" type="JDBC" path="/IBS_Reports/Non Billable/Inventory Movement Report Detailed/datasource/Inventory Movement Report Detailed.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="STOCK_IN_DATE" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_ISSUE_DATE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TYPE_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="VOUCHER_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PRICE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="OPENING_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OPENING_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_IN" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_IN_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_ISSUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_ISSUE_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_BALANCE_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select case when stock.TXN_TYPE = 'I' then stock.TXN_DT else stock_in.TXN_DT end as stock_in_date,
+    to_char(issue_req.REQUEST_DT, 'dd/mm/yyyy') as stock_issue_date,
+    case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end as acct_no,
+    case when acct.CUST_NO is not null then acct.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else grand.ACCOUNT_NAME end as acct_name,
+    item_type.TYPE_NAME, stock.SERIAL_NO_START || ' - ' || stock.SERIAL_NO_END as voucher_no,
+    item_type.PRICE, balance.OPENING_BALANCE, balance.OPENING_BALANCE * item_type.PRICE as opening_amt,
+    case when stock.TXN_TYPE = 'I' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 when stock.TXN_TYPE = 'S' then 0 end as stock_in,
+    case when stock.TXN_TYPE = 'I' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 when stock.TXN_TYPE = 'S' then 0 end * item_type.PRICE as stock_in_amt,
+    case when stock.TXN_TYPE = 'I' then 0 when stock.TXN_TYPE = 'S' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 end as stock_issue,
+    case when stock.TXN_TYPE = 'I' then 0 when stock.TXN_TYPE = 'S' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 end * item_type.PRICE as stock_issue_amt,
+    balance.OPENING_BALANCE + case when stock.TXN_TYPE = 'I' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 when stock.TXN_TYPE = 'S' then 0 end - case when stock.TXN_TYPE = 'I' then 0 when stock.TXN_TYPE = 'S' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 end as stock_balance,
+    (balance.OPENING_BALANCE + case when stock.TXN_TYPE = 'I' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 when stock.TXN_TYPE = 'S' then 0 end - case when stock.TXN_TYPE = 'I' then 0 when stock.TXN_TYPE = 'S' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 end) * item_type.PRICE as stock_balance_amt
+    from IMTB_STOCK stock
+    inner join IMTB_ITEM_TYPE item_type on stock.ITEM_TYPE_NO = item_type.ITEM_TYPE_NO
+    left join IMTB_STOCK stock_in on stock.TXN_TYPE = 'S' and stock_in.TXN_TYPE = 'I' and stock.ITEM_TYPE_NO = stock_in.ITEM_TYPE_NO and stock.SERIAL_NO_START between stock_in.SERIAL_NO_START and stock_in.SERIAL_NO_END
+    left join IMTB_ISSUE issue on stock.STOCK_NO = issue.STOCK_NO
+    left join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+    left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    left join (select ITEM_TYPE_NO,
+        sum(case when TXN_TYPE = 'I' then (SERIAL_NO_END - SERIAL_NO_START + 1) when TXN_TYPE = 'S' then (SERIAL_NO_START - SERIAL_NO_END - 1) end) as opening_balance
+        from IMTB_STOCK
+        where '${1. Stock In/Stock Issued Start Date#date#REQUIRED}' is null or to_timestamp('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') &gt; txn_dt
+        group by ITEM_TYPE_NO
+    ) balance on balance.ITEM_TYPE_NO = item_type.ITEM_TYPE_NO
+    where (('${1. Stock In/Stock Issued Start Date#date#REQUIRED}' is null and '${2. Stock In/Stock Issued End Date#date}' is null)or(stock.TXN_DT between case when '${1. Stock In/Stock Issued Start Date#date#REQUIRED}' is null then to_date('${2. Stock In/Stock Issued End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Stock In/Stock Issued End Date#date}' is null then to_date('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Stock In/Stock Issued End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end)or(issue_req.REQUEST_DT between case when '${1. Stock In/Stock Issued Start Date#date#REQUIRED}' is null then to_date('${2. Stock In/Stock Issued End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Stock In/Stock Issued End Date#date}' is null then to_date('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Stock In/Stock Issued End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and ('${3. Item Type#choice(1,2,3,4,6)#MASTER:IT}' is null or item_type.ITEM_TYPE_NO = '${3. Item Type#choice(1,2,3,4,6)#MASTER:IT}')
+    order by case when stock.TXN_TYPE = 'I' then stock.TXN_DT else stock_in.TXN_DT end, issue_req.REQUEST_DT</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbRecurringChargeTagCard" 
+    table="ITTB_RECURRING_CHARGE_TAG_CARD"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+<meta attribute="implement-equals" inherit="false">true</meta>
+<id
+        name="id"
+        type="java.lang.Integer"
+        column="ID"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">ITSQ_RECURRING_CHARGE_TG_CARD</param>
+        </generator>
+    </id>
+    
+    <!-- bi-directional many-to-one association to AmtbAccount -->
+    <many-to-one name="pmtbProduct" class="com.cdgtaxi.ibs.common.model.PmtbProduct" fetch="join">
+            <column name="PRODUCT_NO" />
+        </many-to-one>
+        
+        
+	<!-- bi-directional many-to-one association to AmtbAccount -->
+    <many-to-one name="recurringChargeId" class="com.cdgtaxi.ibs.common.model.IttbRecurringCharge" fetch="join">
+            <column name="RECURRING_CHARGE_ID" />
+        </many-to-one>
+	
+</class>
+</hibernate-mapping>

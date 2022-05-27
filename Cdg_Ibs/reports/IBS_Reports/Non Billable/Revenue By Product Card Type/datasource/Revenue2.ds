@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Revenue2" type="JDBC" path="/IBS_Reports/Non Billable/Revenue By Product Card Type/datasource/Revenue2.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="DISPLAY_ORDER" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_CODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MASTER_CODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TXN_COUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TXN_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select * from
+(select '1' as display_order, product_type.NAME, entity.ENTITY_CODE, provider.MASTER_CODE, count(txn.ACQUIRE_TXN_NO) as txn_count,
+    sum(txn.FARE_AMT + case when note.NOTE_TYPE = 'C' then -note.NOTE_AMOUNT else nvl(note.NOTE_AMOUNT, 0) end) as txn_amt,
+    sum(txn.ADMIN_FEE_VALUE - txn.PROD_DIS_VALUE + case when note.NOTE_TYPE = 'C' then nvl(note.PROD_DIS + note.DISCOUNT - note.ADMIN_FEE, 0) else nvl(note.ADMIN_FEE - note.PROD_DIS - note.DISCOUNT, 0) end) as ADMIN,
+    sum(txn.GST_VALUE + case when note.NOTE_TYPE = 'C' then nvl(-note.GST, 0) else nvl(note.GST, 0) end) as GST,
+    sum(txn.fare_amt + txn.GST_VALUE + txn.ADMIN_FEE_VALUE - txn.PROD_DIS_VALUE - txn.PROMO_DIS_VALUE + case when note.NOTE_TYPE = 'C' then nvl(note.DISCOUNT - note.NOTE_AMOUNT - note.ADMIN_FEE + note.PROD_DIS - note.GST, 0) else nvl(note.NOTE_AMOUNT - note.DISCOUNT + note.ADMIN_FEE - note.PROD_DIS + note.GST, 0) end) as TOTAL from TMTB_ACQUIRE_TXN txn
+    inner join BMTB_INVOICE_TXN invoice_txn on txn.ACQUIRE_TXN_NO = invoice_txn.ACQUIRE_TXN_NO
+    inner join BMTB_INVOICE_DETAIL invoice_detail on invoice_txn.INVOICE_DETAIL_NO = invoice_detail.INVOICE_DETAIL_NO
+    inner join BMTB_INVOICE_SUMMARY invoice_summary on invoice_detail.INVOICE_SUMMARY_NO = invoice_summary.INVOICE_SUMMARY_NO
+    inner join BMTB_INVOICE_HEADER invoice_header on invoice_summary.INVOICE_HEADER_NO = invoice_header.INVOICE_HEADER_NO
+    inner join PMTB_PRODUCT_TYPE product_type on txn.PRODUCT_TYPE_ID = product_type.PRODUCT_TYPE_ID
+    left join BMTB_NOTE note on note.ISSUED_INVOICE_TXN_NO = invoice_txn.INVOICE_TXN_NO
+    left join BMTB_INVOICE_TXN note_txn on note.BILLED_INVOICE_TXN_NO = note_txn.INVOICE_TXN_NO
+    left join BMTB_INVOICE_DETAIL note_detail on note_txn.INVOICE_DETAIL_NO = note_detail.INVOICE_DETAIL_NO
+    left join BMTB_INVOICE_SUMMARY note_summary on note_detail.INVOICE_SUMMARY_NO = note_summary.INVOICE_SUMMARY_NO
+    left join BMTB_INVOICE_HEADER note_header on note_summary.INVOICE_HEADER_NO = note_header.INVOICE_HEADER_NO
+    inner join AMTB_ACCOUNT acct on acct.ACCOUNT_NO = txn.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on ar.AR_CONTROL_CODE_NO = case when acct.CUST_NO is not null then acct.AR_CONTROL_CODE_NO when parent.CUST_NO is not null then parent.AR_CONTROL_CODE_NO else grand.AR_CONTROL_CODE_NO end
+    inner join FMTB_ENTITY_MASTER entity on ar.ENTITY_NO = entity.ENTITY_NO
+    inner join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    group by provider.MASTER_CODE, product_type.NAME, entity.ENTITY_CODE
+union
+select case when pymt_type_master.MASTER_VALUE = 'NETS' then '3' else '2' end as display_order, pymt_type_master.MASTER_VALUE as NAME, case when pymt_type_master.MASTER_VALUE = 'NETS' then 'Non CCA' else entity.ENTITY_CODE end as ENTITY_CODE, provider.MASTER_CODE, count(txn_no), sum(fare_amt) as txn_amt, sum(admin_fee) as admin_fee, sum(gst) as gst, sum(total) as total
+    from TMTB_NON_BILLABLE_TXN txn
+    inner join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    inner join MSTB_ACQUIRER_PYMT_TYPE pymt_type on txn.PYMT_TYPE_NO = pymt_type.PYMT_TYPE_NO
+    inner join FMTB_NON_BILLABLE_MASTER non_master on non_master.SERVICE_PROVIDER = txn.SERVICE_PROVIDER and non_master.PYMT_TYPE_MASTER_NO = pymt_type.MASTER_NO
+    inner join (select MASTER_NO, max(EFFECTIVE_DATE) as EFFECTIVE_DATE from FMTB_NON_BILLABLE_DETAIL where EFFECTIVE_DATE &lt; current_date group by MASTER_NO) last_non_detail on non_master.MASTER_NO = last_non_detail.MASTER_NO
+    inner join FMTB_NON_BILLABLE_DETAIL non_detail on last_non_detail.MASTER_NO = non_detail.MASTER_NO and last_non_detail.EFFECTIVE_DATE = last_non_detail.EFFECTIVE_DATE
+    inner join FMTB_AR_CONT_CODE_MASTER ar on non_detail.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    inner join MSTB_MASTER_TABLE pymt_type_master on pymt_type.MASTER_NO = pymt_type_master.MASTER_NO
+    inner join TMTB_NON_BILLABLE_BATCH txn_batch on txn.BATCH_ID = txn_batch.BATCH_ID
+    WHERE txn.MATCHING_STATUS is NULL or txn.MATCHING_STATUS != 'T'
+    group by pymt_type_master.MASTER_VALUE, provider.MASTER_CODE, entity.ENTITY_CODE)
+where ENTITY_CODE not like 'CCA'
+order by display_order, name</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

@@ -1,0 +1,128 @@
+<?page title="Issue Draft Invoice" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Issue Draft Invoice" border="normal">
+		<grid>
+			<columns sizable="false">
+				<column>Account Details</column>
+			</columns>
+		</grid>
+		<grid>
+			<columns sizable="false">
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+			</columns>
+			<rows>
+				<row>
+					Account:
+					<label id="accountNoLB" />
+					Account Type:
+					<label id="accountTypeLB" />
+				</row>
+				<row>
+					Account Name:
+					<label id="accountNameLB" />
+					Request Date:
+					<datebox id="requestDate" />
+				</row>
+			</rows>
+		</grid>
+		<separator spacing="10px" />
+		<grid>
+			<columns sizable="false">
+				<column>Contact Information</column>
+			</columns>
+		</grid>
+		<grid>
+			<columns sizable="false">
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+			</columns>
+			<rows>
+				<row>
+					Contact Person 1:
+					<label value="" />
+					Job Title
+					<label value="" />
+				</row>
+				<row>
+					Telephone (Office)
+					<label value="" />
+					Telephone (Mobile)
+					<label value="" />
+				</row>
+				<row>
+					Fax:
+					<label value="" />
+					Email:
+					<label value="" />
+				</row>
+				<row>
+					Contact Person 2
+					<label value="" />
+					Telephone (Office)
+					<label value="" />
+				</row>
+				<row>
+					Telephone (Mobile)
+					<label value="" />
+					Email
+					<label value="" />
+				</row>
+			</rows>
+		</grid>
+		
+		
+		<separator spacing="10px" />
+		<grid>
+			<columns sizable="false">
+				<column>Billing Address</column>
+			</columns>
+		</grid>
+		<grid>
+			<columns sizable="false">
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+			</columns>
+			<rows>
+				<row>
+					Block No.:
+					<label value="" />
+					Unit No.:
+					<label value="" />
+				</row>
+				<row>
+					Street Name:
+					<label value="" />
+					Building Name:
+					<label value="" />
+				</row>
+				<row>
+					Area:
+					<label value="" />
+					Country:
+					<label value="" />
+				</row>
+				<row>
+					Postal:
+					<label value="" />
+					<label value="" />
+					<label value="" />
+				</row>
+				
+			</rows>
+		</grid>
+		
+		
+		<separator spacing="10px" />
+		<button id="cancelBtn" label="Generate Draft Invoice" onClick="" />
+		<space />
+		<button label="Back" onClick="" />
+
+</window>
+</zk>

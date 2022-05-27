@@ -566,14 +566,22 @@ public class AccountDaoHibernate extends GenericDaoHibernate implements AccountD
 		logger.info("Retrieving data 2(Division list or Sub Applicant List) by Account No "+accNo);
 		
 		if(accNo.trim().length()>0){
-		    this.getActiveDBTransaction();
-			Query query = this.currentSession().createSQLQuery("select acct.account_no from AMTB_ACCOUNT acct inner join ( select ACCOUNT_NO, max(EFFECTIVE_DT) as EFFECTIVE_DT from AMTB_ACCT_STATUS where EFFECTIVE_DT < SYSTIMESTAMP group by ACCOUNT_NO ) last_status on acct.ACCOUNT_NO = last_status.ACCOUNT_NO and acct.account_no in ( select this_.account_no from AMTB_ACCOUNT "
-					+ "this_ inner join AMTB_ACCOUNT amtbaccoun2_ on this_.PARENT_NO=amtbaccoun2_.ACCOUNT_NO and amtbaccoun2_.ACCOUNT_NO = :accNo ) "
-					+ "inner join AMTB_ACCT_STATUS status on status.ACCOUNT_NO = last_status.ACCOUNT_NO and status.EFFECTIVE_DT = last_status.EFFECTIVE_DT and status.acct_status != 'C'");
-			query.setString("accNo", accNo!=null&&accNo.trim().length()!=0?accNo:"%");
-			logger.info("test1 = " + (accNo!=null&&accNo.trim().length()!=0?accNo:"%"));
-			logger.info("sql = " + query.getQueryString());
-			List<BigDecimal> acctNos = query.list();
+		    Session session =null;
+		    List<BigDecimal> acctNos =null;
+		    try
+			{
+			    this.getActiveDBTransaction();
+			    session = this.currentSession();
+				Query query = session.createSQLQuery("select acct.account_no from AMTB_ACCOUNT acct inner join ( select ACCOUNT_NO, max(EFFECTIVE_DT) as EFFECTIVE_DT from AMTB_ACCT_STATUS where EFFECTIVE_DT < SYSTIMESTAMP group by ACCOUNT_NO ) last_status on acct.ACCOUNT_NO = last_status.ACCOUNT_NO and acct.account_no in ( select this_.account_no from AMTB_ACCOUNT "
+						+ "this_ inner join AMTB_ACCOUNT amtbaccoun2_ on this_.PARENT_NO=amtbaccoun2_.ACCOUNT_NO and amtbaccoun2_.ACCOUNT_NO = :accNo ) "
+						+ "inner join AMTB_ACCT_STATUS status on status.ACCOUNT_NO = last_status.ACCOUNT_NO and status.EFFECTIVE_DT = last_status.EFFECTIVE_DT and status.acct_status != 'C'");
+				query.setString("accNo", accNo!=null&&accNo.trim().length()!=0?accNo:"%");
+				logger.info("test1 = " + (accNo!=null&&accNo.trim().length()!=0?accNo:"%"));
+				logger.info("sql = " + query.getQueryString());
+				acctNos = query.list();
+			}
+		    catch(Exception e){logger.info(e);}
+		    finally {if(session!=null){session.close();}}
 			//this.currentSession().close();
 			logger.info("Size = " + acctNos.size());
 			List<AmtbAccount> returnList = new ArrayList<AmtbAccount>();
@@ -903,28 +911,36 @@ public class AccountDaoHibernate extends GenericDaoHibernate implements AccountD
 	public List<AmtbAccount> getAccounts(String custNo, String acctName, String acctStatus, String contactPerson){
 		//insertTest();
 		logger.info("getAccounts(String custNo, String acctName, String acctStatus, String contactPerson)");
-		this.getActiveDBTransaction();
-		Query query = this.currentSession().createSQLQuery("select distinct acct.ACCOUNT_NO from AMTB_ACCOUNT acct " +
-				"inner join (select ACCOUNT_NO, max(EFFECTIVE_DT) as EFFECTIVE_DT from AMTB_ACCT_STATUS where EFFECTIVE_DT < SYSTIMESTAMP group by ACCOUNT_NO) last_status on acct.ACCOUNT_NO = last_status.ACCOUNT_NO and acct.CUST_NO like :CUST_NO and acct.ACCOUNT_NAME like :ACCOUNT_NAME " +
-				"inner join AMTB_ACCT_STATUS status on status.ACCOUNT_NO = last_status.ACCOUNT_NO and status.EFFECTIVE_DT = last_status.EFFECTIVE_DT and status.ACCT_STATUS like :ACCT_STATUS " +
-				"left join AMTB_CONTACT_PERSON contact on acct.ACCOUNT_NO = contact.ACCOUNT_NO " +
-				(contactPerson!=null && contactPerson.length()!=0 ? "where (contact.MAIN_CONTACT_NAME like :MAIN_CONTACT_NAME or contact.SUB_CONTACT_NAME like :MAIN_CONTACT_NAME)" : "")
-				
-		);
-		query.setString("CUST_NO", custNo!=null&&custNo.trim().length()!=0?custNo:"%");
-		logger.info("test1 = " + (custNo!=null&&custNo.trim().length()!=0?custNo:"%"));
-		query.setString("ACCOUNT_NAME", "%"+(acctName==null?"":acctName)+"%");
-		logger.info("test2 = " + "%"+(acctName==null?"":acctName)+"%");
-		query.setString("ACCT_STATUS", (acctStatus!=null&&acctStatus.length()!=0?acctStatus:"%"));
-		logger.info("test3 = " + (acctStatus!=null&&acctStatus.length()!=0?acctStatus:"%"));
-		if(contactPerson!=null && contactPerson.length()!=0){
-			query.setString("MAIN_CONTACT_NAME", "%"+(contactPerson==null?"":contactPerson)+"%");
+		Session session =null;
+		List<BigDecimal> acctNos =null;
+		try
+		{
+			this.getActiveDBTransaction();
+			session = this.currentSession();
+			Query query = session.createSQLQuery("select distinct acct.ACCOUNT_NO from AMTB_ACCOUNT acct " +
+					"inner join (select ACCOUNT_NO, max(EFFECTIVE_DT) as EFFECTIVE_DT from AMTB_ACCT_STATUS where EFFECTIVE_DT < SYSTIMESTAMP group by ACCOUNT_NO) last_status on acct.ACCOUNT_NO = last_status.ACCOUNT_NO and acct.CUST_NO like :CUST_NO and acct.ACCOUNT_NAME like :ACCOUNT_NAME " +
+					"inner join AMTB_ACCT_STATUS status on status.ACCOUNT_NO = last_status.ACCOUNT_NO and status.EFFECTIVE_DT = last_status.EFFECTIVE_DT and status.ACCT_STATUS like :ACCT_STATUS " +
+					"left join AMTB_CONTACT_PERSON contact on acct.ACCOUNT_NO = contact.ACCOUNT_NO " +
+					(contactPerson!=null && contactPerson.length()!=0 ? "where (contact.MAIN_CONTACT_NAME like :MAIN_CONTACT_NAME or contact.SUB_CONTACT_NAME like :MAIN_CONTACT_NAME)" : "")
+					
+			);
+			query.setString("CUST_NO", custNo!=null&&custNo.trim().length()!=0?custNo:"%");
+			logger.info("test1 = " + (custNo!=null&&custNo.trim().length()!=0?custNo:"%"));
+			query.setString("ACCOUNT_NAME", "%"+(acctName==null?"":acctName)+"%");
+			logger.info("test2 = " + "%"+(acctName==null?"":acctName)+"%");
+			query.setString("ACCT_STATUS", (acctStatus!=null&&acctStatus.length()!=0?acctStatus:"%"));
+			logger.info("test3 = " + (acctStatus!=null&&acctStatus.length()!=0?acctStatus:"%"));
+			if(contactPerson!=null && contactPerson.length()!=0){
+				query.setString("MAIN_CONTACT_NAME", "%"+(contactPerson==null?"":contactPerson)+"%");
+			}
+			logger.info("test4 = " + "%"+(contactPerson==null?"":contactPerson)+"%");
+			logger.info("sql = " + query.getQueryString());
+			acctNos = query.list();
+			logger.info("Size = " + acctNos.size());
+			//this.currentSession().close();
 		}
-		logger.info("test4 = " + "%"+(contactPerson==null?"":contactPerson)+"%");
-		logger.info("sql = " + query.getQueryString());
-		List<BigDecimal> acctNos = query.list();
-		logger.info("Size = " + acctNos.size());
-		//this.currentSession().close();
+		catch(Exception e){logger.info(e);}
+	    finally {if(session!=null){session.close();}}
 		
 		List<AmtbAccount> returnList = new ArrayList<AmtbAccount>();
 		if(acctNos.isEmpty()){

@@ -1,0 +1,1 @@
+update SATB_RESOURCE set DISPLAY_NAME = 'Revenue Report By Product and Card Type' where rsrc_id = 443;

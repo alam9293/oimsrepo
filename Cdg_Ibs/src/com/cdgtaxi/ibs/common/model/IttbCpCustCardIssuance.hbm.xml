@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbCpCustCardIssuance" 
+    table="ITTB_CP_CUST_CARD_ISSUANCE"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="issuanceNo"
+        type="java.lang.Long"
+        column="ISSUANCE_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">ITTB_CP_CUST_CARD_ISSUANCE_SQ1</param>
+        </generator>
+    </id>
+	<property
+        name="productNo"
+        type="java.math.BigDecimal"
+        column="PRODUCT_NO"
+        not-null="true"
+        length="19"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="cardNo"
+        type="java.lang.String"
+        column="CARD_NO"
+        not-null="true"
+        length="19"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="productTypeId"
+        type="java.lang.String"
+        column="PRODUCT_TYPE_ID"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+        <property
+        name="issuedTo"
+        type="java.lang.String"
+        column="ISSUED_TO"
+        not-null="true"
+        length="255"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="issuedOn"
+        type="java.sql.Timestamp"
+        column="ISSUED_ON"
+        length="11"
+    >
+    	<meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="returnedOn"
+        type="java.sql.Timestamp"
+        column="RETURNED_ON"
+        length="11"
+    >
+     	<meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="batchFlag"
+        type="java.lang.String"
+        column="BATCH_FLAG"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="remarks"
+        type="java.lang.String"
+        column="REMARKS"
+        length="500"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <many-to-one
+        name="pmtbProduct"
+        class="com.cdgtaxi.ibs.common.model.PmtbProduct" insert="false" update="false"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PRODUCT_NO" />
+    </many-to-one>
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>

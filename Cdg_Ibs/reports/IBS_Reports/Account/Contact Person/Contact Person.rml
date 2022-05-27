@@ -1,0 +1,124 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="100" grid-y="100" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/Account/Contact Person/Contact Person.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="iso-a4" page-width="11905" page-height="16837" orientation="Portrait" horizontal-page-count="1" margin-top="1440" margin-left="1440" margin-bottom="1440" margin-right="1440" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="01a. Account No" enabled="Yes">${01a. Account No#acctsearch#custId}</rml:param><rml:param xml:space="preserve" key="01b. Account Name" enabled="Yes">${01b. Account Name#acctsearch#custName}</rml:param><rml:param xml:space="preserve" key="01c. Division" enabled="Yes">${01c. Division#acctsearch#div}</rml:param><rml:param xml:space="preserve" key="01d. Department" enabled="Yes">${01d. Department#acctsearch#dept}</rml:param><rml:param xml:space="preserve" key="02. Account Status" enabled="Yes">${02. Account Status#choice()#NC:ACCOUNT_STATUS}</rml:param><rml:param xml:space="preserve" key="03. Contact Person Name" enabled="Yes">${03. Contact Person Name#}</rml:param><rml:param xml:space="preserve" key="04. Type of Contact" enabled="Yes">${04. Type of Contact#choice()#NC:CONTACT_TYPE}</rml:param><rml:param xml:space="preserve" key="05. Business Nature" enabled="Yes">${05. Business Nature#choice()#CC:IND}</rml:param><rml:param xml:space="preserve" key="06. Product Type" enabled="Yes">${06. Product Type#choice(CC,OV,FV)#MASTER:PT}</rml:param><rml:param xml:space="preserve" key="07. Sales Person" enabled="Yes">${07. Sales Person#choice()#MASTER:SP}</rml:param><rml:param xml:space="preserve" key="08. Report Purpose" enabled="Yes">${08. Report Purpose#choice()#NC:REPORT_PURPOSE}</rml:param><rml:param xml:space="preserve" key="09. Sort By" enabled="Yes">${09. Sort By#choice()#NC:CONTACT_PERSON_ORDER:REQUIRED}</rml:param><rml:param xml:space="preserve" key="10. Entity" enabled="Yes">${10. Entity#choice(1,2,3)#MASTER:EM}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="detail">
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:watermark report="" section="" enabled="No">
+        <rml:parameters>
+        </rml:parameters>
+      </rml:watermark>
+      <rml:section-header table-of-contents="No" height="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" height="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:detail>
+      <rml:ruler>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation section="Section 1" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+  </rml:rendering></rml:report>
+

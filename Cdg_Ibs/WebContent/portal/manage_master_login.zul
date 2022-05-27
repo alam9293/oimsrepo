@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageMasterLoginWindow" border="normal" use="com.cdgtaxi.ibs.portal.ui.ManageMasterLoginWindow"
+	title="Manage Master Login"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+   		<rows>
+   			<row>
+   				<label sclass="fieldLabel">Master Login Id:</label>
+   				<capstextbox id="masterLoginIdTextBox" maxlength="80" width="98%"/>
+   				
+	   			<button label="Search" onClick="manageMasterLoginWindow.search()" />
+   			</row>
+   		</rows>
+   	</grid>
+	   	<hbox>
+	   	
+	   	</hbox>
+   	 	<h:br/>
+   	 	<h:br/>
+   	<grid>
+	   	<columns>
+	   		<column>Results</column>
+	   	</columns>
+   	</grid>
+   	<listbox fixedLayout="true" id="resultList"  onSelect="manageMasterLoginWindow.edit()">
+   		<listhead sizable="true">
+			<listheader label="Master Login Id"		sort="auto" width="auto"/>
+			<listheader label="Master Name"		 		sort="auto" width="aut"/>
+			<listheader label="Company Name"			sort="auto" width="auto"/>
+			<listheader label="Telephone"			sort="auto" width="auto"/>
+			<listheader label="Status"			sort="auto" width="auto"/>
+		</listhead>
+		<listfoot>
+			<listfooter span="10">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+   	</listbox>
+
+</window>

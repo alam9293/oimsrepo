@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="softCopyInvoiceAndTripsDetailByStatusNo">
+	<return-scalar column="card_no_or_job_type" 		type="string"/>
+	<return-scalar column="CARD_NAME"			 		type="string"/>
+	<return-scalar column="ONE_TIME_USAGE"		 		type="string"/>
+	<return-scalar column="ISSUED_TO"			 		type="string"/>
+	<return-scalar column="job_no" 						type="string"/>
+	<return-scalar column="trip_date" 					type="string"/>
+	<return-scalar column="trip_time" 					type="string"/>
+	<return-scalar column="TAXI_NO" 					type="string"/>
+	<return-scalar column="PICKUP_ADDRESS" 				type="string"/>
+	<return-scalar column="DESTINATION" 				type="string"/>
+	<return-scalar column="JOB_TYPE" 					type="string"/>
+	<return-scalar column="FARE_AMT"	 				type="string"/>
+	<return-scalar column="surcharge2" 					type="string"/>
+	<return-scalar column="admin_fee_value"	 			type="string"/>
+	<return-scalar column="gst_value"	 				type="string"/>
+	<return-scalar column="total"	 					type="string"/>
+	<return-scalar column="distance"	 				type="string"/>
+	<return-scalar column="invoice_month"	 			type="string"/>
+	<return-scalar column="invoice_year"	 			type="string"/>
+	<return-scalar column="invoice_no"	 				type="string"/>
+	<return-scalar column="main_contact_person_name"	type="string"/>
+	<return-scalar column="sub_contact_person_name" 	type="string"/>
+	<return-scalar column="division_code" 				type="string"/>
+	<return-scalar column="division_name" 				type="string"/>
+	<return-scalar column="department_code" 			type="string"/>
+	<return-scalar column="department_name" 			type="string"/>
+	<return-scalar column="vehicle_type" 				type="string"/>
+	<return-scalar column="trip_type" 					type="string"/>
+	<return-scalar column="PASSENGER_NAME" 				type="string"/>
+	<return-scalar column="flight_info" 				type="string"/>
+	<return-scalar column="booked_by" 					type="string"/>
+	<return-scalar column="booking_ref" 				type="string"/>
+	<return-scalar column="surcharge" 					type="string"/>
+	<return-scalar column="project_desc" 				type="string"/>
+	<return-scalar column="trip_code_reason" 			type="string"/>
+	<return-scalar column="card_holder_email" 			type="string"/>
+	<return-scalar column="employee_id"		 			type="string"/>
+	
+	<![CDATA[
+	select
+    case
+        when prod_type.PRODUCT_TYPE_ID = 'PS' then 'PREMIER SERVICE'
+        when prod_type.CARDLESS = 'Y' then prod_type.name
+        when prod_type.EXTERNAL_CARD = 'Y' then txn.EXTERNAL_CARD_NO
+        else prod.CARD_NO
+    end card_no_or_job_type,
+    case
+		when prod_type.PRODUCT_TYPE_ID is not null then
+			case
+				when prod_type.ONE_TIME_USAGE = 'Y' then prod_type.NAME
+				else prod.NAME_ON_PRODUCT
+			end
+    end CARD_NAME,
+    case
+		when prod_type.PRODUCT_TYPE_ID is not null then prod_type.ONE_TIME_USAGE
+    	else null
+    	end
+    ONE_TIME_USAGE,
+    cp.ISSUED_TO,
+    txn.job_no,
+    case 
+        when txn.TRIP_END_DT is not null then to_char(txn.TRIP_START_DT, 'dd/MM/yyyy') || ' TO ' || to_char(txn.TRIP_END_DT, 'dd/MM/yyyy')
+        else to_char(txn.TRIP_START_DT, 'dd/MM/yyyy')
+    end trip_date,
+    case 
+        when txn.TRIP_END_DT is not null then to_char(txn.TRIP_START_DT, 'hh24:mi:ss') || ' TO ' || to_char(txn.TRIP_END_DT, 'hh24:mi:ss')
+        else to_char(txn.TRIP_START_DT, 'hh24:mi:ss')
+    end trip_time,
+    txn.TAXI_NO,
+    txn.PICKUP_ADDRESS,
+    txn.DESTINATION,
+    job_type_master.MASTER_VALUE as JOB_TYPE,
+    txn.FARE_AMT,
+    txn.SURCHARGE as surcharge2,
+    txn.ADMIN_FEE_VALUE - txn.PROD_DIS_VALUE - txn.PROMO_DIS_VALUE as ADMIN_FEE_VALUE,
+    txn.GST_VALUE,
+    NVL(txn.FARE_AMT,0)+NVL(txn.ADMIN_FEE_VALUE - txn.PROD_DIS_VALUE - txn.PROMO_DIS_VALUE,0)+NVL(txn.GST_VALUE,0) total,
+    NVL(txn.DISTANCE,0) distance,
+    to_char(inv_hdr.INVOICE_DATE,'MM') invoice_month,
+    to_char(inv_hdr.INVOICE_DATE,'yyyy') invoice_year,
+    inv_hdr.INVOICE_NO invoice_no,
+    case
+        when main_saluatation.MASTER_NO is not null then main_saluatation.MASTER_VALUE || ' ' || contact_person.MAIN_CONTACT_NAME
+        else contact_person.MAIN_CONTACT_NAME
+    end main_contact_person_name,
+    case
+        when contact_person.SUB_CONTACT_NAME is not null then
+            case
+                when sub_saluatation.MASTER_NO is not null then sub_saluatation.MASTER_VALUE || ' ' || contact_person.SUB_CONTACT_NAME
+                else contact_person.SUB_CONTACT_NAME
+             end
+    end sub_contact_person_name,
+    case
+        when p_acct.ACCOUNT_CATEGORY = 'DIV' then p_acct.code
+        when acct.ACCOUNT_CATEGORY = 'DIV' then acct.code
+    end division_code,
+    case
+        when p_acct.ACCOUNT_CATEGORY = 'DIV' then p_acct.ACCOUNT_NAME
+        when acct.ACCOUNT_CATEGORY = 'DIV' then acct.ACCOUNT_NAME
+    end division_name,
+    case
+        when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.code
+    end department_code,
+    case
+        when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.ACCOUNT_NAME
+    end department_name,
+    vt.MASTER_VALUE vehicle_type,
+    vtt.MASTER_VALUE TRIP_TYPE,
+    txn.PASSENGER_NAME,
+    txn.FLIGHT_INFO,
+    txn.BOOKED_BY,
+    txn.BOOKING_REF,
+    case
+        when prod_type.PRODUCT_TYPE_ID = 'PS' then  txn.SURCHARGE
+        when prod_type.CARDLESS = 'Y' then txn.SURCHARGE
+        else ''
+    end as SURCHARGE,
+    NVL(txn.PROJECT_DESC, ' ') PROJECT_DESC,
+    NVL(txn.TRIP_CODE_REASON, ' ' ) TRIP_CODE_REASON,
+    NVL(prod.card_holder_email, ' ' ) as card_holder_email,
+    NVL(prod.employee_id, ' ') as employee_id
+	from TMTB_ACQUIRE_TXN txn
+	left join PMTB_PRODUCT prod on txn.PRODUCT_NO = prod.PRODUCT_NO
+	left join PMTB_PRODUCT_TYPE prod_type on txn.PRODUCT_TYPE_ID = prod_type.PRODUCT_TYPE_ID
+	left join ITTB_CP_CUST_CARD_ISSUANCE cp ON cp.card_no = prod.card_no
+	and txn.TRIP_START_DT >= cp.ISSUED_ON 
+	and (txn.TRIP_START_DT < cp.RETURNED_ON or cp.RETURNED_ON is null)
+	left join AMTB_ACCOUNT acct on txn.ACCOUNT_NO = acct.ACCOUNT_NO
+	left join AMTB_ACCT_MAIN_CONTACT main_contact on acct.ACCOUNT_NO = MAIN_CONTACT.ACCOUNT_NO and MAIN_CONTACT.MAIN_CONTACT_TYPE = 'B'
+	left join AMTB_CONTACT_PERSON contact_person on contact_person.CONTACT_PERSON_NO = main_contact.CONTACT_PERSON_NO
+	left join AMTB_ACCOUNT p_acct on acct.PARENT_NO = p_acct.ACCOUNT_NO
+	left join AMTB_ACCOUNT gp_acct on p_acct.PARENT_NO = gp_acct.ACCOUNT_NO
+	left join MSTB_MASTER_TABLE vt on vt.MASTER_NO = txn.VEHICLE_MODEL
+    left join MSTB_MASTER_TABLE vtt on vtt.MASTER_NO = txn.TRIP_TYPE
+	left join MSTB_MASTER_TABLE main_saluatation on contact_person.MAIN_CONTACT_SAL = main_saluatation.MASTER_NO
+	left join MSTB_MASTER_TABLE sub_saluatation on contact_person.SUB_CONTACT_SAL = sub_saluatation.MASTER_NO
+    left join BMTB_INVOICE_TXN inv_txn on inv_txn.ACQUIRE_TXN_NO = txn.ACQUIRE_TXN_NO
+    left join BMTB_INVOICE_DETAIL inv_dtl on inv_dtl.INVOICE_DETAIL_NO = inv_txn.INVOICE_DETAIL_NO
+    left join BMTB_INVOICE_SUMMARY inv_sum on inv_sum.INVOICE_SUMMARY_NO = inv_dtl.INVOICE_SUMMARY_NO
+    left join BMTB_INVOICE_HEADER inv_hdr on inv_hdr.INVOICE_HEADER_NO = inv_sum.INVOICE_HEADER_NO
+    left join MSTB_MASTER_TABLE job_type_master on txn.JOB_TYPE = job_type_master.MASTER_NO
+	where
+	    (:accountNo is null
+	    or acct.ACCOUNT_NO = :accountNo
+	    or p_acct.ACCOUNT_NO = :accountNo
+	    or gp_acct.ACCOUNT_NO = :accountNo)
+	and
+	    (:accountName is null
+	    or acct.ACCOUNT_NAME like :accountName
+	    or p_acct.ACCOUNT_NAME like :accountName
+	    or gp_acct.ACCOUNT_NAME like :accountName)
+	and
+	    (:cardNo is null
+	    or prod.CARD_NO = :cardNo)
+	and
+	    (:txnStatus is null
+	    or txn.TXN_STATUS = :txnStatus)
+	and
+	    (:prodTypeId is null
+	    or prod_type.PRODUCT_TYPE_ID = :prodTypeId)
+	and
+	    (:tripStartDate is null
+	    or trunc(txn.TRIP_START_DT) >= to_date((:tripStartDate), 'dd/MM/yyyy'))
+	and
+	    (:tripEndDate is null
+	    or trunc(txn.TRIP_END_DT) <= to_date((:tripEndDate), 'dd/MM/yyyy'))
+	order by
+	    case when :sortBy = '1' then txn.TRIP_START_DT end,
+	    case when :sortBy = '2' then card_no_or_job_type end
+	]]>
+</sql-query>
+
+</hibernate-mapping>

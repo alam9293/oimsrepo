@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="viewEarlyPaymentWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ViewEarlyPaymentWindow"
+	title="View Early Payment History"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	onCreate="viewEarlyPaymentWindow.init()"
+	onClose="self.refresh()">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Early Payment History"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<rows id="earlyPayment"/>
+	</grid>
+	<listbox id="earlyPaymentList" mold="paging" visible="false" >
+   		<listhead sizable="false" >
+   			<listheader label="Early Payment" width="40%" sort="auto"/>
+			<listheader label="Effective Date" width="35%" sort="auto"/>
+		</listhead>
+   	</listbox>
+</window>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Customer Deposit Summary" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="CUST_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEPOSIT_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="RECEIVED_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REFUND_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OFFSET_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select deposit.CUST_NO, deposit.ACCOUNT_NAME, deposit.DEPOSIT_AMT, deposit.RECEIVED_AMT, refund.REFUND_AMT, offset.OFFSET_AMT from(select acct.ACCOUNT_NO, acct.CUST_NO, acct.ACCOUNT_NAME, sum(deposit.amount) as deposit_amt, sum(deposit.amount)-sum(header.OUTSTANDING_AMOUNT) as received_amt from BMTB_INVOICE_DEPOSIT_TXN deposit
+    left join BMTB_INVOICE_HEADER header on deposit.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    inner join AMTB_ACCOUNT acct on deposit.ACCOUNT_NO = acct.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on acct.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO inner join FMTB_ENTITY_MASTER entity on ar.ENTITY_NO = entity.ENTITY_NO
+    where deposit.TXN_TYPE = 'R' and acct.CUST_NO like '%${1a. Account No}%' and acct.ACCOUNT_NAME like '%${1b. Account Name}%' and
+    ('${2. Entity#choice()#MASTER:EM}' is null or entity.ENTITY_NO = '${2. Entity#choice()#MASTER:EM}')
+    group by acct.ACCOUNT_NO, acct.ACCOUNT_NAME, acct.CUST_NO order by account_name) deposit
+    left join (select deposit.ACCOUNT_NO, sum(deposit.amount) as refund_amt from BMTB_INVOICE_DEPOSIT_TXN deposit where deposit.TXN_TYPE = 'F' and deposit.PAYMENT_RECEIPT_NO is not null group by deposit.ACCOUNT_NO) refund on refund.ACCOUNT_NO = deposit.ACCOUNT_NO
+    left join (select deposit.ACCOUNT_NO, sum(deposit.amount) as offset_amt from BMTB_INVOICE_DEPOSIT_TXN deposit where deposit.TXN_TYPE = 'F' and deposit.PAYMENT_RECEIPT_NO is null group by deposit.ACCOUNT_NO) offset on offset.ACCOUNT_NO = deposit.ACCOUNT_NO</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="cashlessBankCollectionDetailed">
+  <return-scalar column="name"            type="string"/>
+  <return-scalar column="card_no"         type="string"/>
+  <return-scalar column="pymt_type"       type="string"/>
+  <return-scalar column="batch_date"      type="string"/>
+  <return-scalar column="batch_no"        type="string"/>
+  <return-scalar column="batch_created_date"    type="string"/>
+  <return-scalar column="batch_updated_date"   type="string"/>
+  <return-scalar column="pymt_created_date"    type="string"/>
+  <return-scalar column="pymt_updated_date"   type="string"/>
+  <return-scalar column="trip_start_dt"   type="string"/>
+  <return-scalar column="taxi_no"         type="string"/>
+  <return-scalar column="JOB_NO"            type="string"/>
+  <return-scalar column="POLICY_NUMBER"     type="string"/>
+  <return-scalar column="POLICY_STATUS"            type="string"/>
+  <return-scalar column="nric"            type="string"/>
+  <return-scalar column="credit_date"     type="string"/>
+  <return-scalar column="fare_amt"        type="string"/>
+  <return-scalar column="admin_fee"       type="string"/>
+  <return-scalar column="gst"             type="string"/>
+  <return-scalar column="PREMIUM_AMOUNT"    type="string"/>
+  <return-scalar column="PREMIUM_GST"       type="string"/>
+  <return-scalar column="total"           type="string"/>
+  <return-scalar column="amt_received"    type="string"/>
+  <return-scalar column="reject_amt"      type="string"/>
+  <return-scalar column="os_amt"          type="string"/>
+  <return-scalar column="status"          type="string"/>
+  <return-scalar column="remarks"         type="string"/>
+  <return-scalar column="offline_flag"    type="string"/>
+  <return-scalar column="commission_amt"    type="string"/>
+  <![CDATA[
+  select acquirer.NAME, txn.CARD_NO, pymt_type_master.MASTER_VALUE as pymt_type,
+  to_char(batch.SETTLEMENT_DATE, 'dd/mm/yyyy') as batch_date,
+  batch.BATCH_NO,
+  to_char(batch.CREATED_DT, 'dd/mm/yyyy hh24:mi') as batch_created_date, 
+  to_char(batch.UPDATED_DT, 'dd/mm/yyyy hh24:mi') as batch_updated_date,
+  to_char(pymt.CREATED_DT, 'dd/mm/yyyy hh24:mi') as pymt_created_date, 
+  to_char(pymt.UPDATED_DT, 'dd/mm/yyyy hh24:mi') as pymt_updated_date,
+  to_char(txn.TRIP_START_DT, 'dd/mm/yyyy hh24:mi') as TRIP_START_DT,
+  txn.TAXI_NO, 
+   txn.JOB_NO, txn.POLICY_NUMBER,
+   case when txn.policy_status = 'A' then 'Active' when txn.policy_status = 'C' then 'System cancel' when txn.policy_status = 'M' then 'Manual Cancel' else '-' end as POLICY_STATUS, 
+  txn.NRIC,
+  to_char(pymt.CREDIT_DATE, 'dd/mm/yyyy') as CREDIT_DATE,
+  trim(to_char(txn.FARE_AMT, '999,999,990.00')) as FARE_AMT,
+    trim(to_char(txn.ADMIN_FEE, '999,999,990.00')) as ADMIN_FEE,
+    trim(to_char(txn.GST, '999,999,990.00')) as GST,
+    trim(to_char(nvl(txn.PREMIUM_AMOUNT,0), '999,999,990.00')) as PREMIUM_AMOUNT,
+    trim(to_char(nvl(txn.PREMIUM_GST,0), '999,999,990.00')) as PREMIUM_GST,
+    trim(to_char(txn.TOTAL, '999,999,990.00')) as TOTAL,
+    trim(to_char(case when txn.STATUS in ('C', 'B') then txn.total else 0 end, '999,999,990.00')) as amt_received,
+    trim(to_char(case when txn.STATUS = 'R' then txn.total else 0 end, '999,999,990.00')) as reject_amt,
+    trim(to_char(case when txn.STATUS = 'O' then txn.total else 0 end, '999,999,990.00')) as os_amt,
+    txn.STATUS, txn.REMARKS, txn.OFFLINE_FLAG as offline_flag,
+    trim(to_char(nvl(txn.COMMISSION_AMT, 0), '999,999,990.00')) as commission_amt
+    from TMTB_NON_BILLABLE_TXN txn
+    inner join TMTB_NON_BILLABLE_BATCH batch on txn.BATCH_ID = batch.BATCH_ID
+    inner join MSTB_ACQUIRER acquirer on batch.ACQUIRER_NO = acquirer.ACQUIRER_NO
+    inner join MSTB_ACQUIRER_PYMT_TYPE pymt_type on txn.PYMT_TYPE_NO = pymt_type.PYMT_TYPE_NO
+    inner join FMTB_NON_BILLABLE_MASTER non_master on non_master.SERVICE_PROVIDER = txn.SERVICE_PROVIDER and non_master.PYMT_TYPE_MASTER_NO = pymt_type.MASTER_NO
+    inner join (select MASTER_NO, max(EFFECTIVE_DATE) as EFFECTIVE_DATE from FMTB_NON_BILLABLE_DETAIL where EFFECTIVE_DATE < current_date group by MASTER_NO) last_non_detail on non_master.MASTER_NO = last_non_detail.MASTER_NO
+    inner join FMTB_NON_BILLABLE_DETAIL non_detail on last_non_detail.MASTER_NO = non_detail.MASTER_NO and last_non_detail.EFFECTIVE_DATE = non_detail.EFFECTIVE_DATE
+    inner join FMTB_AR_CONT_CODE_MASTER ar on non_detail.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    inner join MSTB_MASTER_TABLE pymt_type_master on pymt_type.MASTER_NO = pymt_type_master.MASTER_NO
+    inner join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    left join (select distinct BATCH_ID, PAYMENT_NO from BMTB_BANK_PAYMENT_DETAIL) pymt_detail on pymt_detail.BATCH_ID = batch.BATCH_ID
+    left join BMTB_BANK_PAYMENT pymt on pymt_detail.PAYMENT_NO = pymt.PAYMENT_NO
+    where (:batchNo is null or batch.BATCH_NO = :batchNo)
+    and ((:creditStart is null and :creditEnd is null)or(pymt.CREDIT_DATE between case when :creditStart is null then to_date(:creditEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:creditStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :creditEnd is null then to_date(:creditStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:creditEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and ((:batchStart is null and :batchEnd is null)or(batch.SETTLEMENT_DATE between case when :batchStart is null then to_date(:batchEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:batchStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :batchEnd is null then to_date(:batchStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:batchEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and (:entityNo is null or entity.ENTITY_NO = :entityNo)
+    and (:acquirerNo is null or acquirer.ACQUIRER_NO = :acquirerNo)
+    and (:paymentTypeNo is null or pymt_type_master.MASTER_CODE = :paymentTypeNo)
+    and (:providerNo is null or provider.MASTER_CODE = :providerNo)
+    and (:taxiNo is null or txn.TAXI_NO = :taxiNo)
+    and (:driverIc is null or txn.NRIC = :driverIc)
+    and (:txnStatus is null or txn.STATUS = :txnStatus)
+        and (txn.MATCHING_STATUS is NULL or txn.MATCHING_STATUS != 'T')
+    order by acquirer.NAME, case when :sort = 'BDBNCNTD' then batch.SETTLEMENT_DATE else null end,
+    case when :sort = 'BDBNCNTD' then batch.BATCH_NO else txn.NRIC end,
+    case when :sort = 'BDBNCNTD' then txn.CARD_NO else txn.STATUS end,
+    case when :sort = 'BDBNCNTD' then txn.TRIP_START_DT else null end,
+    case when :sort = 'BDBNCNTD' then null else txn.REMARKS end
+  ]]>
+</sql-query>
+</hibernate-mapping>

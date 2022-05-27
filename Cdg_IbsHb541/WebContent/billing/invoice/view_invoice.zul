@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window title="Invoice" border="normal" 
+	id="window"
+	use="com.cdgtaxi.ibs.billing.ui.ViewInvoiceWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
+	width="98%">
+	<grid id="invoiceDetailsGrid">
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Account No"/>
+				<label id="accountNoLabel" />
+				<label sclass="fieldLabel" value="Account Name"/>
+				<label id="nameLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Invoice No"/>
+				<label id="invoiceLabel" />
+				<label sclass="fieldLabel" value="Invoice Date"/>
+				<label id="invoiceDateLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Invoice Amount($)"/>
+				<label id="invoiceAmountLabel" />
+				<label sclass="fieldLabel" value="Invoice Applied Amount($)"/>
+				<label id="invoiceAppliedAmountLabel" />
+			</row>
+			<row>
+<!--					<label sclass="fieldLabel">Excess Amount($)"/>-->
+<!--					<label id="excessAmountLabel" onCreate="self.setValue(window.getExcessAmount())" />-->
+				<label sclass="fieldLabel" value="Debit/Credit Amount($)"/>
+				<label id="debitCreditAmountLabel" />
+				<label sclass="fieldLabel" value="Outstanding Amount($)"/>
+				<label id="outstandingAmountLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Invoice Status"/>
+				<label id="invoiceStatusLabel" />
+				<label sclass="fieldLabel" value="Billed To"/>
+				<label id="billedToLabel" />
+			</row>
+			<row spans="1,3">
+				<label sclass="fieldLabel" value="Remarks"/>
+				<label id="remarksLabel" multiline="true" />
+			</row>
+		</rows>
+	</grid>
+	
+	<h:br />
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Applied Receipts"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false" />
+		<rows>
+			<row>
+				<listbox id="receiptsList" onCreate= "window.fillReceiptDetails()" onSelect="">
+					<listhead sizable="true">
+						<listheader label="Receipt No" sort="auto" width="10%"/>
+						<listheader label="Receipt Date" sort="auto" width="10%"/>
+						<listheader label="Payment Date" sort="auto" width="10%"/>
+						<listheader label="Payment Mode" sort="auto" width="10%"/>
+						<listheader label="Cheque/Doc No" sort="auto" width="10%"/>
+						<listheader label="Cheque/Doc Date" sort="auto" width="10%"/>
+						<listheader label="Receipt Amt($)" sort="auto" width="10%" align="right"/>
+						<listheader label="Applied Amt($)" sort="auto" width="10%" align="right"/>
+<!--							<listheader label="Excess Amt($)" sort="auto" />-->
+						<listheader label="Cancellation/Void Reason" sort="auto" width="20%"/>
+					</listhead>
+				</listbox>
+			</row>
+		</rows>
+	</grid>
+
+	<h:br />
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Debit / Credit Notes"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false" />
+		<rows>
+			<row>
+				<listbox id="notesList" onCreate= "window.fillNoteDetails()" onSelect="">
+					<listhead sizable="false">
+						<listheader label="Dr/Cr Note" sort="auto" width="10%" />
+						<listheader label="Dr/Cr Date" width="15%" sort="auto" />
+						<listheader label="Type" sort="auto" width="10%"/>
+						<listheader label="Billed Invoice" sort="auto" width="10%"/>
+						<listheader label="Net Amt ($)" sort="auto" width="10%" align="right"/>
+<!--						<listheader label="Admin Fee ($)" sort="auto" />
+						<listheader label="Discount ($)" sort="auto" />
+						<listheader label="Prod. Discount ($)" sort="auto" />
+						<listheader label="GST ($)" sort="auto" /> -->
+						<listheader label="Status" sort="auto" width="10%"/>
+						<listheader label="Cancellation/Void Reason" sort="auto" width="35%"/>
+					</listhead>
+				</listbox>
+			</row>
+		</rows>
+	</grid>
+
+	<h:br />
+<!--		<button label="Issue Credit Note" onClick="window.issueCreditNote()" />-->
+<!--		<space />-->
+<!--		<button label="Issue Debit Note" onClick="window.issueDebitNote()" />-->
+<!--		<space />-->
+
+	<hbox>
+		<button label="Back" onClick="window.back()" />
+		<button id="cancelButton" label="Cancel Invoice" onClick="window.cancel()" />
+		<button label="Export To PDF" id="pdfPreviewBtn" onClick="window.exportResult()"/>
+	</hbox>
+</window>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Sample" type="Data" path="/IBS_Reports/Non Billable/Revenue By Product Card Type/datasource/Sample.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="DISPLAY_ORDER" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_CODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MASTER_CODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TXN_COUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TXN_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:data>
+    <ds:record>
+      <ds:field>1</ds:field>
+      <ds:field>CORPORATE CARD</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CCPL</ds:field>
+      <ds:field>12.0</ds:field>
+      <ds:field>153.0</ds:field>
+      <ds:field>7.6</ds:field>
+      <ds:field>0.12</ds:field>
+      <ds:field>160.72</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>1</ds:field>
+      <ds:field>CORPORATE CARD</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CTPL</ds:field>
+      <ds:field>8.0</ds:field>
+      <ds:field>559.1</ds:field>
+      <ds:field>52.88</ds:field>
+      <ds:field>0.79</ds:field>
+      <ds:field>612.77</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>1</ds:field>
+      <ds:field>FIXED VALUE E-VOUCHER</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CCPL</ds:field>
+      <ds:field>4.0</ds:field>
+      <ds:field>40.27</ds:field>
+      <ds:field>16.0</ds:field>
+      <ds:field>0.5</ds:field>
+      <ds:field>56.77</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>1</ds:field>
+      <ds:field>HOTEL CARD</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CCPL</ds:field>
+      <ds:field>3.0</ds:field>
+      <ds:field>20.2</ds:field>
+      <ds:field>1.27</ds:field>
+      <ds:field>0.02</ds:field>
+      <ds:field>21.49</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>1</ds:field>
+      <ds:field>HOTEL CARD</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CTPL</ds:field>
+      <ds:field>1.0</ds:field>
+      <ds:field>28.0</ds:field>
+      <ds:field>2.52</ds:field>
+      <ds:field>0.04</ds:field>
+      <ds:field>30.56</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>1</ds:field>
+      <ds:field>PERSONAL CARD</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CCPL</ds:field>
+      <ds:field>6.0</ds:field>
+      <ds:field>76.0</ds:field>
+      <ds:field>4.17</ds:field>
+      <ds:field>0.29</ds:field>
+      <ds:field>80.46</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>1</ds:field>
+      <ds:field>PERSONAL CARD</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CTPL</ds:field>
+      <ds:field>29.0</ds:field>
+      <ds:field>375.7</ds:field>
+      <ds:field>20.69</ds:field>
+      <ds:field>1.43</ds:field>
+      <ds:field>397.82</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>AMEX</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CCPL</ds:field>
+      <ds:field>4500.0</ds:field>
+      <ds:field>116322.0</ds:field>
+      <ds:field>11632.2</ds:field>
+      <ds:field>816.5</ds:field>
+      <ds:field>128770.7</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>AMEX</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CTPL</ds:field>
+      <ds:field>4500.0</ds:field>
+      <ds:field>114750.0</ds:field>
+      <ds:field>11475.0</ds:field>
+      <ds:field>805.86</ds:field>
+      <ds:field>127030.86</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>DINERS</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CCPL</ds:field>
+      <ds:field>7000.0</ds:field>
+      <ds:field>178602.0</ds:field>
+      <ds:field>17860.2</ds:field>
+      <ds:field>1253.74</ds:field>
+      <ds:field>197715.94</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>DINERS</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CTPL</ds:field>
+      <ds:field>7000.0</ds:field>
+      <ds:field>180218.0</ds:field>
+      <ds:field>18021.8</ds:field>
+      <ds:field>1264.76</ds:field>
+      <ds:field>199504.56</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>JCB</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CCPL</ds:field>
+      <ds:field>7000.0</ds:field>
+      <ds:field>178222.0</ds:field>
+      <ds:field>17822.2</ds:field>
+      <ds:field>1250.44</ds:field>
+      <ds:field>197294.64</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>JCB</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CTPL</ds:field>
+      <ds:field>7000.0</ds:field>
+      <ds:field>178428.0</ds:field>
+      <ds:field>17842.8</ds:field>
+      <ds:field>1252.14</ds:field>
+      <ds:field>197522.94</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>MASTER</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CCPL</ds:field>
+      <ds:field>5500.0</ds:field>
+      <ds:field>140716.0</ds:field>
+      <ds:field>14071.6</ds:field>
+      <ds:field>988.18</ds:field>
+      <ds:field>155775.78</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>MASTER</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CTPL</ds:field>
+      <ds:field>5500.0</ds:field>
+      <ds:field>140004.0</ds:field>
+      <ds:field>14000.4</ds:field>
+      <ds:field>983.88</ds:field>
+      <ds:field>154988.28</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>VISA</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CCPL</ds:field>
+      <ds:field>11500.0</ds:field>
+      <ds:field>293326.0</ds:field>
+      <ds:field>29332.6</ds:field>
+      <ds:field>2059.28</ds:field>
+      <ds:field>324717.88</ds:field>
+    </ds:record>
+    <ds:record>
+      <ds:field>2</ds:field>
+      <ds:field>VISA</ds:field>
+      <ds:field>CCA</ds:field>
+      <ds:field>CTPL</ds:field>
+      <ds:field>23000.0</ds:field>
+      <ds:field>584176.0</ds:field>
+      <ds:field>58417.6</ds:field>
+      <ds:field>4100.52</ds:field>
+      <ds:field>646694.12</ds:field>
+    </ds:record>
+  </ds:data>
+</ds:datasource>
+

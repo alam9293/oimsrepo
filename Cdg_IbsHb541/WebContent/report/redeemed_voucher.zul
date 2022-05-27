@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="redeemedVoucherWin" border="normal"
+	use="com.cdgtaxi.ibs.report.ui.RedeemedVoucherWindow" title="Redeemed Voucher"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+		<columns sizable="false">
+			<column width="30%" />
+			<column width="70%" />
+		</columns>
+		<rows>
+			 <row> 
+	          <label sclass="fieldLabel">01. Serial No Start</label>
+	          <decimalbox id="serialNoStartDMB" width="50%"  format="0" />
+	        </row>
+	        <row> 
+	          <label sclass="fieldLabel">02. Serial No End</label>
+	          <decimalbox id="serialNoEndDMB" width="50%" format="0" />
+	        </row>
+			<row>
+				<label sclass="fieldLabel">03. Item Type</label>
+				<listbox id="itemTypeLB" mold="select" multiple="false" width="50%" />
+			</row>
+			<row>
+				<label sclass="fieldLabel">04. Batch Start Date</label>
+				<datebox id="batchDateFromDB" width="50%" format="dd/MM/yyyy" />
+			</row>
+			<row>
+				<label sclass="fieldLabel">05. Batch End Date</label>
+				<datebox id="batchDateToDB" width="50%" format="dd/MM/yyyy" />
+			</row>
+			<row>
+				<label sclass="fieldLabel">06. Redeem Start Date</label>
+				<datebox id="redeemDateFromDB" width="50%" format="dd/MM/yyyy" />
+			</row>
+			<row>
+				<label sclass="fieldLabel">07. Redeem End Date</label>
+				<datebox id="redeemDateToDB" width="50%" format="dd/MM/yyyy" />
+			</row>
+			<row>
+				<label sclass="fieldLabel">08. Account No:</label>
+				<intbox id="accountNoIntBox" maxlength="6" width="50%"  format="0"
+				onChange="redeemedVoucherWin.searchBillableAccountByAccountNo()" 
+				onOK="createBillGenRequestWindow.searchBillableAccountByAccountNo()" />
+			</row>
+			<row>
+				<label sclass="fieldLabel">09. Account Name:</label>
+				<combobox id="accountNameComboBox"
+   					rows="1" 
+   					style="text-transform:uppercase"
+   					autodrop="true"
+   					autocomplete="false"
+   					width="50%"
+   					onChanging="redeemedVoucherWin.searchBillableAccountByAccountName(event.value)"
+   					tooltiptext="Minimum search criteria is 3 characters"
+   					onSelect="redeemedVoucherWin.onSelectAccountName()" 
+   				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel">10. Entity</label>
+				<listbox id="entityLB" mold="select" multiple="false" width="50%" />
+			</row>
+			<row>
+				<label sclass="fieldLabel required" id="reportFormatLabel">
+					11. Report Format:
+				</label>
+				<listbox id="reportFormat" mold="select" multiple="false"
+					onCreate="redeemedVoucherWin.populateReportFormatList(self)" width="50%" />
+			</row>
+			<row spans="2">
+				<hbox>
+					<button label="Generate" onClick="redeemedVoucherWin.generate()" />
+					<button label="Reset" onClick="redeemedVoucherWin.reset()" />
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+
+</window>

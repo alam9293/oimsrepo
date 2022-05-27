@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Credit Debit Note Receipt" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="NOTE_TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOTE_TITLE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOTE_SUBTITLE1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOTE_SUBTITLE1VALUE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOTE_SUBTITLE2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOTE_SUBTITLE2VALUE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_LINE1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_LINE2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_LINE3" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOTE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NOTE_DATE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_AREA" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_BLOCK" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_STREET" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ADDRESS_UNIT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_BUILDING" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="COUNTRY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_POSTAL" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="CONTACT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DIV_DEPT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DESCRIPTION" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOTE_TXN_TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REASON" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOTE_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="SUB_TOTAL" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ENTITY_GST_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>SELECT 
+CASE
+	WHEN note.NOTE_TYPE = 'C' THEN 'CREDIT'
+	WHEN note.NOTE_TYPE = 'D' THEN 'DEBIT'
+	ELSE ''
+END note_type,
+CASE
+	WHEN note.NOTE_TYPE = 'C' THEN 'CREDIT NOTE RECEIPT'
+	WHEN note.NOTE_TYPE = 'D' THEN 'DEBIT NOTE RECEIPT'
+	ELSE ''
+END note_title,
+CASE
+	WHEN note.NOTE_TYPE = 'C' THEN 'CREDIT NOTE NO.'
+	WHEN note.NOTE_TYPE = 'D' THEN 'DEBIT NOTE NO.'
+	ELSE ''	
+END note_subtitle1,
+CASE
+	WHEN note.NOTE_TYPE = 'C' THEN 'CREDIT ' || note.NOTE_NO
+	WHEN note.NOTE_TYPE = 'D' THEN 'DEBIT ' || note.NOTE_NO
+	ELSE ''	
+END note_subtitle1value,
+CASE
+	WHEN note.NOTE_TYPE = 'C' THEN 'DATE OF CREDIT NOTE'
+	WHEN note.NOTE_TYPE = 'D' THEN 'DATE OF DEBIT NOTE'
+	ELSE ''
+END note_subtitle2,
+CASE
+	WHEN note.NOTE_TYPE = 'C' THEN 'CREDIT ' || to_char(note.CREATED_DT, 'dd mon yyyy')
+	WHEN note.NOTE_TYPE = 'D' THEN 'DEBIT ' || to_char(note.CREATED_DT, 'dd mon yyyy')
+	ELSE ''
+END note_subtitle2value,
+CASE
+	WHEN person.ADDRESS_BLOCK IS NOT NULL AND person.ADDRESS_STREET IS NOT NULL THEN person.ADDRESS_BLOCK || ' ' || person.ADDRESS_STREET
+	WHEN person.ADDRESS_BLOCK IS NOT NULL AND person.ADDRESS_STREET IS NULL THEN person.ADDRESS_BLOCK
+	WHEN person.ADDRESS_BLOCK IS NULL AND person.ADDRESS_STREET IS NOT NULL THEN person.ADDRESS_STREET
+END address_line1,
+CASE
+	WHEN person.ADDRESS_UNIT IS NOT NULL AND person.ADDRESS_BUILDING IS NOT NULL THEN person.ADDRESS_UNIT || ' ' || person.ADDRESS_BUILDING
+	WHEN person.ADDRESS_UNIT IS NOT NULL AND person.ADDRESS_BUILDING IS NULL THEN person.ADDRESS_UNIT
+	WHEN person.ADDRESS_UNIT IS NULL AND person.ADDRESS_BUILDING IS NOT NULL THEN person.ADDRESS_BUILDING
+END address_line2,
+CASE
+	WHEN person.ADDRESS_COUNTRY IS NOT NULL AND person.ADDRESS_POSTAL IS NOT NULL THEN (SELECT MASTER_VALUE FROM MSTB_MASTER_TABLE WHERE MASTER_NO=person.ADDRESS_COUNTRY) || ' ' || person.ADDRESS_POSTAL
+	WHEN person.ADDRESS_COUNTRY IS NOT NULL AND person.ADDRESS_POSTAL IS NULL THEN (SELECT MASTER_VALUE FROM MSTB_MASTER_TABLE WHERE MASTER_NO=person.ADDRESS_COUNTRY)
+	WHEN person.ADDRESS_COUNTRY IS NULL AND person.ADDRESS_POSTAL IS NOT NULL THEN person.ADDRESS_POSTAL
+END address_line3,
+note.NOTE_NO,
+to_char(note.CREATED_DT, 'dd/mm/yyyy') AS note_date,
+case when acct.CUST_NO is not null then acct.ACCOUNT_NAME when p_acct.CUST_NO is not null then p_acct.ACCOUNT_NAME else gp_acct.ACCOUNT_NAME end as ACCOUNT_NAME,person.ADDRESS_AREA,person.ADDRESS_BLOCK,person.ADDRESS_STREET,person.ADDRESS_UNIT,person.ADDRESS_BUILDING,
+CASE
+	WHEN person.ADDRESS_COUNTRY IS NOT NULL THEN (SELECT MASTER_VALUE FROM MSTB_MASTER_TABLE WHERE MASTER_NO=person.ADDRESS_COUNTRY)
+	ELSE ''
+END country,
+person.ADDRESS_POSTAL,
+CASE
+	WHEN person.MAIN_CONTACT_NAME IS NOT NULL AND person.SUB_CONTACT_NAME IS NULL
+		THEN (SELECT MASTER_VALUE FROM MSTB_MASTER_TABLE WHERE MASTER_NO=person.MAIN_CONTACT_SAL) || ' ' || person.MAIN_CONTACT_NAME
+	WHEN person.MAIN_CONTACT_NAME IS NULL AND person.SUB_CONTACT_NAME IS NOT NULL
+		THEN (SELECT MASTER_VALUE FROM MSTB_MASTER_TABLE WHERE MASTER_NO=person.SUB_CONTACT_SAL) || ' ' || person.SUB_CONTACT_NAME
+	WHEN person.MAIN_CONTACT_NAME IS NOT NULL AND person.SUB_CONTACT_NAME IS NOT NULL
+		THEN (SELECT MASTER_VALUE FROM MSTB_MASTER_TABLE WHERE MASTER_NO=person.MAIN_CONTACT_SAL) || ' ' || person.MAIN_CONTACT_NAME || ' / ' || (SELECT MASTER_VALUE FROM MSTB_MASTER_TABLE WHERE MASTER_NO=person.SUB_CONTACT_SAL) || ' ' || person.SUB_CONTACT_NAME
+END contact_name,
+CASE
+	WHEN acct.ACCOUNT_CATEGORY != 'CORP' THEN acct.ACCOUNT_NAME
+	ELSE ''
+END div_dept_name,
+CASE
+	WHEN note.NOTE_TXN_TYPE='T' THEN 'TAXI FARE'
+	WHEN note.NOTE_TXN_TYPE='M' AND note.REASON IS NOT NULL THEN (select MASTER_VALUE from MSTB_MASTER_TABLE WHERE MASTER_NO=note.REASON)
+	ELSE ''
+END description,
+note.NOTE_TXN_TYPE,
+note.REASON,case when acct.CUST_NO is not null then acct.CUST_NO when p_acct.CUST_NO is not null then p_acct.CUST_NO else gp_acct.CUST_NO end as account_no,note.NOTE_AMOUNT-note.PROMO_DIS as NOTE_AMOUNT,note.ADMIN_FEE-note.PROD_DIS as ADMIN_FEE,note.DISCOUNT,
+CASE
+	WHEN note.NOTE_TXN_TYPE='T' THEN (note.NOTE_AMOUNT-note.PROMO_DIS+note.ADMIN_FEE-note.PROD_DIS-note.DISCOUNT+note.GST)
+	ELSE (note.NOTE_AMOUNT-note.PROMO_DIS+note.ADMIN_FEE-note.PROD_DIS-note.DISCOUNT+note.GST)
+END sub_total,
+CASE
+	WHEN note.NOTE_TXN_TYPE='T' THEN note.GST
+	ELSE note.GST
+END GST_AMOUNT,
+entity_master.ENTITY_GST_NO
+FROM BMTB_NOTE note
+INNER JOIN AMTB_ACCT_MAIN_CONTACT contact ON contact.ACCOUNT_NO=note.ACCOUNT_NO
+INNER JOIN AMTB_CONTACT_PERSON person ON person.CONTACT_PERSON_NO=contact.CONTACT_PERSON_NO
+INNER JOIN AMTB_ACCOUNT acct on acct.ACCOUNT_NO=note.ACCOUNT_NO
+-- join
+LEFT JOIN AMTB_ACCOUNT p_acct on acct.PARENT_NO = p_acct.ACCOUNT_NO
+LEFT JOIN AMTB_ACCOUNT gp_acct on p_acct.PARENT_NO = gp_acct.ACCOUNT_NO
+-- join
+LEFT JOIN (SELECT ACCOUNT_NO,AR_CONTROL_CODE_NO FROM AMTB_ACCOUNT) temp on temp.ACCOUNT_NO=(
+	CASE
+			WHEN gp_acct.account_no IS NOT NULL THEN gp_acct.account_no
+			WHEN p_acct.account_no IS NOT NULL THEN p_acct.account_no
+			ELSE acct.account_no END
+	)
+INNER JOIN FMTB_AR_CONT_CODE_MASTER ar_master ON ar_master.AR_CONTROL_CODE_NO=temp.AR_CONTROL_CODE_NO
+INNER JOIN FMTB_ENTITY_MASTER entity_master on entity_master.ENTITY_NO=ar_master.ENTITY_NO
+WHERE note.NOTE_NO=${noteNo} AND contact.MAIN_CONTACT_TYPE='B'</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

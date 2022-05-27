@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbCpMasterTagAcct" 
+    table="ITTB_CP_MASTER_TAG_ACCT"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+	<meta attribute="implement-equals" inherit="false">true</meta>
+    <id
+        name="tagAccountNo"
+        type="java.lang.Integer"
+        column="TAG_ACCOUNT_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">ITSQ_TAG_ACCOUNT_NO</param>
+        </generator>
+    </id>
+
+    <property
+        name="accountNo"
+        type="java.lang.Integer"
+        column="ACCOUNT_NO"
+        length="8"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="custNo"
+        type="java.lang.String"
+        column="CUST_NO"
+        length="6"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="accountName"
+        type="java.lang.String"
+        column="ACCOUNT_NAME"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="accountCategory"
+        type="java.lang.String"
+        column="ACCOUNT_CATEGORY"
+        length="4"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+   
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="masterLoginNo"
+        class="com.cdgtaxi.ibs.common.model.IttbCpMasterLogin"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="MASTER_LOGIN_NO" />
+    </many-to-one>
+</class>
+</hibernate-mapping>

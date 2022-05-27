@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="editPlanDetailWindow"
+	title="Loyalty Plan Details" border="normal" 
+	use="com.cdgtaxi.ibs.reward.ui.EditPlanDetailWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	
+	<zscript>
+		Constraint requiredBigDecimalConstraint = 
+			new com.cdgtaxi.ibs.web.constraint.RequiredCustomLengthBigDecimalConstraint(8);
+	</zscript> 
+	
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Loyalty Plan Name"/>
+				<label id="planNameLabel" />
+				<label sclass="fieldLabel required" value="Plan Type"/>
+				<combobox id="planTypeCB"
+					style="background-color:white"
+					autodrop="true"
+					readonly="true"
+   					width="91.5%"
+   					onChanging="self.open()"
+   					onChange="editPlanDetailWindow.updateTierGrid()"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel required" value="Start Date"/>
+				<datebox id="startDateDB" format="dd/MM/yyyy" width="91.5%" />
+				<label sclass="fieldLabel required" value="End Date"/>
+				<datebox id="endDateDB" format="dd/MM/yyyy" width="91.5%" />
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid id="spendTierGrid" visible="false">
+    	<columns sizable="false" >
+			<column><label value="Spending Tiers"/></column>
+		</columns>
+	</grid>
+	<grid id="spendTierGrid2" visible="false" width="600px">
+		<columns sizable="false">
+			<column label="Spending Range (Min) ($)" sclass="requiredHeader" width="180px"/>
+			<column label="Spending Range (Max) ($)" sclass="requiredHeader" width="180px"/>
+			<column label="Points Per Dollar" sclass="requiredHeader" width="140px"/>
+			<column width="3%"/>
+		</columns>
+		<rows id="spendTierRows">
+			<row id="spendTierRow">
+				<label id="spendMinLabel"/>
+<!--				<decimalbox id="spendMinDB" format="#,##0.00" width="98%"-->
+<!--					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>-->
+				<decimalbox id="spendMaxDB" format="#,##0.00" width="98%"
+					onChange="editPlanDetailWindow.updateMin((Row)self.getParent().getNextSibling())"
+					constraint="${requiredBigDecimalConstraint}"
+					maxlength="15"/>
+				<intbox id="pointPerDollarIB" width="98%"
+					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredZeroOrGreaterConstraint')}"
+					maxlength="4"/>
+				<image id="dropSpendTierImg" src="/images/delete.png" style="cursor:pointer"
+					onClick="editPlanDetailWindow.dropTier((Row)self.getParent())"/>
+			</row>
+		</rows>
+		<foot>
+			<footer>
+				<button id="newSpendTier" label="New Tier" onClick="editPlanDetailWindow.newTier(self)" />
+			</footer>
+		</foot>
+	</grid>
+	
+	<grid id="tripTierGrid" visible="false">
+    	<columns sizable="false">
+			<column><label value="Trip Tiers"/></column>
+		</columns>
+	</grid>
+	<grid id="tripTierGrid2" visible="false" width="600px">
+		<columns sizable="false">
+			<column label="Trip Range (Min)" sclass="requiredHeader" width="180px"/>
+			<column label="Trip Range (Max)" sclass="requiredHeader" width="180px"/>
+			<column label="Points Per Trip" sclass="requiredHeader" width="140px"/>
+			<column width="3%"/>
+		</columns>
+		<rows id="tripTierRows">
+			<row id="tripTierRow">
+				<label id="tripMinLabel"/>
+<!--				<decimalbox id="tripMinDB" format="#,##0" width="98%"-->
+<!--					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>-->
+				<decimalbox id="tripMaxDB" format="#,##0" width="98%"
+					onChange="editPlanDetailWindow.updateMin((Row)self.getParent().getNextSibling())"
+					constraint="${requiredBigDecimalConstraint}"
+					maxlength="15"/>
+				<intbox id="pointPerTripIB" width="98%"
+					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredZeroOrGreaterConstraint')}"
+					maxlength="4"/>
+				<image id="dropTripTierImg" src="/images/delete.png" style="cursor:pointer"
+					onClick="editPlanDetailWindow.dropTier((Row)self.getParent())"/>
+			</row>
+		</rows>
+		<foot>
+			<footer>
+				<button id="newTripTier" label="New Tier" onClick="editPlanDetailWindow.newTier(self)" />
+			</footer>
+		</foot>
+	</grid>
+	
+	<h:br/>
+   	<grid><columns sizable="false"><column>Created</column></columns></grid>
+	<grid>
+		<columns>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+   				<label sclass="fieldLabel">By</label>
+   				<label id="createdByLabel"/>
+   				<label sclass="fieldLabel">Date</label>
+   				<label id="createdDateLabel"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Time</label>
+   				<label id="createdTimeLabel"/>
+   			</row>
+		</rows>
+	</grid>
+	<grid><columns sizable="false"><column>Last Updated</column></columns></grid>
+	<grid>
+		<columns>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+   				<label sclass="fieldLabel">By</label>
+   				<label id="lastUpdatedByLabel"/>
+   				<label sclass="fieldLabel">Date</label>
+   				<label id="lastUpdatedDateLabel"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Time</label>
+   				<label id="lastUpdatedTimeLabel"/>
+   			</row>
+		</rows>
+	</grid>
+	
+	<h:br/>
+	<button label="Save" onClick="editPlanDetailWindow.updateDetail()" />
+	<button label="Back" onClick="editPlanDetailWindow.back()" />
+</window>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="asOfflineApprovalReport">
+	<return-scalar column="txn_date" 				type="string"/>
+	<return-scalar column="offline_txn_date_time"	type="string"/>
+	<return-scalar column="PROCESS_CODE" 			type="string"/>
+	<return-scalar column="MERCHANT_ID" 			type="string"/>
+	<return-scalar column="TERMINAL_ID" 			type="string"/>
+	<return-scalar column="SYS_TRACE_NO" 			type="string"/>
+	<return-scalar column="retrieval_ref_no" 		type="string"/>
+	<return-scalar column="card_no" 				type="string"/>
+	<return-scalar column="PROD_NAME" 				type="string"/>
+	<return-scalar column="expiry_date" 			type="string"/>
+	<return-scalar column="fixed_value" 			type="string"/>
+	<return-scalar column="txn_amt" 				type="string"/>
+	<return-scalar column="response_date" 			type="string"/>
+	<return-scalar column="RESPONSE_CODE" 			type="string"/>
+	<return-scalar column="AUTH_RESPONSE_ID" 		type="string"/>
+	<return-scalar column="ERROR_CODE" 				type="string"/>
+	<return-scalar column="DESCRIPTION" 			type="string"/>
+	<return-scalar column="STATUS" 					type="string"/>
+	<return-scalar column="BATCH_NO" 				type="string"/>
+
+	<![CDATA[
+	SELECT * FROM (
+		SELECT 
+		to_char(incoming.TXN_DATE, 'DD/MM/YYYY HH24:MI:SS') AS txn_date,
+		CASE 
+	    	WHEN incoming.LOCAL_TXN_DATE IS NULL THEN NULL
+	    	ELSE to_char(to_date(incoming.LOCAL_TXN_DATE||to_char(sysdate, 'YYYY') || incoming.LOCAL_TXN_TIME, 'MMDDYYYYHH24MISS'), 'DD/MM/YYYY HH24:MI:SS')
+		END AS offline_txn_date_time,
+		incoming.PROCESS_CODE,
+		incoming.MERCHANT_ID, 
+		incoming.TERMINAL_ID,
+		incoming.SYS_TRACE_NO,
+		NVL(incoming.RETRIEVAL_REF_NO,'') AS retrieval_ref_no,
+		NVL(incoming.PAN,SUBSTR(incoming.TRACK_2_DATA, 1,(instr(incoming.TRACK_2_DATA,'='))-1)) AS card_no,
+		products.PROD_NAME,
+		NVL(incoming.EXPIRY_DATE,'') AS expiry_date,
+		NVL(products.FIXED_VALUE,'') AS fixed_value,
+		substr(cast(TXN_AMT as int),1,length(cast(TXN_AMT as int))-2) ||'.'||substr(TXN_AMT,-2,length(TXN_AMT)) AS txn_amt,
+		to_char(outgoing.TXN_DATE, 'DD/MM/YYYY HH24:MI:SS') AS response_date,
+		outgoing.RESPONSE_CODE,
+		outgoing.AUTH_RESPONSE_ID,
+		outgoing.ERROR_CODE,
+		error.DESCRIPTION,
+		master.STATUS,
+		master.BATCH_NO
+		FROM ASVW_ISO8583_INCOMING incoming, ASVW_ISO8583_OUTGOING outgoing, 
+		ASVW_MASTER_TRANSACTION master, ASVW_ERROR_CODE error, 
+		(SELECT * FROM ASVW_PRODUCT a, ASVW_PRODUCT_TYPE b WHERE a.PROD_TYPE_ID = b.PROD_TYPE_ID) products
+		WHERE incoming.MSG_ID = outgoing.MSG_ID(+)
+		AND outgoing.RETRIEVAL_REF_NO = master.RETRIEVAL_REF_NO(+)
+		AND outgoing.ERROR_CODE = error.ERROR_CODE(+)
+		AND NVL(incoming.PAN,SUBSTR(incoming.TRACK_2_DATA, 1,(instr(incoming.TRACK_2_DATA,'='))-1)) =products.CARD_NO(+)
+		AND ((:txnStart IS NULL AND :txnEnd IS NULL)
+	        OR (incoming.TXN_DATE BETWEEN 
+    	        CASE WHEN :txnStart IS NULL THEN to_date(:txnEnd, 'yyyy-mm-dd hh24:mi:ss') ELSE to_date(:txnStart, 'yyyy-mm-dd hh24:mi:ss') END 
+        	    AND CASE WHEN :txnEnd IS NULL THEN to_date(:txnStart, 'yyyy-mm-dd hh24:mi:ss') ELSE to_date(:txnEnd, 'yyyy-mm-dd hh24:mi:ss') END))
+		AND ((:offlineTxnStart IS NULL AND :offlineTxnEnd IS NULL)
+		      OR (CASE WHEN incoming.LOCAL_TXN_DATE IS NULL THEN NULL
+            	ELSE to_date(to_char(to_date(incoming.LOCAL_TXN_DATE||to_char(sysdate, 'YYYY'),'MMDDYYYY'), 'yyyy-mm-dd'), 'yyyy-mm-dd') END BETWEEN 
+	  	        CASE WHEN :offlineTxnStart IS NULL THEN to_date(:offlineTxnEnd, 'yyyy-mm-dd hh24:mi:ss') ELSE to_date(:offlineTxnStart, 'yyyy-mm-dd hh24:mi:ss') END 
+        AND CASE WHEN :offlineTxnEnd IS NULL THEN to_date(:offlineTxnStart, 'yyyy-mm-dd hh24:mi:ss') ELSE to_date(:offlineTxnEnd, 'yyyy-mm-dd hh24:mi:ss') END))
+		AND (:msgTypId IS NULL OR incoming.MSG_TYP_ID = :msgTypId)
+		AND (:processCode IS NULL OR incoming.PROCESS_CODE = :processCode)
+		AND (:cardNo IS NULL OR products.CARD_NO = :cardNo)
+		AND ((:error IS NULL) OR (:error = 'Y' AND outgoing.ERROR_CODE IS NOT NULL) OR (:error = 'N' AND outgoing.ERROR_CODE IS NULL))
+		ORDER BY
+		    CASE WHEN :sortBy = 'TD' THEN incoming.TXN_DATE END,
+		    CASE WHEN :sortBy = 'ST' THEN incoming.SYS_TRACE_NO END,
+		    CASE WHEN :sortBy = 'ST' THEN incoming.TXN_DATE END
+	) WHERE rownum <= (SELECT MAX(MASTER_VALUE) FROM MSTB_MASTER_TABLE WHERE MASTER_TYPE = 'MRR' AND MASTER_STATUS = 'A')
+	]]>
+</sql-query>
+</hibernate-mapping>

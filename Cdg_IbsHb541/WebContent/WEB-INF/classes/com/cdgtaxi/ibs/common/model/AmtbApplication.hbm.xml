@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.AmtbApplication" 
+    table="AMTB_APPLICATION"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="applicationNo"
+        type="java.lang.String"
+        column="APPLICATION_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">AMTB_APPLICATION_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="applicationDt"
+        type="java.sql.Timestamp"
+        column="APPLICATION_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="applicantName"
+        type="java.lang.String"
+        column="APPLICANT_NAME"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="rcbNo"
+        type="java.lang.String"
+        column="RCB_NO"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="rcbDt"
+        type="java.sql.Timestamp"
+        column="RCB_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="capital"
+        type="java.math.BigDecimal"
+        column="CAPITAL"
+        length="15"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="addressBlock"
+        type="java.lang.String"
+        column="ADDRESS_BLOCK"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="addressUnit"
+        type="java.lang.String"
+        column="ADDRESS_UNIT"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="addressStreet"
+        type="java.lang.String"
+        column="ADDRESS_STREET"
+        length="60"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="addressBuilding"
+        type="java.lang.String"
+        column="ADDRESS_BUILDING"
+        length="60"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="addressArea"
+        type="java.lang.String"
+        column="ADDRESS_AREA"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="addressCity"
+        type="java.lang.String"
+        column="ADDRESS_CITY"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="addressState"
+        type="java.lang.String"
+        column="ADDRESS_STATE"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="addressPostal"
+        type="java.lang.String"
+        column="ADDRESS_POSTAL"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="authPerson"
+        type="java.lang.String"
+        column="AUTH_PERSON"
+        length="50"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="authTitle"
+        type="java.lang.String"
+        column="AUTH_TITLE"
+        length="50"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="creditLimit"
+        type="java.math.BigDecimal"
+        column="CREDIT_LIMIT"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="deposit"
+        type="java.math.BigDecimal"
+        column="DEPOSIT"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="nameOnCard"
+        type="java.lang.String"
+        column="NAME_ON_CARD"
+        length="22"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="nric"
+        type="java.lang.String"
+        column="NRIC"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tel"
+        type="java.lang.String"
+        column="TEL"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="fax"
+        type="java.lang.String"
+        column="FAX"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="mobile"
+        type="java.lang.String"
+        column="MOBILE"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="office"
+        type="java.lang.String"
+        column="OFFICE"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="recurringFlag"
+        type="java.lang.String"
+        column="RECURRING_FLAG"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="email"
+        type="java.lang.String"
+        column="EMAIL"
+        length="255"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="billingSame"
+        type="java.lang.String"
+        column="BILLING_SAME"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="billingBlock"
+        type="java.lang.String"
+        column="BILLING_BLOCK"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="billingUnit"
+        type="java.lang.String"
+        column="BILLING_UNIT"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="billingStreet"
+        type="java.lang.String"
+        column="BILLING_STREET"
+        length="60"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="billingBuilding"
+        type="java.lang.String"
+        column="BILLING_BUILDING"
+        length="60"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="billingArea"
+        type="java.lang.String"
+        column="BILLING_AREA"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="billingPostal"
+        type="java.lang.String"
+        column="BILLING_POSTAL"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="billingCity"
+        type="java.lang.String"
+        column="BILLING_CITY"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="billingState"
+        type="java.lang.String"
+        column="BILLING_STATE"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="shippingSame"
+        type="java.lang.String"
+        column="SHIPPING_SAME"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="shippingBlock"
+        type="java.lang.String"
+        column="SHIPPING_BLOCK"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="shippingUnit"
+        type="java.lang.String"
+        column="SHIPPING_UNIT"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="shippingStreet"
+        type="java.lang.String"
+        column="SHIPPING_STREET"
+        length="60"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="shippingBuilding"
+        type="java.lang.String"
+        column="SHIPPING_BUILDING"
+        length="60"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="shippingArea"
+        type="java.lang.String"
+        column="SHIPPING_AREA"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="shippingPostal"
+        type="java.lang.String"
+        column="SHIPPING_POSTAL"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="shippingCity"
+        type="java.lang.String"
+        column="SHIPPING_CITY"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="shippingState"
+        type="java.lang.String"
+        column="SHIPPING_STATE"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="occupation"
+        type="java.lang.String"
+        column="OCCUPATION"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employerName"
+        type="java.lang.String"
+        column="EMPLOYER_NAME"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employerBlock"
+        type="java.lang.String"
+        column="EMPLOYER_BLOCK"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employerUnit"
+        type="java.lang.String"
+        column="EMPLOYER_UNIT"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employerStreet"
+        type="java.lang.String"
+        column="EMPLOYER_STREET"
+        length="60"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employerBuilding"
+        type="java.lang.String"
+        column="EMPLOYER_BUILDING"
+        length="60"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employerArea"
+        type="java.lang.String"
+        column="EMPLOYER_AREA"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employerPostal"
+        type="java.lang.String"
+        column="EMPLOYER_POSTAL"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employerCity"
+        type="java.lang.String"
+        column="EMPLOYER_CITY"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employerState"
+        type="java.lang.String"
+        column="EMPLOYER_STATE"
+        length="35"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="monthlyIncome"
+        type="java.math.BigDecimal"
+        column="MONTHLY_INCOME"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="employYears"
+        type="java.lang.Integer"
+        column="EMPLOY_YEARS"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="projectCode"
+        type="java.lang.String"
+        column="PROJECT_CODE"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="einvoiceFlag"
+        type="java.lang.String"
+        column="E_INVOICE_FLAG"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="invoicePrinting"
+        type="java.lang.String"
+        column="INVOICE_PRINTING"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="outsourcePrintingFlag"
+        type="java.lang.String"
+        column="OUTSOURCE_PRINTING_FLAG"
+        length="1"
+        not-null="true"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="smsFlag"
+        type="java.lang.String"
+        column="SMS_FLAG"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="smsExpiryFlag"
+        type="java.lang.String"
+        column="SMS_EXPIRY_FLAG"
+        length="1"
+        not-null="true"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="smsTopupFlag"
+        type="java.lang.String"
+        column="SMS_TOPUP_FLAG"
+        length="1"
+        not-null="true"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="printTaxInvoiceOnly"
+        type="java.lang.String"
+        column="PRINT_TAX_INV_ONLY"
+        length="1"
+        not-null="true"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="aceIndicator"
+        type="java.lang.String"
+        column="ACE_INDICATOR"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="pubbsFlag"
+        type="java.lang.String"
+        column="PUBBS_FLAG"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>  
+    <property
+        name="fiFlag"
+        type="java.lang.String"
+        column="FI_FLAG"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>  
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to MstbEarlyPaymentMaster -->
+    <many-to-one
+        name="mstbEarlyPaymentMaster"
+        class="com.cdgtaxi.ibs.master.model.MstbEarlyPaymentMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="EARLY_PAYMENT_PLAN_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByBillingCountry"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="BILLING_COUNTRY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByEmployerCountry"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="EMPLOYER_COUNTRY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByJobStatus"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="JOB_STATUS" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByAuthSal"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="AUTH_SAL" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByShippingCountry"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="SHIPPING_COUNTRY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByIndustryNo"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="INDUSTRY_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByInformationSource"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="INFORMATION_SOURCE" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByAddressCountry"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ADDRESS_COUNTRY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbSalesperson -->
+    <many-to-one
+        name="mstbSalesperson"
+        class="com.cdgtaxi.ibs.master.model.MstbSalesperson"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="SALESPERSON" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to FmtbArContCodeMaster -->
+    <many-to-one
+        name="fmtbArContCodeMaster"
+        class="com.cdgtaxi.ibs.common.model.FmtbArContCodeMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="AR_CONTROL_CODE_NO" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to AmtbApplicationProduct -->
+    <set
+        name="amtbApplicationProducts"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="APPLICATION_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplicationProduct"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbApplicationFlow -->
+    <set
+        name="amtbApplicationFlows"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="APPLICATION_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplicationFlow"
+        />
+    </set>
+    <!-- bi-directional many-to-one association to AmtbAcctType -->
+    <many-to-one
+        name="amtbAcctType"
+        class="com.cdgtaxi.ibs.common.model.AmtbAcctType"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ACCT_TYPE_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AmtbAccount -->
+    <many-to-one
+        name="amtbAccount"
+        class="com.cdgtaxi.ibs.common.model.AmtbAccount"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ACCOUNT_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbVolDiscMaster -->
+    <many-to-one
+        name="mstbVolDiscMaster"
+        class="com.cdgtaxi.ibs.master.model.MstbVolDiscMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="VOLUME_DISCOUNT_PLAN_NO" />
+    </many-to-one>
+    <many-to-one
+        name="mstbMasterTableByMainContactRace"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="MAIN_CONTACT_RACE" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbAdminFeeMaster -->
+    <many-to-one
+        name="mstbAdminFeeMaster"
+        class="com.cdgtaxi.ibs.master.model.MstbAdminFeeMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ADMIN_FEE_PLAN_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbLatePaymentMaster -->
+    <many-to-one
+        name="mstbLatePaymentMaster"
+        class="com.cdgtaxi.ibs.master.model.MstbLatePaymentMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="LATE_PAYMENT_PLAN_NO" />
+    </many-to-one>
+	 <property
+        name="invoiceSorting"
+        type="java.lang.String"
+        column="INVOICE_SORTING"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="invoiceFormat"
+        type="java.lang.String"
+        column="INVOICE_FORMAT"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="govtEInvoiceFlag"
+        type="java.lang.String"
+        column="GOVT_E_INVOICE_FLAG"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="businessUnitMasterNo"
+        type="java.lang.Integer"
+        column="BUSINESS_UNIT_MASTER_NO"
+        length="8"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+</class>
+</hibernate-mapping>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.FmtbTransactionCode" 
+    table="FMTB_TRANSACTION_CODE"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="transactionCodeNo"
+        type="java.lang.Integer"
+        column="TRANSACTION_CODE_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">FMTB_TRANSACTION_CODE_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="txnCode"
+        type="java.lang.String"
+        column="TXN_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="description"
+        type="java.lang.String"
+        column="DESCRIPTION"
+        not-null="true"
+        length="30"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="txnType"
+        type="java.lang.String"
+        column="TXN_TYPE"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="glCode"
+        type="java.lang.String"
+        column="GL_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="costCentre"
+        type="java.lang.String"
+        column="COST_CENTRE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="discountable"
+        type="java.lang.String"
+        column="DISCOUNTABLE"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="discountGlCode"
+        type="java.lang.String"
+        column="DISCOUNT_GL_CODE"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="discountCostCentre"
+        type="java.lang.String"
+        column="DISCOUNT_COST_CENTRE"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="effectiveDate"
+        type="java.sql.Date"
+        column="EFFECTIVE_DATE"
+        not-null="true"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="isManual"
+        type="java.lang.String"
+        column="IS_MANUAL"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to PmtbProductType -->
+    <many-to-one
+        name="pmtbProductType"
+        class="com.cdgtaxi.ibs.common.model.PmtbProductType"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PRODUCT_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTable"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="TAX_TYPE" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to BmtbInvoiceDetail -->
+    <set
+        name="bmtbInvoiceDetails"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="TXN_CODE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbInvoiceDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BmtbNote -->
+    <set
+        name="bmtbNotes"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="TXN_CODE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbNote"
+        />
+    </set>
+    <!-- bi-directional many-to-one association to FmtbEntityMaster -->
+    <many-to-one
+        name="fmtbEntityMaster"
+        class="com.cdgtaxi.ibs.common.model.FmtbEntityMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ENTITY_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

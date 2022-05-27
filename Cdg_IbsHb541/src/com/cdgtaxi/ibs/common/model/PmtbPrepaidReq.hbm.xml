@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 29, 2013 3:09:21 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.cdgtaxi.ibs.common.model.PmtbPrepaidReq" table="PMTB_PREPAID_REQ">
+        <id name="reqNo" type="java.math.BigDecimal">
+            <column name="REQ_NO" />
+          	 <generator class="com.cdgtaxi.ibs.common.generator.BigDecimalSequenceGenerator">
+            <param name="sequence_name">PMSQ_PREPAID_REQ</param>
+        	</generator>
+        </id>
+        <many-to-one name="amtbAccount" class="com.cdgtaxi.ibs.common.model.AmtbAccount" fetch="join">
+            <column name="ACCOUNT_NO" />
+        </many-to-one>
+        <many-to-one name="requestBy" class="com.cdgtaxi.ibs.acl.model.SatbUser" fetch="join">
+            <column name="REQUESTOR" />
+        </many-to-one>
+        <many-to-one name="bmtbInvoiceHeader" class="com.cdgtaxi.ibs.common.model.BmtbInvoiceHeader" fetch="join">
+            <column name="BMTB_INVOICE_HEADER" />
+        </many-to-one>
+        <property name="requestDate" type="java.util.Date">
+            <column name="REQUEST_DATE" />
+        </property>
+        <property name="status" type="java.lang.String">
+            <column name="STATUS" />
+        </property>
+        <property name="requestType" type="java.lang.String">
+            <column name="REQUEST_TYPE" />
+        </property>
+        <property name="requestRemarks" type="java.lang.String">
+            <column name="REQUEST_REMARKS" />
+        </property>
+        <property name="createdBy" type="java.lang.String">
+            <column name="CREATED_BY" />
+        </property>
+        <property name="createdDt" type="java.sql.Timestamp">
+            <column name="CREATED_DT" />
+        </property>
+        <property name="updatedBy" type="java.lang.String">
+            <column name="UPDATED_BY" />
+        </property>
+        <property name="updatedDt" type="java.sql.Timestamp">
+            <column name="UPDATED_DT" />
+        </property>
+        <property name="approvalRequired" type="java.lang.String">
+            <column name="APPROVAL_REQUIRED" />
+        </property>
+        <property name="version" type="java.lang.Integer">
+            <column name="VERSION" />
+        </property>
+        <many-to-one name="approvalBy" class="com.cdgtaxi.ibs.acl.model.SatbUser" fetch="join">
+            <column name="APPROVER" />
+        </many-to-one>
+        <property name="approvalDate" type="java.util.Date">
+            <column name="APPROVAL_DATE" />
+        </property>
+        <property name="approvalStatus" type="java.lang.String">
+            <column name="APPROVAL_STATUS" />
+        </property>
+        <property name="approvalRemarks" type="java.lang.String">
+            <column name="APPROVAL_REMARKS" />
+        </property>
+        <property name="uri" type="java.lang.String">
+            <column name="URI" />
+        </property>
+        <property name="failureUri" type="java.lang.String">
+            <column name="FAILUREURI" />
+        </property>
+        <property name="redDotInvoiceNo" type="java.lang.String">
+            <column name="REDDOTINVOICENO" />
+        </property>
+        <property name="processDate" type="java.util.Date">
+            <column name="PROCESS_DATE" />
+        </property>
+      
+    </class>
+</hibernate-mapping>

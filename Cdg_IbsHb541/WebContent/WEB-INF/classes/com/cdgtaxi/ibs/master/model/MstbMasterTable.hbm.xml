@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.master.model.MstbMasterTable" 
+    table="MSTB_MASTER_TABLE"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="masterNo"
+        type="java.lang.Integer"
+        column="MASTER_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">MSTB_MASTER_TABLE_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="masterType"
+        type="java.lang.String"
+        column="MASTER_TYPE"
+        not-null="true"
+        length="5"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="masterCode"
+        type="java.lang.String"
+        column="MASTER_CODE"
+        not-null="true"
+        length="5"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="interfaceMappingValue"
+        type="java.lang.String"
+        column="INTERFACE_MAPPING_VALUE"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="masterValue"
+        type="java.lang.String"
+        column="MASTER_VALUE"
+        not-null="true"
+        length="600"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="masterStatus"
+        type="java.lang.String"
+        column="MASTER_STATUS"
+        not-null="true"
+        length="8"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+ 	<property
+        name="masterGrouping"
+        type="java.lang.String"
+        column="MASTER_GROUPING"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to AmtbCorporateDetail -->
+    <set
+        name="amtbCorporateDetailsByIndustry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="INDUSTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbCorporateDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbCorporateDetail -->
+    <set
+        name="amtbCorporateDetailsByAuthPersonSal"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="AUTH_PERSON_SAL" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbCorporateDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbCorporateDetail -->
+    <set
+        name="amtbCorporateDetailsByAddressCountry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="ADDRESS_COUNTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbCorporateDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbPersonalDetail -->
+    <set
+        name="amtbPersonalDetailsByIndustry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="INDUSTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbPersonalDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbPersonalDetail -->
+    <set
+        name="amtbPersonalDetailsByAddressCountry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="ADDRESS_COUNTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbPersonalDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbPersonalDetail -->
+    <set
+        name="amtbPersonalDetailsByEmployerCountry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="EMPLOYER_COUNTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbPersonalDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbPersonalDetail -->
+    <set
+        name="amtbPersonalDetailsByJobStatus"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="JOB_STATUS" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbPersonalDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbPersonalDetail -->
+    <set
+        name="amtbPersonalDetailsByRelationToParent"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="RELATION_TO_PARENT" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbPersonalDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbAcctStatus -->
+    <set
+        name="amtbAcctStatuses"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="STATUS_REASON" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbAcctStatus"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbTxnReviewReq -->
+    <set
+        name="tmtbTxnReviewReqsByServiceProvider"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="SERVICE_PROVIDER" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.TmtbTxnReviewReq"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbTxnReviewReq -->
+    <set
+        name="tmtbTxnReviewReqsByTripType"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="TRIP_TYPE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.TmtbTxnReviewReq"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbTxnReviewReq -->
+    <set
+        name="tmtbTxnReviewReqsByVehicleType"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="VEHICLE_TYPE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.TmtbTxnReviewReq"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to PmtbProductReplacement -->
+    <set
+        name="pmtbProductReplacements"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="REPLACEMENT_REASON" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.PmtbProductReplacement"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbContactPerson -->
+    <set
+        name="amtbContactPersonsByAddressCountry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="ADDRESS_COUNTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbContactPerson"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbContactPerson -->
+    <set
+        name="amtbContactPersonsByMainContactSal"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="MAIN_CONTACT_SAL" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbContactPerson"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbContactPerson -->
+    <set
+        name="amtbContactPersonsBySubContactSal"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="SUB_CONTACT_SAL" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbContactPerson"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to FmtbTransactionCode -->
+    <set
+        name="fmtbTransactionCodes"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="TAX_TYPE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.FmtbTransactionCode"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BmtbNote -->
+    <set
+        name="bmtbNotesByCancellationReason"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="CANCELLATION_REASON" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbNote"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BmtbNote -->
+    <set
+        name="bmtbNotesByReason"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="REASON" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbNote"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BmtbPaymentReceipt -->
+    <set
+        name="bmtbPaymentReceiptsByCancellationReason"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="CANCELLATION_REASON" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbPaymentReceipt"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BmtbPaymentReceipt -->
+    <set
+        name="bmtbPaymentReceiptsByPaymentMode"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PAYMENT_MODE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbPaymentReceipt"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbApplication -->
+    <set
+        name="amtbApplicationsByEmployerCountry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="EMPLOYER_COUNTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplication"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbApplication -->
+    <set
+        name="amtbApplicationsByBillingCountry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="BILLING_COUNTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplication"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbApplication -->
+    <set
+        name="amtbApplicationsByJobStatus"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="JOB_STATUS" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplication"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbApplication -->
+    <set
+        name="amtbApplicationsByShippingCountry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="SHIPPING_COUNTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplication"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbApplication -->
+    <set
+        name="amtbApplicationsByAuthSal"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="AUTH_SAL" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplication"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbApplication -->
+    <set
+        name="amtbApplicationsByIndustryNo"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="INDUSTRY_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplication"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbApplication -->
+    <set
+        name="amtbApplicationsByInformationSource"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="INFORMATION_SOURCE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplication"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbApplication -->
+    <set
+        name="amtbApplicationsByAddressCountry"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="ADDRESS_COUNTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplication"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbAcquireTxn -->
+    <set
+        name="tmtbAcquireTxnsByTripType"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="TRIP_TYPE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.TmtbAcquireTxn"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbAcquireTxn -->
+    <set
+        name="tmtbAcquireTxnsByServiceProvider"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="SERVICE_PROVIDER" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.TmtbAcquireTxn"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbAcquireTxn -->
+    <set
+        name="tmtbAcquireTxnsByVehicleType"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="VEHICLE_TYPE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.TmtbAcquireTxn"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to FmtbEntityMaster -->
+    <set
+        name="fmtbEntityMasters"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="ENTITY_COUNTRY" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.FmtbEntityMaster"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to FmtbTaxCode -->
+    <set
+        name="fmtbTaxCodes"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="TAX_TYPE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.FmtbTaxCode"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbAccount -->
+    <set
+        name="amtbAccountsByDefaultPaymentMode"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="DEFAULT_PAYMENT_MODE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbAccount"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbAccount -->
+    <set
+        name="amtbAccountsByInformationSource"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="INFORMATION_SOURCE" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbAccount"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to PmtbProductStatus -->
+    <set
+        name="pmtbProductStatuses"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="STATUS_REASON" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.PmtbProductStatus"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbNonBillableTxn -->
+    <set
+        name="tmtbNonBillableTxns"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="SERVICE_PROVIDER" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxn"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbNonBillableTxn -->
+    <set
+        name="mstbAcquirerPymtTypes"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="MASTER_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.master.model.MstbAcquirerPymtType"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>

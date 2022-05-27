@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="accountReportDetailedWindow" border="normal" use="com.cdgtaxi.ibs.report.ui.AccountReportDetailedWindow"
+  title="Account Report" xmlns:h="http://www.w3.org/1999/xhtml">
+
+  <grid>
+    <columns sizable="false">
+      <column width="30%" />
+      <column width="70%" />
+    </columns>
+    <rows>
+      <row>
+        <label sclass="fieldLabel">Account No</label>
+        <intbox id="accountNoIB" maxlength="6" onChange="accountReportDetailedWindow.loadAccountName()"
+          onOK="accountReportDetailedWindow.loadAccountName()" width="50%" />
+      </row>
+      <row>
+        <label sclass="fieldLabel">Account Name</label>
+        <combobox id="accountNameCB" rows="1" readonly="true" style="text-transform:uppercase" autodrop="true"
+          autocomplete="false" width="50%"
+         
+          onSelect="accountReportDetailedWindow.onSelectAccountName()"  
+          tooltiptext="Minimum search criteria is 3 characters" />
+      </row>
+      <row>
+        <label sclass="fieldLabel">Account Status</label>
+        <combobox id="accountstsCB" rows="1" readonly="true" style="text-transform:uppercase" autodrop="true"
+          autocomplete="false" width="50%"
+          tooltiptext="Minimum search criteria is 3 characters" />
+      </row>
+      <row>
+        <label sclass="fieldLabel">Sort By</label>
+        <combobox id="sortbyCB" rows="1" readonly="true" style="text-transform:uppercase" autodrop="true"
+          autocomplete="false" width="50%"
+          />
+      </row>
+      <row>
+        <label sclass="fieldLabel">04. Entity</label>
+        <combobox id="entityCB" rows="1" readonly="true" style="text-transform:uppercase" autodrop="true"
+          autocomplete="false" width="50%" />
+      </row>
+      
+      <row>
+        <label sclass="fieldLabel required" id="reportFormatLabel">10. Report Format:</label>
+        <listbox id="reportFormat" mold="select" multiple="false"
+          onCreate="accountReportDetailedWindow.populateReportFormatList(self)" width="50%" />
+      </row>
+      <row spans="2">
+        <hbox>
+          <button label="Generate" onClick="accountReportDetailedWindow.generate()" />
+          <button label="Reset" onClick="accountReportDetailedWindow.reset()" />
+        </hbox>
+      </row>
+    </rows>
+  </grid>
+
+</window>

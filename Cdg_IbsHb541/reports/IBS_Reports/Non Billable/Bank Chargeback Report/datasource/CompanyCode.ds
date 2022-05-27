@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="CompanyCode" type="JDBC" path="/IBS_Reports/Non Billable/Bank Chargeback Report/datasource/CompanyCode.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="MASTER_CODE" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select MASTER_CODE from MSTB_MASTER_TABLE where MASTER_CODE = '${6. Company Code#choice(78,79)#CC:SPR}' and MASTER_TYPE = 'SPR'</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

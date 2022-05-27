@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Customer Usage @ Card Level" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="TRIPS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN_PERCENT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MONTH" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PRODUCT_TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARDNO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARDHOLDERNAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DIVNAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DIVCODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEPTNAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEPTCODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>
+    with x as (
+   select  txn.Card_no AS CARDNO, product.card_holder_name AS CARDHOLDERNAME,
+	CASE WHEN acct.account_category='DEPT' Then parent.Account_name 
+		WHEN acct.account_category='DIV' Then acct.Account_name ELSE null End AS DIVNAME ,
+	CASE WHEN acct.account_category='DEPT' Then parent.CODE 
+		WHEN acct.account_category='DIV' Then acct.CODE ELSE null End AS DIVCODE ,
+	CASE WHEN acct.account_category='DEPT' Then acct.Account_name ELSE null End AS DEPTNAME ,
+	CASE WHEN acct.account_category='DEPT' Then acct.CODE ELSE null End AS DEPTCODE ,
+	count(INVOICE_TXN_NO) AS TRIPS, sum(txn.TXN_AMOUNT) AS AMT, 
+	CASE WHEN sum(txn.TXN_AMOUNT)>0 THEN sum(txn.ADMIN_FEE)/sum(txn.TXN_AMOUNT)*100 ELSE 0 END AS ADMIN_PERCENT,
+	 sum(txn.ADMIN_FEE) as ADMIN_FEE, sum(txn.GST) as GST, sum(txn.TXN_AMOUNT)+sum(txn.ADMIN_FEE)+sum(txn.GST) as total, trunc(header.INVOICE_DATE, 'MON') as month,
+	 header.invoice_date,
+	 case when '${4. Product Type (Only list product types with bin range starting with 60108965)#choice()#MASTER:PT5}' is null then null else 
+	product_type.NAME end as product_type,
+	row_number() over (partition by txn.Card_no, product.card_holder_name , acct.account_category, product_type.name, trunc(header.invoice_date, 'MON'), sum(txn.admin_fee), sum(txn.txn_amount) order by product_type.name) as rrc_seqnum
+    from BMTB_INVOICE_TXN txn
+    left join BMTB_INVOICE_DETAIL detail using(INVOICE_DETAIL_NO)
+    inner join BMTB_INVOICE_SUMMARY summary on summary.INVOICE_SUMMARY_NO = detail.INVOICE_SUMMARY_NO and summary.PRODUCT_TYPE_ID is not null
+    inner join BMTB_INVOICE_HEADER header using(INVOICE_HEADER_NO)
+    inner join AMTB_ACCOUNT acct on detail.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grandparent on parent.PARENT_NO = grandparent.ACCOUNT_NO
+    left join PMTB_PRODUCT_TYPE product_type on detail.product_type_id = product_type.product_type_id
+    inner join AMTB_ACCOUNT top on (case when grandparent.cust_no is not null then grandparent.account_no when parent.cust_no is not null then parent.account_no else acct.account_no end) = top.account_no
+	inner join FMTB_AR_CONT_CODE_MASTER ar on top.ar_control_code_no = ar.ar_control_code_no
+	inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+	inner join PMTB_PRODUCT product on txn.CARD_NO = product.CARD_NO
+    where (('${2. Invoice Start Month#date()#MMMYY:REQUIRED}' is null and '${3. Invoice End Month#date()#MMMYY:REQUIRED}' is null)or(header.INVOICE_DATE between case when '${2. Invoice Start Month#date()#MMMYY:REQUIRED}' is null then to_date(substr('${3. Invoice End Month#date()#MMMYY:REQUIRED}',0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date(substr('${2. Invoice Start Month#date()#MMMYY:REQUIRED}',0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${3. Invoice End Month#date()#MMMYY:REQUIRED}' is null then last_day(to_date(substr('${2. Invoice Start Month#date()#MMMYY:REQUIRED}',0,8)||'01 23:59:59', 'yyyy-mm-dd hh24:mi:ss')) else last_day(to_date('${3. Invoice End Month#date()#MMMYY:REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss')) end))
+        and ('${7. Card No#acctsearch#cardNo}' is null or txn.CARD_NO = '${7. Card No#acctsearch#cardNo}')
+        and ('${1a. Account No#acctsearch#custId}' is null or top.CUST_NO like '%${1a. Account No#acctsearch#custId}%')
+        and ('${1b. Account Name#acctsearch#custName}' is null or top.ACCOUNT_NAME like '%${1b. Account Name#acctsearch#custName}%')
+        and TRIP_START_DT is not null
+        and ('${4. Product Type (Only list product types with bin range starting with 60108965)#choice()#MASTER:PT5}' is null or product_type.PRODUCT_TYPE_ID = '${4. Product Type (Only list product types with bin range starting with 60108965)#choice()#MASTER:PT5}')
+    	and ('${5. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.ENTITY_NO = '${5. Entity#choice(1,2,3)#MASTER:EM}')
+    	and ('${6. Expiry Date#date()#MMMYY}' is null or (product.EXPIRY_DATE between to_date(substr('${6. Expiry Date#date()#MMMYY}',0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss')and last_day(to_date('${6. Expiry Date#date()#MMMYY}', 'yyyy-mm-dd hh24:mi:ss'))))
+    group by txn.Card_no,product.card_holder_name,header.INVOICE_DATE,acct.account_category,acct.Account_name,parent.account_category,parent.Account_name,parent.code,acct.code, product_type.name
+    order by txn.Card_no,header.INVOICE_DATE
+    )
+    select x.cardno as CARDNO,
+    x.cardholdername as CARDHOLDERNAME,
+    x.DIVNAME AS DIVNAME,
+    x.divcode as DIVCODE,
+    x.deptname as DEPTNAME,
+    x.deptcode as DEPTCODE,
+    x.TRIPS as TRIPS,
+    x.AMT as AMT, 
+    x.admin_percent as ADMIN_PERCENT,
+    x.admin_fee as ADMIN_FEE,
+    x.GST as GST, 
+    x.total as TOTAL,
+    x.month as MONTH,
+     LISTAGG(x.product_type ,',') WITHIN GROUP (ORDER BY x.product_type) AS product_type
+    from x
+    group by x.cardno, x.cardHoldername, x.divname, x.divcode, x.deptname, x.deptcode, x.trips, x.amt, x.admin_percent, x.admin_fee, x.gst, x.total, x.month, x.invoice_date
+    order by x.cardno
+    </ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

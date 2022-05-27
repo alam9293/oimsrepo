@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window 
+	id="manageNonBillableGLWindow"
+	use="com.cdgtaxi.ibs.admin.ui.ManageNonBillableGLWindow"
+	title="Manage Non Billable GL" border="normal" 
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	
+	<grid width="99.7%">
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+   			<row>
+				<label sclass="fieldLabel" value="Service Provider:" />
+				<listbox id="serviceProviderListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="99%"
+   				/>
+   				<label sclass="fieldLabel" value="Card Type:" />
+				<listbox id="cardTypeListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="99%"
+   				/>
+   			</row>
+     		<row spans="4"><hbox>
+   				<button label="Search" onClick="manageNonBillableGLWindow.search()" />
+   				<button label="Reset"  onClick="manageNonBillableGLWindow.reset()"/>
+   			</hbox></row>
+   		</rows>
+	</grid>
+	<h:br/>
+	<grid>
+   		<columns sizable="false">
+			<column><label value="Result(s)"/></column>
+		</columns>
+	</grid>
+	
+	<listbox width="99.7%" id="resultList" onSelect="manageNonBillableGLWindow.edit()">
+   		<listhead sizable="true">
+   		    <listheader label="Service Provider"	width="50" 	 sort="auto"/>
+			<listheader label="Card Type"	width="80" 	 sort="auto"/>
+			<listheader label="Delete"		width="60px" sort="none"/>
+		</listhead>
+		<listfoot>
+			<listfooter span="4">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+   	</listbox>
+   	<h:br/>
+	<button id="createBtn" label="Create New Non Billable GL" onClick="manageNonBillableGLWindow.create()" />
+</window>

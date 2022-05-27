@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Debts Reminder Letter Report" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="CONTACT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MAIN_CONTACT_TEL" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_AREA" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MAIN_CONTACT_FAX" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS3" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_POSTAL" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="OUTSTANDING_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DUE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select case when main_sal.MASTER_NO is not null then main_sal.MASTER_VALUE||' ' else '' end || contact.MAIN_CONTACT_NAME || case when contact.MAIN_CONTACT_NAME is not null and contact.SUB_CONTACT_NAME is not null then ' / ' else '' end || case when contact.SUB_CONTACT_NAME is not null then case when sub_sal.MASTER_NO is not null then sub_sal.MASTER_VALUE||' ' else '' end || contact.SUB_CONTACT_NAME else '' end as contact_name,    
+    case when acct.ACCOUNT_NAME is not null then acct.ACCOUNT_NAME else '' end AS ACCOUNT_NAME,
+    'Telephone      : '||contact.MAIN_CONTACT_TEL as MAIN_CONTACT_TEL, contact.ADDRESS_AREA, 'Fax                 : '||contact.MAIN_CONTACT_FAX as MAIN_CONTACT_FAX,
+    case when contact.ADDRESS_BLOCK is not null then contact.ADDRESS_BLOCK else '' end || case when contact.ADDRESS_BLOCK is not null and contact.ADDRESS_STREET is not null then ' ' else '' end || case when contact.ADDRESS_STREET is not null then contact.ADDRESS_STREET else '' end as address1,
+    case when contact.ADDRESS_UNIT is not null then contact.ADDRESS_UNIT else '' end || case when contact.ADDRESS_UNIT is not null and contact.ADDRESS_BUILDING is not null then ' ' else '' end || case when contact.ADDRESS_BUILDING is not null then contact.ADDRESS_BUILDING else '' end as address2,
+    case when contact.ADDRESS_COUNTRY is not null then country.MASTER_VALUE else '' end || case when contact.ADDRESS_COUNTRY is not null and contact.ADDRESS_POSTAL is not null then ' ' else '' end || case when contact.ADDRESS_POSTAL is not null then contact.ADDRESS_POSTAL else '' end as address3,
+    contact.ADDRESS_POSTAL, 
+    header.INVOICE_NO, header.INVOICE_DATE, header.OUTSTANDING_AMOUNT, (header.DUE_DATE - ${14. Due Date Buffer#intbox#REQUIRED}) as DUE_DATE
+    from BMTB_INVOICE_HEADER header
+    inner join AMTB_ACCOUNT acct on header.DEBT_TO = acct.ACCOUNT_NO and header.INVOICE_STATUS = 'O'
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = case when acct.cust_no is not null then acct.ar_control_code_no when parent.cust_no is not null then parent.ar_control_code_no  when grand.cust_no is not null then grand.ar_control_code_no  end
+	inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+    inner join AMTB_ACCT_MAIN_CONTACT main on main.ACCOUNT_NO = case when acct.INVOICE_FORMAT is not null then acct.ACCOUNT_NO when parent.INVOICE_FORMAT is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end and main.MAIN_CONTACT_TYPE = '${03. Contact Person#choice(B,S)#NC:CONTACT_TYPE:REQUIRED}'
+    inner join AMTB_CONTACT_PERSON contact on contact.CONTACT_PERSON_NO = main.CONTACT_PERSON_NO
+    left join MSTB_MASTER_TABLE main_sal on main_sal.MASTER_NO = contact.MAIN_CONTACT_SAL
+    left join MSTB_MASTER_TABLE sub_sal on sub_sal.MASTER_NO = contact.SUB_CONTACT_SAL
+    inner join MSTB_MASTER_TABLE country on country.MASTER_NO = contact.ADDRESS_COUNTRY
+    inner join AMTB_ACCT_TYPE type on type.ACCT_TYPE_NO = case when acct.ACCT_TYPE_NO is not null then acct.ACCT_TYPE_NO when parent.ACCT_TYPE_NO is not null then parent.ACCT_TYPE_NO else grand.ACCT_TYPE_NO end
+    left join AMTB_CORPORATE_DETAIL corp on corp.ACCOUNT_NO = case when acct.ACCOUNT_CATEGORY = 'CORP' then acct.ACCOUNT_NO when parent.ACCOUNT_CATEGORY = 'CORP' then parent.ACCOUNT_NO else grand.ACCOUNT_NO end
+    left join AMTB_PERSONAL_DETAIL pers on pers.ACCOUNT_NO = case when acct.ACCOUNT_CATEGORY = 'APP' then acct.ACCOUNT_NO when parent.ACCOUNT_CATEGORY = 'APP' then parent.ACCOUNT_NO else grand.ACCOUNT_NO end
+    inner join MSTB_MASTER_TABLE industry on industry.MASTER_NO = case when corp.INDUSTRY is not null then corp.INDUSTRY else pers.INDUSTRY end
+    inner join (select ACCOUNT_NO, max(EFFECTIVE_DT_FROM) as last_effective_dt_from from AMTB_ACCT_SALESPERSON group by ACCOUNT_NO) last_sales on last_sales.ACCOUNT_NO = case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end
+    inner join AMTB_ACCT_SALESPERSON acct_sales on acct_sales.ACCOUNT_NO = last_sales.ACCOUNT_NO and acct_sales.EFFECTIVE_DT_FROM = last_sales.LAST_EFFECTIVE_DT_FROM
+    inner join MSTB_SALESPERSON sales on sales.SALESPERSON_NO = acct_sales.SALESPERSON_NO
+    where ('${01. Account Type#choice(C,P)#NC:ACCOUNT_TYPE:REQUIRED}' is null or type.ACCT_TEMPLATE = '${01. Account Type#choice(C,P)#NC:ACCOUNT_TYPE:REQUIRED}')
+    and case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end like '%${02a. Account No#acctsearch#custId}%'
+    and case when acct.CUST_NO is not null then acct.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else grand.ACCOUNT_NAME end like '%${02b. Account Name#acctsearch#custName}%'
+    and ('${02c. Division#acctsearch#div}' is null or case when parent.CUST_NO is not null then acct.ACCOUNT_NO else parent.ACCOUNT_NO end = '${02c. Division#acctsearch#div}')
+    and ('${02d. Department#acctsearch#dept}' is null or acct.ACCOUNT_NO = '${02d. Department#acctsearch#dept}')
+    and to_date('${06. Age as at#date()#REQUIRED}', 'yyyy-mm-dd') - (header.DUE_DATE-${14. Due Date Buffer})&gt;= case when '${05. Age of Debt#choice(1,2,3,4)#NC:DRL_AGING:REQUIRED}' = '1' then 1 when '${05. Age of Debt#choice(1,2,3,4)#NC:DRL_AGING:REQUIRED}' = '2' then 31 when '${05. Age of Debt#choice(1,2,3,4)#NC:DRL_AGING:REQUIRED}' = '3' then 61 else 91 end
+    and ('${07. Business Nature#choice()#choice()#CC:IND}' is null or (industry.MASTER_CODE = '${07. Business Nature#choice()#CC:IND}' and industry.MASTER_TYPE = 'IND'))
+    and ('${08. Sales Person#choice()#MASTER:SP}' is null or sales.SALESPERSON_NO = '${08. Sales Person#choice()#MASTER:SP}')
+    and header.OUTSTANDING_AMOUNT &gt; 0
+    and acct.ACCOUNT_CATEGORY in (
+    case when '${02d. Department#acctsearch#dept}' is not null then
+        'DEPT'
+    when '${02c. Division#acctsearch#div}' is not null then 
+        'DIV'
+    else
+        'CORP'
+    END,
+    case when '${02c. Division#acctsearch#div}' is not null and '${02d. Department#acctsearch#dept}' is null then 
+        'SAPP'
+    when '${02c. Division#acctsearch#div}' is null then
+        'APP'
+    END,
+    case when '${02c. Division#acctsearch#div}' is not null and '${02d. Department#acctsearch#dept}' is null then 
+        case when '${04. Based on Charged To#choice(Y,N)#NC:BOOLEAN:REQUIRED}' = 'Y' then 'DIV' else 'DEPT' end
+    when '${02c. Division#acctsearch#div}' is null then
+        case when '${04. Based on Charged To#choice(Y,N)#NC:BOOLEAN:REQUIRED}' = 'Y' then 'CORP' else 'DIV' end
+    END,
+    case when '${04. Based on Charged To#choice(Y,N)#NC:BOOLEAN:REQUIRED}' = 'N' then 'SAPP' end,
+    case when '${04. Based on Charged To#choice(Y,N)#NC:BOOLEAN:REQUIRED}' = 'N' then 'DEPT' end
+    )
+    and ('${15. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.entity_no = '${15. Entity#choice(1,2,3)#MASTER:EM}')
+    </ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

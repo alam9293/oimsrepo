@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbCpMasterLogin" 
+    table="ITTB_CP_MASTER_LOGIN"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+     <meta attribute="implement-equals" inherit="false">true</meta>
+    <id
+        name="masterLoginNo"
+        type="java.lang.Integer"
+        column="MASTER_LOGIN_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">ITSQ_MASTER_LOGIN_NO</param>
+        </generator>
+    </id>
+
+    <property
+        name="name"
+        type="java.lang.String"
+        column="MASTER_NAME"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="email"
+        type="java.lang.String"
+        column="EMAIL"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="telephone"
+        type="java.lang.String"
+        column="TELEPHONE"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="companyName"
+        type="java.lang.String"
+        column="COMPANY_NAME"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="loginId"
+        type="java.lang.String"
+        column="LOGIN_ID"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="retrievedFlag"
+        type="java.lang.String"
+        column="RETRIEVED_FLAG"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="retrievalDesc"
+        type="java.lang.String"
+        column="RETRIEVAL_DESC"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="retrievedDate"
+        type="java.sql.Timestamp"
+        column="RETRIEVED_DATE"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <!-- bi-directional one-to-many association to IttbCpMasterTagAcct -->
+    <set
+        name="ittbCpMasterTagAcct"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="MASTER_LOGIN_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.IttbCpMasterTagAcct"
+        />
+    </set>
+    
+</class>
+</hibernate-mapping>

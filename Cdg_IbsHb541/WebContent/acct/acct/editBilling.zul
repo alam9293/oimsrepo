@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="editBillingWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.EditBillingWindow"
+	onCreate="editBillingWindow.init()"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Billing Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="22.25%" label="Billing Cycle"/>
+			<column width="22.25%" label="Volume Discount"/>
+			<column width="3%" align="center"/>
+			<column width="22.25%" label="Base Admin Fee"/>
+			<column width="3%" align="center"/>
+			<column width="22.25%" label="Effective Date"/>
+			<column width="3%" align="center"/>
+		</columns>
+		<rows id="billing"><row spans="8"><button label="Add New Row" onClick="editBillingWindow.addBilling()"/></row></rows>
+	</grid>
+	<button id="viewBillingCycleHistoryBtn" label="View Billing Cycle History" onClick="editBillingWindow.viewBillingCycleHistory()"/>
+		<h:br/><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Credit Term"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="46%" label="Credit Term"/>
+			<column width="3%" align="center"/>
+			<column width="46%" label="Effective Date"/>
+			<column width="3%" align="center"/>
+		</columns>
+		<rows id="creditTerm"><row spans="5"><button label="Add New Row" onClick="editBillingWindow.addCreditTerm()"/></row></rows>
+	</grid>
+	<button id="viewCreditTermHistoryBtn" label="View Credit Term History" onClick="editBillingWindow.viewCreditTermHistory()"/>
+		<h:br/><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Early Payment"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="46%" label="Early Payment"/>
+			<column width="3%" align="center"/>
+			<column width="46%" label="Effective Date"/>
+			<column width="3%" align="center"/>
+		</columns>
+		<rows id="earlyPayment"><row spans="5"><button label="Add New Row" onClick="editBillingWindow.addEarlyPymt()"/></row></rows>
+	</grid>
+	<button id="viewEarlyPaymentHistoryBtn" label="View Early Payment History" onClick="editBillingWindow.viewEarlyPaymentHistory()"/>
+		<h:br/><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Late Payment"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="46%" label="Late Payment"/>
+			<column width="3%" align="center"/>
+			<column width="46%" label="Effective Date"/>
+			<column width="3%" align="center"/>
+		</columns>
+		<rows id="latePayment"><row spans="5"><button label="Add New Row" onClick="editBillingWindow.addLatePymt()"/></row></rows>
+	</grid>
+	<button id="viewLatePaymentHistoryBtn" label="View Late Payment History" onClick="editBillingWindow.viewLatePaymentHistory()"/>
+		<h:br/><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Promotion"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="46%" label="Promotion"/>
+			<column width="3%" align="center"/>
+			<column width="23%" label="Effective Date From"/>
+			<column width="23%" label="Effective Date To"/>
+			<column width="3%" align="center"/>
+		</columns>
+		<rows id="promotion"><row spans="6"><button label="Add New Row" onClick="editBillingWindow.addPromotion()"/></row></rows>
+	</grid>
+	<button id="viewPromotionHistoryBtn" label="View Promotion History" onClick="editBillingWindow.viewPromotionHistory()"/>
+		<h:br/><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Customer Bank Information"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row>
+			<label sclass="fieldLabel" value="Bank"/>
+			<listbox id="bankList" width="100%" rows="1" mold="select" onCreate="self.getItems().addAll(editBillingWindow.getBanks())" onSelect="editBillingWindow.updateBranchs(self.getSelectedItem())"/>
+			<label sclass="fieldLabel" value="Branch"/>
+			<listbox id="branchList" width="100%" rows="1" mold="select"/>
+		</row><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Bank Account No"/>
+			<capstextbox id="bankAcctNo" width="98%" maxlength="80"/>
+			<label/>
+		</row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Payment Mode"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Default Payment Mode"/>
+			<listbox id="paymentModeList" width="100%" rows="1" mold="select" onCreate="self.getItems().addAll(editBillingWindow.getPaymentModes())" onSelect="editBillingWindow.onSelectPaymentMode(self.getSelectedItem())"/>
+			<label/>
+		</row><row spans="4">
+			<hbox>
+				<button label="Save" onClick="editBillingWindow.save()"/>
+				<!-- <button label="Process Deposit" onClick="editBillingWindow.viewDeposit()"/> -->
+				<button label="Cancel" onClick="editBillingWindow.back()"/>
+			</hbox>
+		</row></rows>
+	</grid>
+</window>

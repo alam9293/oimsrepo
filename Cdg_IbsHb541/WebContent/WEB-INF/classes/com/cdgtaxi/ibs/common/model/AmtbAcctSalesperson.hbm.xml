@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.AmtbAcctSalesperson" 
+    table="AMTB_ACCT_SALESPERSON"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="acctSalespersonNo"
+        type="java.lang.Integer"
+        column="ACCT_SALESPERSON_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">AMTB_ACCT_SALESPERSON_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="effectiveDtFrom"
+        type="java.sql.Timestamp"
+        column="EFFECTIVE_DT_FROM"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="effectiveDtTo"
+        type="java.sql.Timestamp"
+        column="EFFECTIVE_DT_TO"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to MstbSalesperson -->
+    <many-to-one
+        name="mstbSalesperson"
+        class="com.cdgtaxi.ibs.master.model.MstbSalesperson"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="SALESPERSON_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AmtbAccount -->
+    <many-to-one
+        name="amtbAccount"
+        class="com.cdgtaxi.ibs.common.model.AmtbAccount"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ACCOUNT_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AmtbAcctSalespersonReq -->
+    <many-to-one
+        name="amtbAcctSalespersonReq"
+        class="com.cdgtaxi.ibs.common.model.AmtbAcctSalespersonReq"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ACCT_SALESPERSON_REQ_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

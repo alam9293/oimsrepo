@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.PmtbProductType" 
+    table="PMTB_PRODUCT_TYPE"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="productTypeId"
+        type="java.lang.String"
+        column="PRODUCT_TYPE_ID"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <!-- 
+        <generator class="sequence">
+            <param name="sequence_name">PMTB_PRODUCT_TYPE_SQ1</param>
+        </generator>
+         -->
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="name"
+        type="java.lang.String"
+        column="NAME"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="batchIssue"
+        type="java.lang.String"
+        column="BATCH_ISSUE"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="nameOnProduct"
+        type="java.lang.String"
+        column="NAME_ON_PRODUCT"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="luhnCheck"
+        type="java.lang.String"
+        column="LUHN_CHECK"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="oneTimeUsage"
+        type="java.lang.String"
+        column="ONE_TIME_USAGE"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="fixedValue"
+        type="java.lang.String"
+        column="FIXED_VALUE"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="creditLimit"
+        type="java.lang.String"
+        column="CREDIT_LIMIT"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="validityPeriod"
+        type="java.lang.String"
+        column="VALIDITY_PERIOD"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="defaultCardStatus"
+        type="java.lang.String"
+        column="DEFAULT_CARD_STATUS"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="numberOfDigit"
+        type="int"
+        column="NUMBER_OF_DIGIT"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="minTopupLimit"
+        type="java.lang.Integer"
+        column="MIN_TOPUP_LIMIT"
+        length="4"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="maxTopupLimit"
+        type="java.lang.Integer"
+        column="MAX_TOPUP_LIMIT"
+        length="4"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="binRange"
+        type="java.lang.String"
+        column="BIN_RANGE"
+        not-null="true"
+        length="6"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="subBinRange"
+        type="java.lang.String"
+        column="SUB_BIN_RANGE"
+        length="4"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="externalCard"
+        type="java.lang.String"
+        column="EXTERNAL_CARD"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="issuable"
+        type="java.lang.String"
+        column="ISSUABLE"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="issueType"
+        type="java.lang.String"
+        column="ISSUE_TYPE"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="defaultValidPeriod"
+        type="int"
+        column="DEFAULT_VALID_PERIOD"
+        not-null="true"
+        length="3"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="interfaceMappingValue"
+        type="java.lang.String"
+        column="INTERFACE_MAPPING_VALUE"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="replacementFees"
+        type="java.math.BigDecimal"
+        column="REPLACEMENT_FEES"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="loginRegistration"
+        type="java.lang.String"
+        column="LOGIN_REGISTRATION"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="hotel"
+        type="java.lang.String"
+        column="HOTEL"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="prepaid"
+        type="java.lang.String"
+        column="PREPAID"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="contactless"
+        type="java.lang.String"
+        column="CONTACTLESS"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="cardless"
+        type="java.lang.String"
+        column="CARDLESS"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="virtualProduct"
+        type="java.lang.String"
+        column="VIRTUAL_PRODUCT"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="viewPastTxn"
+        type="java.lang.String"
+        column="VIEW_PAST_TXN"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="defaultBalanceExpMonths"
+        type="java.lang.Integer"
+        column="DEFAULT_BALANCE_EXP_MONTHS"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="topUpFee"
+        type="java.math.BigDecimal"
+        column="TOP_UP_FEE"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="transferFee"
+        type="java.math.BigDecimal"
+        column="TRANSFER_FEE"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <many-to-one
+        name="mstbMasterTableBySMSFormat"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="SMS_FORMAT_MASTER_NO" />
+    </many-to-one>
+    <many-to-one
+        name="mstbMasterTableBySMSExpiryFormat"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="SMS_EXPIRY_FORMAT_MASTER_NO" />
+    </many-to-one>
+    <many-to-one
+        name="mstbMasterTableBySMSTopupFormat"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="SMS_TOPUP_FORMAT_MASTER_NO" />
+    </many-to-one>
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to AmtbApplicationProduct -->
+    <set
+        name="amtbApplicationProducts"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbApplicationProduct"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BmtbInvoiceDetail -->
+    <set
+        name="bmtbInvoiceDetails"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbInvoiceDetail"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbTxnReviewReq -->
+    <set
+        name="tmtbTxnReviewReqs"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.TmtbTxnReviewReq"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to TmtbAcquireTxn -->
+    <set
+        name="tmtbAcquireTxns"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.TmtbAcquireTxn"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to FmtbTransactionCode -->
+    <set
+        name="fmtbTransactionCodes"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.FmtbTransactionCode"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to PmtbProduct -->
+    <set
+        name="pmtbProducts"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.PmtbProduct"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to AmtbSubscTo -->
+    <set
+        name="amtbSubscTos"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.AmtbSubscTo"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BmtbInvoiceSummary -->
+    <set
+        name="bmtbInvoiceSummaries"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbInvoiceSummary"
+        />
+    </set>
+    <!-- bi-directional many-to-many association to AmtbAcctType -->
+    <set
+        name="amtbAcctTypes"
+        lazy="true"
+		cascade="all"
+        table="AMTB_SUBSC_PROD_TYPE"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <many-to-many
+            class="com.cdgtaxi.ibs.common.model.AmtbAcctType"
+        >
+            <column name="ACCT_TYPE_NO" />
+        </many-to-many>
+    </set>
+    <!-- bi-directional many-to-many association to AmtbAccount -->
+    <set
+        name="amtbAccounts"
+        lazy="true"
+		cascade="all"
+        table="AMTB_SUBSC_TO"
+    >
+        <key>
+            <column name="PRODUCT_TYPE_ID" />
+        </key>
+        <many-to-many
+            class="com.cdgtaxi.ibs.common.model.AmtbAccount"
+        >
+            <column name="ACCOUNT_NO" />
+        </many-to-many>
+    </set>
+
+</class>
+</hibernate-mapping>

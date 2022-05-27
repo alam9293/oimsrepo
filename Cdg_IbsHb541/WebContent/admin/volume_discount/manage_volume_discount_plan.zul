@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageVolumeDiscountPlanWindow"
+	title="Manage Volume Discount Plans" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ManageVolumeDiscountPlanWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<listbox id="resultList" onSelect="manageVolumeDiscountPlanWindow.editPlan()" mold="paging">
+		<listhead sizable="false">
+			<listheader label="Volume Discount Plan Name" sort="auto"/>
+			<listheader label="Delete" width="60px"/>
+		</listhead>
+		<listitem>
+			<listcell/>
+			<listcell/>
+<!--			<listcell>-->
+<!--				<image src="/images/delete.png" style="cursor:pointer"-->
+<!--					onClick="manageVolumeDiscountPlanWindow.deletePlan(self.getParent().getParent())"/>-->
+<!--			</listcell>-->
+		</listitem>
+	</listbox>
+	<button id="createBtn" label="New Volume Discount Plan" onClick="manageVolumeDiscountPlanWindow.createPlan()" />
+</window>

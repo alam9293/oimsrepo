@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="springSecurityFilterChain" class="org.springframework.security.util.FilterChainProxy">
+		<property name="filterInvocationDefinitionSource">
+            <value>
+                CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                PATTERN_TYPE_APACHE_ANT
+                /images/**=httpSessionContextIntegrationFilter
+                /zkau/**=httpSessionContextIntegrationFilter,logoutFilter
+                /**=httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+        	</value>
+        </property>
+	</bean>
+
+	<bean id="httpSessionContextIntegrationFilter" class="org.springframework.security.context.HttpSessionContextIntegrationFilter"/>
+
+	<bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter">
+		<constructor-arg value="/login.zul"/> <!-- URL redirected to after logout -->
+		<constructor-arg>
+            <list>
+                <bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler"/>
+            </list>
+        </constructor-arg>
+	</bean>
+
+	<bean id="authenticationProcessingFilter" class="com.cdgtaxi.ibs.acl.security.CustomAuthenticationProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
+<!--		<property name="authenticationFailureUrl" value="/login.zul?login_error=1"/>-->
+		<property name="authenticationFailureUrl" value="/login.zul"/>
+		<property name="defaultTargetUrl" value="/index.zul"/>
+		<property name="filterProcessesUrl" value="/j_acegi_security_check"/>
+		<property name="businessHelper" ref="businessHelper"/>
+		<property name="adProperties" ref="adProperties"/>
+		<property name="exceptionMappings">
+            <props>
+              <prop key="org.springframework.security.BadCredentialsException">/login.zul?login_error=1</prop>
+              <prop key="org.springframework.security.LockedException">/login.zul?login_error=2</prop>
+              <prop key="org.springframework.security.DisabledException">/login.zul?login_error=3</prop>
+              <prop key="org.springframework.security.CredentialsExpiredException">/login.zul?login_error=4</prop>
+              <prop key="org.springframework.security.AccountExpiredException">/login.zul?login_error=4</prop>
+              <prop key="org.springframework.security.AuthenticationServiceException">/login.zul?login_error=5</prop>
+            </props>
+        </property>
+	</bean>
+   
+	<bean id="securityContextHolderAwareRequestFilter" class="org.springframework.security.wrapper.SecurityContextHolderAwareRequestFilter"/>
+
+	<bean id="exceptionTranslationFilter" class="org.springframework.security.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint">
+			<bean class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+				<property name="loginFormUrl" value="/login.zul"/>
+				<property name="forceHttps" value="false"/>
+			</bean>
+		</property>
+		<property name="accessDeniedHandler">
+			<bean class="org.springframework.security.ui.AccessDeniedHandlerImpl">
+				<property name="errorPage" value="/accessDenied.zul"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="anonymousProcessingFilter" class="org.springframework.security.providers.anonymous.AnonymousProcessingFilter">
+        <property name="key" value="anonymous"/>
+        <property name="userAttribute" value="anonymous,Anonymous"/> <!-- default_login_Id,anonymous_role_name -->
+    </bean>
+
+	<bean id="filterInvocationInterceptor" class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="accessDecisionManager">
+			<bean class="org.springframework.security.vote.AffirmativeBased">
+				<property name="allowIfAllAbstainDecisions" value="false"/>
+				<property name="decisionVoters">
+					<list>
+						<bean class="com.cdgtaxi.ibs.acl.security.CustomRoleVoter"/>
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="objectDefinitionSource" ref="objectDefinitionSource"/>
+	</bean>
+
+	<bean id="objectDefinitionSource" class="com.cdgtaxi.ibs.acl.security.CustomFilterInvocationDefinitionSource" init-method="reload">
+		<property name="daoHelper" ref="daoHelper"/>
+	</bean>
+	
+	<bean id="authenticationManager" class="org.springframework.security.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref bean="daoAuthenticationProvider"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="daoAuthenticationProvider" class="com.cdgtaxi.ibs.acl.security.CustomDaoAuthenticationProvider">
+		<property name="adProperties" ref="adProperties"/>
+		<property name="userDetailsService" ref="userDao"/>
+		<property name="passwordEncoder" ref="passwordEncoder"/>
+		<property name="forcePrincipalAsString" value="false"/> 
+	</bean>
+
+	<!-- This bean definition must be available to ApplicationContext.getBean() so StartupListener
+         can look for it and detect if password encryption is turned on or not -->
+    <bean id="passwordEncoder" class="org.springframework.security.providers.encoding.ShaPasswordEncoder"/>
+
+	<!-- This bean is optional; it isn't used by any other bean as it only listens and logs -->
+	<bean id="loggerListener" class="org.springframework.security.event.authentication.LoggerListener"/>	
+</beans>

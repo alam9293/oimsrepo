@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Customer Deposit Detailed Receipts" type="JDBC" path="/IBS_Reports/Account/Customer Deposit Detailed/datasource/Customer Deposit Detailed Receipts.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="CUST_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_HEADER_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DEPOSIT_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="RECEIVED_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OUTSTANDING_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="RECEIPTS_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="RECEIPTS_AMT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="RECEIPTS_DATE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_APPLIED" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REFUND" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OFFSET" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select main.CUST_NO, ACCOUNT_NAME, INVOICE_NO, main.INVOICE_HEADER_NO, INVOICE_DATE, deposit_amt, received_amt, outstanding_amt, case when refund&gt;0 then 'REFUND' when offset&gt;0 then 'OFFSET' when outstanding_amt&gt;0 then 'OUTSTANDING' else 'RECEIVED' end as status,
+     replace(listagg(to_char(receipt.PAYMENT_RECEIPT_NO),',') within group (order by receipt.Payment_receipt_no), ',',',
+') as receipts_no, replace(replace(listagg(trim(to_char(detail.APPLIED_AMOUNT, '999,999,990.00')||'^'),',') within group (order by detail.applied_amount), '^,', ',
+'), '^', '') as receipts_amt, replace(listagg(to_char(receipt.RECEIPT_DT,'dd/mm/yyyy'),',') within group (order by receipt.receipt_dt),',',',
+') as receipts_date, sum(detail.APPLIED_AMOUNT) as total_applied, refund, offset from (select acct.CUST_NO, acct.ACCOUNT_NAME, header.INVOICE_NO, header.INVOICE_HEADER_NO, header.INVOICE_DATE, header.NEW_TXN as deposit_amt, header.NEW_TXN - header.OUTSTANDING_AMOUNT as received_amt, header.OUTSTANDING_AMOUNT as outstanding_amt from BMTB_INVOICE_HEADER header
+    inner join BMTB_INVOICE_DEPOSIT_TXN deposit_txn on header.INVOICE_HEADER_NO = deposit_txn.INVOICE_HEADER_NO
+    inner join BMTB_INVOICE_SUMMARY summary on header.INVOICE_HEADER_NO = summary.INVOICE_HEADER_NO and summary.SUMMARY_TYPE = 'DP'
+    left join AMTB_ACCOUNT acct on header.ACCOUNT_NO = acct.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on acct.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on ar.ENTITY_NO = entity.ENTITY_NO
+    inner join (select distinct(header.INVOICE_HEADER_NO) from BMTB_INVOICE_HEADER header
+    left join BMTB_PAYMENT_RECEIPT_DETAIL detail on header.INVOICE_HEADER_NO = detail.INVOICE_HEADER_NO
+    left join BMTB_PAYMENT_RECEIPT receipt on detail.PAYMENT_RECEIPT_NO = receipt.PAYMENT_RECEIPT_NO
+    where (('${1. Deposit Invoice Start Date#date}' is null and '${2. Deposit Invoice End Date#date}' is null)or(header.INVOICE_DATE between case when '${1. Deposit Invoice Start Date#date}' is null then to_date('${2. Deposit Invoice End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Deposit Invoice Start Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Deposit Invoice End Date#date}' is null then to_date('${1. Deposit Invoice Start Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Deposit Invoice End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and (('${3. Receipt Start Date#date}' is null and '${4. Receipt End Date#date}' is null)or(receipt.RECEIPT_DT between case when '${3. Receipt Start Date#date}' is null then to_date('${4. Receipt End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${3. Receipt Start Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${4. Receipt End Date#date}' is null then to_date('${3. Receipt Start Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${4. Receipt End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))) receipts on receipts.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    where acct.CUST_NO like '%${5a. Account No}%' and acct.ACCOUNT_NAME like '%${5b. Account Name}%' and ('${6. Entity#choice()#MASTER:EM}' is null or entity.ENTITY_NO = '${6. Entity#choice()#MASTER:EM}')
+) main left join BMTB_PAYMENT_RECEIPT_DETAIL detail on detail.INVOICE_HEADER_NO = main.INVOICE_HEADER_NO
+    left join BMTB_PAYMENT_RECEIPT receipt on detail.PAYMENT_RECEIPT_NO = receipt.PAYMENT_RECEIPT_NO
+    left join (select case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end as cust_no, count(INVOICE_DEPOSIT_TXN_NO) as offset from BMTB_INVOICE_DEPOSIT_TXN deposit
+    left join AMTB_ACCOUNT acct on deposit.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    where deposit.NOTE_NO is not null
+    group by case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end) offset on offset.CUST_NO = main.CUST_NO
+    left join (select case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end as cust_no, count(INVOICE_DEPOSIT_TXN_NO) as refund from BMTB_INVOICE_DEPOSIT_TXN deposit
+    left join AMTB_ACCOUNT acct on deposit.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    where deposit.PAYMENT_RECEIPT_NO is not null
+    group by case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end) refund on refund.CUST_NO = main.CUST_NO
+    where '${7. Deposit Status#choice()#NC:CDRD_STATUS}' is null or (case when '${7. Deposit Status#choice()#NC:CDRD_STATUS}' = 'OS' then OUTSTANDING_AMT when '${7. Deposit Status#choice()#NC:CDRD_STATUS}' = 'RF' then refund when '${7. Deposit Status#choice()#NC:CDRD_STATUS}' = 'OFF' then offset else -1 end &gt; 0) or (case when '${7. Deposit Status#choice()#NC:CDRD_STATUS}' = 'RC' then OUTSTANDING_AMT else -1 end = 0)
+    group by main.CUST_NO, main.ACCOUNT_NAME, main.INVOICE_NO, main.INVOICE_HEADER_NO, main.INVOICE_DATE, main.deposit_amt, main.received_amt, main.outstanding_amt, offset.offset, refund.refund
+    order by case when '${8. Sort By#choice()#NC:CDRD_ORDER:REQUIRED}' = 'STATUS' then STATUS else null end, case when '${8. Sort By#choice()#NC:CDRD_ORDER:REQUIRED}' = 'INVOICE_DATE' then INVOICE_DATE else null end, ACCOUNT_NAME</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

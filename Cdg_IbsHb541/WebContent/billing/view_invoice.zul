@@ -1,0 +1,73 @@
+<?page title="View invoice" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="SearchInvoiceWindow"
+		title="View invoice" border="normal" 
+		use="com.cdgtaxi.ibs.billing.ui.SearchInvoiceWindow"
+		xmlns:h="http://www.w3.org/1999/xhtml">
+		<grid>
+			<columns sizable="false">
+				<column width="15%" />
+				<column width="35%" />
+				<column width="15%" />
+				<column width="35%" />
+			</columns>
+
+			<rows>
+				<row>
+					<label style="font-weight: bold">Account No</label>
+					<intbox id="accountNoTB" maxlength="32" onBlur="SearchInvoiceWindow.getAccount()" width="98.75%" />
+					<label style="font-weight: bold">Account Name</label>
+					<combobox id="nameTB" style="text-transform:uppercase" autodrop="true" maxlength="32" width="91.5%" />
+				</row>
+				<row id ="divisionRow">
+					<label style="font-weight: bold">Division</label>
+					<listbox id="divisionDDL" mold="select" onSelect="SearchInvoiceWindow.getDepartment()" width="91.5%" />
+					<label style="font-weight: bold">Department</label>
+					<listbox id="departmentDDL" mold="select" width="100%" />
+				</row>
+				<row>
+					<label style="font-weight: bold">Invoice No From</label>
+					<textbox id="invoiceNoFromTB" maxlength="32" width="98.75%" />
+					<label style="font-weight: bold">Invoice No To</label>
+					<textbox id="invoiceNoToTB" maxlength="32" width="98.75%" />
+				</row>
+	   			<row>
+	   				<label style="font-weight: bold">Invoice Date From</label>
+	   				<datebox id="invoiceDateFromDB" format="dd/MM/yyyy" width="91.5%" />
+	   				<label style="font-weight: bold">Invoice Date To</label>
+	   				<datebox id="invoiceDateToDB" format="dd/MM/yyyy" width="91.5%" />
+	   			</row>
+				<row>
+					<label style="font-weight: bold">Invoice Status</label>
+					<listbox id="invoiceStatusDDL" mold="select" width="100%" />
+				</row>
+				<row spans="4">
+					<button label="Search" onClick="SearchInvoiceWindow.searchInvoice()" />
+				</row>
+			</rows>
+		</grid>
+		<grid>
+			<columns>
+				<column>Search Results:</column>
+			</columns>
+		</grid>
+		<listbox id="resultList" onSelect="SearchInvoiceWindow.displayInvoiceDetails()">
+			<listhead sizable="true">
+				<listheader label="Account No" sort="auto" />
+				<listheader label="Account Name" sort="auto" />
+				<listheader label="Invoice No" sort="auto" />
+				<listheader label="Invoice Amt($)" sort="auto" align="right"/>
+				<listheader label="Applied Amt($)" sort="auto" align="right"/>
+				<listheader label="Outstanding Amt($)" sort="auto" align="right"/>
+				<listheader label="Dr/Cr Amt($)" sort="auto" align="right"/>
+				<listheader label="Invoice Date" sort="auto" />
+				<listheader label="Excess Amt($)" sort="auto" />
+				<listheader label="Invoice Status" sort="auto" />
+				<listheader />
+<!--				<listheader label="Billed To" sort="auto" />-->
+<!--				<listheader label="Credit / Debit Note" sort="auto" />-->
+			</listhead>
+		</listbox>
+
+	</window>
+</zk>

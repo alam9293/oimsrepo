@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.ImtbItemReq" 
+    table="IMTB_ITEM_REQ"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="reqNo"
+        type="java.lang.Integer"
+        column="REQ_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">IMTB_ITEM_REQ_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="requestDt"
+        type="java.sql.Timestamp"
+        column="REQUEST_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="requestor"
+        type="java.lang.String"
+        column="REQUESTOR"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="remarks"
+        type="java.lang.String"
+        column="REMARKS"
+        length="500"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="serialNo"
+        type="java.math.BigDecimal"
+        column="SERIAL_NO"
+        not-null="false"
+        length="25"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="redeemTime"
+        type="java.sql.Timestamp"
+        column="REDEEM_TIME"
+        not-null="false"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="redeemPoint"
+        type="java.lang.String"
+        column="REDEEM_POINT"
+        not-null="false"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="cashierId"
+        type="java.lang.String"
+        column="CASHIER_ID"
+        not-null="false"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="batchNo"
+        type="java.lang.String"
+        column="BATCH_NO"
+        not-null="false"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="batchDate"
+        type="java.sql.Date"
+        column="BATCH_DATE"
+        not-null="false"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="currentStatus"
+        type="java.lang.String"
+        column="CURRENT_STATUS"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="action"
+        type="java.lang.String"
+        column="ACTION"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="newExpiryDate"
+        type="java.sql.Date"
+        column="NEW_EXPIRY_DATE"
+        not-null="false"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <many-to-one
+        name="mstbMasterTableByReason"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="MASTER_NO" />
+    </many-to-one>
+    <many-to-one
+        name="imtbItem"
+        class="com.cdgtaxi.ibs.common.model.ImtbItem"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ITEM_NO" />
+    </many-to-one>
+    <set
+        name="imtbItemReqFlows"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="REQ_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.ImtbItemReqFlow"
+        />
+    </set>
+	
+</class>
+</hibernate-mapping>

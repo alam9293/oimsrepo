@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="salesReportBySalesperson">
+	<return-scalar column="salesperson_name" 				type="string"/>
+	<return-scalar column="total_trips" 			type="string"/>
+	<return-scalar column="total_fare"					type="string"/>
+	<return-scalar column="total_admin_fee"				type="string"/>
+	<return-scalar column="total"					type="string"/>
+	<![CDATA[
+  select salesperson.name as SALESPERSON_NAME, case when acct_trips is null then 0 else acct_trips end + case when child_trips is null then 0 else child_trips end + case when grand_trips is null then 0 else grand_trips end as total_trips, case when acct_fare is null then 0 else acct_fare end + case when child_fare is null then 0 else child_fare end + case when grand_fare is null then 0 else grand_fare end as total_fare, case when acct_admin_fee is null then 0 else acct_admin_fee end + case when child_admin_fee is null then 0 else child_admin_fee end + case when grand_admin_fee is null then 0 else grand_admin_fee end as total_admin_fee, case when acct_fare is null then 0 else acct_fare end + case when child_fare is null then 0 else child_fare end + case when grand_fare is null then 0 else grand_fare end + case when acct_admin_fee is null then 0 else acct_admin_fee end + case when child_admin_fee is null then 0 else child_admin_fee end + case when grand_admin_fee is null then 0 else grand_admin_fee end as total from
+(
+    select acct_sales.SALESPERSON_NO, case when sum(txn_count.trips_count) is null then 0 else sum(txn_count.trips_count) end as acct_trips, case when sum(summary.NEW_TXN) is null then 0 else sum(summary.NEW_TXN) end as acct_fare, case when sum(summary.ADMIN_FEE) is null then 0 else sum(summary.ADMIN_FEE) end as acct_admin_fee from AMTB_ACCT_SALESPERSON acct_sales
+    inner join AMTB_ACCOUNT acct on acct.ACCOUNT_NO = acct_sales.ACCOUNT_NO and acct.CUST_NO is not null
+    inner join FMTB_AR_CONT_CODE_MASTER ar on acct.ar_control_code_no = ar.ar_control_code_no
+    inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no and (:entityNo is null or entity.entity_no = :entityNo)
+    left join BMTB_INVOICE_HEADER acct_header on acct_header.ACCOUNT_NO = acct.ACCOUNT_NO and INVOICE_DATE between acct_sales.EFFECTIVE_DT_FROM and case when acct_sales.EFFECTIVE_DT_TO is null then add_months(acct_sales.EFFECTIVE_DT_FROM, 1200) else acct_sales.EFFECTIVE_DT_TO end and ((:invoiceStart is null and :invoiceEnd is null)or(acct_header.INVOICE_DATE between case when :invoiceStart is null then to_date(substr(:invoiceEnd,0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date(substr(:invoiceStart,0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when :invoiceEnd is null then last_day(to_date(substr(:invoiceStart,0,8)||'01 23:59:59', 'yyyy-mm-dd hh24:mi:ss')) else last_day(to_date(:invoiceEnd, 'yyyy-mm-dd hh24:mi:ss')) end))
+    left join BMTB_INVOICE_SUMMARY summary on acct_header.INVOICE_HEADER_NO = summary.INVOICE_HEADER_NO and (:productType is null or summary.PRODUCT_TYPE_ID = :productType) and summary.PRODUCT_TYPE_ID is not null
+    left join (select detail.INVOICE_SUMMARY_NO, count(INVOICE_TXN_NO) as trips_count from BMTB_INVOICE_DETAIL detail left join BMTB_INVOICE_TXN txn on detail.INVOICE_DETAIL_NO = txn.INVOICE_DETAIL_NO group by detail.INVOICE_SUMMARY_NO) txn_count on summary.INVOICE_SUMMARY_NO = txn_count.INVOICE_SUMMARY_NO
+    group by acct_sales.SALESPERSON_NO
+) acct left join (
+    select acct_sales.SALESPERSON_NO, case when sum(txn_count.trips_count) is null then 0 else sum(txn_count.trips_count) end as child_trips, case when sum(summary.NEW_TXN) is null then 0 else sum(summary.NEW_TXN) end as child_fare, case when sum(summary.ADMIN_FEE) is null then 0 else sum(summary.ADMIN_FEE) end as child_admin_fee from AMTB_ACCT_SALESPERSON acct_sales
+    inner join AMTB_ACCOUNT acct on acct.ACCOUNT_NO = acct_sales.ACCOUNT_NO and acct.CUST_NO is not null
+    inner join AMTB_ACCOUNT child on child.PARENT_NO = acct.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on acct.ar_control_code_no = ar.ar_control_code_no
+    inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no and (:entityNo is null or entity.entity_no = :entityNo)
+    left join BMTB_INVOICE_HEADER child_header on child_header.ACCOUNT_NO = child.ACCOUNT_NO and INVOICE_DATE between acct_sales.EFFECTIVE_DT_FROM and case when acct_sales.EFFECTIVE_DT_TO is null then add_months(acct_sales.EFFECTIVE_DT_FROM, 1200) else acct_sales.EFFECTIVE_DT_TO end and ((:invoiceStart is null and :invoiceEnd is null)or(child_header.INVOICE_DATE between case when :invoiceStart is null then to_date(substr(:invoiceEnd,0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date(substr(:invoiceStart,0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when :invoiceEnd is null then last_day(to_date(substr(:invoiceStart,0,8)||'01 23:59:59', 'yyyy-mm-dd hh24:mi:ss')) else last_day(to_date(:invoiceEnd, 'yyyy-mm-dd hh24:mi:ss')) end))
+    left join BMTB_INVOICE_SUMMARY summary on child_header.INVOICE_HEADER_NO = summary.INVOICE_HEADER_NO and (:productType is null or summary.PRODUCT_TYPE_ID = :productType) and summary.PRODUCT_TYPE_ID is not null
+    left join (select detail.INVOICE_SUMMARY_NO, count(INVOICE_TXN_NO) as trips_count from BMTB_INVOICE_DETAIL detail left join BMTB_INVOICE_TXN txn on detail.INVOICE_DETAIL_NO = txn.INVOICE_DETAIL_NO group by detail.INVOICE_SUMMARY_NO) txn_count on summary.INVOICE_SUMMARY_NO = txn_count.INVOICE_SUMMARY_NO
+    group by acct_sales.SALESPERSON_NO
+) child on acct.SALESPERSON_NO = child.SALESPERSON_NO left join(
+    select acct_sales.SALESPERSON_NO, case when sum(txn_count.trips_count) is null then 0 else sum(txn_count.trips_count) end as grand_trips, case when sum(summary.NEW_TXN) is null then 0 else sum(summary.NEW_TXN) end as grand_fare, case when sum(summary.ADMIN_FEE) is null then 0 else sum(summary.ADMIN_FEE) end as grand_admin_fee from AMTB_ACCT_SALESPERSON acct_sales
+    inner join AMTB_ACCOUNT acct on acct.ACCOUNT_NO = acct_sales.ACCOUNT_NO and acct.CUST_NO is not null
+    inner join AMTB_ACCOUNT child on child.PARENT_NO = acct.ACCOUNT_NO
+    inner join AMTB_ACCOUNT grand on grand.PARENT_NO = child.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on acct.ar_control_code_no = ar.ar_control_code_no
+    inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no and (:entityNo is null or entity.entity_no = :entityNo)
+    left join BMTB_INVOICE_HEADER grand_header on grand_header.ACCOUNT_NO = grand.ACCOUNT_NO and INVOICE_DATE between acct_sales.EFFECTIVE_DT_FROM and case when acct_sales.EFFECTIVE_DT_TO is null then add_months(acct_sales.EFFECTIVE_DT_FROM, 1200) else acct_sales.EFFECTIVE_DT_TO end and ((:invoiceStart is null and :invoiceEnd is null)or(grand_header.INVOICE_DATE between case when :invoiceStart is null then to_date(substr(:invoiceEnd,0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date(substr(:invoiceStart,0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when :invoiceEnd is null then last_day(to_date(substr(:invoiceStart,0,8)||'01 23:59:59', 'yyyy-mm-dd hh24:mi:ss')) else last_day(to_date(:invoiceEnd, 'yyyy-mm-dd hh24:mi:ss')) end))
+    left join BMTB_INVOICE_SUMMARY summary on grand_header.INVOICE_HEADER_NO = summary.INVOICE_HEADER_NO and (:productType is null or summary.PRODUCT_TYPE_ID = :productType) and summary.PRODUCT_TYPE_ID is not null
+    left join (select detail.INVOICE_SUMMARY_NO, count(INVOICE_TXN_NO) as trips_count from BMTB_INVOICE_DETAIL detail left join BMTB_INVOICE_TXN txn on detail.INVOICE_DETAIL_NO = txn.INVOICE_DETAIL_NO group by detail.INVOICE_SUMMARY_NO) txn_count on summary.INVOICE_SUMMARY_NO = txn_count.INVOICE_SUMMARY_NO
+    group by acct_sales.SALESPERSON_NO
+) grand on acct.SALESPERSON_NO = grand.SALESPERSON_NO right join MSTB_SALESPERSON salesperson on acct.SALESPERSON_NO = salesperson.SALESPERSON_NO order by case when :sort = 'SPN' then SALESPERSON_NAME else null end asc, case when :sort = 'TOTAL' then TOTAL else null end desc
+	]]>
+</sql-query>
+</hibernate-mapping>

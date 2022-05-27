@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Points Reminder Letter" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_POSTAL" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="CONTACT_NAME2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CONTACT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_AREA" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS3" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BPP" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REWARDS_PTS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EXPIRE_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ACCOUNT_CATEGORY" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select acct.ACCOUNT_NAME, contact.ADDRESS_POSTAL, 
+    contact.MAIN_CONTACT_NAME || case when contact.SUB_CONTACT_NAME is not null then ' / ' || contact.SUB_CONTACT_NAME else '' end as contact_name2,
+    case when main_sal.MASTER_NO is not null then main_sal.MASTER_VALUE||' ' else '' end || contact.MAIN_CONTACT_NAME || case when contact.MAIN_CONTACT_NAME is not null and contact.SUB_CONTACT_NAME is not null then ' / ' else '' end || case when contact.SUB_CONTACT_NAME is not null then case when sub_sal.MASTER_NO is not null then sub_sal.MASTER_VALUE||' ' else '' end || contact.SUB_CONTACT_NAME else '' end as contact_name,
+    contact.ADDRESS_AREA,
+    case when contact.ADDRESS_BLOCK is not null then contact.ADDRESS_BLOCK else '' end || case when contact.ADDRESS_BLOCK is not null and contact.ADDRESS_STREET is not null then ' ' else '' end || case when contact.ADDRESS_STREET is not null then contact.ADDRESS_STREET else '' end as address1,
+    case when contact.ADDRESS_UNIT is not null then contact.ADDRESS_UNIT else '' end || case when contact.ADDRESS_UNIT is not null and contact.ADDRESS_BUILDING is not null then ' ' else '' end || case when contact.ADDRESS_BUILDING is not null then contact.ADDRESS_BUILDING else '' end as address2,
+    case when contact.ADDRESS_COUNTRY is not null then country.MASTER_VALUE else '' end || case when contact.ADDRESS_COUNTRY is not null and contact.ADDRESS_POSTAL is not null then ' ' else '' end || case when contact.ADDRESS_POSTAL is not null then contact.ADDRESS_POSTAL else '' end as address3,
+    to_char(reward_acct.CUT_OFF_DT, 'yyyy') as bpp, trim(to_char(reward_txns.rewards_pts, '999,999,990')) as rewards_pts, reward_acct.EXPIRE_DT as EXPIRE_DT, acct.ACCOUNT_CATEGORY
+    from LRTB_REWARD_ACCOUNT reward_acct
+    inner join AMTB_ACCOUNT acct on reward_acct.ACCOUNT_NO = acct.ACCOUNT_NO
+    inner join AMTB_ACCT_MAIN_CONTACT main on main.ACCOUNT_NO = acct.ACCOUNT_NO and main.MAIN_CONTACT_TYPE = '${10. Contact Person#choice(B,S)#NC:CONTACT_TYPE:REQUIRED}'
+    inner join AMTB_CONTACT_PERSON contact on main.CONTACT_PERSON_NO = contact.CONTACT_PERSON_NO
+    left join MSTB_MASTER_TABLE main_sal on contact.MAIN_CONTACT_SAL = main_sal.MASTER_NO
+    left join MSTB_MASTER_TABLE sub_sal on contact.SUB_CONTACT_SAL = sub_sal.MASTER_NO
+    left join MSTB_MASTER_TABLE country on contact.ADDRESS_COUNTRY = country.MASTER_NO
+    inner join (select ACCOUNT_NO, max(effective_dt) as last_effective_dt from AMTB_ACCT_STATUS where EFFECTIVE_DT &lt; current_timestamp group by ACCOUNT_NO) last_acct_status on acct.ACCOUNT_NO = last_acct_status.ACCOUNT_NO
+    inner join AMTB_ACCT_STATUS acct_status on acct.ACCOUNT_NO = acct_status.ACCOUNT_NO and acct_status.EFFECTIVE_DT = last_acct_status.LAST_EFFECTIVE_DT and ('${03. Account Status#choice()#NC:ACCOUNT_STATUS}' is null or acct_status.ACCT_STATUS = '${03. Account Status#choice()#NC:ACCOUNT_STATUS}')
+    left join (select ACCOUNT_NO, listagg(PRODUCT_TYPE_ID,',') within group (order by product_type_id) as product_types from AMTB_SUBSC_TO group by ACCOUNT_NO) subscriptions on subscriptions.ACCOUNT_NO = acct.ACCOUNT_NO
+    inner join (select ACCOUNT_NO, max(EFFECTIVE_DT_FROM) as last_effective_dt_from from AMTB_ACCT_SALESPERSON where EFFECTIVE_DT_FROM &lt; current_timestamp group by ACCOUNT_NO) last_sales on acct.ACCOUNT_NO = last_sales.ACCOUNT_NO
+    inner join AMTB_ACCT_SALESPERSON acct_sales on last_sales.ACCOUNT_NO = acct_sales.ACCOUNT_NO and last_sales.LAST_EFFECTIVE_DT_FROM = acct_sales.EFFECTIVE_DT_FROM and (acct_sales.EFFECTIVE_DT_TO is null or acct_sales.EFFECTIVE_DT_FROM &lt; acct_sales.EFFECTIVE_DT_TO)
+    inner join MSTB_SALESPERSON sales on acct_sales.SALESPERSON_NO = sales.SALESPERSON_NO
+    inner join (
+select REWARD_ACCOUNT_NO, sum(rewards_pts) as rewards_pts from LRTB_REWARD_TXN txn
+    left join BMTB_INVOICE_HEADER header on txn.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    where case when txn.created_dt is null then header.CREATED_DT else txn.created_dt end between to_timestamp(substr('${06. Points Date Start Month#date()#MMMYY:REQUIRED}', 0, 8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') and case when '${07. Points Date End Month#date()#MMMYY}' is null then to_timestamp(to_char(last_day(to_date('${06. Points Date Start Month#date()#MMMYY:REQUIRED}', 'yyyy-mm-dd')),'yyyy-mm-dd')||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(to_char(last_day(to_date('${07. Points Date End Month#date()#MMMYY}', 'yyyy-mm-dd')),'yyyy-mm-dd')||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end
+    group by REWARD_ACCOUNT_NO
+    ) reward_txns on reward_acct.REWARD_ACCOUNT_NO = reward_txns.REWARD_ACCOUNT_NO and reward_txns.REWARDS_PTS &gt;= case when '${05. Minimum Balance Points#binRangeIntbox#}' is null then '0.1' else '${05. Minimum Balance Points#binRangeIntbox#}' end
+    where ('${01. Account Type#choice()#MASTER:AT:REQUIRED}' is null or acct.ACCT_TYPE_NO = '${01. Account Type#choice()#MASTER:AT:REQUIRED}')
+    and acct.CUST_NO like '%${02a. Account No#acctsearch#custId}%'
+    and acct.ACCOUNT_NAME like '%${02b. Account Name#acctsearch#custName}%'
+    and ('${04. Subscribed Product Type#choice()#MASTER:PT}' is null or subscriptions.PRODUCT_TYPES like '%${04. Subscribed Product Type#choice()#MASTER:PT}%')
+    and ('${09. Sales Person#choice()#MASTER:SP}' is null or sales.SALESPERSON_NO = '${09. Sales Person#choice()#MASTER:SP}')
+    order by acct.ACCOUNT_NAME</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

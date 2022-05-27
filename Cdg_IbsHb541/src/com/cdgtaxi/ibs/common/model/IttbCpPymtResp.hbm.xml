@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbCpPymtResp" 
+    table="ITTB_CP_PYMT_RESP"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+      <id
+        name="respId"
+        type="java.lang.Integer"
+        column="PYMT_RESP_ID"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">ITTB_CP_PYMT_RESP_SQ1</param>
+        </generator>
+    </id>   
+	<version name="version" column="VERSION"/>
+
+	 <property
+        name="loginNo"
+        type="java.lang.Integer"
+        column="LOGIN_NO"
+        not-null="true"
+        length="8"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+	
+    <property
+        name="loginId"
+        type="java.lang.String"
+        column="LOGIN_ID"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmMcode"
+        type="java.lang.Long"
+        column="TM_MCODE"
+        length="16"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmRefno"
+        type="java.lang.String"
+        column="TM_REFNO"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmCurrency"
+        type="java.lang.String"
+        column="TM_CURRENCY"
+        length="3"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmDebitamt"
+        type="java.math.BigDecimal"
+        column="TM_DEBITAMT"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmStatus"
+        type="java.lang.String"
+        column="TM_STATUS"
+        length="3"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmErrormsg"
+        type="java.lang.String"
+        column="TM_ERRORMSG"
+        length="700"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmPaymenttype"
+        type="java.lang.String"
+        column="TM_PAYMENTTYPE"
+        length="3"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmApprovalcode"
+        type="java.lang.String"
+        column="TM_APPROVALCODE"
+        length="6"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmBankrespcode"
+        type="java.lang.String"
+        column="TM_BANKRESPCODE"
+        length="6"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="tmError"
+        type="java.lang.String"
+        column="TM_ERROR"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmUserfield1"
+        type="java.lang.String"
+        column="TM_USERFIELD1"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmUserfield2"
+        type="java.lang.String"
+        column="TM_USERFIELD2"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="tmUserfield3"
+        type="java.lang.String"
+        column="TM_USERFIELD3"
+        length="40"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="tmUserfield4"
+        type="java.lang.String"
+        column="TM_USERFIELD4"
+        length="40"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmUserfield5"
+        type="java.lang.String"
+        column="TM_USERFIELD5"
+        length="200"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+    <property
+        name="tmTrntype"
+        type="java.lang.String"
+        column="TM_TRNTYPE"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmSubtrntype"
+        type="java.lang.String"
+        column="TM_SUBTRNTYPE"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmCclast4digit"
+        type="java.lang.Integer"
+        column="TM_CCLAST4DIGIT"
+        length="4"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmExpirydate"
+        type="java.lang.String"
+        column="TM_EXPIRYDATE"
+        length="4"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmRecurrentid"
+        type="java.lang.String"
+        column="TM_RECURRENTID"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmSubsequentmcode"
+        type="java.lang.Long"
+        column="TM_SUBSEQUENTMCODE"
+        length="16"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tmCardnum"
+        type="java.lang.String"
+        column="TM_CARDNUM"
+        length="19"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DATE"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DATE"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to PmtbProduct -->
+    <many-to-one
+        name="ittbCpPymtReqSum"
+        class="com.cdgtaxi.ibs.common.model.IttbCpPymtReqSum"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PYMT_REQ_ID" />
+    </many-to-one>
+  <!--   <many-to-one
+        name="ittbCpLogin"
+        class="com.cdgtaxi.ibs.common.model.IttbCpLogin"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="LOGIN_NO" />
+    </many-to-one> -->
+
+     <many-to-one
+        name="amtbAccount"
+        class="com.cdgtaxi.ibs.common.model.AmtbAccount"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ACCOUNT_NO" />
+    </many-to-one>
+    
+
+</class>
+</hibernate-mapping>

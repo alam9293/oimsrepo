@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="govtEInv">
+	<return-scalar column="ENTITY" 			        type="string"/>
+	<return-scalar column="VENDOR_ID" 			    type="string"/>
+	<return-scalar column="ACCOUNT_NO" 		      type="string"/>
+	<return-scalar column="ACCOUNT_NAME"		    type="string"/>
+	<return-scalar column="DIV_CODE" 			      type="string"/>
+	<return-scalar column="DIV_NAME" 			      type="string"/>
+	<return-scalar column="DEPT_CODE" 			    type="string"/>
+	<return-scalar column="DEPT_NAME" 			    type="string"/>
+	<return-scalar column="BUSINESS_UNIT" 			type="string"/>
+	<return-scalar column="GOVT_EINV_FLAG" 			type="string"/>
+	<return-scalar column="ATTENTION_TO" 			  type="string"/>
+	<return-scalar column="MAIN_CONTACT_EMAIL" 	type="string"/>
+	<return-scalar column="INVOICE_DATE" 			  type="string"/>
+	<return-scalar column="INVOICE_NO" 				  type="string"/>
+	<return-scalar column="INVOICE_AMT" 				type="string"/>
+  <return-scalar column="REQUEST_DATE"        type="string"/>
+  <return-scalar column="REQ_NO"              type="string"/>
+	<return-scalar column="OUTGOING_FILENAME"   type="string"/>
+  <return-scalar column="RETURN_FILE_UPLOAD_DATE"   type="string"/>
+	<return-scalar column="STATUS"              type="string"/>
+  <return-scalar column="REMARKS"             type="string"/>
+
+	<![CDATA[
+select *
+from (
+  -- To retrieve pending requests (not processed yet) with their respective invoices
+  -- results contains request no but with other fields empty
+  select
+      req.REQ_NO,
+      case when req.REQ_NO is not null then to_char(req.CREATED_DT, 'dd/mm/yyyy') else null end as REQUEST_DATE,
+      case when req.REQ_NO is not null then req.FILE_NAME else null end as OUTGOING_FILENAME,
+      case when req.REQ_NO is not null then to_char(req.UPDATED_DT, 'dd/mm/yyyy') else null end as RETURN_FILE_UPLOAD_DATE,
+      entity.ENTITY_NAME as ENTITY,
+      null as VENDOR_ID,
+      topAcct.CUST_NO as ACCOUNT_NO,
+      topAcct.ACCOUNT_NAME,
+      case when acct.ACCOUNT_CATEGORY = 'DIV' then acct.CODE end as DIV_CODE,
+      case when acct.ACCOUNT_CATEGORY = 'DIV' then acct.ACCOUNT_NAME end as DIV_NAME,
+      case when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.CODE end as DEPT_CODE,
+      case when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.ACCOUNT_NAME end as DEPT_NAME,
+      buMaster.MASTER_CODE as BUSINESS_UNIT,
+      acct.GOVT_E_INVOICE_FLAG as GOVT_EINV_FLAG,
+      null as ATTENTION_TO,
+      contact.MAIN_CONTACT_EMAIL,
+      to_char(inv_hdr.INVOICE_DATE, 'dd/mm/yyyy') as INVOICE_DATE,
+      inv_hdr.INVOICE_NO,
+      to_char(inv_hdr.NEW_TXN, '999,999,990.00') as INVOICE_AMT,
+      null as STATUS,
+      null as REMARKS,
+      req.status as request_status
+    from BMTB_INVOICE_HEADER inv_hdr
+    left join AMTB_ACCOUNT acct on inv_hdr.DEBT_TO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT acct2 on acct.PARENT_NO = acct2.ACCOUNT_NO
+    left join AMTB_ACCOUNT acct3 on acct2.PARENT_NO = acct3.ACCOUNT_NO
+    left join AMTB_ACCOUNT topAcct on topAcct.CUST_NO = case when acct3.CUST_NO is not null then acct3.CUST_NO when acct2.CUST_NO is not null then acct2.CUST_NO else acct.CUST_NO end
+    left join FMTB_AR_CONT_CODE_MASTER ar on topAcct.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    left join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    left join MSTB_MASTER_TABLE buMaster on acct.BUSINESS_UNIT_MASTER_NO = buMaster.MASTER_NO
+    left join AMTB_ACCT_MAIN_CONTACT main on main.ACCOUNT_NO = acct.ACCOUNT_NO and main.MAIN_CONTACT_TYPE = 'B'
+    left join AMTB_CONTACT_PERSON contact on main.CONTACT_PERSON_NO = contact.CONTACT_PERSON_NO
+    inner join ITTB_GOVT_EINVOICE_REQ req on inv_hdr.INVOICE_NO between req.INVOICE_NO_FROM and req.INVOICE_NO_TO OR req.BILL_GEN_REQ_NO = inv_hdr.REQ_NO OR topAcct.ACCOUNT_NO = req.ACCOUNT_NO OR req.INVOICE_DATE = inv_hdr.INVOICE_DATE
+    where acct.GOVT_E_INVOICE_FLAG in ('I', 'T')
+    AND req.STATUS in ('P', 'N', 'G')
+    AND inv_hdr.new_txn > 0
+    AND ( :accountNo is null or topAcct.CUST_NO = :accountNo )
+    AND ( topAcct.ACCOUNT_NAME like :accountName )
+    AND ( :subAccountNo is null or acct.ACCOUNT_NO = :subAccountNo)
+    AND ( :entityNo is null or entity.ENTITY_NO = :entityNo )
+    AND ( :businessUnit is null or buMaster.MASTER_CODE = :businessUnit )
+    AND ( :govtEInvFlag is null or acct.GOVT_E_INVOICE_FLAG = :govtEInvFlag )
+    -- Because requests are pending status therefore has no return status. The moment there is return status filter, we filter out
+    AND ( :returnStatus is null or :returnStatus = '1')
+    AND ( :requestNo is null or req.REQ_NO = :requestNo ) 
+    AND
+    (:requestDateFrom is null OR req.CREATED_DT between to_date(:requestDateFrom,'yyyy-MM-dd') AND to_date(:requestDateTo,'yyyy-MM-dd hh24:mi:ss'))
+    AND
+    (:invoiceDateFrom is null OR inv_hdr.INVOICE_DATE between to_date(:invoiceDateFrom,'yyyy-MM-dd') AND to_date(:invoiceDateTo,'yyyy-MM-dd'))
+  UNION ALL
+  -- Retrieve all processed requests
+  select
+      req.REQ_NO,
+      case when req.REQ_NO is not null then to_char(req.CREATED_DT, 'dd/mm/yyyy') else null end as REQUEST_DATE,
+      case when req.REQ_NO is not null then req.FILE_NAME else null end as OUTGOING_FILENAME,
+      case when req.REQ_NO is not null then to_char(req.UPDATED_DT, 'dd/mm/yyyy') else null end as RETURN_FILE_UPLOAD_DATE,
+      entity.ENTITY_NAME as ENTITY,
+      hdr.VENDOR_ID,
+      topAcct.CUST_NO as ACCOUNT_NO,
+      topAcct.ACCOUNT_NAME,
+      case when acct.ACCOUNT_CATEGORY = 'DIV' then acct.CODE end as DIV_CODE,
+      case when acct.ACCOUNT_CATEGORY = 'DIV' then acct.ACCOUNT_NAME end as DIV_NAME,
+      case when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.CODE end as DEPT_CODE,
+      case when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.ACCOUNT_NAME end as DEPT_NAME,
+      buMaster.MASTER_CODE as BUSINESS_UNIT,
+      acct.GOVT_E_INVOICE_FLAG as GOVT_EINV_FLAG,
+      hdr.ATTENTION_TO,
+      contact.MAIN_CONTACT_EMAIL,
+      to_char(inv_hdr.INVOICE_DATE, 'dd/mm/yyyy') as INVOICE_DATE,
+      inv_hdr.INVOICE_NO,
+      to_char(inv_hdr.NEW_TXN, '999,999,990.00') as INVOICE_AMT,
+      case 
+       when req.REQ_NO is not null AND hdr.RETURN_STATUS is not null then hdr.RETURN_STATUS
+       when req.REQ_NO is not null AND hdr.RETURN_STATUS is null then 'PENDING'
+       else null
+      end as STATUS,
+      case when req.REQ_NO is not null then hdr.RETURN_REMARKS else null end as REMARKS,
+      req.status as request_status
+    from ITTB_GOVT_EINVOICE_REQ req
+    left join ITTB_GOVT_EINVOICE_HDR_DTL hdr on hdr.REQ_NO = req.REQ_NO
+    left join BMTB_INVOICE_HEADER inv_hdr on hdr.INVOICE_NO = inv_hdr.INVOICE_NO
+    left join AMTB_ACCOUNT acct on inv_hdr.DEBT_TO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT acct2 on acct.PARENT_NO = acct2.ACCOUNT_NO
+    left join AMTB_ACCOUNT acct3 on acct2.PARENT_NO = acct3.ACCOUNT_NO
+    left join AMTB_ACCOUNT topAcct on topAcct.CUST_NO = case when acct3.CUST_NO is not null then acct3.CUST_NO when acct2.CUST_NO is not null then acct2.CUST_NO else acct.CUST_NO end
+    left join FMTB_AR_CONT_CODE_MASTER ar on topAcct.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    left join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    left join MSTB_MASTER_TABLE buMaster on acct.BUSINESS_UNIT_MASTER_NO = buMaster.MASTER_NO
+    left join AMTB_ACCT_MAIN_CONTACT main on main.ACCOUNT_NO = acct.ACCOUNT_NO and main.MAIN_CONTACT_TYPE = 'B'
+    left join AMTB_CONTACT_PERSON contact on main.CONTACT_PERSON_NO = contact.CONTACT_PERSON_NO
+    where acct.GOVT_E_INVOICE_FLAG in ('I', 'T')
+    AND req.STATUS is not null
+    AND req.STATUS not in ('E','D')
+    AND ( :accountNo is null or topAcct.CUST_NO = :accountNo )
+      AND ( topAcct.ACCOUNT_NAME like :accountName )
+      AND ( :subAccountNo is null or acct.ACCOUNT_NO = :subAccountNo)
+      AND ( :entityNo is null or entity.ENTITY_NO = :entityNo )
+      AND ( :businessUnit is null or buMaster.MASTER_CODE = :businessUnit )
+      AND ( :govtEInvFlag is null or acct.GOVT_E_INVOICE_FLAG = :govtEInvFlag )
+      AND ( :returnStatus is null or (:returnStatus = 'P' AND req.REQ_NO is not null AND hdr.RETURN_STATUS is null) or hdr.RETURN_STATUS = :returnStatus)
+      AND ( :requestNo is null or req.REQ_NO = :requestNo ) 
+      AND
+      (:requestDateFrom is null OR req.CREATED_DT between to_date(:requestDateFrom,'yyyy-MM-dd') AND to_date(:requestDateTo,'yyyy-MM-dd hh24:mi:ss'))
+      AND
+      (:invoiceDateFrom is null OR inv_hdr.INVOICE_DATE between to_date(:invoiceDateFrom,'yyyy-MM-dd') AND to_date(:invoiceDateTo,'yyyy-MM-dd'))
+  UNION ALL
+  -- Retrieve all invoices pending to have a request tied to it
+  select
+      req.REQ_NO,
+      case when req.REQ_NO is not null then to_char(req.CREATED_DT, 'dd/mm/yyyy') else null end as REQUEST_DATE,
+      case when req.REQ_NO is not null then req.FILE_NAME else null end as OUTGOING_FILENAME,
+      case when req.REQ_NO is not null then to_char(req.UPDATED_DT, 'dd/mm/yyyy') else null end as RETURN_FILE_UPLOAD_DATE,
+      entity.ENTITY_NAME as ENTITY,
+      hdr.VENDOR_ID,
+      topAcct.CUST_NO as ACCOUNT_NO,
+      topAcct.ACCOUNT_NAME,
+      case when acct.ACCOUNT_CATEGORY = 'DIV' then acct.CODE end as DIV_CODE,
+      case when acct.ACCOUNT_CATEGORY = 'DIV' then acct.ACCOUNT_NAME end as DIV_NAME,
+      case when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.CODE end as DEPT_CODE,
+      case when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.ACCOUNT_NAME end as DEPT_NAME,
+      buMaster.MASTER_CODE as BUSINESS_UNIT,
+      acct.GOVT_E_INVOICE_FLAG as GOVT_EINV_FLAG,
+      hdr.ATTENTION_TO,
+      contact.MAIN_CONTACT_EMAIL,
+      to_char(inv_hdr.INVOICE_DATE, 'dd/mm/yyyy') as INVOICE_DATE,
+      inv_hdr.INVOICE_NO,
+      to_char(inv_hdr.NEW_TXN, '999,999,990.00') as INVOICE_AMT,
+      case 
+       when req.REQ_NO is not null AND hdr.RETURN_STATUS is not null then hdr.RETURN_STATUS
+       when req.REQ_NO is not null AND hdr.RETURN_STATUS is null then 'PENDING'
+       else null
+      end as STATUS,
+      case when req.REQ_NO is not null then hdr.RETURN_REMARKS else null end as REMARKS,
+      req.status as request_status
+    from BMTB_INVOICE_HEADER inv_hdr
+    left join ITTB_GOVT_EINVOICE_HDR_DTL hdr on hdr.INVOICE_NO = inv_hdr.INVOICE_NO
+    left join ITTB_GOVT_EINVOICE_REQ req on hdr.REQ_NO = req.REQ_NO
+    left join AMTB_ACCOUNT acct on inv_hdr.DEBT_TO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT acct2 on acct.PARENT_NO = acct2.ACCOUNT_NO
+    left join AMTB_ACCOUNT acct3 on acct2.PARENT_NO = acct3.ACCOUNT_NO
+    left join AMTB_ACCOUNT topAcct on topAcct.CUST_NO = case when acct3.CUST_NO is not null then acct3.CUST_NO when acct2.CUST_NO is not null then acct2.CUST_NO else acct.CUST_NO end
+    left join FMTB_AR_CONT_CODE_MASTER ar on topAcct.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    left join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    left join MSTB_MASTER_TABLE buMaster on acct.BUSINESS_UNIT_MASTER_NO = buMaster.MASTER_NO
+    left join AMTB_ACCT_MAIN_CONTACT main on main.ACCOUNT_NO = acct.ACCOUNT_NO and main.MAIN_CONTACT_TYPE = 'B'
+    left join AMTB_CONTACT_PERSON contact on main.CONTACT_PERSON_NO = contact.CONTACT_PERSON_NO
+    -- if pending request is showing the invoice, we exclude out this invoice from this listing
+    left join ITTB_GOVT_EINVOICE_REQ req2 on (inv_hdr.INVOICE_NO between req2.INVOICE_NO_FROM and req2.INVOICE_NO_TO OR req2.BILL_GEN_REQ_NO = inv_hdr.REQ_NO OR topAcct.ACCOUNT_NO = req2.ACCOUNT_NO OR req2.INVOICE_DATE = inv_hdr.INVOICE_DATE) AND req2.STATUS in ('P', 'G', 'N')
+    where acct.GOVT_E_INVOICE_FLAG in ('I', 'T')
+    AND inv_hdr.new_txn > 0
+    AND req.STATUS is null
+    AND req2.STATUS is null
+    AND ( :accountNo is null or topAcct.CUST_NO = :accountNo )
+      AND ( topAcct.ACCOUNT_NAME like :accountName )
+      AND ( :subAccountNo is null or acct.ACCOUNT_NO = :subAccountNo)
+      AND ( :entityNo is null or entity.ENTITY_NO = :entityNo )
+      AND ( :businessUnit is null or buMaster.MASTER_CODE = :businessUnit )
+      AND ( :govtEInvFlag is null or acct.GOVT_E_INVOICE_FLAG = :govtEInvFlag )
+      AND ( :returnStatus is null or (:returnStatus = 'P' AND req.REQ_NO is not null AND hdr.RETURN_STATUS is null) or hdr.RETURN_STATUS = :returnStatus)
+      AND ( :requestNo is null or req.REQ_NO = :requestNo ) 
+      AND
+      (:requestDateFrom is null OR req.CREATED_DT between to_date(:requestDateFrom,'yyyy-MM-dd') AND to_date(:requestDateTo,'yyyy-MM-dd hh24:mi:ss'))
+      AND
+      (:invoiceDateFrom is null OR inv_hdr.INVOICE_DATE between to_date(:invoiceDateFrom,'yyyy-MM-dd') AND to_date(:invoiceDateTo,'yyyy-MM-dd'))
+) temp
+order by ACCOUNT_NO, INVOICE_NO
+	]]>
+</sql-query>
+
+</hibernate-mapping>

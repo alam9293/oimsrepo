@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="refreshMasterWindow" border="normal" use="com.cdgtaxi.ibs.master.ui.RefreshMasterWindow"
+	title=""
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<button label="Refresh Configurable Constants" onClick="refreshMasterWindow.refreshConfigurables()"/>
+	<button label="Refresh Master Setups" onClick="refreshMasterWindow.refreshMasterSetup()"/>
+	<button label="Refresh ACL Access Rights" onClick="refreshMasterWindow.refreshACLAccessRights()"/>
+</window>

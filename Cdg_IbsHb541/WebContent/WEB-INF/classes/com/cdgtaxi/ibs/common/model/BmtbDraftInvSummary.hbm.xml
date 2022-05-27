@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.BmtbDraftInvSummary" 
+    table="BMTB_DRAFT_INV_SUMMARY"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="invoiceSummaryNo"
+        type="java.lang.Long"
+        column="INVOICE_SUMMARY_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">BMTB_DRAFT_INV_SUMMARY_SQ1</param>
+        </generator>
+    </id>
+
+    <property
+        name="summaryType"
+        type="java.lang.String"
+        column="SUMMARY_TYPE"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="summaryName"
+        type="java.lang.String"
+        column="SUMMARY_NAME"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="displayPriority1"
+        type="int"
+        column="DISPLAY_PRIORITY_1"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="displayPriority2"
+        type="int"
+        column="DISPLAY_PRIORITY_2"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="prevBalance"
+        type="java.math.BigDecimal"
+        column="PREV_BALANCE"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="prevPayment"
+        type="java.math.BigDecimal"
+        column="PREV_PAYMENT"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="newTxn"
+        type="java.math.BigDecimal"
+        column="NEW_TXN"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="adminFee"
+        type="java.math.BigDecimal"
+        column="ADMIN_FEE"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="gst"
+        type="java.math.BigDecimal"
+        column="GST"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="totalNew"
+        type="java.math.BigDecimal"
+        column="TOTAL_NEW"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="balance"
+        type="java.math.BigDecimal"
+        column="BALANCE"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="unitPrice"
+        type="java.math.BigDecimal"
+        column="UNIT_PRICE"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="quantity"
+        type="java.lang.Long"
+        column="QUANTITY"
+        length="18"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="discount"
+        type="java.math.BigDecimal"
+        column="DISCOUNT"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to BmtbDraftInvDetail -->
+    <set
+        name="bmtbDraftInvDetails"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="INVOICE_SUMMARY_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbDraftInvDetail"
+        />
+    </set>
+    <!-- bi-directional many-to-one association to PmtbProductType -->
+    <many-to-one
+        name="pmtbProductType"
+        class="com.cdgtaxi.ibs.common.model.PmtbProductType"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PRODUCT_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AmtbAccount -->
+    <many-to-one
+        name="amtbAccount"
+        class="com.cdgtaxi.ibs.common.model.AmtbAccount"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ACCOUNT_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to BmtbDraftInvHeader -->
+    <many-to-one
+        name="bmtbDraftInvHeader"
+        class="com.cdgtaxi.ibs.common.model.BmtbDraftInvHeader"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="INVOICE_HEADER_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

@@ -1,0 +1,295 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.cdgtaxi.ibs.common.model.PmtbIssuanceReqCard" table="PMTB_ISSUANCE_REQ_CARD">
+        <id name="reqCardNo" type="java.math.BigDecimal">
+            <column name="REQ_CARD_NO" />
+            <generator class="com.cdgtaxi.ibs.common.generator.BigDecimalSequenceGenerator">
+           	 <param name="sequence_name">PMSQ_ISSUANCE_REQ_CARD</param>
+        	</generator>
+        </id>
+        <property
+	        name="nameOnProduct"
+	        type="java.lang.String"
+	        column="NAME_ON_PRODUCT"
+	        length="80"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="creditLimit"
+	        type="java.math.BigDecimal"
+	        column="CREDIT_LIMIT"
+	        length="12"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="expiryDate"
+	        type="java.sql.Date"
+	        column="EXPIRY_DATE"
+	        length="7"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="fixedValue"
+	        type="java.math.BigDecimal"
+	        column="FIXED_VALUE"
+	        length="12"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="cardHolderName"
+	        type="java.lang.String"
+	        column="CARD_HOLDER_NAME"
+	        length="80"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="cardHolderTitle"
+	        type="java.lang.String"
+	        column="CARD_HOLDER_TITLE"
+	        length="80"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="cardHolderTel"
+	        type="java.lang.String"
+	        column="CARD_HOLDER_TEL"
+	        length="20"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="cardHolderSalutation"
+	        type="java.lang.String"
+	        column="CARD_HOLDER_SALUTATION"
+	        length="80"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="cardHolderMobile"
+	        type="java.lang.String"
+	        column="CARD_HOLDER_MOBILE"
+	        length="20"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="cardHolderEmail"
+	        type="java.lang.String"
+	        column="CARD_HOLDER_EMAIL"
+	        length="255"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="waiveSubscFeeFlag"
+	        type="java.lang.String"
+	        column="WAIVE_SUBSC_FEE_FLAG"
+	        not-null="true"
+	        length="1"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="isIndividualCard"
+	        type="java.lang.String"
+	        column="IS_INDIVIDUAL_CARD"
+	        length="1"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="embossFlag"
+	        type="java.lang.String"
+	        column="EMBOSS_FLAG"
+	        length="1"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="expiryTime"
+	        type="java.sql.Timestamp"
+	        column="EXPIRY_TIME"
+	        length="11"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    
+	    <property
+	        name="offlineCount"
+	        type="java.lang.Integer"
+	        column="OFFLINE_COUNT"
+	        length="6"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="offlineAmount"
+	        type="java.math.BigDecimal"
+	        column="OFFLINE_AMOUNT"
+	        length="8"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="offlineTxnAmount"
+	        type="java.math.BigDecimal"
+	        column="OFFLINE_TXN_AMOUNT"
+	        length="8"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="embossNameOnCard"
+	        type="java.lang.String"
+	        column="EMBOSS_NAME_ON_CARD"
+	        not-null="true"
+	        length="1"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+		<property
+	        name="waiveIssuanceFeeFlag"
+	        type="java.lang.String"
+	        column="WAIVE_ISSUANCE_FEE_FLAG"
+	        not-null="true"
+	        length="1"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="smsExpiryFlag"
+	        type="java.lang.String"
+	        column="SMS_EXPIRY_FLAG"
+	        length="1"
+	        not-null="true"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	     <property
+	        name="smsTopupFlag"
+	        type="java.lang.String"
+	        column="SMS_TOPUP_FLAG"
+	        length="1"
+	        not-null="true"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="balanceExpiryDate"
+	        type="java.util.Date"
+	        column="BALANCE_EXPIRY_DATE"
+	        length="7"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    
+	    <property
+	        name="cashplus"
+	        type="java.math.BigDecimal"
+	        column="CASHPLUS"
+	        length="19"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="cardValue"
+	        type="java.math.BigDecimal"
+	        column="CARD_VALUE"
+	        length="19"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+	    <property
+	        name="issuanceFee"
+	        type="java.math.BigDecimal"
+	        column="ISSUANCE_FEE"
+	        length="19"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+        <property
+	        name="employeeId"
+	        type="java.lang.String"
+	        column="EMPLOYEE_ID"
+	        length="20"
+	    >
+	        <meta attribute="use-in-tostring">true</meta>
+	        <meta attribute="use-in-equals">true</meta>
+	    </property>
+        <many-to-one name="pmtbIssuanceReq" class="com.cdgtaxi.ibs.common.model.PmtbIssuanceReq" fetch="join">
+           <column name="PMTB_ISSUANCE_REQ" />
+        </many-to-one>
+        <many-to-one name="pmtbProductType" class="com.cdgtaxi.ibs.common.model.PmtbProductType" fetch="join">
+           <column name="PRODUCT_TYPE_ID" />
+        </many-to-one>
+        <many-to-one name="pmtbProduct" class="com.cdgtaxi.ibs.common.model.PmtbProduct" fetch="join">
+           <column name="PRODUCT_NO" />
+        </many-to-one>
+        <many-to-one name="amtbAccount" class="com.cdgtaxi.ibs.common.model.AmtbAccount" fetch="join">
+           <column name="ACCOUNT_NO" />
+        </many-to-one>
+
+    	<set
+	        name="mstbPromotionCashPluses"
+	        table="PMTB_ISSU_REQ_CARD_PROMOTION" 
+	        lazy="true"
+	        inverse="false"
+			cascade="all"
+   		 >
+	        <key>
+	            <column name="PMTB_ISSUANCE_REQ_CARD" />
+	        </key>
+	        <many-to-many entity-name="com.cdgtaxi.ibs.master.model.MstbPromotionCashPlus">
+                <column name="MSTB_PROMOTION_CASH_PLUS" not-null="true" />
+            </many-to-many>
+    	</set>
+    	<set
+	        name="bmtbIssuanceInvoiceTxns"
+	        lazy="true"
+	        inverse="true"
+			cascade="all"
+	    >
+	        <key>
+	            <column name="PMTB_ISSUANCE_REQ_CARD" />
+	        </key>
+	        <one-to-many 
+	            class="com.cdgtaxi.ibs.common.model.BmtbIssuanceInvoiceTxn"
+	        />
+	    </set>
+    	
+    </class>
+</hibernate-mapping>

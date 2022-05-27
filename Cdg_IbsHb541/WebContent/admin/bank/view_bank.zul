@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="viewBankWindow"
+	title="View Bank" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ViewBankWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Bank Code"/>
+				<label id="bankCodeLbl"/>
+				<label sclass="fieldLabel" value="Bank Name"/>
+				<label id="bankNameLbl"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	
+	<listbox id="branchList" onSelect="viewBankWindow.editBranch()" mold="paging" multiple="true">
+		<listhead sizable="false">
+			<listheader label="Branch Code" sort="auto"/>
+			<listheader label="Branch Name" sort="auto"/>
+		</listhead>
+	</listbox>
+	<h:br/>
+	<h:br/>
+	<button label="Back" onClick="viewBankWindow.back()" />
+</window>

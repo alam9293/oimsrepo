@@ -1,0 +1,45 @@
+CR #84 Deployment:
+
+1. Deploy web and batch job as per normal
+
+2. For the all batch job .bat files, please add the following new library jars and expand the java -cp parameter:
+
+SET CSV=./lib/javacsv.jar;
+SET ZIP=./lib/zip4j_1.3.2.jar;
+
+%CSV%;%ZIP%;
+
+[From Seng Tat: Please do not miss this step because this will cause the last part of billgen to fail]
+
+3. Execute the following commands in command prompt to install and generate the PGP encryption keys:
+
+	- download and install Gpg4win 2.2.6 vallina from http://gpg4win.org/
+	
+	- Execute the following to generate Public/Private Key Pair, follow the screen instructions.
+		gpg --gen-key
+		
+	- Export public key to exchange with the other party
+		gpg --armor --output <publickeyname>.asc --export <your name or email created from previous step>
+
+4. Replace the "password" and recipient name accordingly in encrypt_os_printing.bat file.
+
+5. Replace the ftp's server ip, user ID, password and directory accordingly in ftp_os_printing.bat file.
+
+6. Start the Tomcat in Admin Mode.
+
+[From Seng Tat: The tomcat service must be executed with administrator rights otherwise the encryption module will not work]
+
+
+
+7. In the property file, src/pdfgen.properties, add this line as shown below,
+
+pdfgen.scripts.folder=C:/cdg-ibs-billgen/
+
+
+8. In the property file, src/printing.properties, add this line as shown below
+
+#The location of the outsource pdfs to store, 
+printing.outsource.file.location=C:/standalone/ibs/outsource/
+
+
+9, Create the folder in the location as specify both in 7) n 8)

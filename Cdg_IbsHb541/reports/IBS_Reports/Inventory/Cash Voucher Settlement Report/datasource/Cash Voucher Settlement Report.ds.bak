@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Cash Voucher Settlement Report" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="BATCH_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REDEEM_POINT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BATCH_DATE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="COUNT" type="Integer">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADJ_COUNT" type="Integer">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADJ_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_COUNT" type="Integer">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>SELECT batch_no, redeem_point, 
+    TO_CHAR(batch_date, 'dd/MM/yyyy') AS batch_date, 
+sum(total_count) - sum(adj_count) AS count,
+sum(total_amt) - sum(adj_amt) as amt,
+sum(adj_count) AS adj_count, 
+sum(adj_amt) AS adj_amt , 
+sum(total_count) as total_count, sum(total_amt) as total_amt FROM
+(
+SELECT
+  req.batch_no,
+  req.redeem_point,
+  req.batch_date,
+ case when req.action in ('PV','PD') then -1 else 0 end AS adj_count,
+  NVL(itemtype2.price, 0) - itemtype.price AS adj_amt,
+  0                                        AS total_count,
+  0                                        AS total_amt,
+  'Adjustment'                             AS remarks
+FROM imtb_item_req req
+INNER JOIN imtb_item item
+ON req.item_no = item.item_no
+INNER JOIN imtb_item_type itemtype
+ON item.item_type_no = itemtype.item_type_no
+LEFT JOIN imtb_item item2
+ON req.serial_no = item2.serial_no
+LEFT JOIN imtb_item_type itemtype2
+ON item2.item_type_no  = itemtype2.item_type_no
+WHERE req.action      IN ('PV', 'PD', 'PE')
+AND req.current_status = 'A'
+UNION ALL
+SELECT item.batch_no,
+  item.redeem_point,
+  item.batch_date,
+  0 AS adj_count,
+  0   AS adj_amt,
+  1  AS total_count,
+  itemtype.price as total_amt,
+  'Redeemed' AS remarks
+FROM imtb_item item
+INNER JOIN imtb_item_type itemtype
+ON item.item_type_no = itemtype.item_type_no
+AND item.status     IN ('R', 'PV', 'PD', 'PE')
+)
+where ('${1. Batch No##ALTERNATE_REQUIRED}' is null or batch_no = '${1. Batch No##ALTERNATE_REQUIRED}')
+and (('${2. Batch Start Date#date#ALTERNATE_REQUIRED}' is null and '${3. Batch End Date#date#ALTERNATE_REQUIRED}' is null)
+	or(batch_date between case when '${2. Batch Start Date#date#ALTERNATE_REQUIRED}' is null then to_date('${3. Batch End Date#date#ALTERNATE_REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Batch Start Date#date#ALTERNATE_REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end 
+		and case when '${3. Batch End Date#date#ALTERNATE_REQUIRED}' is null then to_date('${2. Batch Start Date#date#ALTERNATE_REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${3. Batch End Date#date#ALTERNATE_REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+and ('${4. Redemption Point#choice#MASTER:RP}' is null or redeem_point like '%${4. Redemption Point#choice#MASTER:RP}%')
+group by batch_no, redeem_point, TO_CHAR(batch_date, 'dd/MM/yyyy')</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

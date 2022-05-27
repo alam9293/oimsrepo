@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Turnover" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="TURNOVER" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select 
+	round(${Outstanding Amount} / 
+    	  case (sum(new_txn) / 
+                case (trunc(sysdate) - to_date(to_char(sysdate, 'yyyy')||'-01-01', 'yyyy-mm-dd')) when 0 then 1
+                else (trunc(sysdate) - to_date(to_char(sysdate, 'yyyy')||'-01-01', 'yyyy-mm-dd'))
+                end
+            ) when 0 then 1
+            else (sum(new_txn) / 
+                case (trunc(sysdate) - to_date(to_char(sysdate, 'yyyy')||'-01-01', 'yyyy-mm-dd')) when 0 then 1
+                else (trunc(sysdate) - to_date(to_char(sysdate, 'yyyy')||'-01-01', 'yyyy-mm-dd'))
+                end 
+            ) end
+	) TURNOVER
+from bmtb_invoice_header bih
+inner join amtb_account acct on acct.account_no = bih.debt_to
+left join amtb_account p_acct on p_acct.account_no = acct.parent_no
+left join amtb_account gp_acct on gp_acct.account_no = p_acct.parent_no
+where
+  (
+    gp_acct.cust_no = '${Account No}'
+    or
+    p_acct.cust_no = '${Account No}'
+    or
+    acct.cust_no = '${Account No}'
+  )
+  AND
+  bih.new_txn != 0</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

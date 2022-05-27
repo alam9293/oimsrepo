@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.ImtbItemReqFlow" 
+    table="IMTB_ITEM_REQ_FLOW"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="reqFlowNo"
+        type="java.lang.Integer"
+        column="REQ_FLOW_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">IMTB_ITEM_REQ_FLOW_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="fromStatus"
+        type="java.lang.String"
+        column="FROM_STATUS"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="toStatus"
+        type="java.lang.String"
+        column="TO_STATUS"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="remarks"
+        type="java.lang.String"
+        column="REMARKS"
+        length="500"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="flowDt"
+        type="java.sql.Timestamp"
+        column="FLOW_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <many-to-one
+        name="imtbItemReq"
+        class="com.cdgtaxi.ibs.common.model.ImtbItemReq"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="REQ_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to SatbUser -->
+    <many-to-one
+        name="satbUser"
+        class="com.cdgtaxi.ibs.acl.model.SatbUser"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="USER_ID" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

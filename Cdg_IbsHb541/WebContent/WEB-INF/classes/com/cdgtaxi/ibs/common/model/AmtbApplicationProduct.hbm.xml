@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.AmtbApplicationProduct" 
+    table="AMTB_APPLICATION_PRODUCT"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="applicationProductNo"
+        type="java.lang.Integer"
+        column="APPLICATION_PRODUCT_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence_name">AMTB_APPLICATION_PRODUCT_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to PmtbProductType -->
+    <many-to-one
+        name="pmtbProductType"
+        class="com.cdgtaxi.ibs.common.model.PmtbProductType"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PRODUCT_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbProdDiscMaster -->
+    <many-to-one
+        name="mstbProdDiscMaster"
+        class="com.cdgtaxi.ibs.master.model.MstbProdDiscMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PRODUCT_DISCOUNT_PLAN_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AmtbApplication -->
+    <many-to-one
+        name="amtbApplication"
+        class="com.cdgtaxi.ibs.common.model.AmtbApplication"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="APPLICATION_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to LrtbRewardMaster -->
+    <many-to-one
+        name="lrtbRewardMaster"
+        class="com.cdgtaxi.ibs.master.model.LrtbRewardMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="REWARDS_PLAN_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbSubscFeeMaster -->
+    <many-to-one
+        name="mstbSubscFeeMaster"
+        class="com.cdgtaxi.ibs.master.model.MstbSubscFeeMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="SUBSCRIPTION_FEE_NO" />
+    </many-to-one>
+     <many-to-one
+        name="mstbIssuanceFeeMaster"
+        class="com.cdgtaxi.ibs.master.model.MstbIssuanceFeeMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ISSUANCE_FEE_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

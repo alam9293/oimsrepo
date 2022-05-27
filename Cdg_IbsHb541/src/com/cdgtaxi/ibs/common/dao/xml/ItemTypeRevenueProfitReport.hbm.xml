@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="itemTypeRevenueProfitReport">
+	<return-scalar column="txn_dt" 				type="string"/>
+	<return-scalar column="type_name" 			type="string"/>
+	<return-scalar column="issue_amt"			type="string"/>
+	<return-scalar column="issue_value"			type="string"/>
+	<return-scalar column="expiry_amt"			type="string"/>
+	<return-scalar column="expiry_value"		type="string"/>
+	<return-scalar column="redeem_amt"			type="string"/>
+	<return-scalar column="not_redeem_amt"		type="string"/>
+	<return-scalar column="not_redeem_value"	type="string"/>
+	<return-scalar column="handling_fee"		type="string"/>
+	<return-scalar column="discount"			type="string"/>
+	<return-scalar column="net"					type="string"/>
+	<![CDATA[
+select to_char(trunc(stock.TXN_DT, 'MM'), 'Mon-yy') as TXN_DT,
+	TYPE_NAME,
+	trim(to_char(sum(ISSUE_AMT), '999,999,990')) as ISSUE_AMT,
+	trim(to_char(sum(ISSUE_AMT) * avg(PRICE), '999,999,990.00')) as ISSUE_VALUE,
+	trim(to_char(sum(EXPIRY_AMT), '999,999,990')) as EXPIRY_AMT,
+	trim(to_char(sum(EXPIRY_AMT) * avg(PRICE), '999,999,990.00')) as EXPIRY_VALUE,
+	trim(to_char(sum(REDEEM_AMT), '999,999,990')) as REDEEM_AMT,
+	trim(to_char(sum(EXPIRY_AMT) - sum(REDEEM_AMT), '999,999,990')) as NOT_REDEEM_AMT,
+    trim(to_char((sum(EXPIRY_AMT) - sum(REDEEM_AMT)) * avg(PRICE), '999,999,990.00')) as NOT_REDEEM_VALUE,
+    trim(to_char(sum(nvl(handling.handling_fee, 0)), '999,999,990.00')) as HANDLING_FEE,
+    trim(to_char(sum(-nvl(handling.discount, 0)), '999,999,990.00')) as DISCOUNT,
+    trim(to_char(((sum(EXPIRY_AMT) - sum(REDEEM_AMT)) * avg(PRICE)) + sum(nvl(handling.handling_fee, 0)) + sum(nvl(handling.discount, 0)), '999,999,990.00')) as net from IMTB_ITEM_TYPE type
+    inner join (
+        select ITEM_TYPE_NO, trunc(txn_dt, 'DDD') as txn_dt, sum(issue_amt) as issue_amt, sum(expiry_amt) as expiry_amt, sum(redeem_amt) as redeem_amt from (
+        	select stock.ITEM_TYPE_NO, trunc(txn_dt, 'DDD') as txn_dt, sum(stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1) as issue_amt, 0 as expiry_amt, 0 as redeem_amt from IMTB_STOCK stock
+	  			inner join IMTB_ISSUE issue on stock.STOCK_NO = issue.STOCK_NO
+      			inner join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+	  			left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+	  			left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+	  			left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+	  			inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grand.CUST_NO IS NOT NULL THEN grand.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+	  			inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+        		where TXN_TYPE = 'S' 
+        		and (:entityNo is null or entity.entity_no = :entityNo)
+	  			group by stock.ITEM_TYPE_NO, trunc(txn_dt, 'DDD')
+        	union
+	        	select item.ITEM_TYPE_NO, trunc(issue.EXPIRY_DATE, 'DDD') as txn_dt, 0, count(item.ITEM_NO), 0 from IMTB_ITEM item 
+	        	inner join IMTB_ISSUE issue on item.ISSUE_NO = issue.ISSUE_NO
+			  	inner join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+			  	left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+			  	left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+			  	left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+			  	inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grand.CUST_NO IS NOT NULL THEN grand.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+			  	inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+	        	where issue.EXPIRY_DATE is not null 
+	        	and (:entityNo is null or entity.entity_no = :entityNo)
+	   			group by item.ITEM_TYPE_NO, trunc(issue.EXPIRY_DATE, 'DDD')
+	        union
+	        	select item.ITEM_TYPE_NO, trunc(issue.EXPIRY_DATE, 'DDD') as txn_dt, 0, 0, count(item.ITEM_NO) from IMTB_ITEM item 
+	        	inner join IMTB_ISSUE issue on item.ISSUE_NO = issue.ISSUE_NO
+	  			inner join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+			  	left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+			  	left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+			  	left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+			  	inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grand.CUST_NO IS NOT NULL THEN grand.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+			  	inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+	        	where issue.EXPIRY_DATE is not null and status = 'R' 
+	        	and (:entityNo is null or entity.entity_no = :entityNo)
+	  			group by item.ITEM_TYPE_NO, trunc(issue.EXPIRY_DATE, 'DDD')
+        ) group by ITEM_TYPE_NO, trunc(txn_dt, 'DDD')
+    ) stock on type.ITEM_TYPE_NO = stock.ITEM_TYPE_NO
+    left join (
+        select stock.ITEM_TYPE_NO, trunc(stock.txn_dt, 'DDD') as txn_dt, sum(issue.HANDLING_FEE) as handling_fee, sum(-issue.discount) as discount from IMTB_ISSUE issue 
+        inner join IMTB_STOCK stock on issue.STOCK_NO = stock.STOCK_NO 
+        inner join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+	   	left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+	   	left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+	   	left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+	   	inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grand.CUST_NO IS NOT NULL THEN grand.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+	   	inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+	   	where (:entityNo is null or entity.entity_no = :entityNo)
+        group by stock.ITEM_TYPE_NO, trunc(stock.txn_dt, 'DDD')
+    ) handling on handling.txn_dt = stock.txn_dt and handling.ITEM_TYPE_NO = type.ITEM_TYPE_NO
+    where ((:startMonth is null and :endMonth is null)or(stock.TXN_DT between case when :startMonth is null then to_date(substr(:endMonth,0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date(substr(:startMonth,0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when :endMonth is null then last_day(to_date(substr(:startMonth,0,8)||'01 23:59:59', 'yyyy-mm-dd hh24:mi:ss')) else last_day(to_date(:endMonth, 'yyyy-mm-dd hh24:mi:ss')) end))
+    and (:itemTypeNo is null or type.ITEM_TYPE_NO = :itemTypeNo)
+    group by trunc(stock.TXN_DT, 'MM'), TYPE_NAME
+    order by TYPE_NAME, trunc(stock.TXN_DT, 'MM')
+	]]>
+</sql-query>
+</hibernate-mapping>

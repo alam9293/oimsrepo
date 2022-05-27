@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="viewItemTypeWindow"
+	title="Inventory Item Type" border="normal" 
+	use="com.cdgtaxi.ibs.inventory.ui.ViewItemTypeWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Item Type Name"/>
+				<label id="itemTypeNameLabel" />
+				<label sclass="fieldLabel" value="Unit Price ($)"/>
+				<label id="priceLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Items Stock Balance"/>
+				<label id="stockQtyLabel" />
+				<label sclass="fieldLabel" value="Items Reserved"/>
+				<label id="reservedQtyLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Items Issued"/>
+				<label id="issuedQtyLabel" />
+				<label sclass="fieldLabel" value="Items Redeemed"/>
+				<label id="redeemedQtyLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Total Items"/>
+				<label id="totalQtyLabel" />
+				<div/>
+				<div/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Stock"/></column>
+		</columns>
+	</grid>
+	
+	<grid>
+		<columns sizable="false" visible="false"/>
+	</grid>
+	<listbox id="stockList" mold="paging" onSelect="viewItemTypeWindow.viewIssuanceDetails()">
+		<listhead sizable="false">
+			<listheader label="Transaction Type" sort="auto"/>
+			<listheader label="Quantity" sort="auto" width="100px"/>
+			<listheader label="Serial No. From" sort="auto" width="150px"/>
+			<listheader label="Serial No. To" sort="auto" width="150px"/>
+			<listheader label="Transaction Date" sort="auto" width="150px"/>
+		</listhead>
+	</listbox>
+	<button id="newStockBtn" label="New Stock" onClick="viewItemTypeWindow.addStock()" />
+	<button label="Back" onClick="viewItemTypeWindow.back()" />
+</window>

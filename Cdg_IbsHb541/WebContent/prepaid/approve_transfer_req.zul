@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window id="transferReq" title="Approve Prepaid Transfer Request" border="normal"
+	use="com.cdgtaxi.ibs.prepaid.ui.ApproveTransferReqWindow" xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<h:br />
+	<grid width="100%">
+		<columns sizable="false">
+			<column>
+				<label value="Card 1 (From)" />
+			</column>
+		</columns>
+		<rows>
+			<row spans="4">
+				<label id="fromCardLabel"/>
+			</row>
+		</rows>
+	</grid>
+	<accountlabel id="accountMC"/>
+	<grid width="100%">
+		<columns visible="false" sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label value="Card No" sclass="fieldLabel" />
+				<label id="cardNoLabel" />
+				<label value="Name on Card" sclass="fieldLabel" />
+				<label id="nameOnCardLabel" />
+			</row>
+			<row>
+				<label value="Value($)" sclass="fieldLabel" />
+				<label id="valueLabel" />
+				<label value="CashPlus($)" sclass="fieldLabel" />
+				<label id="cashplusLabel" />
+			</row>
+			<row>
+				<label value="Transferable Value($)" sclass="fieldLabel" />
+				<label id="txferableValueLabel" />
+				<label value="Transferable CashPlus($)" sclass="fieldLabel" />
+				<label id="txferableCashplusLabel" />
+			</row>
+			<row>
+				<label value="Balance Expiry Date" sclass="fieldLabel" />
+				<label id="balanceExpiryDateLabel" />
+				<label value="Expiry Date" sclass="fieldLabel" />
+				<label id="expiryDateLabel" />
+			</row>
+		</rows>
+	</grid>
+
+	<h:br />
+
+	<grid width="100%">
+		<columns sizable="false">
+			<column>
+				<label value="Card 2 (To)" />
+			</column>
+		</columns>
+		<rows>
+			<row spans="4">
+				<label id="toCardLabel"/>
+			</row>
+		</rows>
+	</grid>
+	<accountlabel id="accountMC2"/>
+	<grid width="100%">
+		<columns visible="false" sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label value="Card No" sclass="fieldLabel" />
+				<label id="cardNoLabel2" />
+				<label value="Name on Card" sclass="fieldLabel" />
+				<label id="nameOnCardLabel2" />
+			</row>
+			<row>
+				<label value="Value($)" sclass="fieldLabel" />
+				<label id="valueLabel2" />
+				<label value="CashPlus($)" sclass="fieldLabel" />
+				<label id="cashplusLabel2" />
+			</row>
+			<row>
+				<label value="Balance Expiry Date" sclass="fieldLabel" />
+				<label id="balanceExpiryDateLabel2" />
+				<label value="Expiry Date" sclass="fieldLabel" />
+				<label id="expiryDateLabel2" />
+			</row>
+		</rows>
+	</grid>
+
+
+	<h:br />
+
+	<grid width="100%">
+		<columns sizable="false">
+			<column>
+				<label value="Transfer Details" />
+			</column>
+		</columns>
+	</grid>
+	<grid>
+		<columns visible="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label value="Transfer All" sclass="fieldLabel" />
+				<checkbox id="transferAllField" disabled="true"/>
+				<label />
+				<label />
+			</row>
+			<row id="transferValueCashPlusRow">
+				<label value="Transfer Value($)" sclass="fieldLabel" />
+				<label id="transferValueLabel"/>
+				<label value="Transfer Cashplus($)" sclass="fieldLabel" />
+				<label id="transferCashplusLabel"/>
+			</row>
+			<row>
+				<label value="Waive Transfer Fees" sclass="fieldLabel" />
+				<checkbox id="waiveTransferFeeField" disabled="true"/>
+				<label value="Transfer Fee($)" sclass="fieldLabel" />
+				<label id="transferFeeLabel"/>
+			</row>
+			<row>
+				<label value="Value After Txf($)" sclass="fieldLabel" />
+				<label id="valueAfterTxfLabel"/>
+				<label value="CashPlus After Txf($)" sclass="fieldLabel" />
+				<label id="cashplusAfterTxfLabel" />
+			</row>
+			<row spans="1,3">
+				<label value="Remarks" sclass="fieldLabel" />
+				<label id="remarksLabel" width="80%"/>
+			</row>
+			<row spans="1,3">
+				<label value="Approval Remarks" sclass="fieldLabel" />
+				<capstextbox id="approvalRemarksField" rows="5" width="80%"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br />
+	<hbox>
+		<button label="Back" onClick="transferReq.back()" />
+		<button label="Approve" onClick="transferReq.approve()" />
+		<button label="Reject" onClick="transferReq.reject()" />
+	</hbox>
+
+</window>

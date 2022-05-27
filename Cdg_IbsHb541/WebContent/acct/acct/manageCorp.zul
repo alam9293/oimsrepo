@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
-<window id="corpWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ManageCorpAcctWindow"
-	xmlns:h="http://www.w3.org/1999/xhtml" width="98%" onCreate="corpWindow.init()">
-	<tabbox width="100%" id="acctTabbox">
-		<tabs/>
-		<tabpanels/>
-	</tabbox>
-</window>

@@ -1,3 +1,0 @@
-default.configuration=
-eclipse.preferences.version=1
-import org.springframework.orm.hibernate5.HibernateOptimisticLockingFailureException.enabled=true

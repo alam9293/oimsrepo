@@ -1,8 +1,0 @@
-
-alter table PMTB_PREPAID_REQ add failureUri varchar2(100 char);
-COMMENT ON COLUMN PMTB_PREPAID_REQ.URI IS 'Failure URL for reddot';
-
-alter table PMTB_PREPAID_REQ add redDotInvoiceNo varchar2(100 char);
-COMMENT ON COLUMN PMTB_PREPAID_REQ.URI IS 'INVOICE NUMBER GENERATED FROM RED DOT';
-
-commit;

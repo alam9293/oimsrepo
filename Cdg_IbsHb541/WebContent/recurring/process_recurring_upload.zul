@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
-<window id="processRecurringUploadWindow" border="normal" use="com.cdgtaxi.ibs.interfaces.recurring.ProcessRecurringUploadWindow"
-	title="Process Recurring Upload"
-	onCreate="processRecurringUploadWindow.init()"
-	xmlns:h="http://www.w3.org/1999/xhtml">
-</window>

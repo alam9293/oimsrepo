@@ -1,1 +1,0 @@
-alter table BMTB_DRAFT_INV_PAYMENT_HEADER modify PAYMENT_REF_NO null;

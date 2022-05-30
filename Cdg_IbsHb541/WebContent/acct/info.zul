@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
-<window id="infoWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.MasterSetupInformationWindow"
-	title=""
-	onCreate="self.display()"
-	onClose="self.refresh()"
-	xmlns:h="http://www.w3.org/1999/xhtml">
-	
-</window>

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ds:pool xmlns:ds="http://www.elixirtech.com/DataSource" description="" driver="oracle.jdbc.driver.OracleDriver" expiry="7200" max-pool="5" password="password" url="jdbc:oracle:thin:@10.0.0.131:1521:wizvision" user="IBS_PREPAID" max-statement="0" min-pool="1" acquire-retry-attempts="10" acquire-retry-delay="1000" acquire-increment="1" max-conn-age="0">
-  <ds:security />
-</ds:pool>
-

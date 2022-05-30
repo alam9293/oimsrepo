@@ -1,0 +1,336 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="100" grid-y="100" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/Customer Usage Card Level.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="iso-a4" page-width="11905" page-height="16837" orientation="Portrait" horizontal-page-count="1" margin-top="1440" margin-left="1440" margin-bottom="1440" margin-right="1440" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="1a. Account No" enabled="Yes">${1a. Account No#acctsearch#custId}</rml:param><rml:param xml:space="preserve" key="1b. Account Name" enabled="Yes">${1b. Account Name#acctsearch#custName}</rml:param><rml:param xml:space="preserve" key="2. Invoice Start Month" enabled="Yes">${2. Invoice Start Month#date()#MMMYY:REQUIRED}</rml:param><rml:param xml:space="preserve" key="3. Invoice End Month" enabled="Yes">${3. Invoice End Month#date()#MMMYY}</rml:param><rml:param xml:space="preserve" key="4. Product Type" enabled="Yes">${4. Product Type#choice()#MASTER:PT}</rml:param><rml:param xml:space="preserve" key="5. Entity" enabled="Yes">${5. Entity#choice(1,2,3)#MASTER:EM}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+    <rml:datasource name="Default" datasource-name="/CDG/datasource/Customer Usage @ Card Level.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="5. Entity">${5. Entity}</rml:param><rml:param xml:space="preserve" key="1b. Account Name">${1b. Account Name}</rml:param><rml:param xml:space="preserve" key="3. Invoice End Month">${3. Invoice End Month}</rml:param><rml:param xml:space="preserve" key="2. Invoice Start Month">${2. Invoice Start Month}</rml:param><rml:param xml:space="preserve" key="4. Product Type">${4. Product Type}</rml:param><rml:param xml:space="preserve" key="1a. Account No">${1a. Account No}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="detail">
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="page.label">
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontColor" value="Black">
+      </rml:item>
+      <rml:item name="TextElement.FontUnderline" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="page.text">
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontColor" value="Black">
+      </rml:item>
+      <rml:item name="TextElement.FontUnderline" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="section.label">
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="400">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontColor" value="Black">
+      </rml:item>
+      <rml:item name="TextElement.FontUnderline" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="section.text">
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="400">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontColor" value="Black">
+      </rml:item>
+      <rml:item name="TextElement.FontUnderline" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="simple.label">
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="RawElement.BorderWidth" value="20">
+      </rml:item>
+    </rml:style>
+    <rml:style name="simple.text">
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="No">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="RawElement.BorderWidth" value="20">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" data-source="Default" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:section-header table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="1200" fill="No" style="Default"><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:field name="Customer Usage Card Level" left="20" top="240" width="9560" height="540" style="section.label"><rml:control-source xml:space="preserve" type="Literal" field="Customer Usage Card Level" running-value="No">Customer Usage Card Level</rml:control-source>
+        </rml:field>
+        <rml:hbox visible="Yes" left="0" top="800" width="9025" height="400" fill="Yes">
+          <rml:cell weight="100" left="0" top="800" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="TRIPS" left="0" top="800" width="1128" height="400" style="simple.label"><rml:control-source xml:space="preserve" type="Literal" field="TRIPS" running-value="No">TRIPS</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="1128" top="800" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="AMT" left="1128" top="800" width="1128" height="400" style="simple.label"><rml:control-source xml:space="preserve" type="Literal" field="AMT" running-value="No">AMT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="2256" top="800" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="ADMIN_PERCENT" left="2256" top="800" width="1128" height="400" style="simple.label"><rml:control-source xml:space="preserve" type="Literal" field="ADMIN_PERCENT" running-value="No">ADMIN_PERCENT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="3384" top="800" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="ADMIN_FEE" left="3384" top="800" width="1128" height="400" style="simple.label"><rml:control-source xml:space="preserve" type="Literal" field="ADMIN_FEE" running-value="No">ADMIN_FEE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="4512" top="800" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="GST" left="4512" top="800" width="1128" height="400" style="simple.label"><rml:control-source xml:space="preserve" type="Literal" field="GST" running-value="No">GST</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="5640" top="800" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="TOTAL" left="5640" top="800" width="1128" height="400" style="simple.label"><rml:control-source xml:space="preserve" type="Literal" field="TOTAL" running-value="No">TOTAL</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="6768" top="800" width="1128" height="400" fill="Yes">
+            <rml:field name="MONTH" left="6768" top="800" width="1128" height="400" style="simple.label"><rml:control-source xml:space="preserve" type="Literal" field="MONTH" running-value="No">MONTH</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="7896" top="800" width="1129" height="400" fill="Yes">
+            <rml:field name="PRODUCT_TYPE" left="7896" top="800" width="1129" height="400" style="simple.label"><rml:control-source xml:space="preserve" type="Literal" field="PRODUCT_TYPE" running-value="No">PRODUCT_TYPE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header height="820">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer height="820">
+        <rml:field name="Date" left="20" top="240" width="2740" height="340" style="page.text">
+          <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Full" time-format="Short">
+          </rml:format><rml:control-source xml:space="preserve" type="Script" field="Date" running-value="No">new java.util.Date()</rml:control-source>
+        </rml:field>
+        <rml:field text-align="Right" name="Page" left="5965" top="240" width="3040" height="340" style="page.text"><rml:control-source xml:space="preserve" type="Script" field="Page" running-value="No">"${#} of ${##}"</rml:control-source>
+        </rml:field>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="400" fill="No" style="Default"><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:hbox visible="Yes" left="0" top="0" width="9025" height="400" fill="Yes">
+          <rml:cell weight="100" left="0" top="0" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="TRIPS" left="0" top="0" width="1128" height="400" style="simple.text"><rml:control-source xml:space="preserve" type="Field" field="TRIPS" running-value="No">TRIPS</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="1128" top="0" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="AMT" left="1128" top="0" width="1128" height="400" style="simple.text"><rml:control-source xml:space="preserve" type="Field" field="AMT" running-value="No">AMT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="2256" top="0" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="ADMIN_PERCENT" left="2256" top="0" width="1128" height="400" style="simple.text"><rml:control-source xml:space="preserve" type="Field" field="ADMIN_PERCENT" running-value="No">ADMIN_PERCENT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="3384" top="0" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="ADMIN_FEE" left="3384" top="0" width="1128" height="400" style="simple.text"><rml:control-source xml:space="preserve" type="Field" field="ADMIN_FEE" running-value="No">ADMIN_FEE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="4512" top="0" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="GST" left="4512" top="0" width="1128" height="400" style="simple.text"><rml:control-source xml:space="preserve" type="Field" field="GST" running-value="No">GST</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="5640" top="0" width="1128" height="400" fill="Yes">
+            <rml:field text-align="Right" name="TOTAL" left="5640" top="0" width="1128" height="400" style="simple.text"><rml:control-source xml:space="preserve" type="Field" field="TOTAL" running-value="No">TOTAL</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="6768" top="0" width="1128" height="400" fill="Yes">
+            <rml:field name="MONTH" left="6768" top="0" width="1128" height="400" style="simple.text"><rml:control-source xml:space="preserve" type="Field" field="MONTH" running-value="No">MONTH</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="7896" top="0" width="1129" height="400" fill="Yes">
+            <rml:field name="PRODUCT_TYPE" left="7896" top="0" width="1129" height="400" style="simple.text"><rml:control-source xml:space="preserve" type="Field" field="PRODUCT_TYPE" running-value="No">PRODUCT_TYPE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:detail>
+      <rml:ruler>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation section="Section 1" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+  </rml:rendering></rml:report>
+

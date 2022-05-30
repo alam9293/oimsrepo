@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="t" type="Composite" description="" version="2">
+  <ds:schema case-sensitive="Yes" />
+  <ds:security />
+</ds:datasource>
+

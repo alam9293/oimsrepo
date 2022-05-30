@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="configureBillGenSetupWindow" border="normal" use="com.cdgtaxi.ibs.billgen.ui.ConfigureBillGenSetupWindow"
+	title="Configure BillGen Setup"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<listbox id="setupList" onCreate="configureBillGenSetupWindow.loadSetup()">
+   		<listhead sizable="true">
+			<listheader label="Setup No" 				       sort="none"/>
+			<listheader label="Name" 					         sort="none"/>
+			<listheader label="Cut Off Day" 			     sort="none"/>
+			<listheader label="Bill Gen Day" 			     sort="none"/>
+			<listheader label="Bill Gen Time" 			   sort="none"/>
+			<listheader label="Invoice Day" 			     sort="none"/>
+			<listheader label="Last Updated By" 		   sort="none"/>
+			<listheader label="Last Updated Date Time" sort="none"/>
+      		<listheader label="Government eInvoice"    sort="none"/>
+      		<listheader label="PUBSS"    sort="none"/>
+		</listhead>
+   	</listbox>
+   	<h:br/>
+   	<button label="Save" onClick="configureBillGenSetupWindow.save()"/>
+   	<button label="Reset" onClick="configureBillGenSetupWindow.loadSetup()"/>
+</window>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="viewCreditTermWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ViewCreditTermWindow"
+	title="View Credit Term History"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	onCreate="viewCreditTermWindow.init()"
+	onClose="self.refresh()">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Credit Term"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<rows id="creditTerm"/>
+	</grid>
+	<listbox id="creditTermList" mold="paging" visible="false" >
+   		<listhead sizable="false" >
+   			<listheader label="Credit Term" width="40%" sort="auto"/>
+			<listheader label="Effective Date" width="35%" sort="auto"/>
+		</listhead>
+   	</listbox>
+</window>

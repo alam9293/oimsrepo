@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageProductDiscountPlanWindow"
+	title="Manage Product Discount Plans" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ManageProductDiscountPlanWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<listbox id="resultList" onSelect="manageProductDiscountPlanWindow.editPlan()" mold="paging">
+		<listhead sizable="false">
+			<listheader label="Product Discount Plan Name" sort="auto"/>
+			<listheader label="Delete" width="60px"/>
+		</listhead>
+		<listitem>
+			<listcell/>
+			<listcell/>
+<!--			<listcell>-->
+<!--				<image src="/images/delete.png" style="cursor:pointer"-->
+<!--					onClick="manageProductDiscountPlanWindow.deletePlan(self.getParent().getParent())"/>-->
+<!--			</listcell>-->
+		</listitem>
+	</listbox>
+	<button id="createBtn" label="New Product Discount Plan" onClick="manageProductDiscountPlanWindow.createPlan()" />
+</window>

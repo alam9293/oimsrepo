@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="softCopyInvoiceAndTripsDetailByInvoiceNoCustomize">
+	<return-scalar column="record_type" 	type="string"/>
+	<return-scalar column="invoice_no" 		type="string"/>
+	<return-scalar column="invoice_date" 	type="string"/>
+	<return-scalar column="code" 			type="string"/>
+	<return-scalar column="card_no" 		type="string"/>
+	<return-scalar column="taxi_no"			type="string"/>
+	<return-scalar column="trip_date" 		type="string"/>
+	<return-scalar column="trip_time" 		type="string"/>
+	<return-scalar column="fare_amount" 	type="string"/>
+	<return-scalar column="PICKUP" 			type="string"/>
+	<return-scalar column="DESTINATION" 	type="string"/>
+	<return-scalar column="job_no" 			type="string"/>
+	<return-scalar column="project_code" 	type="string"/>
+	<return-scalar column="trip_code_reason" type="string"/>
+	<return-scalar column="card_holder_email" type="string"/>
+	<return-scalar column="employee_id"		 type="string"/>
+	
+	<![CDATA[
+	select *
+	from(
+		select
+	    'DR' record_type,
+	    bih.invoice_no,
+	    to_char(bih.INVOICE_DATE, 'ddMMyyyy') invoice_date,
+	    NVL(trip_acct.code,' ') code,
+	    bit.CARD_NO,
+	    bit.TAXI_NO,
+	    to_char(bit.TRIP_START_DT, 'ddMMyyyy') trip_date,
+	    to_char(bit.TRIP_START_DT, 'HH24mi') trip_time,
+	    to_char(NVL(bit.TXN_AMOUNT,0), '0000.00') fare_amount,
+	    bit.PICKUP,
+	    NVL(bit.DESTINATION,' ') DESTINATION,
+	    bit.JOB_REF_NO job_no,
+	    NVL(bit.project_code, ' ') project_code,
+	    NVL(bit.trip_code_reason, ' ') trip_code_reason,
+	    NVL(pp.card_holder_email, ' ') card_holder_email,
+	    NVL(pp.employee_id, ' ') employee_id
+		from bmtb_invoice_txn bit
+		left outer join TMTB_ACQUIRE_TXN tat on bit.ACQUIRE_TXN_NO = tat.ACQUIRE_TXN_NO
+		left outer join pmtb_product pp on pp.product_NO = tat.product_NO
+		inner join BMTB_INVOICE_DETAIL bid on bid.INVOICE_DETAIL_NO = bit.INVOICE_DETAIL_NO
+		inner join BMTB_INVOICE_SUMMARY bis on bis.INVOICE_SUMMARY_NO = bid.INVOICE_SUMMARY_NO
+		inner join BMTB_INVOICE_HEADER bih on bih.INVOICE_HEADER_NO = bis.INVOICE_HEADER_NO
+		inner join AMTB_ACCOUNT acct on bih.DEBT_TO = acct.account_no
+		inner join AMTB_ACCOUNT trip_acct on bid.account_no = trip_acct.account_no
+		where 
+		    (:accountNo is null
+		     or
+		    bih.DEBT_TO = :accountNo)
+		    and
+		    (:invoiceNo is null
+		    or
+		    bih.INVOICE_NO = :invoiceNo)
+		    and
+		    (:invoiceMonth is null
+		    or
+		    to_char(bih.INVOICE_DATE, 'MM/yyyy') = :invoiceMonth)
+		    and
+		    bih.INVOICE_NO is not null
+		    and
+			bit.NOTE is null
+			
+		UNION ALL
+		
+		select
+	    'DR' record_type,
+	    billed_inv_hdr.invoice_no,
+	    to_char(billed_inv_hdr.INVOICE_DATE, 'ddMMyyyy') invoice_date,
+	    NVL(trip_acct.code,' ') code,
+	    bit.CARD_NO,
+	    bit.TAXI_NO,
+	    to_char(bit.TRIP_START_DT, 'ddMMyyyy') trip_date,
+	    to_char(bit.TRIP_START_DT, 'HH24mi') trip_time,
+	    to_char(NVL(bit.TXN_AMOUNT,0)*-1, '0000.00') fare_amount,
+	    bit.PICKUP,
+	    NVL(bit.DESTINATION,' ') DESTINATION,
+	    bit.JOB_REF_NO job_no,
+	    NVL(bit.project_code, ' ') project_code,
+	    NVL(bit.trip_code_reason, ' ') trip_code_reason,
+	    NVL(pp.card_holder_email, ' ') card_holder_email,
+	    NVL(pp.employee_id, ' ') employee_id
+		from bmtb_invoice_txn bit
+		left outer join TMTB_ACQUIRE_TXN tat on bit.ACQUIRE_TXN_NO = tat.ACQUIRE_TXN_NO
+		left outer join pmtb_product pp on pp.product_NO = tat.product_NO
+		inner join BMTB_INVOICE_DETAIL bid on bid.INVOICE_DETAIL_NO = bit.INVOICE_DETAIL_NO
+		inner join BMTB_INVOICE_SUMMARY bis on bis.INVOICE_SUMMARY_NO = bid.INVOICE_SUMMARY_NO
+		inner join BMTB_INVOICE_HEADER bih on bih.INVOICE_HEADER_NO = bis.INVOICE_HEADER_NO
+		inner join AMTB_ACCOUNT acct on bih.DEBT_TO = acct.account_no
+		inner join AMTB_ACCOUNT trip_acct on bid.account_no = trip_acct.account_no
+		
+		inner join bmtb_note note on bit.invoice_txn_no = note.issued_invoice_txn_no
+		inner join BMTB_INVOICE_TXN billed_inv_txn on billed_inv_txn .invoice_txn_no = note.billed_invoice_txn_no
+		inner join BMTB_INVOICE_DETAIL billed_inv_dtl on billed_inv_dtl.INVOICE_DETAIL_NO = billed_inv_txn.INVOICE_DETAIL_NO
+	    inner join BMTB_INVOICE_SUMMARY billed_inv_sum on billed_inv_sum.INVOICE_SUMMARY_NO = billed_inv_dtl.INVOICE_SUMMARY_NO
+	    inner join BMTB_INVOICE_HEADER billed_inv_hdr on billed_inv_hdr.INVOICE_HEADER_NO = billed_inv_sum.INVOICE_HEADER_NO
+		where 
+		    (:accountNo is null
+		     or
+		    billed_inv_hdr.DEBT_TO = :accountNo)
+		    and
+		    (:invoiceNo is null
+		    or
+		    billed_inv_hdr.INVOICE_NO = :invoiceNo)
+		    and
+		    (:invoiceMonth is null
+		    or
+		    to_char(billed_inv_hdr.INVOICE_DATE, 'MM/yyyy') = :invoiceMonth)
+		    and
+		    billed_inv_hdr.INVOICE_NO is not null
+		    and
+			note.note_type = 'C'
+			and
+			note.NOTE_TXN_TYPE = 'T'
+	) temp
+	order by
+	case when :sortBy = '1' then trip_date end,
+	case when :sortBy = '2' then card_no end
+	]]>
+</sql-query>
+
+<sql-query name="softCopyInvoiceAndTripsDetailByInvoiceNoCSV">
+	<return-scalar column="card_no_or_job_type" 		type="string"/>
+	<return-scalar column="CARD_NAME"	 				type="string"/>
+	<return-scalar column="ISSUED_TO"			 		type="string"/>
+	<return-scalar column="JOB_REF_NO" 					type="string"/>
+	<return-scalar column="trip_date" 					type="string"/>
+	<return-scalar column="trip_time" 					type="string"/>
+	<return-scalar column="TAXI_NO" 					type="string"/>
+	<return-scalar column="PICKUP_ADDRESS" 				type="string"/>
+	<return-scalar column="DESTINATION" 				type="string"/>
+	<return-scalar column="FARE_AMT"	 				type="string"/>
+	<return-scalar column="admin_fee_value"	 			type="string"/>
+	<return-scalar column="gst_value"	 				type="string"/>
+	<return-scalar column="total"	 					type="string"/>
+	<return-scalar column="distance" 					type="string"/>
+	<return-scalar column="invoice_month"	 			type="string"/>
+	<return-scalar column="invoice_year"	 			type="string"/>
+	<return-scalar column="invoice_no"	 				type="string"/>
+	<return-scalar column="main_contact_person_name"	type="string"/>
+	<return-scalar column="sub_contact_person_name" 	type="string"/>
+	<return-scalar column="division_code" 				type="string"/>
+	<return-scalar column="division_name" 				type="string"/>
+	<return-scalar column="department_code" 			type="string"/>
+	<return-scalar column="department_name" 			type="string"/>
+	<return-scalar column="vehicle_type" 				type="string"/>
+	<return-scalar column="trip_type" 					type="string"/>
+	<return-scalar column="PASSENGER_NAME" 				type="string"/>
+	<return-scalar column="flight_info" 				type="string"/>
+	<return-scalar column="booked_by" 					type="string"/>
+	<return-scalar column="booking_ref" 				type="string"/>
+	<return-scalar column="surcharge" 					type="string"/>
+	<return-scalar column="project_desc" 				type="string"/>
+	<return-scalar column="trip_code_reason"			type="string"/>
+	<return-scalar column="card_holder_email"			type="string"/>
+	<return-scalar column="employee_id"		 			type="string"/>
+	
+	<![CDATA[
+	select *
+	from (
+		select
+	    case
+	        when inv_dtl.Product_Type_Id = 'PS' then 'PREMIER SERVICE'
+	        when inv_dtl_ppt.cardless = 'Y' then inv_dtl_ppt.name
+	        else inv_txn.CARD_NO
+	    end card_no_or_job_type,
+	    inv_dtl.CARD_NAME,
+	    cp.ISSUED_TO,
+	    inv_txn.JOB_REF_NO,
+	    inv_txn.TRIP_START_DT,
+	    case 
+	        when inv_txn.TRIP_END_DT is not null then to_char(inv_txn.TRIP_START_DT, 'dd/MM/yyyy') || ' TO ' || to_char(inv_txn.TRIP_END_DT, 'dd/MM/yyyy')
+	        else to_char(inv_txn.TRIP_START_DT, 'dd/MM/yyyy')
+	    end trip_date,
+	    case 
+	        when inv_txn.TRIP_END_DT is not null then to_char(inv_txn.TRIP_START_DT, 'hh24:mi:ss') || ' TO ' || to_char(inv_txn.TRIP_END_DT, 'hh24:mi:ss')
+	        else to_char(inv_txn.TRIP_START_DT, 'hh24:mi:ss')
+	    end trip_time,
+	    inv_txn.TAXI_NO,
+	    inv_txn.PICKUP PICKUP_ADDRESS,
+	    inv_txn.DESTINATION,
+	    inv_txn.TXN_AMOUNT FARE_AMT,
+	    inv_txn.ADMIN_FEE ADMIN_FEE_VALUE,
+	    inv_txn.GST GST_VALUE,
+	    NVL(inv_txn.TXN_AMOUNT,0)+NVL(inv_txn.ADMIN_FEE,0)+NVL(inv_txn.GST,0) total,
+	    to_char(inv_hdr.INVOICE_DATE,'MM') invoice_month,
+	    to_char(inv_hdr.INVOICE_DATE,'yyyy') invoice_year,
+	    inv_hdr.INVOICE_NO invoice_no,
+	    case
+	        when main_saluatation.MASTER_NO is not null then main_saluatation.MASTER_VALUE || ' ' || contact_person.MAIN_CONTACT_NAME
+	        else contact_person.MAIN_CONTACT_NAME
+	    end main_contact_person_name,
+	    case
+	        when contact_person.SUB_CONTACT_NAME is not null then
+	            case
+	                when sub_saluatation.MASTER_NO is not null then sub_saluatation.MASTER_VALUE || ' ' || contact_person.SUB_CONTACT_NAME
+	                else contact_person.SUB_CONTACT_NAME
+	             end
+	    end sub_contact_person_name,
+	    case
+	        when p_acct.ACCOUNT_CATEGORY = 'DIV' then p_acct.code
+	        when acct.ACCOUNT_CATEGORY = 'DIV' then acct.code
+	    end division_code,
+	    case
+	        when p_acct.ACCOUNT_CATEGORY = 'DIV' then p_acct.ACCOUNT_NAME
+	        when acct.ACCOUNT_CATEGORY = 'DIV' then acct.ACCOUNT_NAME
+	    end division_name,
+	    case
+	        when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.code
+	    end department_code,
+	    case
+	        when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.ACCOUNT_NAME
+	    end department_name,
+	    vt.MASTER_VALUE vehicle_type,
+	    vtt.MASTER_VALUE TRIP_TYPE,
+	    inv_txn.PASSENGER_NAME,
+	    inv_txn.FLIGHT_INFO,
+	    inv_txn.BOOKED_BY,
+	    inv_txn.BOOKING_REF,
+	    inv_txn.SURCHARGE,
+	    NVL(inv_txn.PROJECT_CODE, ' ') PROJECT_DESC,
+        NVL(inv_txn.TRIP_CODE_REASON, ' ' ) TRIP_CODE_REASON
+	    , NVL(tat.DISTANCE,0) DISTANCE,
+	    NVL(pp.card_holder_email, ' ') card_holder_email,
+	    NVL(pp.employee_id, ' ') employee_id
+		from BMTB_INVOICE_TXN inv_txn
+			left outer join TMTB_ACQUIRE_TXN tat on inv_txn.ACQUIRE_TXN_NO = tat.ACQUIRE_TXN_NO
+			left outer join pmtb_product pp on pp.product_NO = tat.product_NO
+			left join MSTB_MASTER_TABLE vt on vt.MASTER_NO = tat.VEHICLE_MODEL
+		    left join MSTB_MASTER_TABLE vtt on vtt.MASTER_NO = inv_txn.TRIP_TYPE
+	        inner join BMTB_INVOICE_DETAIL inv_dtl on inv_dtl.INVOICE_DETAIL_NO = inv_txn.INVOICE_DETAIL_NO
+	        left outer join PMTB_PRODUCT_TYPE inv_dtl_ppt on inv_dtl.product_type_id = inv_dtl_ppt.product_type_id
+	        inner join BMTB_INVOICE_SUMMARY inv_sum on inv_sum.INVOICE_SUMMARY_NO = inv_dtl.INVOICE_SUMMARY_NO
+	        inner join BMTB_INVOICE_HEADER inv_hdr on inv_hdr.INVOICE_HEADER_NO = inv_sum.INVOICE_HEADER_NO
+	        inner join AMTB_ACCOUNT debtToAcct on inv_hdr.debt_to = debtToAcct.account_no
+	        left join AMTB_ACCOUNT debtToParentAcct on debtToAcct.parent_no = debtToParentAcct.account_no
+	        left join AMTB_ACCOUNT debtToGrandParentAcct on debtToParentAcct.parent_no = debtToGrandParentAcct.account_no
+		inner join AMTB_ACCOUNT acct on inv_dtl.ACCOUNT_NO = acct.ACCOUNT_NO
+		left join AMTB_ACCT_MAIN_CONTACT main_contact on acct.ACCOUNT_NO = MAIN_CONTACT.ACCOUNT_NO and MAIN_CONTACT.MAIN_CONTACT_TYPE = 'B'
+		left join AMTB_CONTACT_PERSON contact_person on contact_person.CONTACT_PERSON_NO = main_contact.CONTACT_PERSON_NO
+		left join AMTB_ACCOUNT p_acct on acct.PARENT_NO = p_acct.ACCOUNT_NO
+		left join AMTB_ACCOUNT gp_acct on p_acct.PARENT_NO = gp_acct.ACCOUNT_NO
+		left join MSTB_MASTER_TABLE main_saluatation on contact_person.MAIN_CONTACT_SAL = main_saluatation.MASTER_NO
+		left join MSTB_MASTER_TABLE sub_saluatation on contact_person.SUB_CONTACT_SAL = sub_saluatation.MASTER_NO
+		left join ITTB_CP_CUST_CARD_ISSUANCE cp ON cp.card_no = inv_txn.card_no
+			and inv_txn.TRIP_START_DT >= cp.ISSUED_ON 
+			and (inv_txn.TRIP_START_DT < cp.RETURNED_ON or cp.RETURNED_ON is null)
+		where
+			(
+			    (:debtToAccountNo is null
+			     or
+			    inv_hdr.DEBT_TO = :debtToAccountNo)
+		    or
+			    (:accountNo is null
+			     or
+			    debtToAcct.account_no = :accountNo
+			    or
+			    debtToParentAcct.account_no = :accountNo
+			    or
+			    debtToGrandParentAcct.account_no = :accountNo)
+			)
+		    and
+		    (:invoiceNo is null
+		    or
+		    inv_hdr.INVOICE_NO = :invoiceNo)
+		    and
+		    (:invoiceMonth is null
+		    or
+		    to_char(inv_hdr.INVOICE_DATE, 'MM/yyyy') = :invoiceMonth)
+		    and
+		    inv_hdr.INVOICE_NO is not null
+		    and
+		    inv_txn.NOTE is null
+		    
+		UNION ALL
+		
+		select
+	    case
+	        when inv_dtl.Product_Type_Id = 'PS' then inv_txn.job_type
+	        when inv_dtl_ppt.cardless = 'Y' then inv_txn.job_type
+	        else inv_txn.CARD_NO
+	    end card_no_or_job_type,
+	    inv_dtl.CARD_NAME,
+	    cp.ISSUED_TO,
+	    inv_txn.JOB_REF_NO,
+	    inv_txn.TRIP_START_DT,
+	    case 
+	        when inv_txn.TRIP_END_DT is not null then to_char(inv_txn.TRIP_START_DT, 'dd/MM/yyyy') || ' TO ' || to_char(inv_txn.TRIP_END_DT, 'dd/MM/yyyy')
+	        else to_char(inv_txn.TRIP_START_DT, 'dd/MM/yyyy')
+	    end trip_date,
+	    case 
+	        when inv_txn.TRIP_END_DT is not null then to_char(inv_txn.TRIP_START_DT, 'hh24:mi:ss') || ' TO ' || to_char(inv_txn.TRIP_END_DT, 'hh24:mi:ss')
+	        else to_char(inv_txn.TRIP_START_DT, 'hh24:mi:ss')
+	    end trip_time,
+	    inv_txn.TAXI_NO,
+	    inv_txn.PICKUP PICKUP_ADDRESS,
+	    inv_txn.DESTINATION,
+	    inv_txn.TXN_AMOUNT*-1 FARE_AMT,
+	    inv_txn.ADMIN_FEE*-1 ADMIN_FEE_VALUE,
+	    inv_txn.GST*-1 GST_VALUE,
+	    NVL(inv_txn.TXN_AMOUNT,0)*-1+NVL(inv_txn.ADMIN_FEE,0)*-1+NVL(inv_txn.GST,0)*-1 total,
+	    to_char(billed_inv_hdr.INVOICE_DATE,'MM') invoice_month,
+	    to_char(billed_inv_hdr.INVOICE_DATE,'yyyy') invoice_year,
+	    billed_inv_hdr.INVOICE_NO invoice_no,
+	    case
+	        when main_saluatation.MASTER_NO is not null then main_saluatation.MASTER_VALUE || ' ' || contact_person.MAIN_CONTACT_NAME
+	        else contact_person.MAIN_CONTACT_NAME
+	    end main_contact_person_name,
+	    case
+	        when contact_person.SUB_CONTACT_NAME is not null then
+	            case
+	                when sub_saluatation.MASTER_NO is not null then sub_saluatation.MASTER_VALUE || ' ' || contact_person.SUB_CONTACT_NAME
+	                else contact_person.SUB_CONTACT_NAME
+	             end
+	    end sub_contact_person_name,
+	    case
+	        when p_acct.ACCOUNT_CATEGORY = 'DIV' then p_acct.code
+	        when acct.ACCOUNT_CATEGORY = 'DIV' then acct.code
+	    end division_code,
+	    case
+	        when p_acct.ACCOUNT_CATEGORY = 'DIV' then p_acct.ACCOUNT_NAME
+	        when acct.ACCOUNT_CATEGORY = 'DIV' then acct.ACCOUNT_NAME
+	    end division_name,
+	    case
+	        when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.code
+	    end department_code,
+	    case
+	        when acct.ACCOUNT_CATEGORY = 'DEPT' then acct.ACCOUNT_NAME
+	    end department_name,
+	    vt.MASTER_VALUE vehicle_type,
+	    vtt.MASTER_VALUE TRIP_TYPE,
+	    inv_txn.PASSENGER_NAME,
+	    inv_txn.FLIGHT_INFO,
+	    inv_txn.BOOKED_BY,
+	    inv_txn.BOOKING_REF,
+	    inv_txn.SURCHARGE,
+	    NVL(inv_txn.PROJECT_CODE, ' ') PROJECT_DESC,
+	    NVL(inv_txn.TRIP_CODE_REASON, ' ') TRIP_CODE_REASON
+	    , NVL(tat.DISTANCE,0) DISTANCE,
+	    NVL(pp.card_holder_email, ' ') card_holder_email,
+	    NVL(pp.employee_id, ' ') employee_id
+		from BMTB_INVOICE_TXN inv_txn
+			left outer join TMTB_ACQUIRE_TXN tat on inv_txn.ACQUIRE_TXN_NO = tat.ACQUIRE_TXN_NO
+			left outer join pmtb_product pp on pp.product_NO = tat.product_NO
+			left join MSTB_MASTER_TABLE vt on vt.MASTER_NO = tat.VEHICLE_MODEL
+		    left join MSTB_MASTER_TABLE vtt on vtt.MASTER_NO = inv_txn.TRIP_TYPE
+			inner join bmtb_note note on inv_txn.invoice_txn_no = note.issued_invoice_txn_no
+			inner join BMTB_INVOICE_TXN billed_inv_txn on billed_inv_txn .invoice_txn_no = note.billed_invoice_txn_no
+			inner join BMTB_INVOICE_DETAIL billed_inv_dtl on billed_inv_dtl.INVOICE_DETAIL_NO = billed_inv_txn.INVOICE_DETAIL_NO
+	        inner join BMTB_INVOICE_SUMMARY billed_inv_sum on billed_inv_sum.INVOICE_SUMMARY_NO = billed_inv_dtl.INVOICE_SUMMARY_NO
+	        inner join BMTB_INVOICE_HEADER billed_inv_hdr on billed_inv_hdr.INVOICE_HEADER_NO = billed_inv_sum.INVOICE_HEADER_NO
+			inner join AMTB_ACCOUNT debtToAcct on billed_inv_hdr.debt_to = debtToAcct.account_no
+	        left join AMTB_ACCOUNT debtToParentAcct on debtToAcct.parent_no = debtToParentAcct.account_no
+	        left join AMTB_ACCOUNT debtToGrandParentAcct on debtToParentAcct.parent_no = debtToGrandParentAcct.account_no
+		
+	        inner join BMTB_INVOICE_DETAIL inv_dtl on inv_dtl.INVOICE_DETAIL_NO = inv_txn.INVOICE_DETAIL_NO
+	        left outer join PMTB_PRODUCT_TYPE inv_dtl_ppt on inv_dtl.product_type_id = inv_dtl_ppt.product_type_id
+	        inner join BMTB_INVOICE_SUMMARY inv_sum on inv_sum.INVOICE_SUMMARY_NO = inv_dtl.INVOICE_SUMMARY_NO
+	        inner join BMTB_INVOICE_HEADER inv_hdr on inv_hdr.INVOICE_HEADER_NO = inv_sum.INVOICE_HEADER_NO
+		inner join AMTB_ACCOUNT acct on inv_dtl.ACCOUNT_NO = acct.ACCOUNT_NO
+		left join AMTB_ACCT_MAIN_CONTACT main_contact on acct.ACCOUNT_NO = MAIN_CONTACT.ACCOUNT_NO and MAIN_CONTACT.MAIN_CONTACT_TYPE = 'B'
+		left join AMTB_CONTACT_PERSON contact_person on contact_person.CONTACT_PERSON_NO = main_contact.CONTACT_PERSON_NO
+		left join AMTB_ACCOUNT p_acct on acct.PARENT_NO = p_acct.ACCOUNT_NO
+		left join AMTB_ACCOUNT gp_acct on p_acct.PARENT_NO = gp_acct.ACCOUNT_NO
+		left join MSTB_MASTER_TABLE main_saluatation on contact_person.MAIN_CONTACT_SAL = main_saluatation.MASTER_NO
+		left join MSTB_MASTER_TABLE sub_saluatation on contact_person.SUB_CONTACT_SAL = sub_saluatation.MASTER_NO
+		left join ITTB_CP_CUST_CARD_ISSUANCE cp ON cp.card_no = inv_txn.card_no
+			and inv_txn.TRIP_START_DT >= cp.ISSUED_ON 
+			and (inv_txn.TRIP_START_DT <= cp.RETURNED_ON or cp.RETURNED_ON is null)
+		where
+			(
+			    (:debtToAccountNo is null
+			     or
+			    billed_inv_hdr.DEBT_TO = :debtToAccountNo)
+		    or
+			    (:accountNo is null
+			     or
+			    debtToAcct.account_no = :accountNo
+			    or
+			    debtToParentAcct.account_no = :accountNo
+			    or
+			    debtToGrandParentAcct.account_no = :accountNo)
+			)
+		    and
+		    (:invoiceNo is null
+		    or
+		    billed_inv_hdr.INVOICE_NO = :invoiceNo)
+		    and
+		    (:invoiceMonth is null
+		    or
+		    to_char(billed_inv_hdr.INVOICE_DATE, 'MM/yyyy') = :invoiceMonth)
+		    and
+		    billed_inv_hdr.INVOICE_NO is not null
+		    and
+		    note.note_type = 'C'
+		    and
+		    note.NOTE_TXN_TYPE = 'T'
+	) temp
+	order by
+	    case when :sortBy = '1' then TRIP_START_DT end,
+	    case when :sortBy = '2' then card_no_or_job_type end
+	]]>
+</sql-query>
+
+</hibernate-mapping>

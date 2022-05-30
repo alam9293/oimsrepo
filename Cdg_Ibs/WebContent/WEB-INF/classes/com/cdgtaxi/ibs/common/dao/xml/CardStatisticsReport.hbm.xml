@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="cardStatisticsReport">
+	<return-scalar column="cust_no" 				type="string"/>
+	<return-scalar column="account_name" 			type="string"/>
+	<return-scalar column="closed_date"				type="string"/>
+	<return-scalar column="terminated_date"			type="string"/>
+	<return-scalar column="suspend_date"			type="string"/>
+	<return-scalar column="active_products"			type="string"/>
+	<return-scalar column="terminated_products"		type="string"/>
+	<return-scalar column="suspend_products"		type="string"/>
+	<return-scalar column="parent_suspend_products"	type="string"/>
+	<return-scalar column="faulty_products"			type="string"/>
+	<return-scalar column="lost_products"			type="string"/>
+	<return-scalar column="used_products"			type="string"/>
+	<return-scalar column="total_inactive"			type="string"/>
+	<return-scalar column="total"					type="string"/>
+	<![CDATA[
+select cust_no, account_name, to_char(closed_status.EFFECTIVE_DT, 'dd/mm/yyyy') as closed_date, to_char(terminated_status.EFFECTIVE_DT, 'dd/mm/yyyy') as terminated_date,
+    case when current_acct_status.ACCT_STATUS = 'S' then to_char(current_acct_status.EFFECTIVE_DT, 'dd/mm/yyyy') else null end as suspend_date,
+    products.ACTIVE_PRODUCTS, products.CARD_LOST as LOST_PRODUCTS, products.TERMINATED_PRODUCTS, products.FAULTY as FAULTY_PRODUCTS, products.SUSPEND_PRODUCTS, products.PARENT_SUSPEND_PRODUCTS,
+    products.USED_PRODUCTS, products.CARD_LOST + products.TERMINATED_PRODUCTS + products.FAULTY + products.SUSPEND_PRODUCTS + products.PARENT_SUSPEND_PRODUCTS as TOTAL_INACTIVE,
+    products.CARD_LOST + products.TERMINATED_PRODUCTS + products.FAULTY + products.SUSPEND_PRODUCTS + products.PARENT_SUSPEND_PRODUCTS + products.ACTIVE_PRODUCTS as TOTAL from AMTB_ACCOUNT acct
+    left join AMTB_ACCT_STATUS closed_status on closed_status.ACCOUNT_NO = acct.ACCOUNT_NO and closed_status.ACCT_STATUS = 'C'
+    left join AMTB_ACCT_STATUS terminated_status on terminated_status.ACCOUNT_NO = acct.ACCOUNT_NO and terminated_status.ACCT_STATUS = 'T'
+    inner join (select ACCOUNT_NO, max(EFFECTIVE_DT) last_effective_dt from AMTB_ACCT_STATUS where EFFECTIVE_DT < current_timestamp group by ACCOUNT_NO) last_acct_status on acct.ACCOUNT_NO = last_acct_status.ACCOUNT_NO and acct.CUST_NO is not null
+    inner join AMTB_ACCT_STATUS current_acct_status on acct.ACCOUNT_NO = current_acct_status.ACCOUNT_NO and current_acct_status.EFFECTIVE_DT = last_acct_status.LAST_EFFECTIVE_DT
+    inner join (
+    select acct.ACCOUNT_NO,
+    nvl(active.ACTIVE_PRODUCTS, 0) as ACTIVE_PRODUCTS,
+    nvl(active.TERMINATED_PRODUCTS, 0) as TERMINATED_PRODUCTS,
+    nvl(active.SUSPEND_PRODUCTS, 0) as SUSPEND_PRODUCTS,
+    nvl(active.PARENT_SUSPEND_PRODUCTS, 0) as PARENT_SUSPEND_PRODUCTS,
+    nvl(active.USED_PRODUCTS, 0) as USED_PRODUCTS,
+    nvl(card_lost_faulty.CARD_LOST, 0) as CARD_LOST,
+    nvl(card_lost_faulty.FAULTY, 0) as FAULTY from AMTB_ACCOUNT acct
+    left join (
+select case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end as account_no,
+    count(case when product_status.STATUS_TO = 'A' then product.PRODUCT_NO else null end) as active_products,
+    count(case when product_status.STATUS_TO = 'T' and master.MASTER_TYPE <> 'RR' and master.MASTER_CODE not in ('CL', 'FD') then product.PRODUCT_NO else null end) as terminated_products,
+    count(case when product_status.STATUS_TO = 'S' then product.PRODUCT_NO else null end) as suspend_products,
+    count(case when product_status.STATUS_TO = 'PS' then product.PRODUCT_NO else null end) as parent_suspend_products,
+    count(case when product_status.STATUS_TO = 'U' then product.PRODUCT_NO else null end) as used_products
+    from PMTB_PRODUCT product
+    inner join (select PRODUCT_NO, max(STATUS_DT) as last_product_status_dt from PMTB_PRODUCT_STATUS where STATUS_DT < to_timestamp(:productStatusDate, 'yyyy-mm-dd hh24:mi:ss') group by PRODUCT_NO) last_product_status on product.PRODUCT_NO = last_product_status.PRODUCT_NO
+    inner join PMTB_PRODUCT_STATUS product_status on product_status.PRODUCT_NO = product.PRODUCT_NO and product_status.STATUS_DT = last_product_status.LAST_PRODUCT_STATUS_DT
+    inner join AMTB_ACCOUNT acct on acct.ACCOUNT_NO = product.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    left join MSTB_MASTER_TABLE master on product_status.STATUS_REASON = master.MASTER_NO and product_status.STATUS_TO = 'T'
+    where product.PRODUCT_TYPE_ID = :productType
+    and ((:issueStart is null and :issueEnd is null)or(product.issue_date between to_timestamp(:issueStart, 'yyyy-mm-dd hh24:mi:ss') and case when :issueEnd is null then to_timestamp(:issueStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:issueEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and ((:terminateStart is null and :terminateEnd is null)or(product_status.STATUS_TO = 'T' and product_status.STATUS_DT between to_timestamp(:terminateStart, 'yyyy-mm-dd hh24:mi:ss') and case when :terminateEnd is null then to_timestamp(:terminateStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:terminateEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and exists (select 1 from PMTB_PRODUCT_STATUS status where product.PRODUCT_NO = status.PRODUCT_NO and ((:suspendStart is null and :suspendEnd is null)or(STATUS_TO = 'S' and status_dt between to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') and case when :suspendEnd is null then to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:suspendEnd, 'yyyy-mm-dd hh24:mi:ss') end)))
+    and exists (select 1 from PMTB_PRODUCT_REPLACEMENT replace where ((:replaceStart is null and :replaceEnd is null)or(product.PRODUCT_NO = replace.PRODUCT_NO and replace.replacement_date between to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') and case when :replaceEnd is null then to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:replaceEnd, 'yyyy-mm-dd hh24:mi:ss') end)))
+    and ((:productStatus is null) or ( product_status.status_to=:productStatus))
+    group by case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end
+    ) active on acct.ACCOUNT_NO = active.ACCOUNT_NO
+    left join (
+select case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end as account_no, sum(case when reason.MASTER_CODE = 'CL' then 1 else 0 end) as card_lost, sum(case when reason.MASTER_CODE <> 'CL' then 1 else 0 end) as faulty
+    from PMTB_PRODUCT_REPLACEMENT replace
+    inner join MSTB_MASTER_TABLE reason on replace.REPLACEMENT_REASON = reason.MASTER_NO and reason.MASTER_TYPE = 'RR' and ((:replaceStart is null and :replaceEnd is null)or(replace.replacement_date between to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') and case when :replaceEnd is null then to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:replaceEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    inner join PMTB_PRODUCT product on replace.PRODUCT_NO = product.PRODUCT_NO and product.PRODUCT_TYPE_ID = :productType
+    inner join (select PRODUCT_NO, max(STATUS_DT) as last_product_status_dt from PMTB_PRODUCT_STATUS where STATUS_DT < to_timestamp(:productStatusDate, 'yyyy-mm-dd hh24:mi:ss') group by PRODUCT_NO) last_product_status on product.PRODUCT_NO = last_product_status.PRODUCT_NO
+    inner join PMTB_PRODUCT_STATUS product_status on product_status.PRODUCT_NO = product.PRODUCT_NO and product_status.STATUS_DT = last_product_status.LAST_PRODUCT_STATUS_DT
+    inner join AMTB_ACCOUNT acct on product.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    where ((:issueStart is null and :issueEnd is null)or(product.issue_date between to_timestamp(:issueStart, 'yyyy-mm-dd hh24:mi:ss') and case when :issueEnd is null then to_timestamp(:issueStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:issueEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and ((:terminateStart is null and :terminateEnd is null)or(product_status.STATUS_TO = 'T' and product_status.STATUS_DT between to_timestamp(:terminateStart, 'yyyy-mm-dd hh24:mi:ss') and case when :terminateEnd is null then to_timestamp(:terminateStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:terminateEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and ((:suspendStart is null and :suspendEnd is null)or(STATUS_TO = 'S' and status_dt between to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') and case when :suspendEnd is null then to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:suspendEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and exists (select 1 from PMTB_PRODUCT_STATUS status where product.PRODUCT_NO = status.PRODUCT_NO and ((:suspendStart is null and :suspendEnd is null)or(STATUS_TO = 'S' and status_dt between to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') and case when :suspendEnd is null then to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:suspendEnd, 'yyyy-mm-dd hh24:mi:ss') end)))
+    and ((:productStatus is null) or ( product_status.status_to=:productStatus))
+    group by case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end
+    ) card_lost_faulty on acct.ACCOUNT_NO = card_lost_faulty.ACCOUNT_NO
+    where acct.CUST_NO is not null
+    and (nvl(active.ACTIVE_PRODUCTS, 0) > 0 or nvl(active.TERMINATED_PRODUCTS, 0) > 0 or nvl(active.SUSPEND_PRODUCTS, 0) > 0 or nvl(active.PARENT_SUSPEND_PRODUCTS, 0) > 0 or nvl(active.USED_PRODUCTS, 0) > 0 or nvl(card_lost_faulty.CARD_LOST, 0) > 0 or nvl(card_lost_faulty.FAULTY, 0) > 0)
+    ) products on products.ACCOUNT_NO = acct.ACCOUNT_NO
+    where ((:acctStatus is null) or ( current_acct_status.ACCT_STATUS=:acctStatus))
+    order by to_number(acct.CUST_NO), acct.ACCOUNT_NAME
+	]]>
+</sql-query>
+<sql-query name="cardStatisticsReportSummary">
+	<return-scalar column="active_accts" 			type="string"/>
+	<return-scalar column="closed_accts" 			type="string"/>
+	<return-scalar column="terminated_accts"		type="string"/>
+	<return-scalar column="suspended_accts"			type="string"/>
+	<![CDATA[
+select sum(case when current_acct_status.ACCT_STATUS = 'A' then 1 else 0 end) as active_accts,
+    sum(case when current_acct_status.ACCT_STATUS = 'C' then 1 else 0 end) as closed_accts,
+    sum(case when current_acct_status.ACCT_STATUS = 'T' then 1 else 0 end) as terminated_accts,
+    sum(case when current_acct_status.ACCT_STATUS = 'S' then 1 else 0 end) as suspended_accts from AMTB_ACCOUNT acct
+    inner join (select ACCOUNT_NO, max(EFFECTIVE_DT) last_effective_dt from AMTB_ACCT_STATUS where EFFECTIVE_DT < current_timestamp group by ACCOUNT_NO) last_acct_status on acct.ACCOUNT_NO = last_acct_status.ACCOUNT_NO and acct.CUST_NO is not null
+    inner join AMTB_ACCT_STATUS current_acct_status on acct.ACCOUNT_NO = current_acct_status.ACCOUNT_NO and current_acct_status.EFFECTIVE_DT = last_acct_status.LAST_EFFECTIVE_DT
+    inner join (
+    select acct.ACCOUNT_NO
+    from AMTB_ACCOUNT acct
+    left join (
+select case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end as account_no,
+    count(case when product_status.STATUS_TO = 'A' then product.PRODUCT_NO else null end) as active_products,
+    count(case when product_status.STATUS_TO = 'T' and master.MASTER_TYPE <> 'RR' and master.MASTER_CODE not in ('CL', 'FD') then product.PRODUCT_NO else null end) as terminated_products,
+    count(case when product_status.STATUS_TO = 'S' then product.PRODUCT_NO else null end) as suspend_products,
+    count(case when product_status.STATUS_TO = 'PS' then product.PRODUCT_NO else null end) as parent_suspend_products,
+    count(case when product_status.STATUS_TO = 'U' then product.PRODUCT_NO else null end) as used_products
+    from PMTB_PRODUCT product
+    inner join (select PRODUCT_NO, max(STATUS_DT) as last_product_status_dt from PMTB_PRODUCT_STATUS where STATUS_DT < to_timestamp(:productStatusDate, 'yyyy-mm-dd hh24:mi:ss') group by PRODUCT_NO) last_product_status on product.PRODUCT_NO = last_product_status.PRODUCT_NO
+    inner join PMTB_PRODUCT_STATUS product_status on product_status.PRODUCT_NO = product.PRODUCT_NO and product_status.STATUS_DT = last_product_status.LAST_PRODUCT_STATUS_DT
+    inner join AMTB_ACCOUNT acct on acct.ACCOUNT_NO = product.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    left join MSTB_MASTER_TABLE master on product_status.STATUS_REASON = master.MASTER_NO and product_status.STATUS_TO = 'T'
+    where product.PRODUCT_TYPE_ID = :productType
+    and ((:issueStart is null and :issueEnd is null)or(product.issue_date between to_timestamp(:issueStart, 'yyyy-mm-dd hh24:mi:ss') and case when :issueEnd is null then to_timestamp(:issueStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:issueEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and ((:terminateStart is null and :terminateEnd is null)or(product_status.STATUS_TO = 'T' and product_status.STATUS_DT between to_timestamp(:terminateStart, 'yyyy-mm-dd hh24:mi:ss') and case when :terminateEnd is null then to_timestamp(:terminateStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:terminateEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and exists (select 1 from PMTB_PRODUCT_STATUS status where product.PRODUCT_NO = status.PRODUCT_NO and ((:suspendStart is null and :suspendEnd is null)or(STATUS_TO = 'S' and status_dt between to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') and case when :suspendEnd is null then to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:suspendEnd, 'yyyy-mm-dd hh24:mi:ss') end)))
+    and exists (select 1 from PMTB_PRODUCT_REPLACEMENT replace where ((:replaceStart is null and :replaceEnd is null)or(product.PRODUCT_NO = replace.PRODUCT_NO and replace.replacement_date between to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') and case when :replaceEnd is null then to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:replaceEnd, 'yyyy-mm-dd hh24:mi:ss') end)))
+    and ((:productStatus is null) or ( product_status.status_to=:productStatus))
+    group by case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end
+    ) active on acct.ACCOUNT_NO = active.ACCOUNT_NO
+    left join (
+select case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end as account_no, sum(case when reason.MASTER_CODE = 'CL' then 1 else 0 end) as card_lost, sum(case when reason.MASTER_CODE = 'FD' then 1 else 0 end) as faulty
+    from PMTB_PRODUCT_REPLACEMENT replace
+    inner join MSTB_MASTER_TABLE reason on replace.REPLACEMENT_REASON = reason.MASTER_NO and reason.MASTER_TYPE = 'RR' and ((:replaceStart is null and :replaceEnd is null)or(replace.replacement_date between to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') and case when :replaceEnd is null then to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:replaceEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    inner join PMTB_PRODUCT product on replace.PRODUCT_NO = product.PRODUCT_NO and product.PRODUCT_TYPE_ID = :productType
+    inner join (select PRODUCT_NO, max(STATUS_DT) as last_product_status_dt from PMTB_PRODUCT_STATUS where STATUS_DT < to_timestamp(:productStatusDate, 'yyyy-mm-dd hh24:mi:ss') group by PRODUCT_NO) last_product_status on product.PRODUCT_NO = last_product_status.PRODUCT_NO
+    inner join PMTB_PRODUCT_STATUS product_status on product_status.PRODUCT_NO = product.PRODUCT_NO and product_status.STATUS_DT = last_product_status.LAST_PRODUCT_STATUS_DT
+    inner join AMTB_ACCOUNT acct on product.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    where ((:issueStart is null and :issueEnd is null)or(product.issue_date between to_timestamp(:issueStart, 'yyyy-mm-dd hh24:mi:ss') and case when :issueEnd is null then to_timestamp(:issueStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:issueEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and ((:terminateStart is null and :terminateEnd is null)or(product_status.STATUS_TO = 'T' and product_status.STATUS_DT between to_timestamp(:terminateStart, 'yyyy-mm-dd hh24:mi:ss') and case when :terminateEnd is null then to_timestamp(:terminateStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:terminateEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and exists (select 1 from PMTB_PRODUCT_STATUS status where product.PRODUCT_NO = status.PRODUCT_NO and ((:suspendStart is null and :suspendEnd is null)or(STATUS_TO = 'S' and status_dt between to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') and case when :suspendEnd is null then to_timestamp(:suspendStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:suspendEnd, 'yyyy-mm-dd hh24:mi:ss') end)))
+    and ((:replaceStart is null and :replaceEnd is null)or(replace.replacement_date between to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') and case when :replaceEnd is null then to_timestamp(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') else to_timestamp(:replaceEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and ((:productStatus is null) or ( product_status.status_to=:productStatus))
+    group by case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end
+    ) card_lost_faulty on acct.ACCOUNT_NO = card_lost_faulty.ACCOUNT_NO
+    where acct.CUST_NO is not null
+    and (nvl(active.ACTIVE_PRODUCTS, 0) > 0 or nvl(active.TERMINATED_PRODUCTS, 0) > 0 or nvl(active.SUSPEND_PRODUCTS, 0) > 0 or nvl(active.PARENT_SUSPEND_PRODUCTS, 0) > 0 or nvl(active.USED_PRODUCTS, 0) > 0 or nvl(card_lost_faulty.CARD_LOST, 0) > 0 or nvl(card_lost_faulty.FAULTY, 0) > 0)
+    ) products on products.ACCOUNT_NO = acct.ACCOUNT_NO
+    where ((:acctStatus is null) or ( current_acct_status.ACCT_STATUS=:acctStatus))
+	]]>
+</sql-query>
+</hibernate-mapping>

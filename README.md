@@ -1,1 +1,1 @@
-This is springboot/SpringMVC project.
+This is First Spring hibernate Upgrade Project.

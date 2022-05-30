@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.BmtbBankPayment" 
+    table="BMTB_BANK_PAYMENT"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="paymentNo"
+        type="java.lang.Long"
+        column="PAYMENT_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">BMTB_BANK_PAYMENT_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="txnRefNo"
+        type="java.lang.String"
+        column="TXN_REF_NO"
+        length="30"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="creditDate"
+        type="java.sql.Date"
+        column="CREDIT_DATE"
+        not-null="true"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="collectionAmount"
+        type="java.math.BigDecimal"
+        column="COLLECTION_AMOUNT"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="totalTxnAmount"
+        type="java.math.BigDecimal"
+        column="TOTAL_TXN_AMOUNT"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="rejectedAmount"
+        type="java.math.BigDecimal"
+        column="REJECTED_AMOUNT"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="mdrPercentage"
+        type="java.math.BigDecimal"
+        column="MDR_PERCENTAGE"
+        not-null="true"
+        length="4"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="mdrValue"
+        type="java.math.BigDecimal"
+        column="MDR_VALUE"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="mdrAdjustment"
+        type="java.math.BigDecimal"
+        column="MDR_ADJUSTMENT"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="chargebackAmount"
+        type="java.math.BigDecimal"
+        column="CHARGEBACK_AMOUNT"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <property
+            name="refundAmt"
+            type="java.math.BigDecimal"
+            column="REFUND_AMT"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="refundReverseAmt"
+            type="java.math.BigDecimal"
+            column="REFUND_REVERSE_AMT"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="chargebackReverseAmt"
+            type="java.math.BigDecimal"
+            column="CHARGEBACK_REVERSE_AMT"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="otherCredit"
+            type="java.math.BigDecimal"
+            column="OTHER_CREDIT_AMT"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="otherDebit"
+            type="java.math.BigDecimal"
+            column="OTHER_DEBIT_AMT"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="markup"
+            type="java.math.BigDecimal"
+            column="MARKUP"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="commission"
+            type="java.math.BigDecimal"
+            column="COMMISSION"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="schemeFee"
+            type="java.math.BigDecimal"
+            column="SCHEME_FEE"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+            name="interchange"
+            type="java.math.BigDecimal"
+            column="INTERCHANGE"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+
+    <property
+        name="remarks"
+        type="java.lang.String"
+        column="REMARKS"
+        length="500"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to BmtbBankPaymentDetail -->
+    <set
+        name="bmtbBankPaymentDetails"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="PAYMENT_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbBankPaymentDetail"
+        />
+    </set>
+    <!-- bi-directional many-to-one association to FmtbBankCode -->
+    <many-to-one
+        name="fmtbBankCode"
+        class="com.cdgtaxi.ibs.common.model.FmtbBankCode"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="BANK_IN" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

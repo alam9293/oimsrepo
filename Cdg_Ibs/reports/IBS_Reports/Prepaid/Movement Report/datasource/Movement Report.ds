@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Movement Report" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="ENTITY_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCT_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_ISSUED_DATE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_EXPIRY_DATE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OPEN_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OPEN_CASHPLUS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_OPEN" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDITIONAL_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDITIONAL_CASHPLUS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_ADDITIONAL" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRANSFER_IN_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRANSFER_IN_CASHPLUS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_TRANSFER_IN" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TAXI_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRIP_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRIP_GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_TRIP" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRIP_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRIP_CASHPLUS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_TRIP2" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEDUCTED_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEDUCTED_GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_DEDUCTED" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEDUCTED_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEDUCTED_CASHPLUS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_DEDUCTED2" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADJUST_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADJUST_CASHPLUS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_ADJUST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRANSFER_OUT_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRANSFER_OUT_CASHPLUS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_TRANSFER_OUT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FORFEIT_VALUE_BEFORE_GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FORFEIT_VALUE_GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FORFEIT_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FORFEIT_CASHPLUS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_FORFEIT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CLOSING_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CLOSING_CASHPLUS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_CLOSING" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>with previous_txn as (
+	select pmtb_product as product_no, sum(apply_card_value) as previous_value, sum(APPLY_CASHPLUS) as previous_cashplus
+	from pmtb_prepaid_card_txn txn
+	left join tmtb_acquire_txn trips on txn.acquire_txn_no = trips.acquire_txn_no
+	where 
+	trunc(case when txn_type in ('TRIP', 'VOID_TRIP', 'EDIT_TRIP') then trips.TRIP_START_DT else txn_date end, 'MONTH') &lt; to_date(substr('${6. Mth/ Year}', 0, 8) || '01', 'yyyy-mm-dd')
+	group by pmtb_product
+  ),
+  movement_txn as(
+  select 
+  pmtb_product as product_no,
+  sum(case when txn_type in ('TOP_UP', 'ISSUE') then txn.apply_card_value else 0 end) as additional_value,
+  sum(case when txn_type in ('TOP_UP', 'ISSUE') then txn.apply_cashplus else 0 end) as additional_cashplus,
+  sum(case when txn_type in ('EX_TR_IN', 'IN_TR_IN') then txn.apply_card_value else 0 end) as transfer_in_value,
+  sum(case when txn_type in ('EX_TR_IN', 'IN_TR_IN') then txn.apply_cashplus else 0 end) as transfer_in_cashplus,
+  sum(case when txn_type in ('TRIP', 'VOID_TRIP', 'EDIT_TRIP') then (case when txn_type='VOID_TRIP' then -trips.fare_amt else trips.fare_amt end) else 0 end) as taxi_fare,
+  sum(case when txn_type in ('TRIP', 'VOID_TRIP', 'EDIT_TRIP') then (case when txn_type='VOID_TRIP' then -(trips.admin_fee_value-trips.PROD_DIS_VALUE) else trips.admin_fee_value - trips.PROD_DIS_VALUE end) else 0 end) as trip_admin_fee,
+  sum(case when txn_type in ('TRIP', 'VOID_TRIP', 'EDIT_TRIP') then (case when txn_type='VOID_TRIP' then -trips.gst_value else trips.gst_value end) else 0 end) as trip_gst,
+  sum(case when txn_type in ('TRIP', 'VOID_TRIP', 'EDIT_TRIP') then txn.apply_card_value else 0 end) as trip_value,
+  sum(case when txn_type in ('TRIP', 'VOID_TRIP', 'EDIT_TRIP') then txn.apply_cashplus else 0 end) as trip_cashplus,
+  sum(case when txn_type in ('TR_FEE', 'RP_FEE') then txn.amount else 0 end) as deducted_fee,
+  sum(case when txn_type in ('TR_FEE', 'RP_FEE') then txn.gst else 0 end) as deducted_gst,
+  sum(case when txn_type in ('TR_FEE', 'RP_FEE') then txn.apply_card_value else 0 end) as deducted_value,
+  sum(case when txn_type in ('TR_FEE', 'RP_FEE') then txn.apply_cashplus else 0 end) as deducted_cashplus,
+  sum(case when txn_type ='ADJ_VL' then txn.apply_card_value else 0 end) as adjust_value,
+  sum(case when txn_type ='ADJ_CP' then txn.apply_cashplus else 0 end) as adjust_cashplus,
+  sum(case when txn_type in ('EX_TR_OUT', 'IN_TR_OUT') then txn.apply_card_value else 0 end) as transfer_out_value,
+  sum(case when txn_type in ('EX_TR_OUT', 'IN_TR_OUT') then txn.apply_cashplus else 0 end) as transfer_out_cashplus,
+  sum(case when txn_type in ('FF_VL', 'FF_ADJ_VL') then txn.amount else 0 end) as forfeit_value_before_gst,
+  sum(case when txn_type in ('FF_VL', 'FF_ADJ_VL') then txn.gst else 0 end) as forfeit_value_gst,
+  sum(case when txn_type in ('FF_VL', 'FF_ADJ_VL') then txn.apply_card_value else 0 end) as forfeit_value,
+  sum(case when txn_type in ('FF_CP', 'FF_ADJ_CP')then txn.apply_cashplus else 0 end) as forfeit_cashplus
+  from pmtb_prepaid_card_txn txn
+  left join tmtb_acquire_txn trips on txn.acquire_txn_no = trips.acquire_txn_no
+  where 
+  trunc(case when txn_type in ('TRIP', 'VOID_TRIP', 'EDIT_TRIP') then trips.TRIP_START_DT else txn_date end, 'MONTH') = to_date(substr('${6. Mth/ Year}', 0, 8) || '01', 'yyyy-mm-dd')
+  group by pmtb_product
+),
+movement_detail as(
+  select 
+  entity.entity_name as entity_name,
+  top.cust_no as account_no,
+  top.account_name as account_name,
+  last_eff_acct_status.acct_status,
+  product.card_no as card_no,
+  to_char(product.issue_date, 'dd/mm/yyyy') as card_issued_date,
+  to_char(product.expiry_date, 'dd/mm/yyyy') as card_expiry_date,
+  last_eff_product_status.status_to as card_status,
+  nvl(previous_txn.previous_value, 0) as open_value,
+  nvl(previous_txn.previous_cashplus,0) as open_cashplus,
+  nvl(additional_value,0) as additional_value,
+  nvl(additional_cashplus,0) as additional_cashplus,
+  nvl(transfer_in_value,0) as transfer_in_value,
+  nvl(transfer_in_cashplus,0) as transfer_in_cashplus,
+  nvl(taxi_fare,0) as taxi_fare,
+  nvl(trip_admin_fee,0) as trip_admin_fee,
+  nvl(trip_gst,0) as trip_gst,
+  case when trip_value is null then 0 else abs(trip_value) END as trip_value,
+  case when trip_cashplus is null then 0 else abs(trip_cashplus) END as trip_cashplus,
+  case when deducted_fee is null then 0 else abs(deducted_fee) END as deducted_fee,
+  case when deducted_gst is null then 0 else abs(deducted_gst) END as deducted_gst,
+  case when deducted_value is null then 0 else abs(deducted_value) END as deducted_value,
+  case when deducted_cashplus is null then 0 else abs(deducted_cashplus) END as deducted_cashplus,
+  nvl(adjust_value,0) as adjust_value,
+  nvl(adjust_cashplus,0) as adjust_cashplus,
+  case when transfer_out_value is null then 0 else abs(transfer_out_value) END as transfer_out_value,
+  case when transfer_out_cashplus is null then 0 else abs(transfer_out_cashplus) END as transfer_out_cashplus,
+  case when forfeit_value_before_gst is null then 0 else abs(forfeit_value_before_gst) END as forfeit_value_before_gst,
+  case when forfeit_value_gst is null then 0 else abs(forfeit_value_gst) END as forfeit_value_gst,
+  case when forfeit_value is null then 0 else abs(forfeit_value) END as forfeit_value,
+  case when forfeit_cashplus is null then 0 else abs(forfeit_cashplus) END as forfeit_cashplus,
+  nvl(previous_txn.previous_value,0) + nvl(additional_value,0) + nvl(transfer_in_value,0) + nvl(trip_value,0) + nvl(deducted_value,0) + nvl(adjust_value,0) + nvl(transfer_out_value,0) + nvl(forfeit_value,0) as closing_value,
+  nvl(previous_txn.previous_cashplus,0) + nvl(additional_cashplus,0) + nvl(transfer_in_cashplus,0) + nvl(trip_cashplus,0) + nvl(deducted_cashplus,0)  + nvl(adjust_cashplus,0) + nvl(transfer_out_cashplus,0) + nvl(forfeit_cashplus,0) as closing_cashplus
+  from pmtb_product product
+  inner join pmtb_product_type product_type on product.product_type_id = product_type.product_type_id and product_type.PREPAID = 'Y'
+  left outer join movement_txn movement_txn on product.product_no = movement_txn.product_no
+  left outer join previous_txn previous_txn on product.product_no = previous_txn.product_no
+  left join amtb_account acct on  product.account_no = acct.account_no
+  left join amtb_account parent on acct.parent_no = parent.account_no
+  left join amtb_account grand on parent.parent_no = grand.account_no
+  left join amtb_account top on (case when grand.cust_no is not null then grand.account_no when parent.cust_no is not null then parent.account_no else acct.account_no end) = top.account_no
+  left join fmtb_ar_cont_code_master ar on top.ar_control_code_no = ar.ar_control_code_no
+  left join fmtb_entity_master entity on ar.entity_no =entity.entity_no
+  left join (select max(acct_status_no) as acct_status_no, account_no from amtb_acct_status where effective_dt &lt; last_day(to_date(substr('${6. Mth/ Year}', 0, 8) || '01', 'yyyy-mm-dd')) + 1 group by account_no) temp_acct_status on top.account_no = temp_acct_status.account_no
+  inner join amtb_acct_status last_eff_acct_status on last_eff_acct_status.acct_status_no = temp_acct_status.acct_status_no
+  left join (select max(product_status_no) as product_status_no, product_no from pmtb_product_status where status_dt &lt; last_day(to_date(substr('${6. Mth/ Year}', 0, 8) || '01', 'yyyy-mm-dd')) + 1 group by product_no) temp_product_status on product.product_no = temp_product_status.product_no
+  inner join pmtb_product_status last_eff_product_status on last_eff_product_status.product_status_no = temp_product_status.product_status_no
+  where product.product_type_id = '${2. Product Type}'
+  and ('${1. Entity}' is null or entity.entity_no = '${1. Entity}')
+  and ('${3a. Account No}' is null or top.cust_no ='${3a. Account No}')
+  and ('${3b. Account Name}' is null or top.account_name like '%' || '${3b. Account Name}' || '%')
+  and ('${4. Account Status}' is null or last_eff_acct_status.acct_status = '${4. Account Status}')
+  and ('${5. Card Status}' is null or last_eff_product_status.status_to = '${5. Card Status}')
+),
+movement_summary as
+(
+  select
+  entity_name,
+  account_no,
+  account_name,
+  acct_status,
+  '' as card_no, 
+  '' as card_issued_date,
+  '' as card_expiry_date,
+  '' as card_status,
+  sum(open_value) as open_value,
+  sum(open_cashplus) as open_cashplus,
+  sum(additional_value) as additional_value,
+  sum(additional_cashplus) as additional_cashplus,
+  sum(transfer_in_value) as transfer_in_value,
+  sum(transfer_in_cashplus) as transfer_in_cashplus,
+  sum(taxi_fare) as taxi_fare,
+  sum(trip_admin_fee) as trip_admin_fee,
+  sum(trip_gst) as trip_gst, 
+  sum(trip_value) as trip_value,
+  sum(trip_cashplus) as trip_cashplus,
+  sum(deducted_fee) as deducted_fee,
+  sum(deducted_gst) as deducted_gst,
+  sum(deducted_value) as deducted_value,
+  sum(deducted_cashplus) as deducted_cashplus,
+  sum(adjust_value) as adjust_value,
+  sum(adjust_cashplus) as adjust_cashplus,
+  sum(transfer_out_value) as transfer_out_value,
+  sum(transfer_out_cashplus) as transfer_out_cashplus,
+  sum(forfeit_value_before_gst) as forfeit_value_before_gst,
+  sum(forfeit_value_gst) as forfeit_value_gst,
+  sum(forfeit_value) as forfeit_value,
+  sum(forfeit_cashplus) as forfeit_cashplus,
+  sum(closing_value) as closing_value,
+  sum(closing_cashplus) as closing_cashplus
+from movement_detail
+group by
+  entity_name,
+  account_no,
+  account_name,
+  acct_status
+)
+select 
+	entity_name,
+	account_no,
+	account_name,
+	acct_status,
+	card_no, 
+	card_issued_date,
+	card_expiry_date,
+	card_status,
+	open_value,
+	open_cashplus,
+	open_value + open_cashplus as total_open,
+	additional_value,
+	additional_cashplus,
+	additional_value + additional_cashplus as total_additional,
+	transfer_in_value,
+	transfer_in_cashplus,
+	transfer_in_value + transfer_in_cashplus as total_transfer_in,
+	taxi_fare,
+	trip_admin_fee,
+	trip_gst,
+	taxi_fare + trip_admin_fee + trip_gst as total_trip,
+	trip_value,
+	trip_cashplus,
+	trip_value + trip_cashplus as total_trip2,
+	deducted_fee,
+	deducted_gst,
+	deducted_fee + deducted_gst as total_deducted,
+	deducted_value,
+	deducted_cashplus,
+	deducted_value + deducted_cashplus as total_deducted2,
+	adjust_value,
+	adjust_cashplus,
+	adjust_value + adjust_cashplus as total_adjust,
+	transfer_out_value,
+	transfer_out_cashplus,
+	transfer_out_value + transfer_out_cashplus as total_transfer_out,
+	forfeit_value_before_gst,
+	forfeit_value_gst,
+	forfeit_value,
+	forfeit_cashplus,
+	forfeit_value + forfeit_cashplus as total_forfeit,
+	closing_value,
+	closing_cashplus,
+	closing_value + closing_cashplus as total_closing
+from (
+	select *
+	from movement_detail
+	where '${7. Type}' = 'D'
+	union all
+	select *
+	from movement_summary
+	where '${7. Type}' = 'S'
+) order by account_no, card_no</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

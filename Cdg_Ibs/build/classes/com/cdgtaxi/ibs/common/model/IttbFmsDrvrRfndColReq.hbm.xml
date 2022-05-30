@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbFmsDrvrRfndColReq" 
+    table="ITTB_FMS_DRVR_RFND_COL_REQ"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="reqId"
+        type="java.lang.String"
+        column="REQ_ID"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">ITTB_FMS_DRVR_RFND_COL_REQ_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="reqDate"
+        type="java.sql.Timestamp"
+        column="REQ_DATE"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="reqStatus"
+        type="java.lang.String"
+        column="REQ_STATUS"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="reqErrorRemark"
+        type="java.lang.String"
+        column="REQ_ERROR_REMARK"
+        length="255"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="entityCode"
+        type="java.lang.String"
+        column="ENTITY_CODE"
+        not-null="true"
+        length="5"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="nric"
+        type="java.lang.String"
+        column="NRIC"
+        not-null="true"
+        length="15"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="jobNo"
+        type="java.lang.String"
+        column="JOB_NO"
+        not-null="true"
+        length="15"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="taxiNo"
+        type="java.lang.String"
+        column="TAXI_NO"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="jobType"
+        type="java.lang.String"
+        column="JOB_TYPE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="serviceType"
+        type="java.lang.String"
+        column="SERVICE_TYPE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="paymentMode"
+        type="java.lang.String"
+        column="PAYMENT_MODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="refundAmt"
+        type="java.math.BigDecimal"
+        column="REFUND_AMT"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="incentiveAmt"
+        type="java.math.BigDecimal"
+        column="INCENTIVE_AMT"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="promoAmt"
+        type="java.math.BigDecimal"
+        column="PROMO_AMT"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="cabRewardsAmt"
+        type="java.math.BigDecimal"
+        column="CABREWARDS_AMT"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+    <property
+        name="fareAmt"
+        type="java.math.BigDecimal"
+        column="FARE_AMT"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="levy"
+        type="java.math.BigDecimal"
+        column="LEVY"
+        length="6"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tripStartDt"
+        type="java.sql.Timestamp"
+        column="TRIP_START_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tripEndDt"
+        type="java.sql.Timestamp"
+        column="TRIP_END_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="accountName"
+        type="java.lang.String"
+        column="ACCOUNT_NAME"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="pickupAddress"
+        type="java.lang.String"
+        column="PICKUP_ADDRESS"
+        not-null="true"
+        length="255"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="destination"
+        type="java.lang.String"
+        column="DESTINATION"
+        not-null="true"
+        length="255"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>

@@ -1,0 +1,217 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="100" grid-y="100" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/UAM/RoleFunction/RoleFunction.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="custom" page-width="16837" page-height="11905" orientation="Landscape" horizontal-page-count="1" margin-top="1440" margin-left="1440" margin-bottom="1440" margin-right="1440" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="1. Role" enabled="Yes">${1. Role#choice()#MASTER:RL}</rml:param><rml:param xml:space="preserve" key="printedBy" enabled="Yes">${printedBy}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+    <rml:datasource name="RoleFunction" datasource-name="/IBS_Reports/UAM/RoleFunction/RoleFunction.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="1. Role">${1. Role#choice()#MASTER:RL}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+    <rml:datasource name="Role" datasource-name="/IBS_Reports/UAM/RoleFunction/Role.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="1. Role">${1. Role#choice()#MASTER:RL}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="detail">
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" data-source="RoleFunction" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:watermark report="" section="" enabled="No">
+        <rml:parameters>
+        </rml:parameters>
+      </rml:watermark>
+      <rml:section-header keep-with-next="No" table-of-contents="No" keep-together="No" can-grow="Yes" can-shrink="Yes" height="2800" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:cube-table collapse-rows="Yes" collapse-columns="Yes" keep-row-totals="No" keep-column-totals="No" show-column-headers="Yes" show-row-headers="Yes" show-column-totals-after-details="No" show-row-totals-after-details="No" cache="RoleFunction" datarange="Group" can-grow-hpage-count="Yes" font-name="Arial" font-size="160" left="0" top="2300" width="11200" height="459" border-style="Solid" border-radius="0" can-grow="Yes" can-shrink="Yes" style=""><rml:on-render-end xml:space="preserve" language="javascript">function fix(e) {
+&#160; if (e.getTagName()=="text") {
+&#160;&#160;&#160; if (e.getText()=="0") e.setText("N");
+&#160;&#160;&#160; else if (e.getText()=="1") e.setText("Y");
+&#160; }
+&#160; if (e.getLogicalElementIterator) {
+&#160;&#160;&#160; var it = e.getLogicalElementIterator();
+&#160;&#160;&#160; while (it.hasNext()) fix(it.next());
+&#160; }
+}
+
+fix(result);</rml:on-render-end>
+          <rml:cube-column font-bold="Yes" padding-left="60" padding-right="60" padding-top="60" padding-bottom="60" border-style="Solid" title="" style="">
+            <rml:cube-level name="NAME" sort="Ascending" group-on="Each Value" hide-totals="No">
+            </rml:cube-level>
+          </rml:cube-column>
+          <rml:cube-row font-bold="No" padding-left="60" padding-right="60" padding-top="60" padding-bottom="60" border-style="Solid" title="" style="">
+            <rml:cube-level name="FUNCTION_NAME" sort="Ascending" group-on="Each Value" group-data="" hide-totals="Yes">
+            </rml:cube-level>
+            <rml:cube-level name="MODULE" sort="None" group-on="Each Value" group-data="" hide-totals="Yes">
+            </rml:cube-level>
+            <rml:cube-level name="MENU1" sort="Ascending" group-on="Each Value" group-data="" hide-totals="Yes">
+            </rml:cube-level>
+            <rml:cube-level name="MENU2" sort="Ascending" group-on="Each Value" group-data="" hide-totals="Yes">
+            </rml:cube-level>
+          </rml:cube-row>
+          <rml:cube-measure name="NAME" function="Count" pattern="null" font-bold="No" border-style="Solid" width-override-type="BestFit" style="">
+          </rml:cube-measure>
+        </rml:cube-table>
+        <rml:field text-align="Left" font-name="Arial" font-size="200" font-bold="Yes" left="0" top="1500" width="2900" height="200" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Role                                          :</rml:control-source>
+        </rml:field>
+        <rml:field text-align="Left" font-name="Arial" font-size="200" font-bold="Yes" left="0" top="1200" width="13800" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Selection Criteria</rml:control-source>
+        </rml:field>
+        <rml:field font-name="Arial" font-size="200" left="2900" top="1500" width="6000" height="200" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Role" field="NAME" running-value="No">Role:NAME</rml:control-source>
+        </rml:field>
+        <rml:field text-align="Right" font-name="Arial" font-size="180" left="0" top="300" width="13800" height="200" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">="${#} of ${##}"</rml:control-source>
+        </rml:field>
+        <rml:field text-align="Center" font-name="Arial" font-size="220" font-bold="Yes" left="0" top="0" width="13800" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Integrated Billing System</rml:control-source>
+        </rml:field>
+        <rml:hbox left="0" top="2300" width="13400" height="380" style="">
+          <rml:cell weight="3765" left="0" top="2300" width="3299" height="380" style="">
+            <rml:field text-align="Center" font-name="Arial" font-size="160" font-bold="Yes" left="0" top="2300" width="3299" height="380" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FUNCTION NAME</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="2398" left="3299" top="2300" width="2101" height="380" style="">
+            <rml:field text-align="Center" font-name="Arial" font-size="160" font-bold="Yes" left="3299" top="2300" width="2101" height="380" border-style="Solid" border-radius="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">MODULE NAME</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1712" left="5400" top="2300" width="1500" height="380" style="">
+            <rml:field text-align="Center" font-name="Arial" font-size="160" font-bold="Yes" left="5400" top="2300" width="1500" height="380" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">MENU1</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1711" left="6900" top="2300" width="1499" height="380" style="">
+            <rml:field text-align="Center" font-name="Arial" font-size="160" font-bold="Yes" left="6900" top="2300" width="1499" height="380" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">MENU2</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="5704" left="8399" top="2300" width="5001" height="380" style="">
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+          <rml:mark value="2100">
+          </rml:mark>
+          <rml:mark value="2040">
+          </rml:mark>
+          <rml:mark value="2680">
+          </rml:mark>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" height="1420" style="">
+        <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="No" left="0" top="0" width="13800" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">End of Report</rml:control-source>
+        </rml:field>
+        <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="No" left="0" top="500" width="9700" height="379" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">="Printed By: " + Properties.getProperty("printedBy") + "                                                                                                      "+ "ComfortDelGro Taxi Business"</rml:control-source>
+        </rml:field>
+        <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" left="0" top="1000" width="13800" height="300" style="">
+          <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="dd/MM/yyyy h:mm " date-format="Short" time-format="Short">
+          </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=new java.util.Date()</rml:control-source>
+        </rml:field>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" height="20" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:detail>
+      <rml:ruler>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation section="Section 1" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+    <rml:render-details mime-type="application/vnd.ms-excel">
+      <rml:parameters><rml:param xml:space="preserve" key="Snap">No</rml:param><rml:param xml:space="preserve" key="Paged">No</rml:param><rml:param xml:space="preserve" key="ForceNumbersAsText">No</rml:param><rml:param xml:space="preserve" key="Multiplier">46</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+    <rml:render-details mime-type="application/pdf">
+      <rml:parameters><rml:param xml:space="preserve" key="RenderAsImage">No</rml:param><rml:param xml:space="preserve" key="OwnerPassword"></rml:param><rml:param xml:space="preserve" key="CJKMappingURL"></rml:param><rml:param xml:space="preserve" key="AllowFillIn">No</rml:param><rml:param xml:space="preserve" key="AllowAssembly">No</rml:param><rml:param xml:space="preserve" key="Encryption">No</rml:param><rml:param xml:space="preserve" key="RenderAsImageDPI"></rml:param><rml:param xml:space="preserve" key="AllowModifyContents">No</rml:param><rml:param xml:space="preserve" key="EncryptionStrength">128 bits</rml:param><rml:param xml:space="preserve" key="AllowScreenReaders">No</rml:param><rml:param xml:space="preserve" key="AllowModifyAnnotations">No</rml:param><rml:param xml:space="preserve" key="BlankPageOnEmptyFile">No</rml:param><rml:param xml:space="preserve" key="AllowDegradedPrinting">No</rml:param><rml:param xml:space="preserve" key="AllowCopy">No</rml:param><rml:param xml:space="preserve" key="AllowPrinting">No</rml:param><rml:param xml:space="preserve" key="UserPassword"></rml:param><rml:param xml:space="preserve" key="Greyscale">No</rml:param><rml:param xml:space="preserve" key="RenderTextAPI">Yes</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+  </rml:rendering></rml:report>
+

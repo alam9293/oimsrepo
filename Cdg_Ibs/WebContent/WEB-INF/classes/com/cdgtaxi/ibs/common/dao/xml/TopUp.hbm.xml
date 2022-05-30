@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="topUp">
+	<return-scalar column="account_no" 				type="string"/>
+	<return-scalar column="account_name"			type="string"/>
+	<return-scalar column="div_id"					type="string"/>
+	<return-scalar column="div_name"				type="string"/>
+	<return-scalar column="dept_id"					type="string"/>
+	<return-scalar column="dept_name"				type="string"/>
+	<return-scalar column="card_no"					type="string"/>
+	<return-scalar column="card_name"				type="string"/>
+	<return-scalar column="issue_date"				type="string"/>
+	<return-scalar column="mobile_no"				type="string"/>
+	<return-scalar column="value_expiry_date"		type="string"/>
+	<return-scalar column="card_expiry_date"		type="string"/>
+	<return-scalar column="card_status"				type="string"/>
+	<return-scalar column="no_top_up"				type="string"/>
+	<return-scalar column="total_top_up"			type="string"/>
+	<return-scalar column="total_cashplus"			type="string"/>
+	<return-scalar column="top_up_detail"			type="string"/>
+	<return-scalar column="ship_contact_sal"		type="string"/>
+	<return-scalar column="ship_contact_person"		type="string"/>
+	<return-scalar column="area"					type="string"/>
+	<return-scalar column="addr_block"				type="string"/>
+	<return-scalar column="street"					type="string"/>
+	<return-scalar column="unit"					type="string"/>
+	<return-scalar column="building"				type="string"/>
+	<return-scalar column="country"					type="string"/>
+	<return-scalar column="state"					type="string"/>
+	<return-scalar column="city"					type="string"/>
+	<return-scalar column="postal"					type="string"/>
+	
+	<![CDATA[
+WITH top_up_info
+AS
+(
+  select
+  product_no,
+  count(req_card_no) as no_top_up , 
+  sum(top_up_value) as total_top_up, 
+  sum(top_up_cashplus) as total_cashplus,
+  LISTAGG(top_up_detail, ',')WITHIN GROUP (ORDER BY PROCESS_DATE) as top_up_detail
+  from
+  (
+    select product.product_no as product_no,  
+    req_card.req_card_no as req_card_no, 
+    req_card.top_up_value as top_up_value,
+    req_card.top_up_cashplus as top_up_cashplus,
+    to_char(req.PROCESS_DATE, 'DD/MM/YYYY') || 
+    
+      case when exists (select 1 from PMTB_TOP_UP_REQ_CARD_PROMOTION a where a.PMTB_TOP_UP_REQ_CARD=req_card.req_card_no)
+      then
+      ' (' || 
+          (
+            select LISTAGG(b.promo_code, '| ')WITHIN GROUP (ORDER BY b.promo_code) from PMTB_TOP_UP_REQ_CARD_PROMOTION a 
+            left join MSTB_PROMOTION_CASHPLUS b on a.mstb_promotion_cash_plus = b.promo_code where A.PMTB_TOP_UP_REQ_CARD=req_card.req_card_no
+          )
+          || ', $' || req_card.TOP_UP_VALUE || ')'
+      else ''
+      end
+    as top_up_detail,
+    req.PROCESS_DATE as PROCESS_DATE
+    from pmtb_prepaid_req req
+    left join pmtb_top_up_req top_up_req on req.req_no = top_up_req.req_no
+    left join pmtb_top_up_req_card req_card on  req.req_no = req_card.PMTB_TOP_UP_REQ
+    left join pmtb_product product on  product.product_no = req_card.pmtb_product
+    where 
+    (req.approval_required='Y' and req.approval_status='A' or req.approval_required='N')
+    and 
+    (
+      :topUpType is null or 
+      :topUpType = 'A' or 
+      (:topUpType = 'N' and not exists (select 1 from PMTB_TOP_UP_REQ_CARD_PROMOTION a where a.PMTB_TOP_UP_REQ_CARD=req_card.req_card_no)) or 
+      (:topUpType = 'P' and exists (select 1 from PMTB_TOP_UP_REQ_CARD_PROMOTION a where a.PMTB_TOP_UP_REQ_CARD=req_card.req_card_no))
+    )
+    and
+    (
+      (:topUpStartDate is null and :topUpEndDate is null)
+      or
+      (
+        req.PROCESS_DATE between 
+          case when :topUpStartDate is null 
+          then 
+            to_date(:topUpEndDate||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss')
+          else 
+            to_date(:topUpStartDate||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss')
+          end
+         and 
+          case when :topUpEndDate is null 
+          then 
+            to_date(:topUpStartDate||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss')
+          else 
+            to_date(:topUpEndDate||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss')
+          end
+      )
+   )
+   and (:promoCode is null or exists (select 1 from PMTB_TOP_UP_REQ_CARD_PROMOTION a where a.PMTB_TOP_UP_REQ_CARD=req_card.req_card_no and 
+    a.mstb_promotion_cash_plus=:promoCode))
+  )
+  group by product_no
+)
+select 
+  top.CUST_NO as account_no,
+  top.account_name as account_name,
+  case when grand.cust_no is not null then parent.code when parent.CUST_NO is not null then acct.code else null end as div_id,
+  case when grand.cust_no is not null then parent.account_name when parent.CUST_NO is not null then acct.account_name else null end as div_name,
+  case when grand.cust_no is not null then acct.CODE else null end as dept_id,
+  case when grand.cust_no is not null then acct.ACCOUNT_NAME else null end as dept_name,
+  product.CARD_NO as card_no,
+  product.NAME_ON_PRODUCT as card_name,
+  to_char(product.ISSUE_DATE, 'DD-MON-YYYY') as issue_date,
+  case type.ACCT_TEMPLATE 
+    when 'C' then product.card_holder_mobile
+    when 'P' then bill_contact.main_contact_mobile || NVL2(bill_contact.sub_contact_mobile, ' / ' || bill_contact.sub_contact_mobile, '')
+  end
+  as mobile_no,
+  to_char( product.balance_expiry_date, 'DD-MON-YYYY')  as value_expiry_date,
+  to_char(product.EXPIRY_DATE, 'DD-MON-YYYY')  as card_expiry_date,
+  product.current_status as card_status,
+  top_up_info.no_top_up as no_top_up, 
+  top_up_info.total_top_up as total_top_up, 
+  top_up_info.total_cashplus as total_cashplus,
+  top_up_info.top_up_detail as top_up_detail,
+  main_sal.master_value|| NVL2(ship_contact.sub_contact_name, ' / ' || sub_sal.master_value, '') as ship_contact_sal,
+  ship_contact.main_contact_name || NVL2(ship_contact.sub_contact_name, ' / ' || ship_contact.sub_contact_name, '')  as ship_contact_person,
+  ship_contact.address_area as area,
+  ship_contact.address_block as addr_block,
+  ship_contact.address_street as street,
+  ship_contact.address_unit as unit,
+  ship_contact.address_building as building,
+  contact_country.master_value as country,
+  ship_contact.address_state as state,
+  ship_contact.address_city as city,
+  ship_contact.address_postal as postal
+from
+pmtb_product product
+inner join top_up_info top_up_info on product.product_no = top_up_info.product_no
+left join AMTB_ACCOUNT acct on product.ACCOUNT_NO = acct.ACCOUNT_NO
+left join AMTB_ACCT_MAIN_CONTACT ship_main on ship_main.ACCOUNT_NO = acct.ACCOUNT_NO and ship_main.MAIN_CONTACT_TYPE = 'S'
+left join AMTB_CONTACT_PERSON ship_contact on ship_main.CONTACT_PERSON_NO = ship_contact.CONTACT_PERSON_NO
+left join MSTB_MASTER_TABLE contact_country on ship_contact.ADDRESS_COUNTRY = contact_country.MASTER_NO
+left join MSTB_MASTER_TABLE main_sal on ship_contact.main_contact_sal = main_sal.master_no
+left join MSTB_MASTER_TABLE sub_sal on ship_contact.sub_contact_sal = sub_sal.master_no
+left join AMTB_ACCT_MAIN_CONTACT bill_main on bill_main.ACCOUNT_NO = acct.ACCOUNT_NO and bill_main.MAIN_CONTACT_TYPE = 'B'
+left join AMTB_CONTACT_PERSON bill_contact on bill_main.CONTACT_PERSON_NO = bill_contact.CONTACT_PERSON_NO
+left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+left join AMTB_ACCOUNT top on (case when grand.cust_no is not null then grand.account_no when parent.cust_no is not null then parent.account_no else acct.account_no end) = top.account_no
+left join FMTB_AR_CONT_CODE_MASTER ar on top.ar_control_code_no = ar.ar_control_code_no
+left join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+left join AMTB_ACCT_TYPE type on top.ACCT_TYPE_NO = type.ACCT_TYPE_NO
+where (:acctType is null or type.ACCT_TEMPLATE =:acctType)
+and (:acctNo is null or top.cust_no =:acctNo)
+and (:acctName is null or top.account_name like '%' || :acctName || '%')
+and (:cardNo is null or product.card_no = :cardNo)
+and (:mobileNo is null or product.card_holder_mobile = :mobileNo)
+and (:cardStatus is null or product.current_status = :cardStatus)
+and (:productTypeId is null or product.product_type_id = :productTypeId)
+and (:minTopUp is null or top_up_info.total_top_up >= :minTopUp)
+and (:entityNo is null or entity.ENTITY_NO = :entityNo)
+order by
+  case :sortBy 
+    when 'AN' then top.account_name
+    when 'CN' then product.card_no
+  end
+	]]>
+</sql-query>
+</hibernate-mapping>

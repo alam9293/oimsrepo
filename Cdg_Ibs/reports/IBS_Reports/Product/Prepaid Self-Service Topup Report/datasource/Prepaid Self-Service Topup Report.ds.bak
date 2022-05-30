@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Prepaid Self-Service Topup Report" type="JDBC" path="/IBS_Reports/Product/Prepaid Self-Service Topup Report/datasource/Prepaid Self-Service Topup Report.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="ACCOUNT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DIV_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DIV_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEPT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEPT_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOPUP_DATE" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="CARD_NO" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NAME_ON_CARD" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="EXPIRY_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TOPUP_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PAYMENT_TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REF_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select acct_cust_no account_no,
+       acct_account_name account_name,
+       child_account_name div_name,
+       child_code div_id,
+       grand_account_name dept_name,
+       grand_code dept_id,
+       topup_date,
+       card_no,
+       name_on_card,
+       card_expiry expiry_date,
+       topup_amount,
+       payment_type,
+       ref_no
+from   (select --(case when child.ACCOUNT_NO is null and acct.account_category='CORP' then 'CORP' when child.ACCOUNT_NO is null and acct.account_category='APP' then 'APP' when grand.ACCOUNT_NO is null then 'DIV' else 'DEPT' end) acc_type
+         (case
+           when child.ACCOUNT_NO is null then
+            acct.account_category
+           when grand.ACCOUNT_NO is null then
+            child.account_category
+           else
+            grand.account_category
+         end) acc_type,
+         acct.account_category acct_account_category,
+         child.account_category child_account_category,
+         grand.account_category grand_account_category,
+         acct.parent_no acct_parent_no,
+         acct.ACCOUNT_NO as acct_acct_no,
+         acct.CUST_NO as acct_cust_no,
+         acct.account_name as acct_account_name,
+         acct.code acct_code,
+         child.parent_no child_parent_no,
+         child.ACCOUNT_NO as child_acct_no,
+         child.CUST_NO as child_cust_no,
+         child.account_name as child_account_name,
+         child.code child_code,
+         grand.parent_no grand_parent_no,
+         grand.ACCOUNT_NO as grand_acct_no,
+         grand.CUST_NO as grand_cust_no,
+         grand.account_name as grand_account_name,
+         grand.code grand_code
+        from   AMTB_ACCOUNT acct
+        left   join AMTB_ACCOUNT child on acct.ACCOUNT_NO = child.PARENT_NO
+        left   join AMTB_ACCOUNT grand on child.ACCOUNT_NO = grand.PARENT_NO
+        where  acct.account_no in ('13708', '9470')
+        union
+        select --(case when child.ACCOUNT_NO is null then 'CORP' else 'DIV' end) acc_type
+         (case
+           when child.ACCOUNT_NO is null then
+            acct.account_category
+           else
+            child.account_category
+         end) acc_type,
+         acct.account_category acct_account_category,
+         child.account_category child_account_category,
+         null grand_account_category,
+         acct.parent_no acct_parent_no,
+         acct.ACCOUNT_NO as acct_acct_no,
+         acct.CUST_NO as acct_cust_no,
+         acct.account_name as acct_account_name,
+         acct.code acct_code,
+         child.parent_no child_parent_no,
+         child.ACCOUNT_NO as child_acct_no,
+         child.CUST_NO as child_cust_no,
+         child.account_name as child_account_name,
+         child.code child_code,
+         null,
+         null,
+         null,
+         null,
+         null
+        from   AMTB_ACCOUNT acct
+        left   join AMTB_ACCOUNT child on acct.ACCOUNT_NO = child.PARENT_NO
+        where  acct.account_no in ('13708', '9470')
+        union
+        select --'CORP' acc_type
+         acct.account_category acc_type,
+         acct.account_category acct_account_category,
+         null child_account_category,
+         null grand_account_category,
+         acct.parent_no acct_parent_no,
+         acct.ACCOUNT_NO as acct_acct_no,
+         acct.CUST_NO as acct_cust_no,
+         acct.account_name as acct_account_name,
+         acct.code acct_code,
+         null,
+         null,
+         null,
+         null,
+         null,
+         null,
+         null,
+         null,
+         null,
+         null
+        from   AMTB_ACCOUNT acct
+        where  acct.account_no in ('13708', '9470')) acct1
+       
+      ,
+       (select d.created_date topup_date,
+               d.card_no card_no,
+               d.name_on_product name_on_card,
+               d.expiry_date card_expiry,
+               r.tm_debitamt topup_amount,
+               (case
+                 when r.tm_paymenttype = '2' then
+                  'MASTER'
+                 when r.tm_paymenttype = '3' then
+                  'VISA'
+               end) payment_type,
+               r.tm_refno ref_no,
+               r.account_no,
+               a.account_category acc_type
+        --,d.*,r.* 
+        from   ittb_cp_pymt_resp r,
+               ittb_cp_pymt_req_det d --,pmtb_product p
+              ,
+               amtb_account a
+        where  r.pymt_req_id = d.pymt_req_id and r.account_no = a.account_no
+        --and d.product_no=p.product_no
+        ) pm
+where  acct1.acc_type = pm.acc_type and ((case
+         when pm.acc_type = 'CORP' and acct1.acct_acct_no = pm.account_no then
+          1
+       end) = 1 or (case
+         when pm.acc_type = 'DIV' and acct1.child_acct_no = pm.account_no then
+          1
+       end) = 1 or (case
+         when pm.acc_type = 'DEPT' and acct1.grand_acct_no = pm.account_no then
+          1
+       end) = 1 or (case
+         when pm.acc_type = 'APP' and acct1.grand_acct_no = pm.account_no then
+          1
+       end) = 1)</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

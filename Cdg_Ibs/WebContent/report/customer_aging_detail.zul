@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="custAgingDetWindow" border="normal" use="com.cdgtaxi.ibs.report.ui.CustomerAgingDetailWindow"
+	title="Customer Aging Detail"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+		<columns sizable="false">
+			<column width="30%"/>
+			<column width="70%"/>
+		</columns>
+   		<rows>
+   			<row> 
+   				<label sclass="fieldLabel">01. Account No</label>
+   				<intbox id="accountNoIntBox" maxlength="6"
+   				onChange="custAgingDetWindow.searchTopLevelAccountByAccountNo()"
+   				onOK="custAgingDetWindow.searchTopLevelAccountByAccountNo()" 
+   				width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel">02. Account Name</label>
+   				<combobox id="accountNameComboBox"
+   					rows="1" 
+   					style="text-transform:uppercase"
+   					autodrop="true"
+   					autocomplete="false"
+   					width="50%"
+   					onChanging="custAgingDetWindow.searchTopLevelAccountByAccountName(event.value)"
+   					onSelect="custAgingDetWindow.onSelectAccountName()"
+   					tooltiptext="Minimum search criteria is 3 characters" 
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel required">03. Entity</label>
+   				<listbox id="entityList" 
+   					mold="select"
+   					multiple="false"
+ 					onSelect="custAgingDetWindow.onSelectEntity(self)"
+ 					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel">04. AR Control Code</label>
+   				<listbox id="arControlCodeList" 
+   					mold="select"
+   					multiple="false"
+   					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel">05. Sales Person</label>
+   				<listbox id="salesPersonList" 
+   					mold="select"
+   					multiple="false"
+   					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel">06. Outstanding Amount($) >=</label>
+   				<decimalbox id="outstandingAmtDecimalBox"
+   					format="#,##0.00"
+   					maxlength="15"
+   					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel required">07. No. of Days Late >=</label>
+   				<intbox id="noOfDaysLateIntBox" 
+   					maxlength="10"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredZeroOrGreaterConstraint')}"
+   					value="0"
+   					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel">08. Type</label>
+   				<listbox id="typeList" 
+   					mold="select"
+   					multiple="false"
+   					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel required">09. Sort By</label>
+   				<listbox id="sortByList" 
+   					mold="select"
+   					multiple="false"
+   					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel required" id="reportFormatLabel">10. Report Format:</label>
+   				<listbox id="reportFormat" 
+   					mold="select"
+   					multiple="false"
+   					onCreate="custAgingDetWindow.populateReportFormatList(self)"
+   					width="50%"
+   				/>
+   			</row>
+   			<row spans="2">
+   				<hbox>
+   					<button label="Generate" onClick="custAgingDetWindow.generate()"/>
+   					<button label="Reset" onClick="custAgingDetWindow.reset()"/>
+   				</hbox>
+   			</row>
+   		</rows>
+   	</grid>
+   	
+</window>

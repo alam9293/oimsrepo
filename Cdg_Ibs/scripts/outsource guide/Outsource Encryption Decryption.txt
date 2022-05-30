@@ -1,0 +1,188 @@
+Encryption and Decryption Steps
+
+Setup
+
+
+1. Download and instlal Gpg4win 2.2.6 vanilla from http://gpg4win.org/ or provided in the ftp.
+
+2. After installing, go to Command Prompt (cmd)
+
+	a) Go to the folder/directory you want to save ur Public/Private Key to.
+		eg : c:\keys\
+
+	b) Execute the following command 
+		gpg --gen-key
+	
+		b1) select your keys. Default 1, RSA and RSA is ok.
+			enter: 1
+
+		b2) 1024 to 4096 bits long. The longer you choose, the more secure it is, but it take a longer longer time to generate.
+			I will go with 2048 as default.
+
+		b3) Key Expiry. 0 = does not expire
+			i go with 0.
+
+		b4) Enter Name, Email and Comments. The name is the userId of the key.
+			enter each accordingly.. Example Name : jiayi
+
+
+		b5) Change Name, Comment, Email or Okay / Quit ?
+			Press "O" and Enter to Ok & continue.
+
+		b6) Enter a password
+			eg : password
+
+		b7) Depending on (b2), it will take awhile to generate.
+
+
+		b8) A secret key and Public key will be generated.
+	
+
+	c) To see the list of keys on this Computer.
+		
+		c1) To see list of Keys 
+			type :   gpg --list-key		example only have jiayi
+			
+		c2) To see list of secret keys
+			type :  gpg --list-secret-key   example only have jiayi
+
+
+	d) To Export the Public Key Created
+
+		d1) Enter these to export public key
+			gpg --armor --output <publickeyname>.asc --export <your name>
+
+			example : gpg --armor --output jiayi.asc --export jiayi
+
+		d2) go to folder, to get the exported public key.
+			eg  c:\keys\jiayi.asc
+
+	e) Copy this asc and send it to the other person/party
+
+
+3. The other computer (Computer B) must install gpg4win 2.2.6 and do step 2a) to 2d).
+	example : user : compb
+
+
+4. Computer A and B exchange the "asc" file.
+		jiayi.asc  &  compb.asc
+
+
+5. At both pc, import the asc file.
+
+	5a) at comp B >>
+			gpg --import jiayi.asc
+
+	5b) at first comp >>
+			gpg --import compb.asc
+
+
+	5c) List keys at Computer B >>
+			gpg --list-key
+	
+	   will show jiayi & compb
+
+	5d) List secret keys at Computer B >>
+			gpg --list-secret-key
+	
+	   will show only compb. Because the import only import normal key, secret key will not get bring over.
+
+	5e) repeat 5c on Computer A
+
+	5f) repeat 5d on computer A.
+
+---------------------------------------------------
+Test Encryption
+
+6. In Computer A, create a test.txt ,  go to cmd, go to the directory of the test.txt
+	eg : c:\test.txt
+
+7. in Computer A, To Encrypt and send to recipient computer B
+	
+	7a) Enter this :: echo password|gpg --batch --armor --passphrase-fd 0 --local-user "Stanley" --recipient "Stanley Woon" --encrypt --sign %1 
+ 
+	    Replace the password with the password created on (b6).
+	    Replace the local-user with the user name of the person sending.
+		-- if there is multiple user genereated on the PC. local-user is to differentiate who is the one doing the encryption and password must match.
+	    Replace recipient to the person going to receive it. 
+	    Replace %1 with the file going to be encrypted.
+		
+		example : echo password|gpg --batch --armor --passphrase-fd 0 --local-user "jiayi" --recipient "compb" --encrypt --sign test.txt
+
+		note :  password|gpg  <-- should not have space between > d|     else the space will be capture as "password "
+
+
+8) The file will be encrypted and become .asc file.
+
+	example : "test.txt"  will become  "test.txt.asc"
+
+
+9) send the test.txt.asc to Computer B.
+
+----------------------------------------------------------------------
+Test Decryption
+
+10) as the file is address to recipient "compb", only the user "compb" will be able to decrypt it.
+
+11) To Decrypt it on computer B. go to the same directory/folder as the encrypted file.
+
+	11a) Enter this ::  echo password|gpg --batch --armor --passphrase-fd 0 --local-user "compb" --output %outfile% --decrypt %file%
+	
+	     Replace password with this user password.
+	     Replace local-user with the username of the person receiving it.
+	     Replace %outputfile% with the file name, that after decryption it will be.
+	     Replace %file% with the file name of the file decrypting.
+
+		example : echo password|gpg --batch --armor --passphrase-fd 0 --local-user "compb" --output test2.txt --decrypt test.txt.asc
+
+		note :  password|gpg  <-- should not have space between > d|     else the space will be capture as "password "
+
+12) Decrypt test.txt.asc into test2.txt
+
+Decryption Successful
+
+-----------------------------------------------------------
+
+Misc Stuff.
+
+To delete User, need to delete the Key & Secret Key.
+
+
+Delete Key
+	--gpg --delete-key [username]
+Delete Secret Key
+	--gpg --delete-secret-key [username]
+
+List Key
+	--gpg --list-key
+List secret key
+	--gpg --list-secret-key
+
+
+Command Manual Page
+	https://www.gnupg.org/documentation/manpage.html
+
+
+
+--------------------------------------------
+Things to do For Bill Gen / CONFIGURATION
+
+- Replace the "password" and recipient name and local user accordingly in encrypt_os_printing.bat file.
+
+- Replace the local user accordingly in decrypt_os_printing.bat file.
+
+- Replace the ftp's server ip, user ID, password and directory accordingly in ftp_os_printing.bat file.
+
+
+Bill Gen will generate the csv/pdf and zip,  and also call 
+
+	1) The encrypt_os_printing.bat to encrypt all the csv/pdf/zip. it will pass the "files to encrypt" paramter and call the  
+			eg : echo password|gpg --batch --armor --passphrase-fd 0 --local-user "jiayi" --recipient "compb" --encrypt --sign test.txt
+		that why require to hardcode the password and recipient name on the .bat file
+
+	2) the ftp_os_printing.bat will  ftp and send this encrypt file to ftp.
+
+
+Decryption Side will require to call the decryption.bat
+	
+	1) which will call the gpg decryption command.

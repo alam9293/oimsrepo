@@ -1,0 +1,198 @@
+<?page title="View invoice details" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Invoice Details" border="normal" 
+		id="viewInvoiceDetails"
+		use="com.cdgtaxi.ibs.billing.ui.ViewInvoiceWindow"
+		xmlns:h="http://www.w3.org/1999/xhtml">
+		<grid>
+			<columns sizable="false">
+				<column>Account Details</column>
+			</columns>
+		</grid>
+		<grid>
+			<columns sizable="false">
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+			</columns>
+			<rows>
+				<row>
+					<label sclass="fieldLabel">Account No:</label>
+					<label id="accountNoLB" onCreate="self.setValue(viewInvoiceDetails.getAccountNo())" />
+					<label sclass="fieldLabel">Account Name:</label>
+					<label id="nameLB" onCreate="self.setValue(viewInvoiceDetails.getName())" />
+				</row>
+				<row if= "${viewInvoiceDetails.accountCat=='Dept'}">
+					<label sclass="fieldLabel">Division:</label>
+					<label id="divisionLB" onCreate="self.setValue(viewInvoiceDetails.getAccountDivision())"  />
+					<label sclass="fieldLabel">Department:</label>
+					<label id="departmentLB"  onCreate="self.setValue(viewInvoiceDetails.getAccountDepartment())"  />
+				</row>
+
+			</rows>
+		</grid>
+		<h:br />
+		<grid>
+			<columns sizable="false">
+				<column>Invoice Details</column>
+			</columns>
+		</grid>
+		<grid>
+			<columns sizable="false">
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+			</columns>
+			<rows>
+				<row>
+					<label sclass="fieldLabel">Invoice No:</label>
+					<label id="invoiceLB" onCreate="self.setValue(viewInvoiceDetails.getInvoiceNo())"  />
+					<label sclass="fieldLabel">Invoice Date:</label>
+					<label id="invoiceDateLB" onCreate="self.setValue(viewInvoiceDetails.getInvoiceDate())" />
+				</row>
+				<row>
+					<label sclass="fieldLabel">Invoice Amount($):</label>
+					<label id="invoiceAmountLB" onCreate="self.setValue(viewInvoiceDetails.getInvoiceAmount())" />
+					<label sclass="fieldLabel">Invoice Applied Amount($):</label>
+					<label id="invoiceAppliedAmountLB" onCreate="self.setValue(viewInvoiceDetails.getInvoiceAppliedAmount())"  />
+				</row>
+				<row>
+					<label sclass="fieldLabel">Excess Amount($):</label>
+					<label id="excessAmountLB" onCreate="self.setValue(viewInvoiceDetails.getExcessAmount())" />
+					<label sclass="fieldLabel">Debit/Credit Amount($):</label>
+					<label id="debitCreditAmountLB" onCreate="self.setValue(viewInvoiceDetails.getDebitCreditAmount())"  />
+				</row>
+				<row>
+					<label sclass="fieldLabel">Outstanding Amount($):</label>
+					<label id="outstandingAmountLB" onCreate="self.setValue(viewInvoiceDetails.getOutstandingAmount())"  />
+					<label sclass="fieldLabel">Invoice Status:</label>
+					<label id="invoiceStatusLB" onCreate="self.setValue(viewInvoiceDetails.getInvoiceStatus())"  />
+				</row>
+				<row>
+					<label sclass="fieldLabel">Billed To:</label>
+					<label id="billedToLB" onCreate="self.setValue(viewInvoiceDetails.getBilledTo())" />
+				</row>
+			</rows>
+		</grid>
+		
+		<h:br />
+		<grid>
+			<columns sizable="false">
+				<column>Applied Receipts</column>
+			</columns>
+		</grid>
+		<grid>
+			<rows>
+				<row>
+					<listbox id="receiptsList" onCreate= "viewInvoiceDetails.fillReceiptDetails()" onSelect="">
+						<listhead sizable="true">
+							<listheader label="Receipt No" sort="auto" />
+							<listheader label="Payment Date" sort="auto" />
+							<listheader label="Payment Mode" sort="auto" />
+							<listheader label="Cheque/Doc No" sort="auto" />
+							<listheader label="Cheque/Doc Date" sort="auto" />
+							<listheader label="Receipt Amt($)" sort="auto" />
+							<listheader label="Applied Amt($)" sort="auto" />
+							<listheader label="Excess Amt($)" sort="auto" />
+							<listheader label="Cancellation/Void Reason" sort="auto" />
+						</listhead>
+
+<!--						<listfoot>-->
+<!--							<listfooter span="5">-->
+<!--								<label value="" />-->
+<!--							</listfooter>-->
+<!--						</listfoot>-->
+<!--						<listitem>-->
+<!--							<listcell label="">1</listcell>-->
+<!--							<listcell label="">581047047</listcell>-->
+<!--							<listcell label="">18/3/2009</listcell>-->
+<!--							<listcell label="">e-nets</listcell>-->
+<!--							<listcell label="">20</listcell>-->
+<!--							<listcell label="">0</listcell>-->
+<!--						</listitem>-->
+					</listbox>
+				</row>
+			</rows>
+		</grid>
+
+		<h:br />
+		<grid>
+			<columns sizable="false">
+				<column>Debit / Credit Notes</column>
+			</columns>
+		</grid>
+		<grid>
+			<rows>
+				<row>
+					<listbox id="notesList" onCreate= "viewInvoiceDetails.fillNoteDetails()" onSelect="">
+						<listhead sizable="true">
+							<listheader label="Dr/Cr Note" sort="auto" />
+							<listheader label="Dr/Cr Date" sort="auto" />
+							<listheader label="Type" sort="auto" />
+							<listheader label="Billed Invoice" sort="auto" />
+							<listheader label="Dr/Cr Amt ($)" sort="auto" />
+							<listheader label="Admin Fee ($)" sort="auto" />
+							<listheader label="Discount ($)" sort="auto" />
+							<listheader label="Prod. Discount ($)" sort="auto" />
+							<listheader label="GST ($)" sort="auto" />
+							<listheader label="Cancellation/Void Reason" sort="auto" />
+						</listhead>
+					</listbox>
+				</row>
+			</rows>
+		</grid>
+
+<!--		<button label="Issue Credit Note" onClick="viewInvoiceDetails.issueCreditNote()" />-->
+<!--		<space />-->
+<!--		<button label="Issue Debit Note" onClick="viewInvoiceDetails.issueDebitNote()" />-->
+<!--		<space />-->
+		<button label="Back" onClick="viewInvoiceDetails.back()" />
+
+		<h:br />
+		<h:br />
+		<grid>
+			<columns sizable="false">
+				<column>Transaction history</column>
+			</columns>
+		</grid>
+		<grid>
+
+			<rows>
+				<row>
+					<listbox id="transactionsList" onSelect="">
+						<listhead sizable="true">
+							<listheader label="Card No" sort="auto" />
+							<listheader label="Product Type" sort="auto" />
+							<listheader label="Transaction No" sort="auto" />
+							<listheader label="Transaction Status" sort="auto" />
+							<listheader label="Transaction Date" sort="auto" />
+							<listheader label="Trip No" sort="auto" />
+							<listheader label="Trip Date" sort="auto" />
+							<listheader label="Taxi No" sort="auto" />
+						</listhead>
+
+						<listfoot>
+							<listfooter span="5">
+								<label value="No records found" />
+							</listfooter>
+						</listfoot>
+<!--						<listitem>-->
+<!--							<listcell label="">1000003</listcell>-->
+<!--							<listcell label="">Personel Card</listcell>-->
+<!--							<listcell label="">000001</listcell>-->
+<!--							<listcell label="">Billed</listcell>-->
+<!--							<listcell label="">2008-08-04</listcell>-->
+<!--							<listcell label="">TRIP000001</listcell>-->
+<!--							<listcell label="">2008-08-04</listcell>-->
+<!--							<listcell label="">SHA666</listcell>-->
+<!--						</listitem>-->
+					</listbox>
+				</row>
+			</rows>
+		</grid>
+
+	</window>
+
+</zk>

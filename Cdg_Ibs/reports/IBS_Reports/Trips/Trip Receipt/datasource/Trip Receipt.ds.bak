@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Trip Receipt" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="entity" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="vehicle_id" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="trip_no" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="start_dt" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="end_dt" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="distance" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="pm_mode" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="cardno_expiry" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="card_holder" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="sales_type" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="approval_code" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="fare" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="curr_book" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="peak_hour" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="total" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="discount" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="voucher" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="bal_due" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="fee" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="amount_paid" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="card_bal" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="gst_name" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="gst_no" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="sign" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="space_line" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool_local_mysql.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select 'COMFORT TRANSPORTATION' entity
+,'SHA9876A' vehicle_id
+,'TRIP NO       301234567' trip_no
+,'START  12/04/2011 12:34' start_dt
+,'END    12/04/2011 12:34' end_dt
+,'DISTANCE RUN   123.45KM' distance
+,'CABCHARGE' pm_mode
+,'xxxxxxxxxxxx1234  12/12' cardno_expiry
+,'ANDREW BENJAMIN' card_holder
+,'SALE' sales_type
+,'APPROVAL  123456' approval_code
+,'METER FARE    $   20.00' fare
+,'CURR BOOKING  $    2.50' curr_book
+,'PEAK HOUR 35% $    7.00' peak_hour
+,'TOTAL FARE    $   29.50' total
+,'DISCOUNT      $   -1.00' discount
+,'VOUCHER(S)    $  -15.00' voucher
+,'BALANCE DUE   $   13.50' bal_due
+,'FEE(GST INCL.)$    0.50' fee
+,'AMOUNT PAID   $   13.50' amount_paid
+,'CARD BAL      $   13.80' card_bal
+,'CABCHARGE ASIA PTE LTD ' gst_name
+,'GST M2-0054075-1' gst_no
+,'SIGN' sign
+,' ' space_line</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

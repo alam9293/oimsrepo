@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="adjustVoucherRedemption">
+	<return-scalar column="REDEEM_TIME" 		    type="string"/>
+	<return-scalar column="BATCH_NO"            type="string"/>
+	<return-scalar column="REDEEM_POINT"		    type="string"/>
+	<return-scalar column="CASHIER_ID"	        type="string"/>
+	<return-scalar column="ori_cust_no"	        type="string"/>
+	<return-scalar column="ori_acct_name"		    type="string"/>
+	<return-scalar column="ori_item_type"			  type="string"/>
+  <return-scalar column="ori_serial_no"       type="string"/>
+  <return-scalar column="ori_price"           type="string"/>
+  <return-scalar column="new_cust_no"         type="string"/>
+  <return-scalar column="new_acct_name"       type="string"/>
+  <return-scalar column="new_item_type"       type="string"/>
+  <return-scalar column="new_serial_no"       type="string"/>
+  <return-scalar column="new_price"           type="string"/>
+  <return-scalar column="action"              type="string"/>
+  <return-scalar column="adjustment_amt"      type="string"/>
+  <return-scalar column="REQUEST_DT"          type="string"/>
+  <return-scalar column="REQUESTOR"           type="string"/>
+  <return-scalar column="reason"              type="string"/>
+  <return-scalar column="requestor_remarks"   type="string"/>
+  <return-scalar column="approval_date"       type="string"/>
+  <return-scalar column="approver"            type="string"/>
+  <return-scalar column="approval_status"     type="string"/>
+  <return-scalar column="approval_remarks"    type="string"/>
+	<![CDATA[
+  select
+    case when item.REDEEM_TIME is not null then to_char( item.REDEEM_TIME, 'dd/MM/yyyy HH24:MI:SS') end as REDEEM_TIME,
+    item.BATCH_NO,
+    item.REDEEM_POINT,
+    item.CASHIER_ID,
+    case 
+      when acct_3.cust_no is not null then acct_3.cust_no
+      when acct_2.cust_no is not null then acct_2.cust_no
+      when acct.cust_no is not null then acct.cust_no
+    end as ori_cust_no,
+    case 
+      when acct_3.cust_no is not null then acct_3.account_name
+      when acct_2.cust_no is not null then acct_2.account_name
+      when acct.cust_no is not null then acct.account_name
+    end as ori_acct_name,
+    itemType.type_name as ori_item_type,
+    item.serial_no as ori_serial_no,
+    itemType.price as ori_price,
+    case 
+      when acct2_3.cust_no is not null then acct2_3.cust_no
+      when acct2_2.cust_no is not null then acct2_2.cust_no
+      when acct2.cust_no is not null then acct2.cust_no
+    end as new_cust_no,
+    case 
+      when acct2_3.cust_no is not null then acct2_3.account_name
+      when acct2_2.cust_no is not null then acct2_2.account_name
+      when acct2.cust_no is not null then acct2.account_name
+    end as new_acct_name,
+    itemType2.type_name as new_item_type,
+    item2.serial_no as new_serial_no,
+    itemType2.price as new_price,
+    req.action,
+    NVL(itemType2.price, 0) - itemType.price as adjustment_amt,
+    case when req.REQUEST_DT is not null then to_char( req.REQUEST_DT, 'dd/MM/yyyy HH24:MI:SS') end as REQUEST_DT,
+    req.REQUESTOR,
+    reason.master_value as reason,
+    req.remarks as requestor_remarks,
+    case when flow.FLOW_DT is not null then to_char(flow.FLOW_DT, 'dd/MM/yyyy HH24:MI:SS') end as approval_date,
+    usr.login_id as approver,
+    case when flow.TO_STATUS is null then 'P' ELSE flow.TO_STATUS end as approval_status,
+    flow.REMARKS as approval_remarks
+  from IMTB_ITEM_REQ req
+  left join IMTB_ITEM_REQ_FLOW flow on req.REQ_NO = flow.REQ_NO AND flow.REQ_FLOW_NO in (
+     select
+     distinct first_value
+     (
+        req_flow_no
+     )
+     over (partition by req2.ITEM_NO order by flow2.FLOW_DT desc) as REQ_FLOW_NO
+     from IMTB_ITEM_REQ_FLOW flow2
+     inner join IMTB_ITEM_REQ req2 on flow2.REQ_NO = req2.REQ_NO
+     where flow2.TO_STATUS in ('R','A')
+      AND req2.REQ_NO = req.REQ_NO
+  )
+  --original information
+  inner join IMTB_ITEM item on req.ITEM_NO = item.ITEM_NO
+  inner join IMTB_ITEM_TYPE itemType on item.ITEM_TYPE_NO = itemType.ITEM_TYPE_NO
+  inner join IMTB_ISSUE issue on item.ISSUE_NO = issue.ISSUE_NO
+  inner join IMTB_ISSUE_REQ issueReq on issueReq.ISSUE_REQ_NO = issue.ISSUE_NO
+  inner join AMTB_ACCOUNT acct on acct.account_no = issueReq.account_no
+  left join AMTB_ACCOUNT acct_2 on acct.parent_no = acct_2.account_no
+  left join AMTB_ACCOUNT acct_3 on acct_2.parent_no = acct_3.account_no
+  	left join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN acct_3.CUST_NO IS NOT NULL THEN acct_3.ar_control_code_no  WHEN acct_2.CUST_NO IS NOT NULL THEN acct_2.ar_control_code_no ELSE acct.ar_control_code_no END
+	left join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+  --adjustment information
+  left join IMTB_ITEM item2 on req.SERIAL_NO = item2.SERIAL_NO
+  left join IMTB_ITEM_TYPE itemType2 on item2.ITEM_TYPE_NO = itemType2.ITEM_TYPE_NO
+  left join IMTB_ISSUE issue2 on item2.ISSUE_NO = issue2.ISSUE_NO
+  left join IMTB_ISSUE_REQ issueReq2 on issueReq2.ISSUE_REQ_NO = issue2.ISSUE_NO
+  left join AMTB_ACCOUNT acct2 on acct2.account_no = issueReq2.account_no
+  left join AMTB_ACCOUNT acct2_2 on acct2.parent_no = acct2_2.account_no
+  left join AMTB_ACCOUNT acct2_3 on acct2_2.parent_no = acct2_3.account_no
+  --others
+  left join MSTB_MASTER_TABLE reason on req.MASTER_NO = reason.MASTER_NO
+  left join SATB_USER usr on flow.USER_ID = usr.user_id
+  where
+    req.ACTION in ('PV', 'PD', 'PE')
+    AND
+    (:batchNo is null OR lower(item.BATCH_NO) like lower(:batchNo))
+    AND
+    (:actionStartDate is null OR req.REQUEST_DT between to_date((:actionStartDate), 'dd/MM/yyyy') and to_date((:actionEndDate), 'dd/MM/yyyy HH24:MI:SS'))
+    AND
+    (:approvalStartDate is null OR flow.FLOW_DT between to_date((:approvalStartDate), 'dd/MM/yyyy') and to_date((:approvalEndDate), 'dd/MM/yyyy HH24:MI:SS'))
+    AND
+    (:serialNoStart is null OR item.serial_no between :serialNoStart and :serialNoEnd)
+    AND
+    (:itemTypeNo is null OR itemType.item_Type_No = :itemTypeNo)
+    AND
+    (:actionType is null OR req.action = :actionType)
+    AND
+    (:approvalStatus is null OR req.current_status = :approvalStatus)
+    AND 
+    (:entityNo is null OR entity.entity_no = TO_NUMBER(:entityNo))
+	]]>
+</sql-query>
+</hibernate-mapping>

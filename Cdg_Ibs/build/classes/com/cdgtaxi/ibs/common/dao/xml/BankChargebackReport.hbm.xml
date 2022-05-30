@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="bankChargebackReport">
+  <return-scalar column="name"              type="string"/>
+  <return-scalar column="card_no"           type="string"/>
+  <return-scalar column="batch_no"          type="string"/>
+  <return-scalar column="batch_date"        type="string"/>
+  <return-scalar column="updated_date"      type="string"/>
+  <return-scalar column="trip_start_dt"     type="string"/>
+  <return-scalar column="taxi_no"           type="string"/>
+  <return-scalar column="JOB_NO"            type="string"/>
+  <return-scalar column="POLICY_NUMBER"     type="string"/>
+  <return-scalar column="POLICY_STATUS"     type="string"/>
+  <return-scalar column="chargeback_date"   type="string"/>
+  <return-scalar column="fare_amt"          type="string"/>
+  <return-scalar column="admin_fee"         type="string"/>
+  <return-scalar column="gst"               type="string"/>
+  <return-scalar column="PREMIUM_AMOUNT"    type="string"/>
+  <return-scalar column="PREMIUM_GST"       type="string"/>
+  <return-scalar column="total"             type="string"/>
+  <return-scalar column="mdr"               type="string"/>
+  <return-scalar column="net_amt"           type="string"/>
+  <return-scalar column="type"              type="string"/>
+  <return-scalar column="reason"            type="string"/>
+  <return-scalar column="offline_flag"      type="string"/>
+  <![CDATA[
+select acquirer.NAME, txn.CARD_NO, batch.BATCH_NO,
+  to_char(batch.SETTLEMENT_DATE, 'dd/mm/yyyy') as batch_date,
+   to_char(batch.UPDATED_DT, 'dd/mm/yyyy hh24:mi') as updated_date,
+  to_char(txn.TRIP_START_DT, 'dd/mm/yyyy hh24:mi') as TRIP_START_DT,
+  txn.TAXI_NO, txn.JOB_NO, case when txn.POLICY_NUMBER is not null then txn.POLICY_NUMBER else '-' end as POLICY_NUMBER,
+   case when txn.policy_status = 'A' then 'Active' when txn.policy_status = 'C' then 'System cancel' when txn.policy_status = 'M' then 'Manual Cancel' else '-' end as POLICY_STATUS, 
+  to_char(trunc(txn.CHARGEBACK_REFUND_DATE, 'DDD'), 'dd/mm/yyyy') as CHARGEBACK_DATE,
+    trim(to_char(txn.CHARGEBACK_REFUND_FARE_AMT, '999,999,990.00')) as FARE_AMT,
+    trim(to_char(txn.CHARGEBACK_REFUND_ADMIN_FEE, '999,999,990.00')) as ADMIN_FEE,
+    trim(to_char(txn.CHARGEBACK_REFUND_GST, '999,999,990.00')) as GST,
+    trim(to_char(nvl(txn.PREMIUM_AMOUNT,0), '999,999,990.00')) as PREMIUM_AMOUNT,
+    trim(to_char(nvl(txn.PREMIUM_GST,0), '999,999,990.00')) as PREMIUM_GST,
+    trim(to_char(txn.CHARGEBACK_REFUND_FARE_AMT + txn.CHARGEBACK_REFUND_ADMIN_FEE + txn.CHARGEBACK_REFUND_GST + nvl(txn.PREMIUM_AMOUNT,0) + nvl(txn.PREMIUM_GST,0), '999,999,990.00')) as TOTAL,
+    trim(to_char(round((txn.CHARGEBACK_REFUND_FARE_AMT + txn.CHARGEBACK_REFUND_ADMIN_FEE + txn.CHARGEBACK_REFUND_GST + nvl(txn.PREMIUM_AMOUNT,0) + nvl(txn.PREMIUM_GST,0)) * payment.MDR_PERCENTAGE * 0.01, 2), '999,999,990.00')) as MDR,
+    trim(to_char((txn.CHARGEBACK_REFUND_FARE_AMT + txn.CHARGEBACK_REFUND_ADMIN_FEE + txn.CHARGEBACK_REFUND_GST + nvl(txn.PREMIUM_AMOUNT,0) + nvl(txn.PREMIUM_GST,0)) - round((txn.CHARGEBACK_REFUND_FARE_AMT + txn.CHARGEBACK_REFUND_ADMIN_FEE + txn.CHARGEBACK_REFUND_GST + nvl(txn.PREMIUM_AMOUNT,0) + nvl(txn.PREMIUM_GST,0)) * payment.MDR_PERCENTAGE * 0.01, 2), '999,999,990.00')) as net_amt,
+    type.MASTER_VALUE as type, reason.MASTER_VALUE as reason, txn.OFFLINE_FLAG as offline_flag
+    from TMTB_NON_BILLABLE_TXN txn
+    inner join TMTB_NON_BILLABLE_BATCH batch on txn.BATCH_ID = batch.BATCH_ID
+    inner join BMTB_BANK_PAYMENT_DETAIL detail on batch.BATCH_ID = detail.BATCH_ID
+    inner join BMTB_BANK_PAYMENT payment on detail.PAYMENT_NO = payment.PAYMENT_NO
+    inner join MSTB_ACQUIRER acquirer on acquirer.ACQUIRER_NO = batch.ACQUIRER_NO
+    inner join FMTB_BANK_CODE bank on bank.BANK_CODE_NO = payment.BANK_IN
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = bank.ENTITY_NO
+    inner join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    inner join MSTB_MASTER_TABLE type on type.MASTER_NO = txn.CHARGEBACK_REFUND_TYPE
+    inner join MSTB_MASTER_TABLE reason on reason.MASTER_NO = txn.CHARGEBACK_REFUND_REASON
+    where ((:chargebackStart is null and :chargebackEnd is null)or(txn.CHARGEBACK_REFUND_DATE between case when :chargebackStart is null then to_date(:chargebackEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:chargebackStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :chargebackEnd is null then to_date(:chargebackStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:chargebackEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and ((:batchStart is null and :batchEnd is null)or(batch.SETTLEMENT_DATE between case when :batchStart is null then to_date(:batchEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:batchStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :batchEnd is null then to_date(:batchStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:batchEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and (:entityNo is null or entity.ENTITY_NO = :entityNo)
+    and (:providerNo is null or provider.MASTER_CODE = :providerNo)
+    and (:acquirerNo is null or acquirer.ACQUIRER_NO = :acquirerNo)
+    order by acquirer.NAME, txn.CHARGEBACK_REFUND_DATE, case when :sort = 'CN' then txn.CARD_NO else null end, case when :sort = 'TD' then txn.trip_start_dt else null end
+  ]]>
+</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="addAcctTypeWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.AddAcctTypeWindow"
+	title="Add Account Type"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel required" value="Account Template"/>
+				<listbox id="acctTypeList" rows="1" mold="select" onCreate="self.getItems().addAll(addAcctTypeWindow.getAccountTemplates());self.setSelectedIndex(0)">
+				</listbox>
+				<label sclass="fieldLabel required" value="Account Type Name"/>
+				<capstextbox id="typeName" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>
+			</row>
+			<row spans="4"><hbox>
+				<button label="Save" onClick="addAcctTypeWindow.save()"/>
+				<button label="Back" onClick="addAcctTypeWindow.cancel()"/>
+			</hbox></row>
+		</rows>
+	</grid>
+</window>

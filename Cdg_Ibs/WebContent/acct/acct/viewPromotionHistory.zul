@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="viewPromotionWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ViewPromotionWindow"
+	title="View Promotion History"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	onCreate="viewPromotionWindow.init()"
+	onClose="self.refresh()">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Promotion History"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<rows id="promotion"/>
+	</grid>
+	<listbox id="promotionList" mold="paging" visible="false" >
+   		<listhead sizable="false" >
+   			<listheader label="Promotion" width="35%" sort="auto"/>
+			<listheader label="Effective Date From" width="20%" sort="auto"/>
+			<listheader label="Effective Date To" width="20%" sort="auto"/>
+		</listhead>
+   	</listbox>
+</window>

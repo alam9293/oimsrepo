@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="win" title="Prepaid Request Approval Search" border="normal"
+	use=" com.cdgtaxi.ibs.prepaid.ui.PrepaidRequestApprovalSearchWindow" xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<grid width="99.7%">
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Account No" />
+				<intbox id="accountNoIntBox" width="98.75%" />
+				<label sclass="fieldLabel" value="Account Name" />
+				<combobox id="accountNameComboBox" width="91.5%"/>
+			</row>
+			<row>
+				<label value="Request No" sclass="fieldLabel" />
+				<intbox id="reqNoField" width="99%" />
+				<label value="Request Type" sclass="fieldLabel" />
+				<listbox id="reqTypeField" mold="select" multiple="false" width="99%">
+				</listbox>
+			</row>
+			<row>
+				<label value="Request Date From" sclass="fieldLabel" />
+				<datebox id="requestDateFromField" width="91.5%" />
+				<label value="Request Date To" sclass="fieldLabel" />
+				<datebox id="requestDateToField" width="91.5%" />
+			</row>
+			<row>
+				<label value="Requestor" sclass="fieldLabel" />
+				<textbox id="requestorField" width="99%" />
+				<label />
+				<label />
+			</row>
+			<row spans="4">
+				<hbox>
+					<button label="Search" onClick="win.searchRequest()" />
+   					<button label="Reset" onClick="win.reset()" />
+				</hbox>
+			</row>
+		</rows>
+
+
+	</grid>
+
+	<h:br />
+	<grid>
+		<columns sizable="false">
+			<column>
+				<label value="Result(s)" />
+			</column>
+		</columns>
+	</grid>
+
+	<listbox width="100%" id="resultList" onSelect="win.selectRequest()">
+		<listhead sizable="true">
+			<listheader width="3%" >
+				<checkbox id="checkAllBox" onCheck="win.checkAll()"/>
+			</listheader>
+			<listheader label="Req No" />
+			<listheader label="Acct No" />
+			<listheader label="Acct Name" />
+			<listheader label="Req Type" />
+			<listheader label="Req Status" />
+			<listheader label="Req Date" />
+			<listheader label="Requestor" />
+		</listhead>
+		<listfoot>
+			<listfooter span="10">
+				<label value="No records found" />
+			</listfooter>
+		</listfoot>
+	</listbox>
+	
+	
+	
+	<grid width="100%">
+		<columns sizable="false">
+			<column>
+				<label value="Details" />
+			</column>
+		</columns>
+	</grid>
+	<grid width="100%">
+		<columns visible="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row spans="1,3">
+				<label value="Approval Remarks" sclass="fieldLabel" />
+				<capstextbox id="approvalRemarksField" rows="5" width="80%"/>
+			</row>
+		</rows>
+	</grid>
+
+	<h:br />
+
+	<hbox>
+		<button label="Approve Selected" onClick="win.massApprove()" />
+		<button label="Reject Selected" onClick="win.massReject()" />
+	</hbox>
+
+</window>

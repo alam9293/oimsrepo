@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Card In Production" type="JDBC" path="/IBS_Reports/Product/Card In Production/datasource/Card In Production.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="ACCOUNT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DIV_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DIV_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEPT_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEPT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_NO" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="SHIP_CONTACT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_HOLDER_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NAME_ON_PRODUCT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREDIT_LIMIT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FIXED_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EXPIRY_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CURRENT_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_REASON" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select case when grand.cust_no is not null then grand.cust_no when parent.CUST_NO is not null then parent.CUST_NO else acct.CUST_NO end as account_no,
+    case when grand.cust_no is not null then grand.account_name when parent.CUST_NO is not null then parent.account_name else acct.account_name end as account_name,
+    case when grand.cust_no is not null then parent.code when parent.CUST_NO is not null then acct.code else null end as div_id,
+    case when grand.cust_no is not null then parent.account_name when parent.CUST_NO is not null then acct.account_name else null end as div_name,
+    case when grand.cust_no is not null then acct.CODE else null end as dept_id,
+    case when grand.cust_no is not null then acct.ACCOUNT_NAME else null end as dept_name,
+    product.CARD_NO,
+    case when contact.MAIN_CONTACT_SAL is not null then main_sal.MASTER_VALUE||' ' else '' end || contact.MAIN_CONTACT_NAME || case when contact.SUB_CONTACT_NAME is not null then ' / ' || case when contact.SUB_CONTACT_SAL is not null then sub_sal.MASTER_VALUE||' ' else '' end||contact.SUB_CONTACT_NAME else '' end as ship_contact_name,
+    case when product.CARD_HOLDER_SALUTATION is not null then product.CARD_HOLDER_SALUTATION || ' ' else '' end || product.CARD_HOLDER_NAME as card_holder_name,
+    product.NAME_ON_PRODUCT,
+    product.CREDIT_LIMIT,
+    product.FIXED_VALUE,
+    product.EXPIRY_DATE,
+    product.CURRENT_STATUS,
+    case
+        when replacement.PRODUCT_REPLACEMENT_NO is not null and ('${06. Replacement Start Date#date#ALTERNATE_REQUIRED}' is not null or '${07. Replacement End Date#date}' is not null)
+        then replacement_reason.MASTER_VALUE
+        when renew.PRODUCT_RENEW_NO is not null and ('${04. Renewal Start Date#date#ALTERNATE_REQUIRED}' is not null or '${05. Renewal End Date#date}' is not null)
+        then 'CARD RENEWAL'
+        else 'NEW CARD'
+    end as card_reason
+    from PMTB_PRODUCT product
+    inner join AMTB_ACCOUNT acct on product.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    inner join AMTB_ACCT_MAIN_CONTACT main on main.ACCOUNT_NO = acct.ACCOUNT_NO and main.MAIN_CONTACT_TYPE = 'S'
+    inner join AMTB_CONTACT_PERSON contact on main.CONTACT_PERSON_NO = contact.CONTACT_PERSON_NO
+    left join MSTB_MASTER_TABLE main_sal on contact.MAIN_CONTACT_SAL = main_sal.MASTER_NO
+    left join MSTB_MASTER_TABLE sub_sal on contact.SUB_CONTACT_SAL = sub_sal.MASTER_NO
+    left join PMTB_PRODUCT_RENEW renew on product.PRODUCT_NO = renew.PRODUCT_NO and ('${04. Renewal Start Date#date#ALTERNATE_REQUIRED}' is not null or '${05. Renewal End Date#date}' is not null)
+    left join PMTB_PRODUCT_REPLACEMENT replacement on product.PRODUCT_NO = replacement.PRODUCT_NO and replacement.REPLACEMENT_REASON != -1 and ('${06. Replacement Start Date#date#ALTERNATE_REQUIRED}' is not null or '${07. Replacement End Date#date}' is not null)
+    left join MSTB_MASTER_TABLE replacement_reason on replacement.REPLACEMENT_REASON = replacement_reason.MASTER_NO
+    where ((('${02. Issuance Start Date#date#ALTERNATE_REQUIRED}' is not null or '${03. Issuance End Date#date}' is not null)and(product.ISSUE_DATE between case when '${02. Issuance Start Date#date#ALTERNATE_REQUIRED}' is null then to_date('${03. Issuance End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${02. Issuance Start Date#date#ALTERNATE_REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${03. Issuance End Date#date}' is null then to_date('${02. Issuance Start Date#date#ALTERNATE_REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${03. Issuance End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+        or (('${04. Renewal Start Date#date#ALTERNATE_REQUIRED}' is not null or '${05. Renewal End Date#date}' is not null)and(renew.RENEW_DATE between case when '${04. Renewal Start Date#date#ALTERNATE_REQUIRED}' is null then to_date('${05. Renewal End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${04. Renewal Start Date#date#ALTERNATE_REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${05. Renewal End Date#date}' is null then to_date('${04. Renewal Start Date#date#ALTERNATE_REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${05. Renewal End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+        or (('${06. Replacement Start Date#date#ALTERNATE_REQUIRED}' is not null or '${07. Replacement End Date#date}' is not null)and(replacement.REPLACEMENT_DATE between case when '${06. Replacement Start Date#date#ALTERNATE_REQUIRED}' is null then to_date('${07. Replacement End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${06. Replacement Start Date#date#ALTERNATE_REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${07. Replacement End Date#date}' is null then to_date('${06. Replacement Start Date#date#ALTERNATE_REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${07. Replacement End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+        or (('${08. Card No Start##ALTERNATE_REQUIRED}' is not null or '${09. Card No End##ALTERNATE_REQUIRED}' is not null)and(product.CARD_NO between case when '${08. Card No Start##ALTERNATE_REQUIRED}' is null then '${09. Card No End##ALTERNATE_REQUIRED}' else '${08. Card No Start##ALTERNATE_REQUIRED}' end and case when '${09. Card No End##ALTERNATE_REQUIRED}' is null then '${08. Card No Start##ALTERNATE_REQUIRED}' else '${09. Card No End##ALTERNATE_REQUIRED}' end))
+    ) and product.PRODUCT_TYPE_ID = '${01. Product Type#choice(CC,OV,FV)#MASTER:PT3:REQUIRED}'
+    and ('${10. Card Status#choice(A,S)#NC:PRODUCT_STATUS:A}' is null or product.CURRENT_STATUS = '${10. Card Status#choice(A,S)#NC:PRODUCT_STATUS:A}')
+    order by case when '${11. Sort By#choice()#NC:CIPR_ORDER:REQUIRED}' = 'AN' then (case when grand.CUST_NO is not null then grand.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else acct.ACCOUNT_NAME end) when '${11. Sort By#choice()#NC:CIPR_ORDER:REQUIRED}' = 'CN' then product.CARD_NO when '${11. Sort By#choice()#NC:CIPR_ORDER:REQUIRED}' = 'CS' then product.CURRENT_STATUS else card_reason end,
+        case when '${11. Sort By#choice()#NC:CIPR_ORDER:REQUIRED}' = 'AN' then (case when grand.CUST_NO is not null then parent.ACCOUNT_NAME when parent.CUST_NO is not null then acct.ACCOUNT_NAME else null end) else (case when grand.CUST_NO is not null then grand.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else acct.ACCOUNT_NAME end) end,
+        case when '${11. Sort By#choice()#NC:CIPR_ORDER:REQUIRED}' = 'AN' then (case when grand.CUST_NO is not null then acct.ACCOUNT_NAME else null end) else (case when grand.CUST_NO is not null then parent.ACCOUNT_NAME when parent.CUST_NO is not null then acct.ACCOUNT_NAME else null end) end,
+        case when '${11. Sort By#choice()#NC:CIPR_ORDER:REQUIRED}' = 'AN' then product.CARD_NO else (case when grand.CUST_NO is not null then acct.ACCOUNT_NAME else null end) end,
+        case when ('${11. Sort By#choice()#NC:CIPR_ORDER:REQUIRED}' = 'CS' or '${11. Sort By#choice()#NC:CIPR_ORDER:REQUIRED}' = 'CR') then product.CARD_NO else null end</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

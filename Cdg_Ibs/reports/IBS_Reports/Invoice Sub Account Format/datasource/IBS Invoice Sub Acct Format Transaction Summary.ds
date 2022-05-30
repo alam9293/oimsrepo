@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="IBS Invoice Sub Acct Format Transaction Summary" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="DUMMY_GROUP_HEADER" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_SUMMARY_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_HEADER_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PRODUCT_TYPE_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SUMMARY_TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SUMMARY_GROUP" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="SUMMARY_GROUP_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SUMMARY_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISPLAY_PRIORITY_1" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DISPLAY_PRIORITY_2" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_PAYMENT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_TXN" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="GST" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TOTAL_NEW" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="UNIT_PRICE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="QUANTITY" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select  
+  'DUMMY' DUMMY_GROUP_HEADER,
+  INVOICE_SUMMARY_NO,
+  INVOICE_HEADER_NO,
+  bis.ACCOUNT_NO,
+  acct.code,
+  bis.PRODUCT_TYPE_ID as PRODUCT_TYPE_ID,
+  SUMMARY_TYPE,
+  acct.account_no SUMMARY_GROUP,
+  case when SUMMARY_TYPE = 'PS' or SUMMARY_TYPE = 'NM' or SUMMARY_TYPE is null or ppt.cardless = 'Y' then
+    case 
+        when acct.account_category = 'CORP' then acct.account_name
+        when acct.account_category = 'DEPT' then parent_acct.account_name || '  (' || parent_acct.code || ') | ' || acct.account_name || '  (' || acct.code || ')'
+        else acct.account_name || '  (' || acct.code || ')'
+      end
+  else 'MISCELLANEOUS'
+  end SUMMARY_GROUP_NAME,
+  case when summary_name = 'LATE PAYMENT INTEREST' then 
+    case when NEW_TXN &gt; 0 then summary_name || chr(185) else summary_name end 
+  else summary_name end as summary_name,
+  DISPLAY_PRIORITY_1,
+  DISPLAY_PRIORITY_2,
+  PREV_BALANCE,
+  PREV_PAYMENT,
+  NEW_TXN,
+  ADMIN_FEE,
+  GST,
+  TOTAL_NEW,
+  BALANCE,
+  UNIT_PRICE,
+  QUANTITY,
+  DISCOUNT
+from ${invoiceSummaryTbl} bis
+inner join amtb_account acct on bis.account_no = acct.account_no
+left join amtb_account parent_acct on parent_acct.account_no = acct.parent_no
+left outer join pmtb_product_type ppt on bis.summary_type = ppt.product_type_id
+where invoice_header_no = ${invoiceHeaderNo}
+and (PREV_BALANCE!=0
+  or PREV_PAYMENT!=0
+  or NEW_TXN!=0
+  or ADMIN_FEE!=0
+  or GST!=0
+  or TOTAL_NEW!=0
+  or BALANCE!=0)
+order by display_Priority_1, CODE, SUMMARY_GROUP, 
+SUMMARY_GROUP_NAME,  display_priority_2,
+summary_Name</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

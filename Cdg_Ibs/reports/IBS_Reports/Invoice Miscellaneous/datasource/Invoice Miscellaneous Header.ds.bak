@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Invoice Miscellaneous Header" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="customer_name" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 3" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 4" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="address_postal" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="billing_contact" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="bill_to_account_name" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_HEADER_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REQ_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DEBT_TO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_FORMAT" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DUE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STATEMENT_PERIOD_FROM_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STATEMENT_PERIOD_TO_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PREV_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_PAYMENT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_TXN" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_30_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_60_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_90_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="MORE_90_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REDEEMED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NEW_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_DEPOSIT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_EXCESS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OVERDUE_INVOICE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TXN_CUTOFF_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_INTEREST" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="EARLY_PAYMENT_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="OUTSTANDING_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TOTAL_FARE_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TOTAL_NO_OF_TRIP" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REMARKS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FILE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="UPDATED_BY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="UPDATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="VERSION" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BILLED_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LAST_LATE_PAYMENT_CHARGED_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREATED_BY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="AWARDED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EXPIRED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADJUSTED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FORFEITED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_BANK_ACCT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 3" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 4" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_GST_REGISTRATION_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_COMPANY_REGISTRATION_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENQUIRES_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PAYABLE_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CUSTOMER_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LOGO" type="Blob">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BUFFERED_DUE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISPLAY_COD" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>Select 
+  '${customer name}' "customer_name",
+  '${address 1}' "ADDRESS 1",
+  '${address 2}' "ADDRESS 2",
+  '${address 3}' "ADDRESS 3",
+  '${address 4}' "ADDRESS 4",
+  '${postal}' "address_postal",
+  '${billing contact}' "billing_contact",
+  '${bill to account name}' "bill_to_account_name",
+  bih.*,
+  case
+    when grand_parent_acct_fem.entity_no is not null then
+        case when grand_parent_acct_fem.ENTITY_BLOCK is not null then grand_parent_acct_fem.ENTITY_BLOCK || ' ' || grand_parent_acct_fem.ENTITY_STREET
+        else grand_parent_acct_fem.ENTITY_STREET
+        end
+    when parent_acct_fem.entity_no is not null then
+        case when parent_acct_fem.ENTITY_BLOCK is not null then parent_acct_fem.ENTITY_BLOCK || ' ' || parent_acct_fem.ENTITY_STREET
+        else parent_acct_fem.ENTITY_STREET
+        end
+    when acct_fem.entity_no is not null then
+        case when acct_fem.ENTITY_BLOCK is not null then acct_fem.ENTITY_BLOCK || ' ' || acct_fem.ENTITY_STREET
+        else acct_fem.ENTITY_STREET
+        end
+  end "ENTITY ADDRESS 1",
+  case
+    when grand_parent_acct_fem.entity_no is not null then
+        case 
+          when grand_parent_acct_fem.ENTITY_BUILDING is not null AND grand_parent_acct_fem.ENTITY_UNIT is not null then grand_parent_acct_fem.ENTITY_UNIT || ' ' || grand_parent_acct_fem.ENTITY_BUILDING
+          when grand_parent_acct_fem.ENTITY_UNIT is not null then grand_parent_acct_fem.ENTITY_UNIT
+          when grand_parent_acct_fem.ENTITY_BUILDING is not null then grand_parent_acct_fem.ENTITY_BUILDING
+        end
+    when parent_acct_fem.entity_no is not null then
+        case 
+          when parent_acct_fem.ENTITY_BUILDING is not null AND parent_acct_fem.ENTITY_UNIT is not null then parent_acct_fem.ENTITY_UNIT || ' ' || parent_acct_fem.ENTITY_BUILDING
+          when parent_acct_fem.ENTITY_UNIT is not null then parent_acct_fem.ENTITY_UNIT
+          when parent_acct_fem.ENTITY_BUILDING is not null then parent_acct_fem.ENTITY_BUILDING
+        end
+    when acct_fem.entity_no is not null then
+        case 
+          when acct_fem.ENTITY_BUILDING is not null AND acct_fem.ENTITY_UNIT is not null then acct_fem.ENTITY_UNIT || ' ' || acct_fem.ENTITY_BUILDING
+          when acct_fem.ENTITY_UNIT is not null then acct_fem.ENTITY_UNIT
+          when acct_fem.ENTITY_BUILDING is not null then acct_fem.ENTITY_BUILDING
+        end
+  end "ENTITY ADDRESS 2",
+  case
+    when grand_parent_acct_fem.entity_no is not null then grand_parent_acct_fem.ENTITY_AREA
+    when parent_acct_fem.entity_no is not null then parent_acct_fem.ENTITY_AREA
+    when acct_fem.entity_no is not null then acct_fem.ENTITY_AREA
+  end "ENTITY ADDRESS 3",
+  case
+    when grand_parent_acct_fem.entity_no is not null then
+        case
+          when grand_parent_acct_fem_country.master_value = 'SINGAPORE' then grand_parent_acct_fem_country.master_value || ' ' || grand_parent_acct_fem.entity_postal
+          else grand_parent_acct_fem_country.master_value || ' ' || grand_parent_acct_fem.entity_state || ' ' || grand_parent_acct_fem.entity_city || ' ' ||grand_parent_acct_fem.entity_postal
+        end
+    when parent_acct_fem.entity_no is not null then
+        case
+          when parent_acct_fem_country.master_value = 'SINGAPORE' then parent_acct_fem_country.master_value || ' ' || parent_acct_fem.entity_postal
+          else parent_acct_fem_country.master_value || ' ' || parent_acct_fem.entity_state || ' ' || parent_acct_fem.entity_city || ' ' ||parent_acct_fem.entity_postal
+        end
+    when acct_fem.entity_no is not null then
+        case
+          when acct_fem_country.master_value = 'SINGAPORE' then acct_fem_country.master_value || ' ' || acct_fem.entity_postal
+          else acct_fem_country.master_value || ' ' || acct_fem.entity_state || ' ' || acct_fem.entity_city || ' ' ||acct_fem.entity_postal
+        end
+  end "ENTITY ADDRESS 4",
+  case
+    when grand_parent_acct_fem.entity_no is not null then 'GST REGISTRATION NO ' || grand_parent_acct_fem.ENTITY_GST_NO
+    when parent_acct_fem.entity_no is not null then 'GST REGISTRATION NO ' || parent_acct_fem.ENTITY_GST_NO
+    when acct_fem.entity_no is not null then 'GST REGISTRATION NO ' || acct_fem.ENTITY_GST_NO
+  end ENTITY_GST_REGISTRATION_NO,
+  case
+    when grand_parent_acct_fem.entity_no is not null then 'COMPANY REGISTRATION NO ' || grand_parent_acct_fem.ENTITY_RCB_NO
+    when parent_acct_fem.entity_no is not null then 'COMPANY REGISTRATION NO ' || parent_acct_fem.ENTITY_RCB_NO
+    when acct_fem.entity_no is not null then 'COMPANY REGISTRATION NO ' || acct_fem.ENTITY_RCB_NO
+  end ENTITY_COMPANY_REGISTRATION_NO,
+  case
+    when grand_parent_acct_fem.entity_no is not null then
+        'For billing enquiries, please call ' || grand_parent_acct_fem.ENTITY_TEL || ' or email ' || grand_parent_acct_fem.ENTITY_EMAIL
+    when parent_acct_fem.entity_no is not null then
+        'For billing enquiries, please call ' || parent_acct_fem.ENTITY_TEL || ' or email ' || parent_acct_fem.ENTITY_EMAIL
+    when acct_fem.entity_no is not null then
+        'For billing enquiries, please call ' || acct_fem.ENTITY_TEL || ' or email ' || acct_fem.ENTITY_EMAIL
+  end ENQUIRES_CLAUSE,
+  case
+    when grand_parent_acct_fem.entity_no is not null then
+        'Please make crossed cheque payable to: ' || grand_parent_acct_fem.ENTITY_NAME || ' by ' || to_char((bih.DUE_DATE - ${bufferDays}),'dd/mm/yyyy')
+    when parent_acct_fem.entity_no is not null then
+        'Please make crossed cheque payable to: ' || parent_acct_fem.ENTITY_NAME || ' by ' || to_char((bih.DUE_DATE - ${bufferDays}),'dd/mm/yyyy')
+    when acct_fem.entity_no is not null then
+        'Please make crossed cheque payable to: ' || acct_fem.ENTITY_NAME || ' by ' || to_char((bih.DUE_DATE - ${bufferDays}),'dd/mm/yyyy')
+  end PAYABLE_CLAUSE,
+  'Please remit payment by due date. Interest of ' || to_char(bih.LATE_PAYMENT_INTEREST,'990.0') || '% will be levied on overdue accounts' LATE_PAYMENT_CLAUSE,
+  case
+    when grand_parent_acct_fem.entity_no is not null then grand_parent_acct_fem.ENTITY_NAME
+    when parent_acct_fem.entity_no is not null then parent_acct_fem.ENTITY_NAME
+    when acct_fem.entity_no is not null then acct_fem.ENTITY_NAME
+  end ENTITY_NAME,
+  case
+    when grand_parent_acct.account_no is not null then grand_parent_acct.cust_no
+    when parent_acct.account_no is not null then parent_acct.cust_no
+    when acct.account_no is not null then acct.cust_no
+  end CUSTOMER_ID,
+  case
+    when grand_parent_acct_fem.entity_no is not null then grand_parent_acct_fem.LOGO
+    when parent_acct_fem.entity_no is not null then parent_acct_fem.LOGO
+    when acct_fem.entity_no is not null then acct_fem.LOGO
+  end LOGO,
+  bih.DUE_DATE - ${bufferDays} BUFFERED_DUE_DATE,
+  case when bih.DUE_DATE is null then 1 else 0 end display_cod,
+  case when bih.GIRO_DAY is not null then 'Amount due will be deducted from your bank account ' || bih.GIRO_BANK_ACCT_NO || ' on the ' ||  bih.GIRO_DAY || ' of each month or on the next working day.' end as GIRO_CLAUSE
+From bmtb_invoice_header bih
+--joining the invoice account
+INNER JOIN AMTB_ACCOUNT acct ON bih.account_no = acct.account_no
+--retrieving joined account main billing contact
+INNER JOIN AMTB_ACCT_MAIN_CONTACT aamc ON acct.account_no = aamc.account_no and aamc.main_contact_type = 'B'
+INNER JOIN AMTB_CONTACT_PERSON acp ON acp.contact_person_no = aamc.contact_person_no
+INNER JOIN MSTB_MASTER_TABLE country ON acp.address_country = country.master_no
+LEFT JOIN MSTB_MASTER_TABLE main_salutation ON acp.MAIN_CONTACT_SAL = main_salutation.master_no
+LEFT JOIN MSTB_MASTER_TABLE sub_salutation ON acp.SUB_CONTACT_SAL = sub_salutation.master_no
+--if itself is toplevel, this left join will return the entity master
+LEFT JOIN FMTB_AR_CONT_CODE_MASTER acct_faccm ON acct_faccm.AR_CONTROL_CODE_NO = acct.AR_CONTROL_CODE_NO
+LEFT JOIN FMTB_ENTITY_MASTER acct_fem ON acct_faccm.ENTITY_NO = acct_fem.ENTITY_NO
+LEFT JOIN MSTB_MASTER_TABLE acct_fem_country ON acct_fem.ENTITY_COUNTRY = acct_fem_country.MASTER_NO
+--if itself is 2nd level, this left join will return the entity master
+LEFT JOIN AMTB_ACCOUNT parent_acct ON acct.parent_no = parent_acct.account_no
+LEFT JOIN FMTB_AR_CONT_CODE_MASTER parent_acct_faccm ON parent_acct_faccm.AR_CONTROL_CODE_NO = parent_acct.AR_CONTROL_CODE_NO
+LEFT JOIN FMTB_ENTITY_MASTER parent_acct_fem ON parent_acct_faccm.ENTITY_NO = parent_acct_fem.ENTITY_NO
+LEFT JOIN MSTB_MASTER_TABLE parent_acct_fem_country ON parent_acct_fem.ENTITY_COUNTRY = parent_acct_fem_country.MASTER_NO
+--if itslef is 3rd level, this left join will return the entity master
+LEFT JOIN AMTB_ACCOUNT grand_parent_acct ON parent_acct.parent_no = grand_parent_acct.account_no
+LEFT JOIN FMTB_AR_CONT_CODE_MASTER grand_parent_acct_faccm ON grand_parent_acct_faccm.AR_CONTROL_CODE_NO = grand_parent_acct.AR_CONTROL_CODE_NO
+LEFT JOIN FMTB_ENTITY_MASTER grand_parent_acct_fem ON grand_parent_acct_faccm.ENTITY_NO = grand_parent_acct_fem.ENTITY_NO
+LEFT JOIN MSTB_MASTER_TABLE grand_parent_acct_fem_country ON grand_parent_acct_fem.ENTITY_COUNTRY = grand_parent_acct_fem_country.MASTER_NO
+where invoice_header_no = '${invoiceHeaderNo}'</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

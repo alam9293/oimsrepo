@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbRecurringDtl" 
+    table="ITTB_RECURRING_DTL"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="recurringDtlReqNo"
+        type="java.lang.Long"
+        column="RECURRING_DTL_REQ_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">ITSQ_RECURRING_DTL</param>
+        </generator>
+    </id>
+
+    <property
+        name="referenceId"
+        type="java.lang.String"
+        column="REFERENCE_ID"
+        length="50"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="tokenId"
+        type="java.lang.String"
+        column="TOKEN_ID"
+        length="150"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="amount"
+        type="java.math.BigDecimal"
+        column="AMOUNT"
+        not-null="true"
+        length="18"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="currency"
+        type="java.lang.String"
+        column="CURRENCY"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="invoiceDate"
+        type="java.sql.Date"
+        column="INVOICE_DATE"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="invoiceNo"
+        type="java.lang.String"
+        column="INVOICE_NO"
+        length="50"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+     <property
+        name="cabchargeCustNo"
+        type="java.lang.String"
+        column="CABCHARGE_CUST_NO"
+        length="50"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="cabchargeCardNo"
+        type="java.lang.String"
+        column="CABCHARGE_CARD_NO"
+        length="50"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+ 	 <property
+        name="status"
+        type="java.lang.String"
+        column="STATUS"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+      <property
+        name="error"
+        type="java.lang.String"
+        column="ERROR"
+        length="200"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+      <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to IttbRecurringReq -->
+    <many-to-one
+        name="ittbRecurringReq"
+        class="com.cdgtaxi.ibs.common.model.IttbRecurringReq"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="REQ_NO" />
+    </many-to-one>
+   
+</class>
+</hibernate-mapping>

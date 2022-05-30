@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="addProdSubsc" border="normal" use="com.cdgtaxi.ibs.acct.ui.AddProdSubscWindow"
+	onCreate="addProdSubsc.init()"
+	title=""
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Subscribing Products"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row>
+			<label sclass="fieldLabel" value="Product Type"/>
+			<listbox id="prodTypeList" width="100%" rows="1" mold="select" onCreate="self.getChildren().addAll(addProdSubsc.getProductTypes());" onSelect="addProdSubsc.selectProductType(self.getSelectedItem())"/>
+			<label sclass="fieldLabel" value="No of Digit(s)"/>
+			<label id="digits"/>
+		</row><row>
+			<label sclass="fieldLabel" value="BIN Number"/>
+			<label id="bin"/>
+			<label sclass="fieldLabel" value="Sub BIN Number"/>
+			<label id="subBin"/>
+		</row><row>
+			<label sclass="fieldLabel" value="Issuable"/>
+			<label id="issuable"/>
+			<label sclass="fieldLabel" value="Name on Card"/>
+			<label id="nameOnCard"/>
+		</row><row>
+			<label sclass="fieldLabel" value="Batch Issue"/>
+			<label id="batch"/>
+			<label sclass="fieldLabel" value="Issue Type"/>
+			<label id="issueType"/>
+		</row><row>
+			<label sclass="fieldLabel" value="Fixed Value"/>
+			<label id="fixedValue"/>
+			<label sclass="fieldLabel" value="Credit Limit"/>
+			<label id="creditLimit"/>
+		</row><row>
+			<label sclass="fieldLabel" value="Luhn Check"/>
+			<label id="luhn"/>
+			<label sclass="fieldLabel" value="Default Card Status"/>
+			<label id="defaultStatus"/>
+		</row><row>
+			<label sclass="fieldLabel" value="External Card"/>
+			<label id="negativeFile"/>
+			<label sclass="fieldLabel" value="Usage Limitation"/>
+			<label id="otu"/>
+		</row><row>
+			<label sclass="fieldLabel" value="Validity Period"/>
+			<label id="validity"/>
+			<label sclass="fieldLabel" value="Default Expiry (Months)"/>
+			<label id="defaultExpiry"/>
+		</row><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Replacement Fee"/>
+			<label id="replaceFee"/>
+			<label/>
+		</row><row>
+			<label sclass="fieldLabel" value="Product Discount"/>
+			<listbox id="prodDiscountList" width="100%" rows="1" mold="select" onCreate="self.getChildren().addAll(addProdSubsc.getProductDiscounts());self.setSelectedIndex(0)"/>
+			<label sclass="fieldLabel" value="Loyalty Plan"/>
+			<listbox id="rewardsList" width="100%" rows="1" mold="select" onCreate="self.getChildren().addAll(addProdSubsc.getRewards());self.setSelectedIndex(0)"/>
+		</row><row>
+			<label sclass="fieldLabel" value="Subscription Plan"/>
+			<listbox id="subscriptionList" width="100%" rows="1" mold="select" onCreate="self.getChildren().addAll(addProdSubsc.getSubscriptions());self.setSelectedIndex(0)"/>
+			<label sclass="fieldLabel" value="Issuance Plan"/>
+			<listbox id="issuanceList" width="100%" rows="1" mold="select" onCreate="self.getChildren().addAll(addProdSubsc.getIssuance());self.setSelectedIndex(0)"/>
+		</row><row spans="4"><hbox>
+<!-- 				<button label="Add Subscription" onClick="addProdSubsc.addSubscription()"/> -->
+				<!-- Product Subscription Approval -->
+				<button label="Submit Subscription Request" onClick="addProdSubsc.addSubscription()"/>
+				<button label="Cancel" onClick="addProdSubsc.back()"/>
+			</hbox></row>
+		</rows>
+	</grid>
+</window>

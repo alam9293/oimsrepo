@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="searchTxnReqWindow" border="normal" use="com.cdgtaxi.ibs.txn.ui.SearchTxnReqWindow"
+	title="Transaction Approval"
+	onCreate="searchTxnReqWindow.init()" 
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Transactions Request"/></column>
+		</columns>
+	</grid>
+	<listbox id="txnsReq" mold="paging" visible="false" onSelect="searchTxnReqWindow.selectTxnReq()">
+   		<listhead sizable="false">
+   			<listheader label="Request ID" width="10%" sort="auto"/>
+   			<listheader label="Job No" width="10%" sort="auto"/>
+			<listheader label="Card No" width="10%" sort="auto"/>
+			<listheader label="Prod Type" width="10%" sort="auto"/>
+			<listheader label="Status" width="10%" sort="auto"/>
+			<listheader label="Action" width="10%" sort="auto"/>
+			<listheader label="Remarks" width="35%" sort="auto"/>
+			<listheader width="5%"><checkbox id="checkAll" Tooltiptext="Click here to select all" onCheck="searchTxnReqWindow.checkAll()"/></listheader>
+		</listhead>
+   	</listbox>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row spans="1,3">
+				<div id="appRemarksStar" style="color:red">*<label id="appRemarksLabel" value="Approval Remarks"  style="font-weight: bold;color: #000000;" /></div>
+				<capstextbox width="500px" rows="4" id="appRemarks" maxlength="255"/>
+			</row>
+			<row spans="4">
+			<hbox>
+				<button id="appBtn" label="Approve Selected" onClick="searchTxnReqWindow.approveSelectedTxnsReq()"/>
+				<button id="rejBtn" label="Reject Selected" onClick="searchTxnReqWindow.rejectSelectedTxnsReq()"/>
+			</hbox>
+			</row>
+		</rows>
+	</grid>
+</window>

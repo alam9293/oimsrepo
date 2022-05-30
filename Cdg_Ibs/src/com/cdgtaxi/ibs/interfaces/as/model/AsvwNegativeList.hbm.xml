@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.interfaces.as.model.AsvwNegativeList" 
+    table="ASVW_NEGATIVE_LIST"
+    dynamic-update="true"
+    dynamic-insert="true"
+    optimistic-lock="all"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="cardNo"
+        type="java.lang.String"
+        column="CARD_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+    </id>
+
+    <property
+        name="createDate"
+        type="java.sql.Timestamp"
+        column="CREATE_DATE"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createBy"
+        type="java.lang.String"
+        column="CREATE_BY"
+        length="50"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>

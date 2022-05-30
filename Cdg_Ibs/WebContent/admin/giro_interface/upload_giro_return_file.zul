@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="uploadGiroReturnFileWindow" border="normal" use="com.cdgtaxi.ibs.admin.ui.UploadGiroReturnFileWindow"
+	title="Upload Giro Return File"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+   		<rows>
+   			<row>
+   				<label sclass="fieldLabel required">Giro Return File</label>
+   				<button label="Choose File..." onClick="uploadGiroReturnFileWindow.chooseFile()"/>
+   				<label id="fileNameLabel"/>
+   				<label/>
+   			</row>
+   		</rows>
+   	</grid>
+   	<h:br/>
+   	<button label="Upload &amp; Validate" onClick="uploadGiroReturnFileWindow.uploadAndValidate()"/>
+</window>

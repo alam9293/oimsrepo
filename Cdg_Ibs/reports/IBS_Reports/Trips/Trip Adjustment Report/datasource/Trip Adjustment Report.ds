@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Trip Adjustment Report" type="JDBC" path="/IBS_Reports/Trips/Trip Adjustment Report/datasource/Trip Adjustment Report.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="ENTITY_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREATION_DATE" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="JOB_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NRIC" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TAXI_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MASTER_CODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRIP_DT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FARE_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN_FEE_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LEVY" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TXN_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="UPDATE_FMS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADJUST_FARE_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADJUST_LEVY" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TO_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FLOW_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REMARKS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FMS_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REQ_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REQ_ERROR_REMARK" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select * from (
+select entity.ENTITY_NAME, new_flow.FLOW_DT as creation_date,
+    case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end as acct_no,
+    case when acct.CUST_NO is not null then acct.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else grand.ACCOUNT_NAME end as acct_name,
+    product.CARD_NO, txn.JOB_NO, txn.NRIC, txn.TAXI_NO, provider.MASTER_CODE,
+    to_char(txn.TRIP_START_DT, 'dd/mm/yyyy hh24:mi:ss') || case when txn.TRIP_END_DT is not null then ' TO ' || to_char(txn.TRIP_END_DT, 'dd/mm/yyyy hh24:mi:ss') else '' end as trip_dt,
+    type.NAME, txn.FARE_AMT, txn.ADMIN_FEE_VALUE, txn.GST_VALUE, txn.LEVY, txn.TXN_STATUS, req.UPDATE_FMS, req.FARE_AMT as adjust_fare_amt, req.LEVY as adjust_levy, flow.TO_STATUS, approve.FLOW_DT,
+    req.REMARKS, req.FMS_FLAG, fms.REQ_STATUS, fms.REQ_ERROR_REMARK
+    from TMTB_ACQUIRE_TXN txn
+    left join PMTB_PRODUCT product on txn.PRODUCT_NO = product.PRODUCT_NO
+    left join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    left join PMTB_PRODUCT_TYPE type on txn.PRODUCT_TYPE_ID = type.PRODUCT_TYPE_ID
+    left join TMTB_TXN_REVIEW_REQ req on txn.ACQUIRE_TXN_NO = req.ACQUIRE_TXN_NO
+    left join TMTB_TXN_REVIEW_REQ_FLOW new_flow on req.TXN_REVIEW_REQ_NO = new_flow.TXN_REVIEW_REQ_NO and new_flow.FROM_STATUS = 'N'
+    left join TMTB_TXN_REVIEW_REQ_FLOW approve on req.TXN_REVIEW_REQ_NO = approve.TXN_REVIEW_REQ_NO and (approve.TO_STATUS = 'A' or approve.TO_STATUS = 'R')
+    left join (
+select TXN_REVIEW_REQ_NO, max(flow_dt) as latest_flow_dt from TMTB_TXN_REVIEW_REQ_FLOW group by TXN_REVIEW_REQ_NO
+    ) last_req_status on req.TXN_REVIEW_REQ_NO = last_req_status.TXN_REVIEW_REQ_NO
+    left join TMTB_TXN_REVIEW_REQ_FLOW flow on flow.TXN_REVIEW_REQ_NO = req.TXN_REVIEW_REQ_NO and flow.FLOW_DT = last_req_status.latest_flow_dt
+    inner join AMTB_ACCOUNT acct on txn.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on parent.ACCOUNT_NO = acct.PARENT_NO
+    left join AMTB_ACCOUNT grand on grand.ACCOUNT_NO = parent.PARENT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on ar.AR_CONTROL_CODE_NO = case when acct.CUST_NO is not null then acct.AR_CONTROL_CODE_NO when parent.CUST_NO is not null then parent.AR_CONTROL_CODE_NO else grand.AR_CONTROL_CODE_NO end
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    left join (
+select req.TXN_REVIEW_REQ_NO, min(fms.REQ_DATE) as first_req_date from TMTB_TXN_REVIEW_REQ_FLOW flow
+    inner join TMTB_TXN_REVIEW_REQ req on flow.TXN_REVIEW_REQ_NO = req.TXN_REVIEW_REQ_NO and req.FMS_FLAG = 'Y' and flow.TO_STATUS = 'A'
+    inner join TMTB_ACQUIRE_TXN txn on req.ACQUIRE_TXN_NO = txn.ACQUIRE_TXN_NO
+    inner join PMTB_PRODUCT_TYPE product_type on txn.PRODUCT_TYPE_ID = product_type.PRODUCT_TYPE_ID
+    inner join ITTB_FMS_DRVR_RFND_COL_REQ fms on flow.FLOW_DT &lt;= fms.REQ_DATE and fms.JOB_NO = txn.JOB_NO and fms.TAXI_NO = txn.TAXI_NO and fms.NRIC = txn.NRIC and fms.PAYMENT_MODE = product_type.INTERFACE_MAPPING_VALUE
+    group by req.TXN_REVIEW_REQ_NO
+) first_req on req.TXN_REVIEW_REQ_NO = first_req.TXN_REVIEW_REQ_NO
+    left join ITTB_FMS_DRVR_RFND_COL_REQ fms on fms.req_date = first_req.first_req_date
+    where req.TXN_REVIEW_REQ_NO is not null
+    and '${02. Payment Type#choice(0,1,2,3)#NC:PT:REQUIRED}' in (0, 1)
+    and ('${07. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.ENTITY_NO = '${07. Entity#choice(1,2,3)#MASTER:EM}')
+    and ('${08. Company Code#choice(CCPL,CTPL)#CC:SPR}' is null or provider.MASTER_CODE = '${08. Company Code#choice(CCPL,CTPL)#CC:SPR}')
+union
+select entity.ENTITY_NAME, txn.CREATED_DT as creation_date,
+    case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end as acct_no,
+    case when acct.CUST_NO is not null then acct.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else grand.ACCOUNT_NAME end as acct_name,
+    product.CARD_NO, txn.JOB_NO, txn.NRIC, txn.TAXI_NO, provider.MASTER_CODE,
+    to_char(txn.TRIP_START_DT, 'dd/mm/yyyy hh24:mi:ss') || case when txn.TRIP_END_DT is not null then ' TO ' || to_char(txn.TRIP_END_DT, 'dd/mm/yyyy hh24:mi:ss') else '' end as trip_dt,
+    type.NAME, txn.FARE_AMT, txn.ADMIN_FEE_VALUE, txn.GST_VALUE, txn.LEVY, null, txn.UPDATE_FMS, txn.FARE_AMT as adjust_fare_amt, txn.LEVY as adjust_levy, null, null,
+    txn.REMARKS, txn.FMS_FLAG, fms.REQ_STATUS, fms.REQ_ERROR_REMARK
+    from TMTB_ACQUIRE_TXN txn
+    left join PMTB_PRODUCT product on txn.PRODUCT_NO = product.PRODUCT_NO
+    left join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    left join PMTB_PRODUCT_TYPE type on txn.PRODUCT_TYPE_ID = type.PRODUCT_TYPE_ID
+    inner join AMTB_ACCOUNT acct on txn.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on parent.ACCOUNT_NO = acct.PARENT_NO
+    left join AMTB_ACCOUNT grand on grand.ACCOUNT_NO = parent.PARENT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on ar.AR_CONTROL_CODE_NO = case when acct.CUST_NO is not null then acct.AR_CONTROL_CODE_NO when parent.CUST_NO is not null then parent.AR_CONTROL_CODE_NO else grand.AR_CONTROL_CODE_NO end
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    left join (
+select txn.ACQUIRE_TXN_NO, min(fms.REQ_DATE) as first_req_date from TMTB_ACQUIRE_TXN txn
+    inner join PMTB_PRODUCT_TYPE product_type on txn.PRODUCT_TYPE_ID = product_type.PRODUCT_TYPE_ID
+    inner join ITTB_FMS_DRVR_RFND_COL_REQ fms on txn.CREATED_DT &lt;= fms.REQ_DATE and fms.JOB_NO = txn.JOB_NO and fms.TAXI_NO = txn.TAXI_NO and fms.NRIC = txn.NRIC and fms.PAYMENT_MODE = product_type.INTERFACE_MAPPING_VALUE and txn.FMS_FLAG = 'Y'
+    group by txn.ACQUIRE_TXN_NO
+) first_req on txn.ACQUIRE_TXN_NO = first_req.ACQUIRE_TXN_NO
+    left join ITTB_FMS_DRVR_RFND_COL_REQ fms on fms.req_date = first_req.first_req_date
+    where txn.JOB_NO like '9%'
+    and '${02. Payment Type#choice(0,1,2,3)#NC:PT:REQUIRED}' in (0, 1)
+    and ('${07. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.ENTITY_NO = '${07. Entity#choice(1,2,3)#MASTER:EM}')
+    and ('${08. Company Code#choice(CCPL,CTPL)#CC:SPR}' is null or provider.MASTER_CODE = '${08. Company Code#choice(CCPL,CTPL)#CC:SPR}')
+union
+select entity.ENTITY_NAME, txn.CHARGEBACK_REFUND_DATE, '' as acct_no, '' as acct_name, txn.CARD_NO, txn.JOB_NO, txn.NRIC, txn.TAXI_NO, provider.MASTER_CODE,
+    to_char(txn.TRIP_START_DT, 'dd/mm/yyyy hh24:mi') || case when txn.TRIP_END_DT is not null then ' TO ' || to_char(txn.TRIP_END_DT, 'dd/mm/yyyy hh24:mi') else '' end as trip_dt,
+    acq.NAME, nvl(txn.FARE_AMT, 0) as fare_amt, nvl(txn.ADMIN_FEE, 0) as admin_fee, nvl(txn.GST, 0) as gst, nvl(txn.LEVY, 0) as levy,
+    case when txn.CHARGEBACK_REFUND_FARE_AMT = txn.FARE_AMT then 'VOID' else 'EDIT' end as txn_status, 'REFUND' as fms_action, nvl(txn.CHARGEBACK_REFUND_FARE_AMT, 0) as CHARGEBACK_FARE_AMT, 0 as chargeback_levy,
+    'APPROVED' as chargeback_status, txn.CHARGEBACK_REFUND_DATE, '' as REMARKS, 'YES' as FMS_FLAG, 'S' as FMS_STATUS, '' as FMS_ERROR_MSG
+    from TMTB_NON_BILLABLE_TXN txn
+    inner join MSTB_ACQUIRER_PYMT_TYPE pymt_type on txn.PYMT_TYPE_NO = pymt_type.PYMT_TYPE_NO and txn.CHARGEBACK_REFUND_DATE is not null
+    inner join MSTB_MASTER_TABLE pymt_type_master on pymt_type.MASTER_NO = pymt_type_master.MASTER_NO
+    inner join MSTB_ACQUIRER acq on pymt_type.ACQUIRER_NO = acq.ACQUIRER_NO
+    inner join FMTB_NON_BILLABLE_MASTER non_master on non_master.SERVICE_PROVIDER = txn.SERVICE_PROVIDER and non_master.PYMT_TYPE_MASTER_NO = pymt_type.MASTER_NO
+    inner join (select MASTER_NO, max(EFFECTIVE_DATE) as EFFECTIVE_DATE from FMTB_NON_BILLABLE_DETAIL where EFFECTIVE_DATE &lt; current_date group by MASTER_NO) last_non_detail on non_master.MASTER_NO = last_non_detail.MASTER_NO
+    inner join FMTB_NON_BILLABLE_DETAIL non_detail on last_non_detail.MASTER_NO = non_detail.MASTER_NO and last_non_detail.EFFECTIVE_DATE = non_detail.EFFECTIVE_DATE
+    inner join FMTB_AR_CONT_CODE_MASTER ar on non_detail.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    inner join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    where (pymt_type_master.MASTER_VALUE like case when '${02. Payment Type#choice(0,1,2,3)#NC:PT:REQUIRED}' = 0 then '%' when '${02. Payment Type#choice(0,1,2,3)#NC:PT:REQUIRED}' = 3 then 'NETS' else '' end or pymt_type_master.MASTER_VALUE not like case when '${02. Payment Type#choice(0,1,2,3)#NC:PT:REQUIRED}' = 0 then '%' when '${02. Payment Type#choice(0,1,2,3)#NC:PT:REQUIRED}' = 2 then '_' else '%' end)
+    and ('${07. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.ENTITY_NO = '${07. Entity#choice(1,2,3)#MASTER:EM}')
+    and ('${08. Company Code#choice(CCPL,CTPL)#CC:SPR}' is null or provider.MASTER_CODE = '${08. Company Code#choice(CCPL,CTPL)#CC:SPR}')
+    and (txn.MATCHING_STATUS is NULL or txn.MATCHING_STATUS != 'T')
+)
+    where acct_no like '%${01a. Account No#acctsearch#custId}%'
+    and acct_name like '%${01b. Account Name#acctsearch#custName}%'
+    and (('${03. Creation Start Date#date#REQUIRED}' is null and '${04. Creation End Date#date}' is null)or(CREATION_DATE between case when '${03. Creation Start Date#date#REQUIRED}' is null then to_date('${04. Creation End Date#date}'||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${03. Creation Start Date#date#REQUIRED}'||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${04. Creation End Date#date}' is null then to_date('${03. Creation Start Date#date#REQUIRED}'||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${04. Creation End Date#date}'||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and (('${05. Approval Start Date#date}' is null and '${06. Approval End Date#date}' is null)or(FLOW_DT between case when '${05. Approval Start Date#date}' is null then to_date('${06. Approval End Date#date}'||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${05. Approval Start Date#date}'||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${06. Approval End Date#date}' is null then to_date('${05. Approval Start Date#date}'||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${06. Approval End Date#date}'||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and ('${09. Approval Status#choice(V,F,A,R)#NC:TRS}' is null or TO_STATUS = '${09. Approval Status#choice(V,F,A,R)#NC:TRS}')
+    and ('${10. Transaction Status#choice(B,A,R,V,PA,PB)#NC:TXN_STATUS}' is null or TXN_STATUS = '${10. Transaction Status#choice(B,A,R,V,PA,PB)#NC:TXN_STATUS}')
+    and ('${11. Action to Transaction#choice(R,C)#NC:FMS_ACTION}' is null or TXN_STATUS = '${11. Action to Transaction#choice(R,C)#NC:FMS_ACTION}')
+    and ('${12. FMS Update#choice(Y,N)#NC:BOOLEAN}' is null or TXN_STATUS = '${12. FMS Update#choice(Y,N)#NC:BOOLEAN}')
+    order by case when '${13. Sort By#choice(PT,CD)#NC:TAR_ORDER:REQUIRED}' = 'PT' then NAME else null end, case when '${13. Sort By#choice(PT,CD)#NC:TAR_ORDER:REQUIRED}' = 'CD' then CREATION_DATE else null end</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Customer Deposit Detailed Refunds" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="CUST_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DATES" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OFFSET_STRING" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OFFSET" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REFUND" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_DEPOSIT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select acct.CUST_NO, acct.ACCOUNT_NAME, main.nos, main.dates, main.offset_string, main.offset, main.refund, deposit.total_deposit, deposit.total_deposit - case when main.offset is null then 0 else main.offset end - case when main.refund is null then 0 else main.refund end as balance from
+(select case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end as account_no,
+  listagg(case when note.NOTE_NO is null then receipt.PAYMENT_RECEIPT_NO else note.NOTE_NO end,',') within group ( order by note.note_no, receipt.payment_receipt_no) as nos,
+  listagg(case when note.NOTE_NO is null then receipt.PAYMENT_DATE else to_date(note.CREATED_DT) end,',') within group (order by note.note_no , receipt.payment_date, note.created_dt as dates,
+   listagg(note.NOTE_AMOUNT,',') within group (order by note.note_amount) as offset_string
+    sum(note.NOTE_AMOUNT) as offset, sum(receipt.PAYMENT_AMOUNT) as refund from BMTB_INVOICE_DEPOSIT_TXN deposit
+    left join BMTB_NOTE note on deposit.NOTE_NO = note.NOTE_NO
+    left join BMTB_PAYMENT_RECEIPT receipt on deposit.PAYMENT_RECEIPT_NO = receipt.PAYMENT_RECEIPT_NO
+    inner join AMTB_ACCOUNT acct on deposit.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    inner join (select acct.ACCOUNT_NO from AMTB_ACCOUNT acct
+        inner join BMTB_INVOICE_DEPOSIT_TXN deposit on acct.ACCOUNT_NO = deposit.ACCOUNT_NO
+        inner join BMTB_INVOICE_HEADER header on deposit.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+        inner join BMTB_PAYMENT_RECEIPT_DETAIL detail on header.INVOICE_HEADER_NO = detail.INVOICE_HEADER_NO
+        inner join BMTB_PAYMENT_RECEIPT receipt on detail.PAYMENT_RECEIPT_NO = receipt.PAYMENT_RECEIPT_NO
+        where (('${1. Deposit Invoice Start Date#date}' is null and '${2. Deposit Invoice End Date#date}' is null)or(header.INVOICE_DATE between case when '${1. Deposit Invoice Start Date#date}' is null then to_date('${2. Deposit Invoice End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Deposit Invoice Start Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Deposit Invoice End Date#date}' is null then to_date('${1. Deposit Invoice Start Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Deposit Invoice End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+        and (('${3. Receipt Start Date#date}' is null and '${4. Receipt End Date#date}' is null)or(receipt.RECEIPT_DT between case when '${3. Receipt Start Date#date}' is null then to_date('${4. Receipt End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${3. Receipt Start Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${4. Receipt End Date#date}' is null then to_date('${3. Receipt Start Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${4. Receipt End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))) sub on sub.ACCOUNT_NO = case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end
+    where note.NOTE_NO is not null or receipt.PAYMENT_RECEIPT_NO is not null
+    group by case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end) main
+    inner join AMTB_ACCOUNT acct on acct.ACCOUNT_NO = main.ACCOUNT_NO
+    left join (select ACCOUNT_NO, sum(AMOUNT) as total_deposit from BMTB_INVOICE_DEPOSIT_TXN where NOTE_NO is null and PAYMENT_RECEIPT_NO is null group by ACCOUNT_NO) deposit on acct.ACCOUNT_NO = deposit.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on acct.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on ar.ENTITY_NO = entity.ENTITY_NO
+    where acct.CUST_NO like '%${5a. Account No}%' and acct.ACCOUNT_NAME like '%${5b. Account Name}%' and ('${6. Entity#choice()#MASTER:EM}' is null or entity.ENTITY_NO = '${6. Entity#choice()#MASTER:EM}')
+    order by acct.ACCOUNT_NAME</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

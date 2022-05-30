@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="timelyPaymentStatisticsDetailed">
+	<return-scalar column="cust_no" 		type="string"/>
+	<return-scalar column="account_name"	type="string"/>
+	<return-scalar column="billing_cycle"	type="string"/>
+	<return-scalar column="credit_term"		type="string"/>
+	<![CDATA[
+WITH CLEAR_PAYMENT AS 
+(
+   SELECT bih.invoice_header_no, max(bpr.payment_date) as clear_payment_date FROM bmtb_invoice_header bih 
+   INNER JOIN bmtb_payment_receipt_detail bprd ON bih.invoice_header_no = bprd.invoice_header_no
+   INNER join bmtb_payment_receipt bpr on bprd.payment_receipt_no = bpr.payment_receipt_no
+   WHERE 
+   bih.invoice_status='C'
+   AND outstanding_amount=0
+   GROUP BY bih.invoice_header_no
+),
+INVOICE_PAYMENT_DETAIL AS
+  (
+    SELECT bih.invoice_header_no,
+      top.cust_no,
+      top.account_name,
+      bih.due_date - bih.invoice_date AS credit_term,
+      CASE
+      WHEN req.setup_no IN (1,2) THEN 'Bi-Weekly'
+      WHEN req.setup_no = 3 THEN 'Monthly'
+      END
+      as billing_cycle,
+      CASE
+        WHEN clear_payment.clear_payment_date <=  bih.due_date
+        THEN 'PAID_BY_DUE_DATE'
+        ELSE 'OVERDUE'
+      END AS PAID_STATUS
+    FROM bmtb_invoice_header bih
+    LEFT JOIN CLEAR_PAYMENT clear_payment
+    ON bih.invoice_header_no = clear_payment.invoice_header_no
+    INNER JOIN amtb_account acct
+    ON bih.account_no = acct.account_no
+    LEFT JOIN amtb_account parent
+    ON acct.parent_no = parent.account_no
+    LEFT JOIN amtb_account grand
+    ON PARENT.parent_no = grand.account_no
+    LEFT JOIN amtb_account top
+    ON top.account_no = (
+        CASE
+          WHEN grand.account_no IS NOT NULL
+          THEN grand.account_no
+          WHEN parent.account_no IS NOT NULL
+          THEN parent.account_no
+          ELSE acct.account_no
+        END )
+    INNER JOIN fmtb_ar_cont_code_master ar
+    ON top.ar_control_code_no = ar.ar_control_code_no
+    INNER JOIN fmtb_entity_master entity
+    ON ar.entity_no =entity.entity_no
+    LEFT JOIN bmtb_bill_gen_req req
+    ON bih.req_no               = req.req_no
+    WHERE (req.setup_no         <>4 or (req.setup_no=4 and req.regen_req_no is not null ))
+    AND req.status             in ('C', 'R')
+    AND bih.new_txn            <>0
+    AND bih.invoice_format NOT IN ('M', 'D')
+    AND bih.invoice_no         IS NOT NULL
+    AND (bih.invoice_date BETWEEN to_date(SUBSTR(:mthYear, 0,7) || '-01', 'yyyy-mm-dd') AND last_day(to_date(:mthYear, 'yyyy-mm-dd')))
+    AND bih.due_date    IS NOT NULL
+    AND (:creditTerm is null or (bih.due_date - bih.invoice_date) = :creditTerm)
+    AND (:entityNo is null or entity.ENTITY_NO = :entityNo)
+  )
+SELECT DISTINCT payment_detail.cust_no, payment_detail.account_name, payment_detail.billing_cycle, payment_detail.credit_term
+FROM INVOICE_PAYMENT_DETAIL payment_detail
+WHERE
+(
+  :type is null 
+  OR
+  (  
+    :type ='P'
+    AND payment_detail.cust_no NOT IN (SELECT cust_no FROM INVOICE_PAYMENT_DETAIL WHERE paid_status='OVERDUE' )
+  )
+  OR
+  ( 
+    :type ='O'
+    AND paid_status='OVERDUE'
+  )
+)
+order by account_name
+	]]>
+</sql-query>
+</hibernate-mapping>

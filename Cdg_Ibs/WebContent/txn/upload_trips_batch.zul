@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="uploadTripsBatchWindow" border="normal" use="com.cdgtaxi.ibs.txn.ui.UploadTripsBatchWindow"
+  title="Upload Trips Batch" xmlns:h="http://www.w3.org/1999/xhtml">
+
+  <grid>
+    <columns sizable="false">
+      <column>
+        <label value="Upload Trips Batch" />
+      </column>
+    </columns>
+  </grid>
+  <grid>
+    <columns sizable="false">
+      <column width="25%" />
+      <column width="25%" />
+      <column width="25%" />
+      <column width="25%" />
+    </columns>
+    <rows>
+      <row spans="1,1,,1">
+      		<label sclass="fieldLabel required" value="Cardless / Card Type"/>
+				<radio id="radioWithCardless"  label="Cardless Trips Upload" value="P"  onCheck="uploadTripsBatchWindow.clickRadioWithCardless()" />
+				<radio id="radioWithCard" label="Card Trips Upload" value="T"   onCheck="uploadTripsBatchWindow.clickRadioWithCard()"/>
+      </row>
+      <row spans="1,2,1">
+        <label sclass="fieldLabel">Excel Trips Upload:</label>
+             <vbox width="100%">
+		       <listbox id="attachmentLB" mold="paging">
+		      	   <listhead sizable="false">
+			    	      <listheader label="File" width="90%" sort="none" />
+		    	    	  <listheader label="Delete" width="45px" sort="none" />
+		         	</listhead>
+			     </listbox>
+			   <label value="Note: Only 1 XLS file can be uploaded, new upload will overwrite existing" />
+			  </vbox>
+			  <button id="attachBtnXls" label="Choose Excel File..." onClick="uploadTripsBatchWindow.uploadXlsField()" />
+			  <div />
+      </row>
+    </rows>
+  </grid>
+
+
+  <h:br />
+  <button label="Upload Xls" onClick="uploadTripsBatchWindow.uploadXls()" />
+  <h:br/>
+   <h:br/>
+	<!--  The below grid is for Labeling Purpose 	-->
+   	<grid>
+	   	<columns>
+	   		<column>Upload Failure Result</column>
+	   	</columns>
+   	</grid>
+   	<listbox fixedLayout="true" id="resultFailList">
+   		<listhead sizable="true">
+			<listheader label="S/N" 				sort="auto" width="8%"/>
+			<listheader label="Failure Reason" 		sort="auto" width="92%"/>
+		</listhead>
+		<listfoot>
+			<listfooter span="10">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+   	</listbox>
+</window>

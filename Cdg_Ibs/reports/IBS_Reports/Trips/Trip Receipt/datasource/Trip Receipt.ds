@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Trip Receipt" type="JDBC" path="/IBS_Reports/Trips/Trip Receipt/datasource/Trip Receipt.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="ENTITY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="VEHICLE_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRIP_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="START_DT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="END_DT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISTANCE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PM_MODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARDNO_EXPIRY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_HOLDER" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SALES_TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="APPROVAL_CODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FARE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CURR_BOOK" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PEAK_HOUR" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISCOUNT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="VOUCHER" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BAL_DUE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FEE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="AMOUNT_PAID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CARD_BAL" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SIGN" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SPACE_LINE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select  
+(case when t.service_provider='204' then '    CITYCAB PTE LTD' when t.service_provider='205' then ' COMFORT TRANSPORTATION' else '' end) entity
+,'        '||t.taxi_no vehicle_id
+,'TRIP NO       '||t.job_no trip_no
+,'START  '||to_char(t.trip_start_dt,'dd/mm/yyyy hh24:mi') start_dt
+,'END    '||to_char(t.trip_end_dt,'dd/mm/yyyy hh24:mi') end_dt
+,'DISTANCE RUN  '||to_char(t.distance,'999.99')||'KM' distance
+,(case when t.product_type_id in ('CV') then 'CASH VOUCHER'
+when t.product_type_id in ('EV','FE','OV') then 'EVOUCHER'
+when t.product_type_id in ('HC','HF','HO') then 'HOTEL CARD'
+when t.product_type_id in ('PS') then 'PREMIER SERVICE'
+when ppt.CARDLESS in ('Y') then ppt.name
+else 'CABCHARGE' end) pm_mode
+,rpad(lpad(substr(p.card_no,-4),(length(p.card_no)),'x'),18,' ')||to_char(p.expiry_date,'mm/yy') cardno_expiry
+,p.name_on_product card_holder
+,'SALE                   ' sales_type
+,'APPROVAL  '||approval_code approval_code
+,'METER FARE    $ '||to_char(t.fare_amt,'999.99') fare
+,(case when 1=1 then '' else 'CURR BOOKING  $    2.50' end) curr_book
+,(case when 1=1 then '' else 'PEAK HOUR 35% $    7.00' end) peak_hour
+,'TOTAL FARE    $ '||to_char(t.billable_amt,'999.99') total
+,(case when nvl(t.discount_amount,0)=0 then '' else 'DISCOUNT      $ '||to_char(-t.discount_amount,'999.99') end) discount
+,(case when nvl(t.discount_amount,0)=0 then '' else 'VOUCHER(S)    $ '||to_char(-t.voucher_amount,'999.99') end) voucher
+,'BALANCE DUE   $ '||to_char(t.billable_amt,'999.99') bal_due
+,(case when 1=1 then '' else 'FEE(GST INCL.)$ '||to_char(t.admin_fee_value+t.gst_value,'999.99') end) fee
+,'AMOUNT PAID   $ '||to_char(t.billable_amt,'999.99') amount_paid
+,(case when 1=1 then '' else 'CARD BAL      $   13.80' end) card_bal
+,'CABCHARGE ASIA PTE LTD ' gst_name
+,'GST M2-0054075-1       ' gst_no
+,'SIGN                   ' sign
+,' ' space_line
+from tmtb_acquire_txn t
+left join pmtb_product p on p.product_no=t.product_no
+left outer join pmtb_product_type ppt on t.PRODUCT_TYPE_ID = ppt.PRODUCT_TYPE_ID
+where
+job_no='${01. Job No}' and t.acquire_txn_no=${02. Acquire No}</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

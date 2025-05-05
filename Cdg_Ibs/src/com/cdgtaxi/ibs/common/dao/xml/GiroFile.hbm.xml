@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.dsta.emart.model.repositories.hibernate" >
+  <sql-query name="giroFile">
+    <return-scalar column="entity" type="string"/>
+    <return-scalar column="account_no" type="string"/>
+    <return-scalar column="account_name" type="string"/>
+    <return-scalar column="billed_to" type="string"/>
+    <return-scalar column="code" type="string"/>
+    <return-scalar column="outstanding_amount" type="big_decimal"/>
+
+    <![CDATA[
+   	 WITH root_acct AS 
+	(
+	  SELECT account_no
+	  FROM amtb_account
+	  WHERE
+	    (
+	      (
+	        :divAcct IS NULL AND :deptAcct IS NULL AND cust_no= :custNo
+	      )
+	    OR
+	      (
+	        (:divAcct IS NOT NULL OR :deptAcct IS NOT NULL)
+	        AND account_no = CASE WHEN :deptAcct IS NOT NULL THEN :deptAcct ELSE :divAcct END
+	      )
+	    )
+	),
+	outstanding_detail AS
+		  (
+		    SELECT entity.entity_name AS entity,
+		      top.cust_no             AS account_no,
+		      top.account_name        AS account_name,
+		      acct.account_name       AS billed_to,
+		      acct.code               AS code,
+		      bih.outstanding_amount
+		    FROM bmtb_invoice_header bih
+		    INNER JOIN amtb_account acct
+		    ON bih.account_no = acct.account_no
+		    LEFT JOIN amtb_account parent
+		    ON acct.parent_no = parent.account_no
+		    LEFT JOIN amtb_account grand
+		    ON PARENT.parent_no = grand.account_no
+		    LEFT JOIN amtb_account top
+		    ON top.account_no = (
+		        CASE
+		          WHEN grand.account_no IS NOT NULL
+		          THEN grand.account_no
+		          WHEN parent.account_no IS NOT NULL
+		          THEN parent.account_no
+		          ELSE acct.account_no
+		        END )
+		    INNER JOIN fmtb_ar_cont_code_master ar
+		    ON top.ar_control_code_no = ar.ar_control_code_no
+		    INNER JOIN fmtb_entity_master entity
+		    ON ar.entity_no =entity.entity_no
+		    INNER JOIN mstb_master_table payment_mode_master ON payment_mode_master.master_no=top.default_payment_mode 
+		    WHERE
+		      (
+	        :custNo         IS NULL
+		      OR bih.account_no IN
+		        (
+		          SELECT account_no
+	            FROM amtb_account
+	            START WITH account_no = (
+	              SELECT account_no FROM root_acct
+	            )
+	            CONNECT BY PRIOR account_no = parent_no
+		        )
+		      )
+		    AND
+		      (
+		        :entityNo        IS NULL
+		      OR entity.entity_no = :entityNo
+		      )
+		    AND
+		      (
+		        bih.invoice_format='M' AND bih.due_date   IS NULL
+		      OR
+		        (
+		          bih.due_date <= to_date(:cutOffDate
+		          || ' 23:59:59', 'yyyy-mm-dd hh24:mi:ss')
+		        )
+		      )
+		    AND payment_mode_master.master_code ='IG'
+		  )
+		SELECT *
+		FROM
+		  (
+		    SELECT entity, account_no, account_name, billed_to, code, NVL(SUM(outstanding_amount),0) AS outstanding_amount
+		    FROM outstanding_detail
+		    GROUP BY entity, account_no, account_name, billed_to, code
+		    HAVING NVL(SUM(outstanding_amount),0) > 0
+		  )
+		ORDER BY account_no
+    ]]>
+  </sql-query>
+ 
+  
+</hibernate-mapping>
+

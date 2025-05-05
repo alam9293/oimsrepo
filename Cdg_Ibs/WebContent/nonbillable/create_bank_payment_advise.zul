@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="createBankPymtWindow" border="normal" use="com.cdgtaxi.ibs.nonbillable.ui.CreateBankPaymentAdviseWindow"
+	title="Create Bank Payment Advice"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	width="98%">
+
+	<zscript>
+		Constraint requiredHiLoBigDecimalConstraint = 
+			new com.cdgtaxi.ibs.web.constraint.RequiredHiLoCustomLengthBigDecimalConstraint(10);
+			
+		Constraint requiredBigDecimalConstraint = 
+			new com.cdgtaxi.ibs.web.constraint.RequiredCustomLengthBigDecimalConstraint(10);
+	</zscript> 
+
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+   		<rows>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel">Txn Reference No</label>
+   				<capstextbox id="txnRefNoTextBox" 
+   					width="98.75%"
+   					maxlength="30"
+   				/>
+   				<label/>
+   			</row>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel required">Credit Date</label>
+   				<datebox id="creditDateBox" 
+   					width="91.5%" 
+   					format="dd/MM/yyyy"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredBeforeOrEqualsCurrentDateConstraint')}"
+   				/>
+   				<label/>
+   			</row>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel required">Bank Collection Amount($)</label>
+   				<decimalbox id="collectionAmountDecimalBox" width="98.75%" format="#,##0.00" maxlength="16"
+					constraint="${requiredHiLoBigDecimalConstraint}"/>
+   				<label/>
+   			</row>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel">Total Trips Amount($)</label>
+   				<label id="totalTripsAmountLabel"/>
+   				<label/>
+   			</row>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel">Rejected Amount($)</label>
+   				<label id="rejectedAmountLabel"/>
+   				<label/>
+   			</row>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel">MDR($)</label>
+   				<label id="mdrLabel"/>
+   				<label/>
+   			</row>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel required">MDR Adjustment($)</label>
+   				<decimalbox id="adjustmentDecimalBox" width="98.75%" format="#,##0.00" maxlength="16"
+					constraint="${requiredHiLoBigDecimalConstraint}"
+					onChange="createBankPymtWindow.updateValue()"
+					value="0"
+				/>
+   				<label/>
+   			</row>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel">Markup($)</label>
+				<label id="markupLabel"/>
+				<label/>
+			</row>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel">Commission($)</label>
+				<label id="commissionLabel"/>
+				<label/>
+			</row>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel">Scheme Fee($)</label>
+				<label id="schemeFeeLabel"/>
+				<label/>
+			</row>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel">Interchange($)</label>
+				<label id="interchangeLabel"/>
+				<label/>
+			</row>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel">Chargeback Amount($)</label>
+				<decimalbox id="chargebackDecimalBox" width="98.75%" format="#,##0.00" maxlength="16"
+							constraint="${requiredBigDecimalConstraint}"
+							onChange="createBankPymtWindow.updateValue()"
+							value="0"
+				/>
+				<label/>
+			</row>
+<!--   			<row spans="1,1,2">-->
+<!--   				<label sclass="fieldLabel">Chargeback Reversed($)</label>-->
+<!--				<label id="chargebackReverseLabel"/>-->
+<!--   				<label/>-->
+<!--   			</row>-->
+			<row spans="1,1,2">
+				<label sclass="fieldLabel">Refund Amount($)</label>
+				<label id="refundLabel"/>
+				<label/>
+			</row>
+<!--			<row spans="1,1,2">-->
+<!--				<label sclass="fieldLabel">Refund Reversed Amount($)</label>-->
+<!--				<label id="refundReverseLabel"/>-->
+<!--				<label/>-->
+<!--			</row>-->
+<!--			<row spans="1,1,2">-->
+<!--				<label sclass="fieldLabel">Other(Credit)($)</label>-->
+<!--				<label id="otherCreditLabel"/>-->
+<!--				<label/>-->
+<!--			</row>-->
+<!--			<row spans="1,1,2">-->
+<!--				<label sclass="fieldLabel">Other(Debit)($)</label>-->
+<!--				<label id="otherDebitLabel"/>-->
+<!--				<label/>-->
+<!--			</row>-->
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel">Receipt Amount($)</label>
+   				<label id="receiptAmountLabel"/>
+   				<label/>
+   			</row>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel">Total Premium($)</label>
+   				<label id="premiumAmountLabel"/>
+   				<label/>
+   			</row>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel">Total Premium GST($)</label>
+   				<label id="premiumGstLabel"/>
+   				<label/>
+   			</row>
+   			<row spans="1,3">
+				<label sclass="fieldLabel" value="Remarks"/>
+				<capstextbox id="remarksTextBox"
+					rows="3"
+   					width="98%"
+				/>
+			</row>
+   		</rows>
+   	</grid>
+   	
+   	<h:br/>
+	<grid><columns sizable="false"><column>Bank In Code</column></columns></grid>
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+   				<label sclass="fieldLabel required">Bank</label>	
+   				<listbox id="bankInBankListBox"
+   					mold="select"
+   					multiple="false"
+   					width="100%"
+   				/>
+	   			<label/>
+	   			<label/>
+   			</row>
+		</rows>
+	</grid>
+   	
+   	<h:br/>
+   	<!--  The below grid is for Labeling Purpose 	-->
+   	<grid>
+	   	<columns>
+	   		<column>Result</column>
+	   	</columns>
+   	</grid>
+   	
+   	<listbox id="resultList"
+   		onSelect="createBankPymtWindow.edit()"
+   		fixedLayout="true"
+   	>
+   		<listhead sizable="true">
+			<listheader label="Batch No." 			width="65px" 	sort="auto"/>
+			<listheader label="Batch Date" 		width="100px" 	sort="auto"/>
+			<listheader label="Acquirer" 			width="100px"	sort="auto"/>
+			<listheader label="TID" 				width="100px"	sort="auto"/>
+			<listheader label="Trips Count" 		sort="auto"/>
+			<listheader label="Trips Amount($)" 	sort="auto" 	align="right"/>
+			<listheader label="Rejected Count" 		sort="auto"/>
+			<listheader label="Rejected Amount($)" 	sort="auto"		align="right"/>
+		</listhead>
+		<listfoot>
+			<listfooter span="8">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+   	</listbox>
+   	
+   	<h:br/>
+   	<button label="Create" id="createButton" onClick="createBankPymtWindow.create()" />
+   	<button label="Back" onClick="createBankPymtWindow.back()" />
+</window>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Timely Payment Statistics" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="INVOICE_MONTH" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SETUP_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BILL_GEN" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREDIT_TERM" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DUE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EARLY_PAID_INVOICE_COUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EARLY_PAID_ACCT_COUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OVERDUE_INVOICE_COUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OVERDUE_ACCT_COUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_ACCT_COUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_INVOICE_COUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="HIDE_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>WITH 
+CLEAR_PAYMENT AS 
+(
+   SELECT bih.invoice_header_no, max(bpr.payment_date) as clear_payment_date FROM bmtb_invoice_header bih 
+   INNER JOIN bmtb_payment_receipt_detail bprd ON bih.invoice_header_no = bprd.invoice_header_no
+   INNER join bmtb_payment_receipt bpr on bprd.payment_receipt_no = bpr.payment_receipt_no
+   WHERE 
+   bih.invoice_status='C'
+   AND outstanding_amount=0
+   GROUP BY bih.invoice_header_no
+),
+INVOICE_PAYMENT_DETAIL AS
+  (
+    SELECT 
+      trunc(bih.invoice_date, 'MONTH') AS invoice_month,
+      req.setup_no as setup_no,
+      bih.invoice_header_no,
+      top.cust_no,
+      top.account_name,
+      bih.due_date - bih.invoice_date AS credit_term,
+      bih.due_date,
+      CASE
+        WHEN clear_payment.clear_payment_date &lt;=  bih.due_date
+        THEN 'PAID_BY_DUE_DATE'
+        ELSE 'OVERDUE'
+      END AS PAID_STATUS
+    FROM bmtb_invoice_header bih
+    INNER JOIN amtb_account acct
+    ON bih.account_no = acct.account_no
+    LEFT JOIN amtb_account parent
+    ON acct.parent_no = parent.account_no
+    LEFT JOIN amtb_account grand
+    ON PARENT.parent_no = grand.account_no
+    LEFT JOIN amtb_account top
+    ON top.account_no = (
+        CASE
+          WHEN grand.account_no IS NOT NULL
+          THEN grand.account_no
+          WHEN parent.account_no IS NOT NULL
+          THEN parent.account_no
+          ELSE acct.account_no
+        END )
+    INNER JOIN fmtb_ar_cont_code_master ar
+    ON top.ar_control_code_no = ar.ar_control_code_no
+    INNER JOIN fmtb_entity_master entity
+    ON ar.entity_no =entity.entity_no
+    LEFT JOIN bmtb_bill_gen_req req
+    ON bih.req_no               = req.req_no
+	LEFT JOIN CLEAR_PAYMENT clear_payment
+    ON bih.invoice_header_no = clear_payment.invoice_header_no
+    WHERE (req.setup_no         !=4 or (req.setup_no=4 and req.regen_req_no is not null ))
+    AND req.status             in ('C', 'R')
+    AND bih.new_txn            !=0
+    AND bih.invoice_format NOT IN ('M', 'D')
+    AND bih.invoice_no         IS NOT NULL
+    AND (bih.invoice_date BETWEEN to_date(SUBSTR('${1. Month Start Date#date()#MMMYY:ALTERNATE_REQUIRED}', 0,7) || '-01', 'yyyy-mm-dd') AND last_day(to_date('${2. Month End Date#date()#MMMYY:ALTERNATE_REQUIRED}', 'yyyy-mm-dd')))
+    AND bih.due_date    IS NOT NULL
+    AND ('${4. Credit Term#choice#MASTER:CT}' IS NULL OR (bih.due_date - bih.invoice_date) = '${4. Credit Term#choice#MASTER:CT}')
+    AND ('${3. Entity#choice(1,2,3)#MASTER:EM}' IS NULL OR entity.ENTITY_NO = '${3. Entity#choice(1,2,3)#MASTER:EM}')
+  ),
+  INVOICE_COUNT_PAYMENT_DETAIL AS
+  (
+    SELECT invoice_month, setup_no,  credit_term, due_date, paid_status, count(invoice_header_no) as invoice_count
+    FROM INVOICE_PAYMENT_DETAIL payment_detail
+    GROUP BY invoice_month, setup_no, credit_term, due_date, paid_status
+  ),
+  ACCT_PAYMENT_DETAIL AS
+  (
+    SELECT DISTINCT cust_no, invoice_month, setup_no, due_date,
+    credit_term,
+    CASE WHEN paid_status = 'PAID_BY_DUE_DATE' AND cust_no NOT IN (SELECT cust_no FROM INVOICE_PAYMENT_DETAIL temp WHERE paid_status='OVERDUE' 
+    	and temp.invoice_month = payment_detail.invoice_month 
+    	and temp.setup_no = payment_detail.setup_no 
+    	and temp.credit_term = payment_detail.credit_term)
+    THEN 'PAID_BY_DUE_DATE'
+    ELSE 'OVERDUE'
+    END AS FINAL_PAID_STATUS
+    FROM INVOICE_PAYMENT_DETAIL payment_detail
+  ),
+  ACCT_COUNT_PAYMENT_DETAIL AS
+  (
+    SELECT invoice_month, setup_no, credit_term, due_date, final_paid_status, count(cust_no) AS acct_count
+    FROM ACCT_PAYMENT_DETAIL acct_payment_detail
+    GROUP BY invoice_month, setup_no, credit_term, due_date, final_paid_status
+  ),
+  JOIN_COUNT_PAYMENT_DETAIL AS 
+  ( 
+    SELECT 
+    CASE WHEN icpd.invoice_month IS NOT NULL THEN icpd.invoice_month ELSE acpd.invoice_month END AS invoice_month,
+    CASE WHEN icpd.setup_no IS NOT NULL THEN icpd.setup_no ELSE acpd.setup_no END AS setup_no,
+    CASE WHEN icpd.credit_term IS NOT NULL THEN icpd.credit_term ELSE acpd.credit_term END AS credit_term,
+    CASE WHEN icpd.paid_status IS NOT NULL THEN icpd.paid_status ELSE acpd.final_paid_status END AS paid_status,
+    CASE WHEN icpd.due_date IS NOT NULL THEN icpd.due_date ELSE acpd.due_date END AS due_date,
+   nvl(icpd.invoice_count, 0) as invoice_count, nvl(acpd.acct_count,0) as acct_count
+  FROM INVOICE_COUNT_PAYMENT_DETAIL icpd full outer JOIN ACCT_COUNT_PAYMENT_DETAIL acpd ON 
+  icpd.invoice_month = acpd.invoice_month AND
+  icpd.setup_no = acpd.setup_no AND
+  icpd.credit_term = acpd.credit_term AND
+  icpd.due_date = acpd.due_date AND
+  icpd.paid_status = acpd.final_paid_status
+  ),
+  PIVOT_COUNT_PAYMENT_DETAIL AS (
+    SELECT invoice_month,  setup_no, credit_term, due_date,
+    sum(CASE WHEN paid_status='PAID_BY_DUE_DATE' THEN invoice_count ELSE 0 END) AS EARLY_PAID_INVOICE_COUNT,
+    sum(CASE WHEN paid_status='PAID_BY_DUE_DATE' THEN acct_count ELSE 0 END) AS EARLY_PAID_ACCT_COUNT,
+    sum(CASE WHEN paid_status='OVERDUE' THEN invoice_count ELSE 0 END) AS OVERDUE_INVOICE_COUNT,
+    sum(CASE WHEN paid_status='OVERDUE' THEN acct_count ELSE 0 END) AS OVERDUE_ACCT_COUNT
+    FROM JOIN_COUNT_PAYMENT_DETAIL
+    group by invoice_month, setup_no, credit_term, due_date
+  )
+  SELECT invoice_month, main_payment_detail.setup_no, setup.NAME AS bill_gen, credit_term, due_date,
+  CASE WHEN SYSDATE &lt; DUE_DATE THEN 0 ELSE EARLY_PAID_INVOICE_COUNT END AS EARLY_PAID_INVOICE_COUNT,
+  CASE WHEN SYSDATE &lt; DUE_DATE THEN 0 ELSE EARLY_PAID_ACCT_COUNT END AS EARLY_PAID_ACCT_COUNT,
+  CASE WHEN SYSDATE &lt; DUE_DATE THEN 0 ELSE OVERDUE_INVOICE_COUNT END AS OVERDUE_INVOICE_COUNT,
+  CASE WHEN SYSDATE &lt; DUE_DATE THEN 0 ELSE OVERDUE_ACCT_COUNT END AS OVERDUE_ACCT_COUNT,
+  EARLY_PAID_ACCT_COUNT + OVERDUE_ACCT_COUNT AS TOTAL_ACCT_COUNT,
+  EARLY_PAID_INVOICE_COUNT + OVERDUE_INVOICE_COUNT AS TOTAL_INVOICE_COUNT,
+  CASE WHEN SYSDATE &lt; DUE_DATE THEN 'Y' ELSE 'N' END AS HIDE_FLAG
+  from PIVOT_COUNT_PAYMENT_DETAIL
+  main_payment_detail 
+  LEFT JOIN bmtb_bill_gen_setup setup ON main_payment_detail.setup_no = setup.setup_no</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

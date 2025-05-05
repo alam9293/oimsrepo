@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.cdgtaxi.ibs.common.model.PmtbCardNoSequence" table="PMTB_CARD_NO_SEQUENCE">
+        <id name="seqId" type="java.lang.Integer">
+            <column name="SEQ_ID" />
+            <generator class="sequence">
+            	<param name="sequence">PMSQ_CARD_NO_SEQUENCE</param>
+        	</generator>
+        </id>
+        <version name="version" column="VERSION"/>
+        <property name="numberOfDigit" type="java.lang.Integer">
+            <column name="NUMBER_OF_DIGIT" />
+        </property>
+        <property name="binRange" type="java.lang.String">
+            <column name="BIN_RANGE" />
+        </property>
+        <property name="subBinRange" type="java.lang.String">
+            <column name="SUB_BIN_RANGE" />
+        </property>
+        <property name="count" type="java.math.BigDecimal">
+            <column name="COUNT" />
+        </property>
+         
+    </class>
+</hibernate-mapping>

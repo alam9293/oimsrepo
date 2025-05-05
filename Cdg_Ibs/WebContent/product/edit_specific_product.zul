@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="editSpecificProductWindow" onCreate="editSpecificProductWindow.populateData()" border="normal" use="com.cdgtaxi.ibs.product.ui.EditSpecificProductWindow"
+	title="Edit Specific Product"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<zscript><![CDATA[
+		import com.cdgtaxi.ibs.web.constraint.GreaterEqualZeroCustomConstraint;
+		Constraint geZeroLe999999 = new GreaterEqualZeroCustomConstraint(true, 999999, true);
+        Constraint geZeroLe9999d99 = new GreaterEqualZeroCustomConstraint(true, 9999.99, true);
+    ]]>
+    
+    </zscript>
+	
+	<grid>
+		<columns sizable="false">
+			<column>Edit Product Details</column>
+		</columns>
+	</grid><grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row id="cardHolderNameRow" visible="false">
+				<label sclass="fieldLabel required" value="Card Holder Name" />
+				<capstextbox id="cardHolderName" width="98.75%" maxlength="80" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>
+				<label sclass="fieldLabel" value="Salutation"  />
+				<listbox width="100%" id="salutationList" rows="1" mold="select" onCreate="self.getItems().addAll(editSpecificProductWindow.getSalutations());self.setSelectedIndex(0)"/>
+			</row>
+			<row id="positionRow" visible="false">
+				<label sclass="fieldLabel" value="Position"  />
+				<capstextbox id="position"  width="98.75%" maxlength="80"/>
+				<label sclass="fieldLabel" value="Telephone No." />
+				<capstextbox id="telephone"  width="98.75%" maxlength="80" />
+			</row>
+			
+			<row id="mobileRow" visible="false">
+				<label sclass="fieldLabel" value="Mobile"  />
+				<capstextbox id="mobile"  width="98.75%" maxlength="80"/>
+			    <label sclass="fieldLabel" value="Email" />
+				<textbox id="email"  width="98.75%" maxlength="255" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.EmailConstraint')}"/>
+			</row>
+
+			<row id="nameOnCardRow" spans="1,3" visible="false">
+				<label sclass="fieldLabel required" id="NameOnCardLabel" value="Name On Card"/>
+				<capstextbox id="nameOnCard" width="98.75%" maxlength="80"/>
+				<label/>
+				<label/>
+			</row>
+			
+			<row id="coporateCheckRow" visible="true">
+				<label sclass="fieldLabel" value="Corporate Individual" />
+				<checkbox id="coporateCheckBox" onCheck="editSpecificProductWindow.checkCorporate()"/>
+				<label/>
+				<label/>
+			</row>
+			
+			<row visible="true">
+				<label sclass="fieldLabel" value="SMS Expiry Indicatory"  />
+				<listbox width="100%" id="smsExpiryFlag" rows="1" mold="select" onCreate="self.getItems().addAll(editSpecificProductWindow.getSMSFlagList())"/>
+				<label/>
+				<label/>
+			</row>
+			<row visible="true">
+				<label sclass="fieldLabel" value="SMS Top Up Indicatory"  />
+				<listbox width="100%" id="smsTopUpFlag" rows="1" mold="select" onCreate="self.getItems().addAll(editSpecificProductWindow.getSMSFlagList())"/>
+				<label/>
+				<label/>
+			</row>
+			<row id="employeeIdRow" visible="false">
+				<label sclass="fieldLabel" id="EmployeeIdLabel" value="Employee ID"/>
+				<capstextbox id="employeeId" width="98.75%" maxlength="80"/>
+				<label/>
+				<label/>
+			</row>
+			<row id="offlineCountRow" visible="false">
+				<label sclass="fieldLabel required" value="Offline Count"  />
+				<intbox id="offlineCount" format="#,##0" width="98.75%" constraint="${geZeroLe999999}" />
+				<label/>
+				<label/>
+			</row>
+			<row id="offlineAmountAccumulativeRow" visible="false">
+				<label sclass="fieldLabel required" value="Offline Amount Limit (Accumulative)" />
+				<decimalbox id="offlineAmountAccumulative" width="98.75%" format="#######,##0.00" constraint="${geZeroLe9999d99}" maxlength="10"/>
+				<label/>
+				<label/>
+			</row>
+			<row id="offlineAmountPerTxnRow" visible="false">
+				<label sclass="fieldLabel required" value="Offline Amount Limit (Per Txn) " />
+				<decimalbox id="offlineAmountPerTxn" width="98.75%" format="#######,##0.00" constraint="${geZeroLe9999d99}" maxlength="10"/>
+				<label/>
+				<label/>
+			</row>
+			<row id="embossNameRow" visible="false">
+				<label sclass="fieldLabel" value="Emboss Name On Card"  />
+				<checkbox id="embossNameOnCard"/>
+				<label/>
+				<label/>
+			</row>
+		</rows>
+	</grid><grid>
+		<rows><row spans="4">
+			<hbox>
+				<button id="save" label="Save" onClick="editSpecificProductWindow.save()"/>
+				<button label="Back" onClick="editSpecificProductWindow.cancel()"/>
+			</hbox>
+		</row></rows>
+	</grid>   	
+</window>

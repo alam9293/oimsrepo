@@ -1,0 +1,25 @@
+
+1. Please append the guava-jdk5-17.0.jar text into all bat file below:
+
+	a) 	adhoc_billGen.bat
+	b)	draft_billGen.bat
+	c) 	enquireInvoice.bat
+	d)	entity_billGen.bat
+	e)	generatePayment.bat
+	f)	generateTransaction.bat
+	g)	govtEInvoice.bat
+	h) 	HEADmanual_draft_EInvoice.bat
+	i)	manual_EInvoice.bat
+	j)	pdfGen.bat
+	k)	printing.bat
+
+	Example:
+
+		SET MODEL_REQUIRED=./lib/ibs-model.jar;./lib/spring-security-core-2.0.4.jar;
+		-->
+		
+		SET MODEL_REQUIRED=./lib/ibs-model.jar;./lib/spring-security-core-2.0.4.jar;./lib/guava-jdk5-17.0.jar;
+
+2. Send us the modified bat file for us to verify
+
+3. This is very important as failure to do so will cause all invoices need to be regenerate during bill gen.

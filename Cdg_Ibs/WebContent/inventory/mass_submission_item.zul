@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="massSubmissionWindow" border="normal" use="com.cdgtaxi.ibs.inventory.ui.MassSubmissionWindow"
+	title=""
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	width="800px">
+	
+  <grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="75%"/>
+		</columns>
+ 		<rows>
+      <row id="row4" visible="false">
+        <label sclass="fieldLabel required" value="New Serial No."/>
+        <decimalbox id="serialNoDMB"
+          format="0"
+          maxlength="25"
+          width="98.75%"
+          onChange="massSubmissionWindow.updateItemTypeLabel(self.getRawText());"
+        />
+      </row>
+      <row id="row5" visible="false">
+        <label sclass="fieldLabel" value="Item Type"/>
+        <label id="itemTypeLabel"/>
+      </row>
+      <row id="row6" visible="false">
+        <label sclass="fieldLabel" value="Account No"/>
+        <label id="accountNoLabel"/>
+      </row>
+      <row id="row7" visible="false">
+        <label sclass="fieldLabel" value="Account Name"/>
+        <label id="accountNameLabel"/>
+      </row>
+      <row id="row8" visible="false">
+        <label sclass="fieldLabel required" value="New Expiry Date"/>
+        <datebox id="expiryDateDB" 
+   					width="20%" 
+   					format="dd/MM/yyyy"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredEqualOrLaterThanCurrentDateConstraint')}"/>
+      </row>
+		<row>
+			<label sclass="fieldLabel required" value="Reason"/>
+			<listbox id="reasonLB" 
+	          mold="select"
+	          multiple="false"
+	    	/>
+		</row>
+		<row>
+			<label sclass="fieldLabel" value="Remarks"/>
+			<capstextbox id="remarksTextBox"
+      rows="4"
+      width="99%"/>
+		</row>
+ 		</rows>
+  </grid>
+  <h:br/>
+  <!--  The below grid is for Labeling Purpose  -->
+  <grid>
+    <columns>
+      <column>Result</column>
+    </columns>
+  </grid>
+  <listbox id="resultLB" fixedLayout="true">
+    <listhead sizable="true">
+      <listheader label="Account No"        sort="auto" width="80px"/>
+      <listheader label="Account Name"      sort="auto" width="25%"/>
+      <listheader label="Item Type"         sort="auto"/>
+      <listheader label="Serial No."        sort="auto" width="80px"/>
+      <listheader label="Expiry Date"       sort="auto"/>
+      <listheader label="Redemption Point"  sort="auto"/>
+      <listheader label="Redemption Date"   sort="auto"/>
+      <listheader label="Cashier ID"        sort="auto"/>
+      <listheader label="Status"            sort="auto"/>
+    </listhead>
+  </listbox>
+ 	<h:br/>
+	<button label="Submit" onClick="massSubmissionWindow.submit()"/>
+	<button label="Cancel" onClick="massSubmissionWindow.cancel()"/>
+</window>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="birthdayAnnouncement">
+	<return-scalar column="ACCOUNT_NO" 			        type="string"/>
+	<return-scalar column="ACCOUNT_NAME" 			    type="string"/>
+	<return-scalar column="SUB_ACCOUNT_NAME"		    type="string"/>
+	<return-scalar column="SALUTATION" 			   	 	type="string"/>
+	<return-scalar column="NAME_ON_CARD"	 		    type="string"/>
+	<return-scalar column="DOB" 			      		type="string"/>
+	<return-scalar column="EMAIL" 			      		type="string"/>
+	<return-scalar column="MOBILE_NO" 				    type="string"/>
+	<return-scalar column="BLOCK_NO" 				    type="string"/>
+	<return-scalar column="STREET" 					    type="string"/>
+	<return-scalar column="UNIT_NO" 				    type="string"/>
+	<return-scalar column="BUILDING_NAME" 				type="string"/>
+	<return-scalar column="COUNTRY" 				    type="string"/>
+	<return-scalar column="POSTAL_CODE" 				type="string"/>
+	<![CDATA[
+select 
+      case 
+     	    when parentAmtbAccount.cust_no is not null then parentAmtbAccount.cust_no
+      		when amtbAccount.cust_no is not null then amtbAccount.cust_no
+      end as ACCOUNT_NO,
+            case
+     	    when parentAmtbAccount.cust_no is not null then parentAmtbAccount.account_name
+      		when amtbAccount.cust_no is not null then amtbAccount.account_name
+      end as ACCOUNT_NAME,
+      		case 
+      		when amtbAccount.cust_no is null then amtbAccount.account_name
+      		when amtbAccount.cust_no is not null then '-'
+      end as SUB_ACCOUNT_NAME,
+      mstbMaster.MASTER_VALUE as SALUTATION,
+      amtbAccount.name_on_card as NAME_ON_CARD,
+      to_char(personalDetail.BIRTH_DT, 'dd/mm/yyyy') as DOB,
+      contactPerson.MAIN_CONTACT_EMAIL as EMAIL,
+      contactPerson.MAIN_CONTACT_MOBILE as MOBILE_NO,
+      personalDetail.ADDRESS_BLOCK as BLOCK_NO,
+      personalDetail.ADDRESS_STREET as STREET,
+      personalDetail.ADDRESS_UNIT as UNIT_NO,
+      personalDetail.ADDRESS_BUILDING as BUILDING_NAME,
+      mstbMaster_CTRY.MASTER_VALUE as COUNTRY,
+      personalDetail.ADDRESS_POSTAL as POSTAL_CODE
+    from AMTB_PERSONAL_DETAIL personalDetail
+LEFT OUTER JOIN AMTB_ACCOUNT amtbAccount on amtbAccount.account_no = personalDetail.account_no
+LEFT OUTER join AMTB_ACCOUNT parentAmtbAccount on amtbAccount.PARENT_NO = parentAmtbAccount.ACCOUNT_NO
+LEFT OUTER join AMTB_ACCT_MAIN_CONTACT mainContact on amtbAccount.ACCOUNT_NO = mainContact.ACCOUNT_NO and mainContact.MAIN_CONTACT_TYPE = 'B'
+LEFT OUTER join AMTB_CONTACT_PERSON contactPerson on mainContact.CONTACT_PERSON_NO = contactPerson.CONTACT_PERSON_NO
+LEFT JOIN (
+		SELECT DISTINCT account_no, 
+		first_value(ACCT_STATUS) OVER (PARTITION BY account_no ORDER BY EFFECTIVE_DT DESC) AS account_status
+	FROM AMTB_ACCT_STATUS) acct_status_tbl ON acct_status_tbl.account_no = (
+	CASE
+			WHEN parentAmtbAccount.account_no IS NOT NULL THEN parentAmtbAccount.account_no
+			ELSE amtbAccount.account_no END
+	)
+left outer join (select master_value, master_no from MSTB_MASTER_TABLE where master_type = 'SAL') mstbMaster on contactPerson.MAIN_CONTACT_SAL = mstbMaster.MASTER_NO
+left outer join (select master_value, master_no from MSTB_MASTER_TABLE where master_type = 'CTRY') mstbMaster_CTRY on personalDetail.ADDRESS_COUNTRY = mstbMaster_CTRY.MASTER_NO
+where personalDetail.BIRTH_DT is not null
+and (:birthdayDateFrom is null OR to_char(personalDetail.BIRTH_DT,'mmdd') between to_char(:birthdayDateFrom) and to_char(:birthdayDateTo))
+and (:joinDateFrom is null OR amtbAccount.created_dt between to_date(:joinDateFrom, 'yyyy-mm-dd') and to_date(:joinDateTo, 'yyyy-mm-dd hh24:mi:ss'))
+and (:accountStatus IS NULL OR acct_status_tbl.account_status LIKE :accountStatus)
+	]]>
+</sql-query>
+
+</hibernate-mapping>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <!-- declare properties files -->
+    <util:properties id="elixirReportProperties" location="classpath:elixir_report.properties"/>
+    <util:properties id="adProperties" location="classpath:ADService.properties"/>
+	<util:properties id="tripsProperties" location="classpath:trips.properties"/>
+	<util:properties id="webserviceProperties" location="classpath:webservice.properties"/>
+	<util:properties id="pdfGenProperties" location="classpath:pdfgen.properties"/>
+	<util:properties id="printingProperties" location="classpath:printing.properties"/>
+	<util:properties id="giroConfigProperties" location="classpath:giro_config.properties"/>
+	<util:properties id="recurringConfigProperties" location="classpath:recurring.properties"/>
+	<util:properties id="aydenSettlementProperties" location="classpath:ayden_settlement.properties"/>
+	<util:properties id="emailProperties" location="classpath:email.properties"/>
+
+	<!-- JNDI DataSource for J2EE environments -->
+    <!--jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/ibs"/-->
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass"><value>oracle.jdbc.driver.OracleDriver</value></property>
+        <property name="jdbcUrl"><value>jdbc:oracle:thin:@//localhost:1521/orcl</value></property>
+<!--        <property name="jdbcUrl"><value>jdbc:oracle:thin:@//SengTat-PC:1521/wizvision</value></property>-->
+<!--        <property name="jdbcUrl"><value>jdbc:oracle:thin:@//10.0.0.60:1521/wizvision</value></property>-->
+        <!--property name="user"><value>IBS_USR_P2</value></property-->
+        <!--property name="password"><value>ibsusrp2</value></property-->
+        <property name="user"><value>CDG_IBS</value></property>
+        <property name="password"><value>CDG_IBS@SINGAPORE</value></property>
+<!--		<property name="jdbcUrl"><value>jdbc:oracle:thin:@//192.168.32.12:1521/ibsuat.world</value></property>-->
+<!--		<property name="jdbcUrl"><value>jdbc:oracle:thin:@//192.168.32.12:1521/ibsdev.world</value></property> -->
+<!--        <property name="user"><value>ibssys</value></property> -->
+<!--        <property name="password"><value>ibssys34</value></property>  -->
+
+		<property name="acquireIncrement"><value>2</value></property>
+		<property name="minPoolSize"><value>1</value></property> 
+		<property name="maxPoolSize"><value>10</value></property> 
+		<property name="maxStatements"><value>0</value></property>
+		<property name="unreturnedConnectionTimeout"><value>300000</value></property>
+	</bean>
+</beans>

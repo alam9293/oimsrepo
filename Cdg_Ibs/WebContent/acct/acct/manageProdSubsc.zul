@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="manageProdSubsc" border="normal" use="com.cdgtaxi.ibs.acct.ui.ManageProdSubscWindow"
+	onCreate="manageProdSubsc.init()"
+	title=""
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Account Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row>
+			<label sclass="fieldLabel" value="Account No"/>
+			<label id="custNo"/>
+			<label sclass="fieldLabel" value="Account Name"/>
+			<label id="acctName"/>
+		</row><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Name on Card"/>
+			<label id="nameOnCard"/>
+			<label/>
+		</row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Products Subscription"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%">
+			<column width="auto" label="Product Type"/>
+			<column width="auto" label="Product Discount"/>
+			<column width="auto" label="Loyalty Plan"/>
+			<column width="auto" label="Subscription Plan"/>
+			<column width="auto" label="Issuance Plan"/>
+			<column width="3%"><checkbox onCheck="manageProdSubsc.checkAll(self.isChecked())"/></column>
+		</columns>
+		<rows id="prodSubscriptions">
+			<row spans="5"><hbox>
+				<button label="Subscribe" onClick="manageProdSubsc.subscribe()"/>
+				<button label="Unsubscribe" onClick="manageProdSubsc.unsubscribe()"/>
+				<button label="Back" onClick="manageProdSubsc.back()"/>
+			</hbox></row>
+		</rows>
+	</grid>
+</window>

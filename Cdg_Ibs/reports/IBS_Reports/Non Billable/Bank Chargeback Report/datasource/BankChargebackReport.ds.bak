@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="BankChargebackReport" type="JDBC" path="/IBS_Reports/Non Billable/Bank Chargeback Report/datasource/BankChargebackReport.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="CARD_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BATCH_NO" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="BATCH_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="UPDATED_DATE" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TRIP_START_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TAXI_NO" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="JOB_NO" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="POLICY_NUMBER" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="POLICY_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREDIT_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="CHARGEBACK_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FARE_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PREMIUM_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PREMIUM_GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MDR" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NET_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REASON" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="OFFLINE_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select txn.CARD_NO, batch.BATCH_NO, batch.SETTLEMENT_DATE as batch_date, batch.UPDATED_DT as updated_date, txn.TRIP_START_DT as TRIP_START_DT, txn.TAXI_NO, txn.JOB_NO, txn.policy_number,
+     case when txn.policy_status = 'A' then 'Active' when txn.policy_status = 'C' then 'System cancel' when txn.policy_status = 'M' then 'Manual Cancel'  else '-' end as POLICY_STATUS,
+     payment.CREDIT_DATE, trunc(txn.CHARGEBACK_REFUND_DATE, 'DDD') as CHARGEBACK_DATE, txn.CHARGEBACK_REFUND_FARE_AMT as FARE_AMT, txn.CHARGEBACK_REFUND_ADMIN_FEE as ADMIN_FEE,
+    txn.CHARGEBACK_REFUND_GST as GST,
+nvl(txn.PREMIUM_AMOUNT,0) as PREMIUM_AMOUNT,
+nvl(txn.PREMIUM_GST,0) as PREMIUM_GST,
+ txn.CHARGEBACK_REFUND_FARE_AMT + txn.CHARGEBACK_REFUND_ADMIN_FEE + txn.CHARGEBACK_REFUND_GST + txn.PREMIUM_AMOUNT + txn.PREMIUM_GST as TOTAL, round((txn.CHARGEBACK_REFUND_FARE_AMT + txn.CHARGEBACK_REFUND_ADMIN_FEE + txn.CHARGEBACK_REFUND_GST + nvl(txn.PREMIUM_AMOUNT,0) + nvl(txn.PREMIUM_GST,0)) * payment.MDR_PERCENTAGE * 0.01, 2) as MDR, (txn.CHARGEBACK_REFUND_FARE_AMT + txn.CHARGEBACK_REFUND_ADMIN_FEE + txn.CHARGEBACK_REFUND_GST + nvl(txn.PREMIUM_AMOUNT,0) + nvl(txn.PREMIUM_GST,0)) - round((txn.CHARGEBACK_REFUND_FARE_AMT + txn.CHARGEBACK_REFUND_ADMIN_FEE + txn.CHARGEBACK_REFUND_GST + nvl(txn.PREMIUM_AMOUNT,0) + nvl(txn.PREMIUM_GST,0)) * payment.MDR_PERCENTAGE * 0.01, 2) as net_amt,
+    type.MASTER_VALUE as type, reason.MASTER_VALUE as reason, acquirer.NAME, txn.OFFLINE_FLAG
+    from TMTB_NON_BILLABLE_TXN txn
+    inner join TMTB_NON_BILLABLE_BATCH batch on txn.BATCH_ID = batch.BATCH_ID
+    inner join BMTB_BANK_PAYMENT_DETAIL detail on batch.BATCH_ID = detail.BATCH_ID
+    inner join BMTB_BANK_PAYMENT payment on detail.PAYMENT_NO = payment.PAYMENT_NO
+    inner join MSTB_ACQUIRER acquirer on acquirer.ACQUIRER_NO = batch.ACQUIRER_NO
+    inner join FMTB_BANK_CODE bank on bank.BANK_CODE_NO = payment.BANK_IN
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = bank.ENTITY_NO
+    inner join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    inner join MSTB_MASTER_TABLE type on type.MASTER_NO = txn.CHARGEBACK_REFUND_TYPE
+    inner join MSTB_MASTER_TABLE reason on reason.MASTER_NO = txn.CHARGEBACK_REFUND_REASON
+    where (('${1. Chargeback Start Date#date#ALTERNATE_REQUIRED}' is null and '${2. Chargeback End Date#date}' is null)or(txn.CHARGEBACK_REFUND_DATE between case when '${1. Chargeback Start Date#date#ALTERNATE_REQUIRED}' is null then to_date('${2. Chargeback End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Chargeback Start Date#date#ALTERNATE_REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Chargeback End Date#date}' is null then to_date('${1. Chargeback Start Date#date#ALTERNATE_REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Chargeback End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and (('${3. Batch Start Date#date#ALTERNATE_REQUIRED}' is null and '${4. Batch End Date#date}' is null)or(batch.SETTLEMENT_DATE between case when '${3. Batch Start Date#date#ALTERNATE_REQUIRED}' is null then to_date('${4. Batch End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${3. Batch Start Date#date#ALTERNATE_REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${4. Batch End Date#date}' is null then to_date('${3. Batch Start Date#date#ALTERNATE_REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${4. Batch End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and ('${5. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.ENTITY_NO = '${5. Entity#choice(1,2,3)#MASTER:EM}')
+    and ('${6. Company Code#choice(CCPL,CTPL)#CC:SPR}' is null or provider.MASTER_CODE = '${6. Company Code#choice(CCPL,CTPL)#CC:SPR}')
+    and ('${7. Acquirer#choice(1,2,3,4,5)#MASTER:ACQ}' is null or acquirer.ACQUIRER_NO = '${7. Acquirer#choice(1,2,3,4,5)#MASTER:ACQ}')
+	and (txn.MATCHING_STATUS is NULL or txn.MATCHING_STATUS != 'T')
+	order by acquirer.NAME, txn.CHARGEBACK_REFUND_DATE, case when '${8. Sort By#choice(CN, TD)#NC:BCBR_ORDER:REQUIRED}' = 'CN' then txn.CARD_NO else null end, case when '${8. Sort By#choice(CN, TD)#NC:BCBR_ORDER:REQUIRED}' = 'TD' then txn.trip_start_dt else null end</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

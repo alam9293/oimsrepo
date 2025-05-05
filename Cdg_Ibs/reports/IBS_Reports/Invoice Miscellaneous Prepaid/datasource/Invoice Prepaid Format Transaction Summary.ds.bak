@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Invoice Prepaid Format Transaction Summary" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="INVOICE_SUMMARY_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_HEADER_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PRODUCT_TYPE_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SUMMARY_TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SUMMARY_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DISPLAY_PRIORITY_1" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DISPLAY_PRIORITY_2" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_PAYMENT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_TXN" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="GST" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TOTAL_NEW" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="UNIT_PRICE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="QUANTITY" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREATED_BY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="UPDATED_BY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="UPDATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>Select&#xD;
+  bis.*&#xD;
+From ${invoiceSummaryTbl} bis&#xD;
+inner join ${invoiceHeaderTbl} bih on bis.invoice_header_no = bih.invoice_header_no&#xD;
+where bih.invoice_header_no = ${invoiceHeaderNo} 
+order by bis.summary_name</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

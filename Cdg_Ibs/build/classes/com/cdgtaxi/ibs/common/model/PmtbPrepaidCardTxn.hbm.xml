@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 26, 2014 12:20:48 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.cdgtaxi.ibs.common.model.PmtbPrepaidCardTxn" table="PMTB_PREPAID_CARD_TXN">
+        <id name="txnNo" type="java.math.BigDecimal">
+            <column name="TXN_NO" />
+            <generator class="com.cdgtaxi.ibs.common.generator.BigDecimalSequenceGenerator">
+                 <param name="sequence">PMSQ_PREPAID_CARD_TXN</param>
+        	</generator>
+        </id>
+        <property name="amount" type="java.math.BigDecimal">
+            <column name="AMOUNT" />
+        </property>
+        <property name="gst" type="java.math.BigDecimal">
+            <column name="GST" />
+        </property>
+        <property name="txnType" type="java.lang.String">
+            <column name="TXN_TYPE" />
+        </property>
+        <property name="applyCardValue" type="java.math.BigDecimal">
+            <column name="APPLY_CARD_VALUE" />
+        </property>
+         <property name="applyCashplus" type="java.math.BigDecimal">
+            <column name="APPLY_CASHPLUS" />
+        </property>
+        <many-to-one name="tmtbAcquireTxn" class="com.cdgtaxi.ibs.common.model.TmtbAcquireTxn" fetch="join">
+            <column name="ACQUIRE_TXN_NO" />
+        </many-to-one>
+        <many-to-one name="pmtbProduct" class="com.cdgtaxi.ibs.common.model.PmtbProduct" fetch="join">
+            <column name="PMTB_PRODUCT" />
+        </many-to-one>
+        <many-to-one name="pmtbPrepaidReq" class="com.cdgtaxi.ibs.common.model.PmtbPrepaidReq" fetch="join">
+            <column name="PMTB_PREPAID_REQ" />
+        </many-to-one>
+        <many-to-one name="fmtbTransactionCode" class="com.cdgtaxi.ibs.common.model.FmtbTransactionCode" fetch="join">
+            <column name="FMTB_TRANSACTION_CODE" />
+        </many-to-one>
+        <property name="remarks" type="java.lang.String">
+            <column name="REMARKS" />
+        </property>
+        <property name="txnDate" type="java.util.Date">
+            <column name="TXN_DATE" />
+        </property>
+        <property name="version" type="java.lang.Integer">
+            <column name="VERSION" />
+        </property>
+        <property name="glableFlag" type="java.lang.String">
+            <column name="GLABLE_FLAG" />
+        </property>
+        <set
+        	name="fmtbGlLogDetails"
+        	lazy="true"
+        	inverse="true"
+			cascade="all"
+   		>
+	        <key>
+	            <column name="PREPAID_CARD_TXN_NO" />
+	        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.FmtbGlLogDetail"
+        />
+   	 	</set>
+        
+    </class>
+</hibernate-mapping>

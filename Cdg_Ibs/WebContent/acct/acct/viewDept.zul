@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="viewDeptWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ViewDeptWindow"
+	onCreate="viewDeptWindow.init()"
+	title=""
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Account Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row>
+			<label sclass="fieldLabel" value="Account No"/>
+			<label id="custNo"/>
+			<label sclass="fieldLabel" value="Account Status"/>
+			<label id="acctStatus"/>
+		</row><row>
+			<label sclass="fieldLabel" value="Account Type"/>
+			<label id="acctType"/>
+			<label sclass="fieldLabel" value="Date Created"/>
+			<label id="createdDate"/>
+		</row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Products Subscription"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%">
+			<column width="21%" label="Product Type"/>
+			<column width="17.25%" label="Product Discount"/>
+			<column width="17.25%" label="Loyalty Plan"/>
+			<column width="17.25%" label="Subscription Plan"/>
+			<column width="17.25%" label="Issuance Plan"/>
+			<column width="10%" label="Subscribe"/>
+		</columns>
+		<rows id="prodSubscriptions"/>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Department Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Division"/>
+			<label id="division"/>
+			<label/>
+		</row><row>
+			<label sclass="fieldLabel" value="Department Code"/>
+			<label id="code"/>
+			<label sclass="fieldLabel" value="Department Status"/>
+			<hbox valign="center">
+				<vbox>
+					<label id="deptStatus"/>
+				</vbox><vbox>
+					<button id="viewStatusHistBtn" label="View History" onClick="viewDeptWindow.viewStatusHistory()"/>
+				</vbox>
+			</hbox>
+		</row><row>
+			<label sclass="fieldLabel" value="Department Name"/>
+			<label id="acctName"/>
+			<label sclass="fieldLabel" value="Name on card"/>
+			<label id="nameOnCard"/>
+		</row><row>
+			<label sclass="fieldLabel" value="Credit Limit($)"/>
+			<hbox valign="center">
+				<vbox>
+					<label id="creditLimit"/>
+				</vbox><vbox>
+					<button id="viewCreditLimitHistBtn" label="View History" onClick="viewDeptWindow.viewCreditLimitHistory()"/>
+				</vbox>
+			</hbox>
+			<label sclass="fieldLabel" value="Credit Balance($)"/>
+			<label id="creditBalance"/>
+		</row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Invoice"/></column>
+		</columns>
+	</grid>
+	<grid>
+	  <columns sizable="false" width="100%" visible="false">
+	    <column width="25%" />
+	    <column width="25%" />
+	    <column width="25%" />
+	    <column width="25%" />
+	  </columns>
+	  <rows>
+	    <row>
+	      <label sclass="fieldLabel" value="Charge To" />
+	      <label id="chargeTo" />
+	      <label sclass="fieldLabel" value="Invoice Format" />
+	      <label id="invoiceFormat" />
+	    </row>
+	    <row>
+	      <label sclass="fieldLabel" value="Invoice Sorting" />
+	      <label id="invoiceSorting" />
+	      <label sclass="fieldLabel" value="Print Tax Invoice only" />
+     	  <label id="printTaxInvOnly" />
+	    </row>
+      <row>
+        <label sclass="fieldLabel" value="Government eInvoice" />
+        <label id="govtEInvLabel" />
+        <label sclass="fieldLabel" value="Business Unit" />
+        <label id="businessUnitLabel" />
+      </row>
+      <row>
+        <label sclass="fieldLabel" value="Overdue Reminder" />
+        <label id="overdueReminder" />
+        <label sclass="fieldLabel" value="Reminder Email" />
+        <label id="reminderEmail" />
+      </row>
+      <row>
+        <label sclass="fieldLabel" value="PUBBS Billing" />
+        <label id="pubbs" />
+        <label sclass="fieldLabel" value="FI @ Govt" />
+        <label id="fiFlag" />
+       </row>
+       <row>
+       	<label sclass="fieldLabel" value="PDF eInvoice Email Flag" />
+  		<label id="eInvoiceEmailFlag" />
+		<label sclass="fieldLabel" value="PDF eInvoice Email"/>
+		<label id="eInvoiceEmail"/>
+	   </row>
+	   <row>
+			<label sclass="fieldLabel" value="Cabcharge Recurring Indicator"/>
+			<label id="recurring"/>
+			<label sclass="fieldLabel" value="Cabcharge Recurring Charging Date"/>
+			<div>
+			<label id="recurringChargeDay" value="-"/> of the month
+			</div>
+		</row>
+	  </rows>
+	</grid>
+	<h:br />
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Contact Information"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+ 		<rows><row>
+			<label sclass="fieldLabel" value="Billing Contact"/>
+			<label id="billingContact" value="-"/>
+			<label sclass="fieldLabel" value="Shipping Contact"/>
+			<label id="shippingContact" value="-"/>
+		</row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Last Updated"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row>
+			<label sclass="fieldLabel" value="By"/>
+			<label id="lastUpdatedBy" value="-"/>
+			<label sclass="fieldLabel" value="Date"/>
+			<label id="lastUpdatedDate" value="-"/>
+		</row><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Time"/>
+			<label id="lastUpdatedTime" value="-"/>
+			<label value=""/>
+		</row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Account Management"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row spans="4">
+			<hbox>
+				<button label="Edit" id="editBtn" onClick="viewDeptWindow.edit()"/>
+				<button label="Credit Review" id="creditReviewBtn" onClick="viewDeptWindow.creditReview()"/>
+				<button label="Suspend" id="suspendBtn" onClick="viewDeptWindow.suspend()"/>
+				<button label="Re-Activate" id="reactivateBtn" onClick="viewDeptWindow.reactivate()"/>
+				<button label="Terminate" id="terminateBtn" onClick="viewDeptWindow.terminate()"/>
+				<button label="Back" onClick="viewDeptWindow.back()"/>
+				<button label="Overdue Reminder" id="overdueReminderBtn" onClick="viewDeptWindow.overdueReminder()"/>
+				<button label="eInvoice Email" id="eInvoiceEmailBtn" onClick="viewDeptWindow.eInvoiceEmail()"/>
+			</hbox>
+		</row></rows>
+	</grid>
+</window>

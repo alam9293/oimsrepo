@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="IBS Invoice Pers Format Header" type="JDBC" path="/IBS_Reports/Invoice Personal Format/datasource/IBS Invoice Pers Format Header.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="INVOICE DETAIL LABEL" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CUTOFF_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CUSTOMER_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 3" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 4" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_POSTAL" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_HEADER_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REQ_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DEBT_TO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_FORMAT" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DUE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STATEMENT_PERIOD_FROM_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STATEMENT_PERIOD_TO_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PREV_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_PAYMENT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_TXN" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_30_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_60_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_90_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="MORE_90_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REDEEMED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NEW_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_DEPOSIT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_EXCESS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OVERDUE_INVOICE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TXN_CUTOFF_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_INTEREST" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="EARLY_PAYMENT_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="OUTSTANDING_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TOTAL_FARE_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TOTAL_NO_OF_TRIP" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REMARKS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FILE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="UPDATED_BY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="UPDATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="VERSION" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BILLED_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LAST_LATE_PAYMENT_CHARGED_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREATED_BY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="AWARDED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EXPIRED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADJUSTED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FORFEITED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_BANK_ACCT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_BANK_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_DAY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REWARDS_EXPIRY_DATE" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TO_EXPIRE_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TD_ACCOUNT_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TD_DEBT_TO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PREPAID_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DELIVERY_CHARGE_TXN_CODE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CANCEL_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_TYPE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="IMTB_ISSUE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CURRENT_TAX_RATE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 3" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 4" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_GST_REGISTRATION_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_COMPANY_REGISTRATION_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENQUIRES_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PAYABLE_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="CUSTOMER_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LOGO" type="ByteArray">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BUFFERED_DUE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CUTOFF_CLAUSE2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISPLAY_REWARDS_GROUP" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REWARDS_EARNED_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REWARDS_EXPIRED_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REWARDS_ADJUSTED_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REWARDS_FORFEITED_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REWARDS_EXPIRY_REMINDER_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISPLAY_OVERDUE_CLAUSE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>Select 
+  'TRANSACTION DETAIL REPORT - INVOICE NO ' || invoice_no "INVOICE DETAIL LABEL",
+  'This statement of account / tax invoice contains payment and charges received by ' || to_char(bih.INVOICE_DATE,'dd/mm/yyyy') || '.' CUTOFF_CLAUSE,
+  acct.account_name customer_name,
+  case when acp.address_block is not null then acp.address_block || ' ' || acp.address_street
+  else acp.address_street 
+	end "ADDRESS 1",
+  case
+	    when acp.address_building is not null AND acp.address_unit is not null then acp.address_unit || ' ' || acp.address_building
+	    when acp.address_unit is not null then acp.address_unit
+      when acp.address_building is not null then acp.address_building
+  end "ADDRESS 2",
+  acp.address_area "ADDRESS 3",
+  case
+    when country.master_value = 'SINGAPORE' then country.master_value || ' ' || acp.address_postal
+    else country.master_value || ' ' || acp.address_state || ' ' || acp.address_city || ' ' ||acp.address_postal
+  end "ADDRESS 4",
+  address_postal,
+  bih.*,
+  case when acct_fem.ENTITY_BLOCK is not null then acct_fem.ENTITY_BLOCK || ' ' || acct_fem.ENTITY_STREET
+  else acct_fem.ENTITY_STREET
+  end "ENTITY ADDRESS 1",
+  case 
+    when acct_fem.ENTITY_BUILDING is not null AND acct_fem.ENTITY_UNIT is not null then acct_fem.ENTITY_UNIT || ' ' || acct_fem.ENTITY_BUILDING
+    when acct_fem.ENTITY_UNIT is not null then acct_fem.ENTITY_UNIT
+    when acct_fem.ENTITY_BUILDING is not null then acct_fem.ENTITY_BUILDING
+  end "ENTITY ADDRESS 2",
+  acct_fem.ENTITY_AREA "ENTITY ADDRESS 3",
+  case
+    when acct_fem_country.master_value = 'SINGAPORE' then acct_fem_country.master_value || ' ' || acct_fem.entity_postal
+    else acct_fem_country.master_value || ' ' || acct_fem.entity_state || ' ' || acct_fem.entity_city || ' ' ||acct_fem.entity_postal
+  end "ENTITY ADDRESS 4",
+  'GST REGISTRATION NO ' || acct_fem.ENTITY_GST_NO ENTITY_GST_REGISTRATION_NO,
+  'COMPANY REGISTRATION NO ' || acct_fem.ENTITY_RCB_NO ENTITY_COMPANY_REGISTRATION_NO,
+  'For billing enquiries, please call ' || acct_fem.ENTITY_TEL || ' or email ' || acct_fem.ENTITY_EMAIL ENQUIRES_CLAUSE,
+  case when bih.GIRO_DAY is null then 'Please make crossed cheque payable to: ' || acct_fem.ENTITY_NAME || ' by ' || to_char((bih.DUE_DATE - ${bufferDays}),'dd/mm/yyyy') else null end PAYABLE_CLAUSE,
+  'Please remit payment by due date. Interest of ' || trim(to_char(bih.LATE_PAYMENT_INTEREST,'990.0')) || '% will be levied on overdue accounts' LATE_PAYMENT_CLAUSE,
+  acct_fem.ENTITY_NAME ENTITY_NAME,
+  acct.cust_no CUSTOMER_ID,
+  acct_fem.LOGO,
+  bih.DUE_DATE - ${bufferDays} BUFFERED_DUE_DATE,
+'GST prevailing standard rate @ ' || to_char(bih.CURRENT_TAX_RATE) || '%' GST_CLAUSE,
+  'Transactions after ' || to_char(bih.TXN_CUTOFF_DATE, 'DD/MM/YYYY') || ' will not be shown on this statement.' CUTOFF_CLAUSE2,
+  case when temp_table1.display_rewards_group = 0 then
+    case when PREV_REWARDS_PTS!=0 OR REDEEMED_REWARDS_PTS!=0 OR NEW_REWARDS_PTS!=0 OR TOTAL_REWARDS_PTS!=0 then 1 else 0 end
+  else temp_table1.display_rewards_group END as display_rewards_group,
+  case when bih.AWARDED_rewards_pts!=0 then trim(to_char(bih.AWARDED_rewards_pts, '999,999,990')) || ' points are earned for this invoice.' end as REWARDS_EARNED_CLAUSE,
+  case when bih.EXPIRED_rewards_pts!=0 then trim(to_char(bih.EXPIRED_rewards_pts, '999,999,990')) || ' points have expired.' end as REWARDS_EXPIRED_CLAUSE,
+  case when bih.ADJUSTED_rewards_pts!=0 then trim(to_char(bih.ADJUSTED_rewards_pts, '999,999,990')) || ' points have been adjusted.' end as REWARDS_ADJUSTED_CLAUSE,
+  case when bih.FORFEITED_rewards_pts!=0 then trim(to_char(bih.FORFEITED_rewards_pts, '999,999,990')) || ' points have been forfeited.' end as REWARDS_FORFEITED_CLAUSE,
+  case when bih.TO_EXPIRE_rewards_pts!=0 then trim(to_char(bih.TO_EXPIRE_rewards_pts, '999,999,990')) || ' Cabcharge points earned in year ' || to_char(add_months(bih.REWARDS_EXPIRY_DATE, -12), 'YYYY') || ' will expire after ' || to_char(REWARDS_EXPIRY_DATE, 'DD fmMonth YYYY') || '.' end as REWARDS_EXPIRY_REMINDER_CLAUSE,
+  case when bih.GIRO_DAY is not null then 'Amount due will be deducted from your bank account ' || bih.GIRO_BANK_ACCT_NO || ' on the ' ||  bih.GIRO_DAY || ' of each month or on the next working day.' end as GIRO_CLAUSE,
+  (select case when NVL(MAX(NEW_TXN),0) &gt; 0 THEN 1 ELSE 0 end as DISPLAY_OVERDUE_CLAUSE from BMTB_INVOICE_SUMMARY where SUMMARY_TYPE = 'LP' and INVOICE_HEADER_NO = bih.INVOICE_HEADER_NO GROUP by INVOICE_HEADER_NO) as DISPLAY_OVERDUE_CLAUSE
+From ${invoiceHeaderTbl} bih
+--joining the invoice account
+INNER JOIN AMTB_ACCOUNT acct ON bih.account_no = acct.account_no
+--retrieving joined account main billing contact
+INNER JOIN AMTB_ACCT_MAIN_CONTACT aamc ON acct.account_no = aamc.account_no and aamc.main_contact_type = 'B'
+INNER JOIN AMTB_CONTACT_PERSON acp ON acp.contact_person_no = aamc.contact_person_no
+INNER JOIN MSTB_MASTER_TABLE country ON acp.address_country = country.master_no
+LEFT JOIN MSTB_MASTER_TABLE main_salutation ON acp.MAIN_CONTACT_SAL = main_salutation.master_no
+LEFT JOIN MSTB_MASTER_TABLE sub_salutation ON acp.SUB_CONTACT_SAL = sub_salutation.master_no
+INNER JOIN FMTB_AR_CONT_CODE_MASTER acct_faccm ON acct_faccm.AR_CONTROL_CODE_NO = acct.AR_CONTROL_CODE_NO
+INNER JOIN FMTB_ENTITY_MASTER acct_fem ON acct_faccm.ENTITY_NO = acct_fem.ENTITY_NO
+INNER JOIN MSTB_MASTER_TABLE acct_fem_country ON acct_fem.ENTITY_COUNTRY = acct_fem_country.MASTER_NO
+LEFT JOIN
+  (select
+      bih2.invoice_header_no,
+      case when count(ast.reward_plan_no) &gt; 0 then 1
+      else 0
+      end DISPLAY_REWARDS_GROUP
+    From ${invoiceHeaderTbl} bih2
+    left join amtb_account acct on bih2.account_no = acct.account_no
+    left join amtb_account pacct on pacct.account_no = acct.parent_no
+    left join amtb_account gpacct on gpacct.account_no = pacct.parent_no
+    left join amtb_subsc_to ast on ast.account_no = (
+         case when gpacct.account_no is not null then gpacct.account_no
+         when pacct.account_no is not null then pacct.account_no
+         else acct.account_no end
+      )
+      and ast.effective_dt &lt; (bih2.invoice_date+1)
+      and ast.reward_plan_no is not null
+    where bih2.INVOICE_HEADER_NO= '${invoiceHeaderNo}'
+    group by bih2.invoice_header_no) temp_table1 on temp_table1.invoice_header_no = bih.invoice_header_no
+where bih.invoice_header_no = '${invoiceHeaderNo}'</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

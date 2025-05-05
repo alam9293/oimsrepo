@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="viewProducIssuanceHistroyWindow" onCreate="viewProducIssuanceHistroyWindow.populateData()"  border="normal" use="com.cdgtaxi.ibs.product.ui.ViewProductIssuanceHistoryWindow"
+	title="View Products Issued History"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	
+   <grid>
+		<columns>
+	   		<column>History of Previous Products Last(5)</column>
+	   	</columns>
+   	</grid>
+   	
+   		<listbox id="productIssuedList" Disabled="true">
+   			<listhead sizable="true" height="20">
+   				<listheader label="No." width="5%" sort="auto"/>
+   				<listheader label="Card No"  width="15%" sort="auto"/>
+				<listheader label="Card Type"  width="20%" sort="auto"/>
+				<listheader label="Name On Card" width="30%" sort="auto"/>
+				<listheader label="Credit Limit"  width="10%" align="right"/>
+				<listheader label="Issue Dt"  width="10%"  sort="auto"/>
+				<listheader label="Expiry"  width="10%"  sort="auto"/>
+			</listhead>
+			<listfoot>
+				<listfooter span="10">
+					<label value="No records found"/>
+				</listfooter>
+			</listfoot>
+   		</listbox>
+   		   	
+ </window>

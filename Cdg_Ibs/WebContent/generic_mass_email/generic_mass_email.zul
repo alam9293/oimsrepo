@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="genericMassEmailWindow" border="normal" use="com.cdgtaxi.ibs.admin.ui.GenericMassEmailWindow"
+  title="Generic Mass Email" xmlns:h="http://www.w3.org/1999/xhtml">
+
+  <grid>
+    <columns sizable="false">
+      <column>
+        <label value="Email Receipient" />
+      </column>
+    </columns>
+  </grid>
+  <grid>
+    <columns sizable="false">
+      <column width="25%" />
+      <column width="25%" />
+      <column width="25%" />
+      <column width="25%" />
+    </columns>
+    <rows>
+      <row spans="1,1,2">
+        <label sclass="fieldLabel required">From:</label>
+        <label id="fromLabel" />
+        <div />
+      </row>
+      <row spans="1,1,1,1">
+        <label sclass="fieldLabel">To:</label>
+        <textbox id="toTB" rows="5" width="100%" />
+        <button id="toExcelUploadBtn" label="Choose Excel File..."
+          onClick="genericMassEmailWindow.uploadExcelToField()" />
+        <div />
+      </row>
+      <row spans="1,1,1,1">
+        <label sclass="fieldLabel">Cc:</label>
+        <textbox id="ccTB" rows="5" width="100%" />
+        <button id="ccExcelUploadBtn" label="Choose Excel File..."
+          onClick="genericMassEmailWindow.uploadExcelCcField()" />
+        <div />
+      </row>
+      <row spans="1,1,1,1">
+        <label sclass="fieldLabel">Bcc:</label>
+        <textbox id="bccTB" rows="5" width="100%" />
+        <button id="bccExcelUploadBtn" label="Choose Excel File..."
+          onClick="genericMassEmailWindow.uploadExcelBccField()" />
+        <div />
+      </row>
+    </rows>
+  </grid>
+
+  <h:br />
+  <grid>
+    <columns sizable="false">
+      <column>
+        <label value="Subject" />
+      </column>
+    </columns>
+  </grid>
+  <grid>
+    <columns sizable="false">
+      <column width="25%" />
+      <column width="25%" />
+      <column width="25%" />
+      <column width="25%" />
+    </columns>
+    <rows>
+      <row spans="1,1,2">
+        <label sclass="fieldLabel required">Subject:</label>
+        <textbox id="subjectTB" width="98%" constraint="no empty:* Mandatory Field" />
+        <div />
+      </row>
+    </rows>
+  </grid>
+
+  <h:br />
+  <grid>
+    <columns sizable="false">
+      <column>
+        <label value="Body" />
+      </column>
+    </columns>
+  </grid>
+  <grid>
+    <columns sizable="false">
+      <column width="25%" />
+      <column width="25%" />
+      <column width="25%" />
+      <column width="25%" />
+    </columns>
+    <rows>
+      <row spans="1,1,2">
+        <label sclass="fieldLabel">Attachment:</label>
+        <vbox width="100%">
+          <button id="attachBtn" label="Attach File..." onClick="genericMassEmailWindow.attachFile()" />
+          <listbox id="attachmentLB" mold="paging">
+            <listhead sizable="false">
+              <listheader label="File" width="90%" sort="none" />
+              <listheader label="Delete" width="45px" sort="none" />
+            </listhead>
+          </listbox>
+        </vbox>
+        <div />
+      </row>
+      <row spans="1,1,2">
+        <label sclass="fieldLabel">Template:</label>
+        <vbox width="100%">
+          <div width="100%">
+            <listbox id="templateLB" mold="select" multiple="false" width="90%"
+              onSelect="genericMassEmailWindow.onSelectTemplate()" />
+            <image id="deleteTemplateImage" src="/images/delete.png"
+              onClick="genericMassEmailWindow.deleteTemplate()" visible="false" style="cursor: pointer" />
+          </div>
+          <div width="100%" id="templateNameDiv" visible="true">
+            <label sclass="fieldLabel">Name:</label>
+            <textbox id="nameTB" width="70%" />
+          </div>
+        </vbox>
+        <div />
+      </row>
+      <row spans="1,1,2">
+        <label sclass="fieldLabel required">Body:</label>
+        <fckeditor id="bodyTB" toolbarSet="basic" height="200px" width="99%"
+          customConfigurationsPath="/scripts/fckconfig2.js" />
+        <div />
+      </row>
+    </rows>
+  </grid>
+
+  <h:br />
+  <button label="Send without Saving Template" onClick="genericMassEmailWindow.sendWithoutSaving()" />
+  <button label="Send and Save Template" onClick="genericMassEmailWindow.sendAndSave()" />
+</window>

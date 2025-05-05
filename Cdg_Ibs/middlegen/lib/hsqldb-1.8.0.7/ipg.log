@@ -1,0 +1,110 @@
+/*C1*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+/*C2*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+DISCONNECT
+/*C3*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+DISCONNECT
+/*C4*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+DISCONNECT
+/*C5*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C1*/SET SCHEMA TXN_SCHEMA
+drop schema PUBLIC
+/*C5*/DISCONNECT
+/*C6*/SET SCHEMA TXN_SCHEMA
+CONNECT USER IPG_USER
+DISCONNECT
+/*C7*/SET SCHEMA TXN_SCHEMA
+CONNECT USER IPG_USER
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C1*/ALTER SCHEMA TXN_SCHEMA RENAME TO PUBLIC
+/*C7*/DISCONNECT
+/*C8*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+DISCONNECT
+/*C9*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C1*/DISCONNECT
+/*C10*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+DROP TABLE "user_role" IF EXISTS
+DROP TABLE "role" IF EXISTS
+DROP TABLE "app_user" IF EXISTS
+CREATE TABLE "app_user" (\u000d\u000a       "id" INT NOT NULL IDENTITY PRIMARY KEY\u000d\u000a     , "username" VARCHAR(100)\u000d\u000a     , "password" VARCHAR(100)\u000d\u000a     , "first_name" VARCHAR(100)\u000d\u000a     , "last_name" VARCHAR(100)\u000d\u000a     , "address" VARCHAR(100)\u000d\u000a     , "city" VARCHAR(100)\u000d\u000a     , "country" VARCHAR(100)\u000d\u000a     , "email" VARCHAR(100)\u000d\u000a     , "phone_number" VARCHAR(100)\u000d\u000a     , "postal_code" VARCHAR(100)\u000d\u000a     , "province" VARCHAR(100)\u000d\u000a     , "website" VARCHAR(100)\u000d\u000a     , "password_hint" VARCHAR(100)\u000d\u000a     , "version" VARCHAR(100)\u000d\u000a     , "account_enabled" VARCHAR(100)\u000d\u000a     , "account_expired" VARCHAR(100)\u000d\u000a     , "account_locked" VARCHAR(100)\u000d\u000a     , "credentials_expired" VARCHAR(100)\u000d\u000a)
+CREATE TABLE "role" (\u000d\u000a       "id" INT NOT NULL IDENTITY PRIMARY KEY\u000d\u000a     , "name" VARCHAR(100)\u000d\u000a     , "description" VARCHAR(100)\u000d\u000a)
+CREATE TABLE "user_role" (\u000d\u000a       "user_id" INT NOT NULL\u000d\u000a     , "role_id" INT NOT NULL\u000d\u000a     , PRIMARY KEY ("role_id", "user_id")\u000d\u000a)
+DROP TABLE user_role IF EXISTS
+DROP TABLE role IF EXISTS
+DROP TABLE app_user IF EXISTS
+CREATE TABLE app_user (\u000d\u000a       "id" INT NOT NULL IDENTITY PRIMARY KEY\u000d\u000a     , "username" VARCHAR(100)\u000d\u000a     , "password" VARCHAR(100)\u000d\u000a     , "first_name" VARCHAR(100)\u000d\u000a     , "last_name" VARCHAR(100)\u000d\u000a     , "address" VARCHAR(100)\u000d\u000a     , "city" VARCHAR(100)\u000d\u000a     , "country" VARCHAR(100)\u000d\u000a     , "email" VARCHAR(100)\u000d\u000a     , "phone_number" VARCHAR(100)\u000d\u000a     , "postal_code" VARCHAR(100)\u000d\u000a     , "province" VARCHAR(100)\u000d\u000a     , "website" VARCHAR(100)\u000d\u000a     , "password_hint" VARCHAR(100)\u000d\u000a     , "version" VARCHAR(100)\u000d\u000a     , "account_enabled" VARCHAR(100)\u000d\u000a     , "account_expired" VARCHAR(100)\u000d\u000a     , "account_locked" VARCHAR(100)\u000d\u000a     , "credentials_expired" VARCHAR(100)\u000d\u000a)
+CREATE TABLE role (\u000d\u000a       "id" INT NOT NULL IDENTITY PRIMARY KEY\u000d\u000a     , "name" VARCHAR(100)\u000d\u000a     , "description" VARCHAR(100)\u000d\u000a)
+CREATE TABLE user_role (\u000d\u000a       "user_id" INT NOT NULL\u000d\u000a     , "role_id" INT NOT NULL\u000d\u000a     , PRIMARY KEY ("role_id", "user_id")\u000d\u000a)
+/*C11*/SET SCHEMA PUBLIC
+CONNECT USER SA
+DISCONNECT
+/*C10*/INSERT INTO "app_user" VALUES(1,'tomcat','536c0b339345616c1b33caf454454d8b8a190d6c','Tomcat','User','','Denver','US','matt_raible@yahoo.com','','80210','CO','http://jakarta.apache.org/tomcat','A male kitty.','1','Y','N','N','N')
+INSERT INTO "app_user" VALUES(2,'mraible','536c0b339345616c1b33caf454454d8b8a190d6c','Matt','Raible','','Denver','US','matt@raibledesigns.com','','80210','CO','http://raibledesigns.com','A female kitty.','1','Y','N','N','N')
+INSERT INTO "role" VALUES(1,'admin','Administrator role (can edit Users)')
+INSERT INTO "role" VALUES(2,'user','Default role for all Users')
+INSERT INTO "user_role" VALUES(1,2)
+INSERT INTO "user_role" VALUES(2,1)
+/*C9*/DISCONNECT
+/*C12*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+DISCONNECT
+/*C13*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C10*/DROP TABLE user_role
+DROP TABLE app_user
+DROP TABLE role
+CREATE TABLE role (\u000d\u000a       id INT NOT NULL IDENTITY PRIMARY KEY\u000d\u000a     , name VARCHAR(100)\u000d\u000a     , description VARCHAR(100)\u000d\u000a)
+CREATE TABLE app_user (\u000d\u000a       id INT NOT NULL IDENTITY PRIMARY KEY\u000d\u000a     , username VARCHAR(100)\u000d\u000a     , password VARCHAR(100)\u000d\u000a     , first_name VARCHAR(100)\u000d\u000a     , last_name VARCHAR(100)\u000d\u000a     , address VARCHAR(100)\u000d\u000a     , city VARCHAR(100)\u000d\u000a     , country VARCHAR(100)\u000d\u000a     , email VARCHAR(100)\u000d\u000a     , phone_number VARCHAR(100)\u000d\u000a     , postal_code VARCHAR(100)\u000d\u000a     , province VARCHAR(100)\u000d\u000a     , website VARCHAR(100)\u000d\u000a     , password_hint VARCHAR(100)\u000d\u000a     , version VARCHAR(100)\u000d\u000a     , account_enabled VARCHAR(100)\u000d\u000a     , account_expired VARCHAR(100)\u000d\u000a     , account_locked VARCHAR(100)\u000d\u000a     , credentials_expired VARCHAR(100)\u000d\u000a)
+CREATE TABLE user_role (\u000d\u000a       user_id INT NOT NULL\u000d\u000a     , role_id INT NOT NULL\u000d\u000a     , PRIMARY KEY (role_id, user_id)\u000d\u000a)
+ALTER TABLE user_role\u000d\u000a  ADD CONSTRAINT FK_user_role_2\u000d\u000a      FOREIGN KEY (role_id)\u000d\u000a      REFERENCES role (id)
+ALTER TABLE user_role\u000d\u000a  ADD CONSTRAINT FK_user_role_1\u000d\u000a      FOREIGN KEY (user_id)\u000d\u000a      REFERENCES app_user (id)
+DROP TABLE user_role
+DROP TABLE app_user
+DROP TABLE role
+CREATE TABLE role (\u000d\u000a       id INT NOT NULL IDENTITY PRIMARY KEY\u000d\u000a     , name VARCHAR(100)\u000d\u000a     , description VARCHAR(100)\u000d\u000a)
+CREATE TABLE app_user (\u000d\u000a       id INT NOT NULL IDENTITY PRIMARY KEY\u000d\u000a     , username VARCHAR(100)\u000d\u000a     , password VARCHAR(100)\u000d\u000a     , first_name VARCHAR(100)\u000d\u000a     , last_name VARCHAR(100)\u000d\u000a     , address VARCHAR(100)\u000d\u000a     , city VARCHAR(100)\u000d\u000a     , country VARCHAR(100)\u000d\u000a     , email VARCHAR(100)\u000d\u000a     , phone_number VARCHAR(100)\u000d\u000a     , postal_code VARCHAR(100)\u000d\u000a     , province VARCHAR(100)\u000d\u000a     , website VARCHAR(100)\u000d\u000a     , password_hint VARCHAR(100)\u000d\u000a     , version VARCHAR(100)\u000d\u000a     , account_enabled VARCHAR(100)\u000d\u000a     , account_expired VARCHAR(100)\u000d\u000a     , account_locked VARCHAR(100)\u000d\u000a     , credentials_expired VARCHAR(100)\u000d\u000a)
+CREATE TABLE user_role (\u000d\u000a       user_id INT NOT NULL\u000d\u000a     , role_id INT NOT NULL\u000d\u000a     , PRIMARY KEY (role_id, user_id)\u000d\u000a)
+ALTER TABLE user_role\u000d\u000a  ADD CONSTRAINT FK_user_role_2\u000d\u000a      FOREIGN KEY (role_id)\u000d\u000a      REFERENCES role (id)
+ALTER TABLE user_role\u000d\u000a  ADD CONSTRAINT FK_user_role_1\u000d\u000a      FOREIGN KEY (user_id)\u000d\u000a      REFERENCES app_user (id)
+DISCONNECT
+/*C14*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+DROP TABLE "PUBLIC"."app_user" 
+DROP TABLE "PUBLIC"."role" 
+DROP TABLE "PUBLIC"."user_role" 
+INSERT INTO ROLE VALUES(1,'admin','Administrator role (can edit Users)')
+DELETE FROM ROLE WHERE ID=1
+INSERT INTO APP_USER VALUES(1,'tomcat','536c0b339345616c1b33caf454454d8b8a190d6c','Tomcat','User','','Denver','US','matt_raible@yahoo.com','','80210','CO','http://jakarta.apache.org/tomcat','A male kitty.','1','Y','N','N','N')
+INSERT INTO APP_USER VALUES(2,'mraible','536c0b339345616c1b33caf454454d8b8a190d6c','Matt','Raible','','Denver','US','matt@raibledesigns.com','http://raibledesigns.com','80210','CO','','Not a female kitty.','1','Y','N','N','N')
+INSERT INTO ROLE VALUES(1,'admin','Administrator role (can edit Users)')
+INSERT INTO ROLE VALUES(2,'user','Default role for all Users')
+INSERT INTO USER_ROLE VALUES(1,2)
+INSERT INTO USER_ROLE VALUES(2,1)
+/*C13*/DISCONNECT
+/*C15*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+DISCONNECT
+/*C16*/SET SCHEMA PUBLIC
+CONNECT USER IPG_USER
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C14*/DISCONNECT
+/*C16*/DISCONNECT

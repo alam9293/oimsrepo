@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="searchWindow" border="normal" use="com.cdgtaxi.ibs.acl.ui.user.SearchUserWindow"
+	title="Search User"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+   		<rows>
+   			<row>
+   				<label sclass="fieldLabel">Login Id:</label>
+   				<capstextbox id="loginId" maxlength="32" width="98%"/>
+   				<label sclass="fieldLabel">Name:</label>
+   				<capstextbox id="name" maxlength="64" width="98%"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Email:</label>
+   				<textbox id="email" maxlength="128" width="98%"/>
+   				<label sclass="fieldLabel">Domain:</label>
+          <combobox id="domainCB" readonly="true" width="98%"/>
+   			</row>
+			<row>
+        <label sclass="fieldLabel">Status:</label>
+        <listbox id="status" rows="1" mold="select" width="99%" onCreate="searchWindow.populateStatusList(self)"/>
+				<label sclass="fieldLabel">Locked:</label>
+   			<listbox id="locked" rows="1" mold="select" width="99%" onCreate="searchWindow.populateLockedList(self)"/>
+			</row>
+   			<row spans="4">
+   				<button label="Search" onClick="searchWindow.searchUser()" />
+   			</row>
+   		</rows>
+   	</grid>
+   	<h:br/>
+	<!--  The below grid is for Labeling Purpose 	-->
+   	<grid>
+	   	<columns>
+	   		<column>Result</column>
+	   	</columns>
+   	</grid>
+   	<listbox fixedLayout="true" id="resultList" onSelect="searchWindow.viewOrEditUser()">
+   		<listhead sizable="true">
+			<listheader label="Login Id" sort="auto"/>
+      <listheader label="Domain" sort="auto"/>
+			<listheader label="Name" sort="auto"/>
+			<listheader label="Email" sort="auto"/>
+			<listheader label="Status" sort="auto"/>
+			<listheader label="Locked" sort="auto"/>
+		</listhead>
+		<listfoot>
+			<listfooter span="6">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+   	</listbox>
+   	
+</window>

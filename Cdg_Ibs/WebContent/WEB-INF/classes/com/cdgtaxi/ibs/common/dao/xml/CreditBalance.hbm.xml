@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="creditBalance">
+	<return-scalar column="acct_cust_no" 			type="string"/>
+	<return-scalar column="acct_account_name" 		type="string"/>
+	<return-scalar column="name"					type="string"/>
+	<return-scalar column="product_types"			type="string"/>
+	<return-scalar column="child_code"				type="string"/>
+	<return-scalar column="child_account_name"		type="string"/>
+	<return-scalar column="child_product_types"		type="string"/>
+	<return-scalar column="grand_code"				type="string"/>
+	<return-scalar column="grand_account_name"		type="string"/>
+	<return-scalar column="grand_product_types"		type="string"/>
+	<return-scalar column="card_no"					type="string"/>
+	<return-scalar column="credit_limit"			type="string"/>
+	<return-scalar column="credit_balance"			type="string"/>
+	<return-scalar column="ship_contact"			type="string"/>
+	<return-scalar column="ship_contact_no"			type="string"/>
+	<return-scalar column="ship_contact_email"		type="string"/>
+	<return-scalar column="ship_contact_address"	type="string"/>
+	<![CDATA[
+  select case when grand.CUST_NO is not null then grand.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else acct.CUST_NO end as acct_cust_no,
+    case when grand.CUST_NO is not null then grand.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else acct.ACCOUNT_NAME end as acct_account_name,
+    sale.name,
+    case when grand.CUST_NO is not null then grand_subscription.PRODUCT_TYPES when parent.CUST_NO is not null then parent_subscription.PRODUCT_TYPES else acct_subscription.PRODUCT_TYPES end as product_types,
+    case when grand.CUST_NO is not null then parent.CODE when parent.CUST_NO is not null then acct.CODE else null end as child_code,
+    case when grand.CUST_NO is not null then parent.ACCOUNT_NAME when parent.CUST_NO is not null then acct.ACCOUNT_NAME else null end as child_account_name,
+    case when grand.CUST_NO is not null then parent_subscription.PRODUCT_TYPES when parent.CUST_NO is not null then acct_subscription.PRODUCT_TYPES else null end as child_product_types,
+    case when grand.CUST_NO is not null then acct.CODE else null end as grand_code,
+    case when grand.CUST_NO is not null then acct.ACCOUNT_NAME else null end as grand_account_name,
+    case when grand.CUST_NO is not null then acct_subscription.PRODUCT_TYPES else null end as grand_product_types,
+    product.CARD_NO,
+    trim(to_char(case when product.CREDIT_LIMIT is null then acct.CREDIT_LIMIT else product.CREDIT_LIMIT end, '999,999,990.00')) as credit_limit,
+    trim(to_char(case when product.CREDIT_BALANCE is null then acct.CREDIT_BALANCE else product.CREDIT_BALANCE end, '999,999,990.00')) as credit_balance,
+    case when contact.main_contact_sal is not null then main_sal.master_value || ' ' else '' end || contact.main_contact_name || case when contact.sub_contact_name is not null then ' / ' || case when contact.sub_contact_sal is not null then sub_sal.master_value || ' ' else '' end || contact.sub_contact_name else '' end as ship_contact,
+    contact.main_contact_tel || case when contact.main_contact_fax is not null then ', ' || contact.main_contact_fax else '' end as ship_contact_no,
+    contact.main_contact_email as ship_contact_email,
+    (case when contact.address_area is NULL then '' else (contact.address_area || ' ') End )
+        ||
+    (case when contact.address_block is NULL then '' else (contact.address_block || ' ') End )
+        ||
+    (case when contact.address_street is NULL then '' else (contact.address_street || ' ') End )
+        ||
+    (case when contact.address_unit is NULL then '' else  (contact.address_unit || ' ') End )
+        ||
+    (case when contact.address_building is NULL then '' else (contact.address_building || ' ') End )
+        ||
+    (case when contact.address_country is NULL then '' else (contact_country.master_value || ' ') End )
+        ||
+    (case when contact.address_state is NULL then '' else  (contact.address_state || ' ') End )
+        ||
+    (case when contact.address_city is NULL then '' else  (contact.address_city || ' ') End )
+        ||
+    (case when contact.address_postal is NULL then '' else contact.address_postal End ) as ship_contact_address
+    from(select ACCOUNT_NO, null as product_no from AMTB_ACCOUNT
+        where CUST_NO like :acctNo and ACCOUNT_NAME like :acctName and CUST_NO is not null and :divNo is null
+    union
+    select child.ACCOUNT_NO, null as product_no from AMTB_ACCOUNT acct
+        left join AMTB_ACCOUNT child on acct.ACCOUNT_NO = child.PARENT_NO
+        where acct.CUST_NO like :acctNo and acct.ACCOUNT_NAME like :acctName and child.ACCOUNT_NO is not null and (:divNo is null or child.ACCOUNT_NO = :divNo) and :deptNo is null
+    union
+    select grand.ACCOUNT_NO, null as product_no from AMTB_ACCOUNT acct
+        left join AMTB_ACCOUNT child on acct.ACCOUNT_NO = child.PARENT_NO
+        left join AMTB_ACCOUNT grand on child.ACCOUNT_NO = grand.PARENT_NO
+        where acct.CUST_NO like :acctNo and acct.ACCOUNT_NAME like :acctName and grand.ACCOUNT_NO is not null and (:divNo is null or child.ACCOUNT_NO = :divNo) and (:deptNo is null or grand.ACCOUNT_NO = :deptNo)
+    union
+    select acct.ACCOUNT_NO, product.PRODUCT_NO from AMTB_ACCOUNT acct
+        inner join PMTB_PRODUCT product on acct.ACCOUNT_NO = product.ACCOUNT_NO and :productType is not null and product.PRODUCT_TYPE_ID = :productType
+        where CUST_NO like :acctNo and ACCOUNT_NAME like :acctName and CUST_NO is not null and '' is null
+    union
+    select child.ACCOUNT_NO, product.PRODUCT_NO from AMTB_ACCOUNT acct
+        left join AMTB_ACCOUNT child on acct.ACCOUNT_NO = child.PARENT_NO
+        inner join PMTB_PRODUCT product on product.ACCOUNT_NO = child.ACCOUNT_NO and :productType is not null and product.PRODUCT_TYPE_ID = :productType
+        where acct.CUST_NO like :acctNo and acct.ACCOUNT_NAME like :acctName and child.ACCOUNT_NO is not null and (:divNo is null or child.ACCOUNT_NO = :divNo) and :deptNo is null
+    union
+    select grand.ACCOUNT_NO, product.PRODUCT_NO from AMTB_ACCOUNT acct
+        left join AMTB_ACCOUNT child on acct.ACCOUNT_NO = child.PARENT_NO
+        left join AMTB_ACCOUNT grand on child.ACCOUNT_NO = grand.PARENT_NO
+        inner join PMTB_PRODUCT product on product.ACCOUNT_NO = grand.ACCOUNT_NO and :productType is not null and product.PRODUCT_TYPE_ID = :productType
+        where acct.CUST_NO like :acctNo and acct.ACCOUNT_NAME like :acctName and grand.ACCOUNT_NO is not null and (:divNo is null or child.ACCOUNT_NO = :divNo) and (:deptNo is null or grand.ACCOUNT_NO = :deptNo)) main
+    left join AMTB_ACCOUNT acct on main.account_no = acct.account_no
+    left join (select ACCOUNT_NO, listagg(PRODUCT_TYPE_ID,',') within group (order by product_type_id) as product_types from AMTB_SUBSC_TO group by ACCOUNT_NO) acct_subscription on acct.ACCOUNT_NO = acct_subscription.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.account_no
+    left join (select ACCOUNT_NO, listagg(PRODUCT_TYPE_ID,',') within group (order by product_type_id) as product_types from AMTB_SUBSC_TO group by ACCOUNT_NO) parent_subscription on parent.ACCOUNT_NO = parent_subscription.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.parent_no = grand.account_no
+    left join (select ACCOUNT_NO, listagg(PRODUCT_TYPE_ID,',') within group (order by product_type_id) as product_types from AMTB_SUBSC_TO group by ACCOUNT_NO) grand_subscription on grand.ACCOUNT_NO = grand_subscription.ACCOUNT_NO
+    left join PMTB_PRODUCT product on main.product_no = product.product_no 
+    left join AMTB_ACCT_MAIN_CONTACT main_contact on main_contact.ACCOUNT_NO = acct.ACCOUNT_NO and main_contact.MAIN_CONTACT_TYPE = 'S'
+    left join AMTB_CONTACT_PERSON contact on contact.CONTACT_PERSON_NO = main_contact.CONTACT_PERSON_NO
+    left join MSTB_MASTER_TABLE contact_country on contact.ADDRESS_COUNTRY = contact_country.master_no
+    left join MSTB_MASTER_TABLE main_sal on contact.MAIN_CONTACT_SAL = main_sal.master_no
+    left join MSTB_MASTER_TABLE sub_sal on contact.SUB_CONTACT_SAL = sub_sal.master_no
+    left join AMTB_ACCT_SALESPERSON acct_sale on acct_sale.account_no = case when grand.CUST_NO is not null then grand.account_no when parent.CUST_NO is not null then parent.account_no else acct.account_no end and (systimestamp between acct_sale.effective_dt_from and acct_sale.effective_dt_to or (effective_dt_to is null and acct_sale.effective_dt_from < systimestamp))
+    left join MSTB_SALESPERSON sale on acct_sale.salesperson_no = sale.salesperson_no
+    where 
+    (product.product_no is null or  (product.EXPIRY_DATE > SYSTIMESTAMP and product.CURRENT_STATUS not like 'T'))
+    and case when product.CREDIT_BALANCE is null then acct.CREDIT_BALANCE else product.CREDIT_BALANCE end < :creditBalance
+    and (:salespersonNo is null or sale.salesperson_no = :salespersonNo)
+    order by case when :sort = 'CN' then acct_account_name else null end nulls first, case when :sort = 'CN'  then child_code else null end nulls first, case when :sort = 'CN' then grand_code else null end nulls first, case when :sort = 'CR' then case when product.CREDIT_BALANCE is null then acct.CREDIT_BALANCE else product.CREDIT_BALANCE end else null end
+	]]>
+</sql-query>
+</hibernate-mapping>

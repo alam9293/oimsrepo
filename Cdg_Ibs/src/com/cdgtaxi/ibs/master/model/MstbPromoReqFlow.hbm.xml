@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.master.model.MstbPromoReqFlow" 
+    table="MSTB_PROMO_REQ_FLOW"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="promoReqFlowNo"
+        type="java.lang.Integer"
+        column="PROMO_REQ_FLOW_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">MSTB_PROMO_REQ_FLOW_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="reqFromStatus"
+        type="java.lang.String"
+        column="REQ_FROM_STATUS"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="reqToStatus"
+        type="java.lang.String"
+        column="REQ_TO_STATUS"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="fromStatus"
+        type="java.lang.String"
+        column="FROM_STATUS"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="toStatus"
+        type="java.lang.String"
+        column="TO_STATUS"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="remarks"
+        type="java.lang.String"
+        column="REMARKS"
+        length="500"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+   <many-to-one
+        name="toPromoDetail"
+        class="com.cdgtaxi.ibs.master.model.MstbPromoDetail"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="TO_PROMO_DETAIL_NO" />
+    </many-to-one>
+    <many-to-one
+        name="mstbPromotionReq"
+        class="com.cdgtaxi.ibs.master.model.MstbPromoReq"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PROMO_REQ_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

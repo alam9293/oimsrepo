@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="emailAudit">
+	<return-scalar column="EMAIL_FROM" 			        type="string"/>
+	<return-scalar column="EMAIL_TO" 			   	 	type="string"/>
+	<return-scalar column="SEND_DT" 		      		type="string"/>
+	<return-scalar column="SUB_HEADER"		   			type="string"/>
+	<return-scalar column="JOB" 			      		type="string"/>
+	<return-scalar column="STATUS" 			      		type="string"/>
+	<return-scalar column="STATUS_REMARKS" 			    type="string"/>
+
+	<![CDATA[
+select 
+      emailAudit.EMAIL_FROM as EmAIL_FROM,
+      emailAudit.EMAIL_TO as EMAIL_TO,
+      to_char(emailAudit.SEND_DT, 'dd/mm/yyyy') as SEND_DT,
+      emailAudit.SUB_HEADER as SUB_HEADER,
+      emailAudit.JOB as JOB,
+      emailAudit.STATUS as STATUS,
+      emailAudit.STATUS_REMARKS as STATUS_REMARKS
+    from SATB_EMAIL_AUDIT_LOG emailAudit
+    where 
+    (:dateFrom is null OR emailAudit.SEND_DT between to_date(:dateFrom,'yyyy-MM-dd') AND to_date(:dateTo,'yyyy-MM-dd hh24:mi:ss'))
+order by EMAIL_LOG_ID
+	]]>
+</sql-query>
+
+</hibernate-mapping>

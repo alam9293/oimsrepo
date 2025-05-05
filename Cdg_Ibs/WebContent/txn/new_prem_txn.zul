@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="newPremTxnWindow" border="normal" use="com.cdgtaxi.ibs.txn.ui.NewPremTxnWindow"
+	title="Create Cardless Txn"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid id="issueToAcctDetails" >
+		<columns sizable="false" visible="false">
+			<column width="15%"/>
+			<column width="35%"/>
+			<column width="15%"/>
+			<column width="35%"/>
+<!-- 			<column width="15%"/> -->
+<!-- 			<column width="25%"/> -->
+<!-- 			<column width="15%"/> -->
+<!-- 			<column width="45%"/> -->
+		</columns>
+		<rows>
+   			<row>
+   				<hbox>
+   					<label sclass="fieldLabel required"
+   					tooltiptext="Minimum search criteria is 3 characters" >Account No</label>
+   				</hbox>
+   				<capstextbox id="accountNoTextBox" 
+   					maxlength="6" 
+   					onChange="newPremTxnWindow.searchAccount()" 
+   					onOK="newPremTxnWindow.searchAccount()" 
+   					width="98%"
+   				/>
+   				<hbox>
+   					<label sclass="fieldLabel required">Account Name:</label>
+   				</hbox>
+   				<combobox id="accountNameComboBox" 
+   					style="text-transform:uppercase"
+   					rows="1" 
+   					autodrop="true"
+   					autocomplete="false"
+   					width="95%"
+   					onSelect="newPremTxnWindow.onSelectAccountName()" 
+   					onChanging="newPremTxnWindow.searchAccountName(event.value)" 
+   					tooltiptext="Minimum search criteria is 3 characters" 
+   				/>
+   			</row>
+   			<row id="divisionDepartmentRow" visible="false" >
+   				<label sclass="fieldLabel" id="divisionLabel" >Division:</label>
+   				<listbox id="divisionListBox" rows="1" mold="select"
+   					onSelect="newPremTxnWindow.onSelectDivision()" />
+   				<label sclass="fieldLabel" id="departmentLabel" >Department:</label>
+   				<listbox id="departmentListBox" onSelect="newPremTxnWindow.onSelectDept()" rows="1" mold="select"/>
+   				<label/>
+   			</row>
+   			<row id="departmentRow" visible="false" spans="1,1,2">
+   				
+   			</row>
+   			<row id="subApplicantRow" visible="false" spans="1,1,2">	
+	   			<label sclass="fieldLabel" id="subApplicantLabel" >Sub-Applicant:</label>			
+				<listbox id="subApplicant" rows="1" mold="select"  onSelect="newPremTxnWindow.onSelectSubAppl()" />
+				<label/>
+			</row>
+
+		</rows>
+	</grid>
+	<h:br/>
+	<grid id="txnDetailsGridTitle" >
+		<columns sizable="false" >
+				<column>Transaction Details</column>
+		</columns>
+	</grid>
+	
+	<grid id="txnDetailsGrid" >
+		<columns sizable="false" id="txnDetails" visible="false">
+			<column width="15%"/>
+			<column width="35%"/>
+			<column width="15%"/>
+			<column width="35%"/>
+<!-- 			<column width="15%"/> -->
+<!-- 			<column width="25%"/> -->
+<!-- 			<column width="15%"/> -->
+<!-- 			<column width="45%"/> -->
+		</columns>
+		<rows>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel required" value="Product Type" />
+<!-- 				<listbox id="productType" disabled="true" width="150px" rows="1" mold="select" onSelect="newPremTxnWindow.checkProductType()" onCreate="self.getItems().addAll(newPremTxnWindow.getPremierProductType());self.setSelectedIndex(0)" /> -->
+				<listbox id="productType" disabled="true" width="98%" rows="1" mold="select" />
+				<label/>
+			</row>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel required" value="Company Code"/>
+				<listbox id="companyCd" width="50%" rows="1" mold="select" onCreate="self.getItems().addAll(newPremTxnWindow.getServiceProvider())"/>
+				<label/>
+			</row>	
+			<row>
+				<label sclass="fieldLabel required" value="Taxi No"  />
+				<capstextbox   id="taxiNo" width="50%" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}" maxlength="10"/>
+				<label sclass="fieldLabel required" value="Driver NRIC"  />
+				<hbox>
+					<capstextbox id="nric" width="150px" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}" maxlength="15"/>
+					<vbox>
+						<label style="font-size:10px" value=""  />
+						<label style="font-size:10px" value="(e.g S1234567A)"  />
+					</vbox>
+				</hbox>
+			</row>
+			<row>
+				<label sclass="fieldLabel required" id="StartDateLabel" value="Trip Start Date"   />
+				<datebox id="startDate" width="50%" format="dd/MM/yyyy" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredBeforeOrEqualsCurrentDateConstraint')}"/>
+				<label sclass="fieldLabel required" id="startTimeLabel" value="Trip Start Time"   />
+				<hbox>
+					<listbox id="startTimeHrDDL" mold="select">
+						<listitem label="00" selected="true"/>
+						<listitem label="01" />
+						<listitem label="02" />
+						<listitem label="03" />
+						<listitem label="04" />
+						<listitem label="05" />
+						<listitem label="06" />
+						<listitem label="07" />
+						<listitem label="08" />
+						<listitem label="09" />
+						<listitem label="10" />
+						<listitem label="11" />
+						<listitem label="12" />
+						<listitem label="13" />
+						<listitem label="14" />
+						<listitem label="15" />
+						<listitem label="16" />
+						<listitem label="17" />
+						<listitem label="18" />
+						<listitem label="19" />
+						<listitem label="20" />
+						<listitem label="21" />
+						<listitem label="22" />
+						<listitem label="23" />
+					</listbox>
+					<listbox id="startTimeMinDDL" mold="select">
+						<listitem label="00" selected="true"/>
+						<listitem label="01" />
+						<listitem label="02" />
+						<listitem label="03" />
+						<listitem label="04" />
+						<listitem label="05" />
+						<listitem label="06" />
+						<listitem label="07" />
+						<listitem label="08" />
+						<listitem label="09" />
+						<listitem label="10" />
+						<listitem label="11" />
+						<listitem label="12" />
+						<listitem label="13" />
+						<listitem label="14" />
+						<listitem label="15" />
+						<listitem label="16" />
+						<listitem label="17" />
+						<listitem label="18" />
+						<listitem label="19" />
+						<listitem label="20" />
+						<listitem label="21" />
+						<listitem label="22" />
+						<listitem label="23" />
+						<listitem label="24" />
+						<listitem label="25" />
+						<listitem label="26" />
+						<listitem label="27" />
+						<listitem label="28" />
+						<listitem label="29" />
+						<listitem label="30" />
+						<listitem label="31" />
+						<listitem label="32" />
+						<listitem label="33" />
+						<listitem label="34" />
+						<listitem label="35" />
+						<listitem label="36" />
+						<listitem label="37" />
+						<listitem label="38" />
+						<listitem label="39" />
+						<listitem label="40" />
+						<listitem label="41" />
+						<listitem label="42" />
+						<listitem label="43" />
+						<listitem label="44" />
+						<listitem label="45" />
+						<listitem label="46" />
+						<listitem label="47" />
+						<listitem label="48" />
+						<listitem label="49" />
+						<listitem label="50" />
+						<listitem label="51" />
+						<listitem label="52" />
+						<listitem label="53" />
+						<listitem label="54" />
+						<listitem label="55" />
+						<listitem label="56" />
+						<listitem label="57" />
+						<listitem label="58" />
+						<listitem label="59" />
+					</listbox>
+					<listbox id="startTimeSecDDL" mold="select">
+						<listitem label="00" selected="true"/>
+						<listitem label="01" />
+						<listitem label="02" />
+						<listitem label="03" />
+						<listitem label="04" />
+						<listitem label="05" />
+						<listitem label="06" />
+						<listitem label="07" />
+						<listitem label="08" />
+						<listitem label="09" />
+						<listitem label="10" />
+						<listitem label="11" />
+						<listitem label="12" />
+						<listitem label="13" />
+						<listitem label="14" />
+						<listitem label="15" />
+						<listitem label="16" />
+						<listitem label="17" />
+						<listitem label="18" />
+						<listitem label="19" />
+						<listitem label="20" />
+						<listitem label="21" />
+						<listitem label="22" />
+						<listitem label="23" />
+						<listitem label="24" />
+						<listitem label="25" />
+						<listitem label="26" />
+						<listitem label="27" />
+						<listitem label="28" />
+						<listitem label="29" />
+						<listitem label="30" />
+						<listitem label="31" />
+						<listitem label="32" />
+						<listitem label="33" />
+						<listitem label="34" />
+						<listitem label="35" />
+						<listitem label="36" />
+						<listitem label="37" />
+						<listitem label="38" />
+						<listitem label="39" />
+						<listitem label="40" />
+						<listitem label="41" />
+						<listitem label="42" />
+						<listitem label="43" />
+						<listitem label="44" />
+						<listitem label="45" />
+						<listitem label="46" />
+						<listitem label="47" />
+						<listitem label="48" />
+						<listitem label="49" />
+						<listitem label="50" />
+						<listitem label="51" />
+						<listitem label="52" />
+						<listitem label="53" />
+						<listitem label="54" />
+						<listitem label="55" />
+						<listitem label="56" />
+						<listitem label="57" />
+						<listitem label="58" />
+						<listitem label="59" />
+					</listbox>
+				</hbox>
+			</row>
+
+			<row>
+				<label sclass="fieldLabel required" id="endDateLabel" value="Trip End Date"  />
+				<datebox id="endDate" width="50%" format="dd/MM/yyyy" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredBeforeOrEqualsCurrentDateConstraint')}"/>
+				<label sclass="fieldLabel required" id="endTimeLabel" value="Trip End Time"  />
+				<hbox>
+					<listbox id="endTimeHrDDL" mold="select">
+						<listitem label="00" selected="true"/>
+						<listitem label="01" />
+						<listitem label="02" />
+						<listitem label="03" />
+						<listitem label="04" />
+						<listitem label="05" />
+						<listitem label="06" />
+						<listitem label="07" />
+						<listitem label="08" />
+						<listitem label="09" />
+						<listitem label="10" />
+						<listitem label="11" />
+						<listitem label="12" />
+						<listitem label="13" />
+						<listitem label="14" />
+						<listitem label="15" />
+						<listitem label="16" />
+						<listitem label="17" />
+						<listitem label="18" />
+						<listitem label="19" />
+						<listitem label="20" />
+						<listitem label="21" />
+						<listitem label="22" />
+						<listitem label="23" />
+					</listbox>
+					<listbox id="endTimeMinDDL" mold="select">
+						<listitem label="00" selected="true"/>
+						<listitem label="01" />
+						<listitem label="02" />
+						<listitem label="03" />
+						<listitem label="04" />
+						<listitem label="05" />
+						<listitem label="06" />
+						<listitem label="07" />
+						<listitem label="08" />
+						<listitem label="09" />
+						<listitem label="10" />
+						<listitem label="11" />
+						<listitem label="12" />
+						<listitem label="13" />
+						<listitem label="14" />
+						<listitem label="15" />
+						<listitem label="16" />
+						<listitem label="17" />
+						<listitem label="18" />
+						<listitem label="19" />
+						<listitem label="20" />
+						<listitem label="21" />
+						<listitem label="22" />
+						<listitem label="23" />
+						<listitem label="24" />
+						<listitem label="25" />
+						<listitem label="26" />
+						<listitem label="27" />
+						<listitem label="28" />
+						<listitem label="29" />
+						<listitem label="30" />
+						<listitem label="31" />
+						<listitem label="32" />
+						<listitem label="33" />
+						<listitem label="34" />
+						<listitem label="35" />
+						<listitem label="36" />
+						<listitem label="37" />
+						<listitem label="38" />
+						<listitem label="39" />
+						<listitem label="40" />
+						<listitem label="41" />
+						<listitem label="42" />
+						<listitem label="43" />
+						<listitem label="44" />
+						<listitem label="45" />
+						<listitem label="46" />
+						<listitem label="47" />
+						<listitem label="48" />
+						<listitem label="49" />
+						<listitem label="50" />
+						<listitem label="51" />
+						<listitem label="52" />
+						<listitem label="53" />
+						<listitem label="54" />
+						<listitem label="55" />
+						<listitem label="56" />
+						<listitem label="57" />
+						<listitem label="58" />
+						<listitem label="59" />
+					</listbox>
+					<listbox id="endTimeSecDDL" mold="select">
+						<listitem label="00" selected="true"/>
+						<listitem label="01" />
+						<listitem label="02" />
+						<listitem label="03" />
+						<listitem label="04" />
+						<listitem label="05" />
+						<listitem label="06" />
+						<listitem label="07" />
+						<listitem label="08" />
+						<listitem label="09" />
+						<listitem label="10" />
+						<listitem label="11" />
+						<listitem label="12" />
+						<listitem label="13" />
+						<listitem label="14" />
+						<listitem label="15" />
+						<listitem label="16" />
+						<listitem label="17" />
+						<listitem label="18" />
+						<listitem label="19" />
+						<listitem label="20" />
+						<listitem label="21" />
+						<listitem label="22" />
+						<listitem label="23" />
+						<listitem label="24" />
+						<listitem label="25" />
+						<listitem label="26" />
+						<listitem label="27" />
+						<listitem label="28" />
+						<listitem label="29" />
+						<listitem label="30" />
+						<listitem label="31" />
+						<listitem label="32" />
+						<listitem label="33" />
+						<listitem label="34" />
+						<listitem label="35" />
+						<listitem label="36" />
+						<listitem label="37" />
+						<listitem label="38" />
+						<listitem label="39" />
+						<listitem label="40" />
+						<listitem label="41" />
+						<listitem label="42" />
+						<listitem label="43" />
+						<listitem label="44" />
+						<listitem label="45" />
+						<listitem label="46" />
+						<listitem label="47" />
+						<listitem label="48" />
+						<listitem label="49" />
+						<listitem label="50" />
+						<listitem label="51" />
+						<listitem label="52" />
+						<listitem label="53" />
+						<listitem label="54" />
+						<listitem label="55" />
+						<listitem label="56" />
+						<listitem label="57" />
+						<listitem label="58" />
+						<listitem label="59" />
+					</listbox>
+				</hbox>
+			</row>
+
+				
+			<row>
+				<label sclass="fieldLabel required" value="Fare Amount($)"  />
+				<decimalbox id="fareAmt" format="######,##0.00" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredZeroAmountForFareConstraint')}"/>
+				<label sclass="fieldLabel" value="Complimentary"  />
+				<checkbox id="complimentary" Tooltiptext="Click here if this is a complimentary trip" />
+			</row>
+			<row id="projCodeRow" spans="1,3">
+				<label sclass="fieldLabel" value="Trip Code"  />
+				<capstextbox id="projCode" maxlength="80"/>
+			</row>
+			<row id="projCodeReasonRow" spans="1,3">
+				<label sclass="fieldLabel" value="Trip Code Reason"  />
+				<capstextbox id="projCodeReason" maxlength="80"/>
+			</row>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel" value="Surcharge Remark" />
+				<capstextbox width="98%" id="surchargeDesc" maxlength="255"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Book Reference"  />
+				<capstextbox id="bookedRef" width="98%" maxlength="40"/>
+			
+				<label sclass="fieldLabel" value="Flight Info"  />
+				<capstextbox id="flightInfo" width="150px" maxlength="20" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Book By"  />
+				<capstextbox id="bookedBy" width="98%" maxlength="80"/>
+			
+				<label sclass="fieldLabel" value="Book Date"  />
+				<datebox id="bookedDate" width="150px" format="dd/MM/yyyy" />
+			</row>
+			<row>
+				<label sclass="fieldLabel required" value="Trip Type" />
+				<listbox id="tripType" width="98%"  rows="1" mold="select" onCreate="self.getItems().addAll(newPremTxnWindow.getTripType())" />
+				<label sclass="fieldLabel required" value="Job Type"  />
+				<listbox id="jobType" width="98%"  rows="1" mold="select" onCreate="self.getItems().addAll(newPremTxnWindow.getJobType())" />
+			</row>
+			<row>
+				<label sclass="fieldLabel required" value="Vehicle Group"  />
+				<listbox id="vehicleGroup" width="98%"  rows="1" mold="select" onCreate="self.getItems().addAll(newPremTxnWindow.getVehicleGroup())" />
+				<label sclass="fieldLabel required" value="Vehicle Type" />
+				<listbox id="vehicleType" width="98%"  rows="1" mold="select" onCreate="self.getItems().addAll(newPremTxnWindow.getVehicleType())" />				
+			</row>
+			<row spans="1,2,1">
+				<label sclass="fieldLabel" value="Passenger Name"  />
+				<capstextbox id="paxName" width="98%" maxlength="80"/>
+				<label/>
+			</row>			
+			<row spans="1,2,1">
+				<label sclass="fieldLabel required" value="Pickup"  />
+				<capstextbox width="98%" id="pickup" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}" maxlength="80"/>
+				<label/>
+			</row>		
+			<row spans="1,2,1">
+				<label sclass="fieldLabel" value="Destination"  />
+				<capstextbox width="98%" id="destination" maxlength="80"/>
+				<label/>
+			</row>
+			<row spans="1,2,1">
+				<label sclass="fieldLabel" value="Remarks"  />
+				<capstextbox width="98%" rows="4" id="remarks" maxlength="255"/>
+				<label/>
+			</row>				
+		</rows>
+	</grid>
+	<h:br/>
+	<grid id="updateFMSGridTitle">
+		<columns sizable="false" >
+				<column>Update FMS</column>
+		</columns>
+	</grid>
+	
+	<grid id="updateFMSGrid">
+		
+		<columns sizable="false" id="updateFMS" visible="false">
+			<column width="15%"/>
+			<column width="35%"/>
+			<column width="15%"/>
+			<column width="35%"/>
+<!-- 			<column width="15%"/> -->
+<!-- 			<column width="25%"/> -->
+<!-- 			<column width="15%"/> -->
+<!-- 			<column width="45%"/> -->
+		</columns>
+		<rows>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel required" value="Update FMS?"  />
+				<listbox id="toUpdateFMSList" mold="select" onSelect="newPremTxnWindow.onSelectUpdateFMS()">
+						<listitem label="-" value="" />
+						<listitem label="YES" value="Y"/>
+						<listitem label="NO" value="N"/>
+				</listbox>
+				<label/>
+			</row>
+			<row id="FMSRow" visible="false">
+				<label sclass="fieldLabel required" value="Refund/Collect?"  />
+				<listbox id="updateFMSList" mold="select">
+						<listitem label="-" value="" />
+						<listitem label="REFUND" value="R"/>
+						<listitem label="COLLECT" value="C"/>
+				</listbox>
+				<label sclass="fieldLabel required" value="FMS Amount($)"  />
+				<decimalbox   id="FMSAmount" format="#######,##0.00"/>
+			</row>
+			<row id="FMSRow2" visible="false">
+				<label sclass="fieldLabel" value="Incentive Amount($)" />
+				<decimalbox id="incentiveAmt" format="#######,##0.00" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.IncentiveAmountConstraint')}" />
+				<label sclass="fieldLabel" value="Promo Amount($)" />
+				<decimalbox id="promoAmt" format="#######,##0.00" />
+			</row>
+			<row  id="FMSRow3" visible="false">
+				<label sclass="fieldLabel" value="CabRewards Amount($)" />
+				<decimalbox id="cabRewardsAmt" format="#######,##0.00" />
+				<label id="levyLabel" sclass="fieldLabel" value="Levy Amount($)"  visible="false" />
+				<decimalbox id="levy" format="#######,##0.00"  visible="false"/>
+			</row>
+			<row spans="4">
+				<hbox>
+					<button label="Create Trip" id="save" onClick="newPremTxnWindow.save()" disabled="false" />
+					<button label="Reset" onClick="newPremTxnWindow.reset()"/>
+				</hbox>
+			</row>
+			
+		</rows>
+	</grid>
+				
+			
+	
+</window>

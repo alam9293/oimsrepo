@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="cardInProduction">
+	<return-scalar column="account_no" 				type="string"/>
+	<return-scalar column="account_name" 			type="string"/>
+	<return-scalar column="div_id"					type="string"/>
+	<return-scalar column="div_name"				type="string"/>
+	<return-scalar column="dept_id"					type="string"/>
+	<return-scalar column="dept_name"				type="string"/>
+	<return-scalar column="card_no"					type="string"/>
+	<return-scalar column="ship_contact_name"		type="string"/>
+	<return-scalar column="card_holder_name"		type="string"/>
+	<return-scalar column="name_on_product"			type="string"/>
+	<return-scalar column="credit_limit"			type="string"/>
+	<return-scalar column="fixed_value"				type="string"/>
+	<return-scalar column="expiry_date"				type="string"/>
+	<return-scalar column="current_status"			type="string"/>
+	<return-scalar column="card_reason"				type="string"/>
+	<![CDATA[
+  select case when grand.cust_no is not null then grand.cust_no when parent.CUST_NO is not null then parent.CUST_NO else acct.CUST_NO end as account_no,
+    case when grand.cust_no is not null then grand.account_name when parent.CUST_NO is not null then parent.account_name else acct.account_name end as account_name,
+    case when grand.cust_no is not null then parent.code when parent.CUST_NO is not null then acct.code else null end as div_id,
+    case when grand.cust_no is not null then parent.account_name when parent.CUST_NO is not null then acct.account_name else null end as div_name,
+    case when grand.cust_no is not null then acct.CODE else null end as dept_id,
+    case when grand.cust_no is not null then acct.ACCOUNT_NAME else null end as dept_name,
+    product.CARD_NO,
+    case when contact.MAIN_CONTACT_SAL is not null then main_sal.MASTER_VALUE||' ' else '' end || contact.MAIN_CONTACT_NAME || case when contact.SUB_CONTACT_NAME is not null then ' / ' || case when contact.SUB_CONTACT_SAL is not null then sub_sal.MASTER_VALUE||' ' else '' end||contact.SUB_CONTACT_NAME else '' end as ship_contact_name,
+    case when product.CARD_HOLDER_SALUTATION is not null then product.CARD_HOLDER_SALUTATION || ' ' else '' end || product.CARD_HOLDER_NAME as card_holder_name,
+    product.NAME_ON_PRODUCT,
+    trim(to_char(product.CREDIT_LIMIT, '999,999,990.00')) as credit_limit,
+    trim(to_char(product.FIXED_VALUE, '999,999,990.00')) as fixed_value,
+    to_char(product.EXPIRY_DATE, 'mm/yyyy') as expiry_date,
+    product.CURRENT_STATUS,
+    case
+        when replacement.PRODUCT_REPLACEMENT_NO is not null and (:replaceStart is not null or :replaceEnd is not null)
+        then replacement_reason.MASTER_VALUE
+        when renew.PRODUCT_RENEW_NO is not null and (:renewStart is not null or :renewEnd is not null)
+        then 'CARD RENEWAL'
+        else 'NEW CARD'
+    end as card_reason
+    from PMTB_PRODUCT product
+    inner join AMTB_ACCOUNT acct on product.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    inner join AMTB_ACCT_MAIN_CONTACT main on main.ACCOUNT_NO = acct.ACCOUNT_NO and main.MAIN_CONTACT_TYPE = 'S'
+    inner join AMTB_CONTACT_PERSON contact on main.CONTACT_PERSON_NO = contact.CONTACT_PERSON_NO
+    left join MSTB_MASTER_TABLE main_sal on contact.MAIN_CONTACT_SAL = main_sal.MASTER_NO
+    left join MSTB_MASTER_TABLE sub_sal on contact.SUB_CONTACT_SAL = sub_sal.MASTER_NO
+    left join PMTB_PRODUCT_RENEW renew on product.PRODUCT_NO = renew.PRODUCT_NO and (:renewStart is not null or :renewEnd is not null)
+    left join PMTB_PRODUCT_REPLACEMENT replacement on product.PRODUCT_NO = replacement.PRODUCT_NO and replacement.REPLACEMENT_REASON != -1 and (:replaceStart is not null or :replaceEnd is not null)
+    left join MSTB_MASTER_TABLE replacement_reason on replacement.REPLACEMENT_REASON = replacement_reason.MASTER_NO
+    where (((:issueStart is not null or :issueEnd is not null)and(product.ISSUE_DATE between case when :issueStart is null then to_date(:issueEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:issueStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :issueEnd is null then to_date(:issueStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:issueEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+        or ((:renewStart is not null or :renewEnd is not null)and(renew.RENEW_DATE between case when :renewStart is null then to_date(:renewEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:renewStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :renewEnd is null then to_date(:renewStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:renewEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+        or ((:replaceStart is not null or :replaceEnd is not null)and(replacement.REPLACEMENT_DATE between case when :replaceStart is null then to_date(:replaceEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :replaceEnd is null then to_date(:replaceStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:replaceEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+        or ((:cardStart is not null or :cardEnd is not null)and(product.CARD_NO between case when :cardStart is null then :cardEnd else :cardStart end and case when :cardEnd is null then :cardStart else :cardEnd end))
+    ) and product.PRODUCT_TYPE_ID = :productType
+    and (:cardStatus is null or product.CURRENT_STATUS = :cardStatus)
+    order by case when :sortBy = 'AN' then (case when grand.CUST_NO is not null then grand.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else acct.ACCOUNT_NAME end) when :sortBy = 'CN' then product.CARD_NO when :sortBy = 'CS' then product.CURRENT_STATUS else card_reason end,
+        case when :sortBy = 'AN' then (case when grand.CUST_NO is not null then parent.ACCOUNT_NAME when parent.CUST_NO is not null then acct.ACCOUNT_NAME else null end) else (case when grand.CUST_NO is not null then grand.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else acct.ACCOUNT_NAME end) end,
+        case when :sortBy = 'AN' then (case when grand.CUST_NO is not null then acct.ACCOUNT_NAME else null end) else (case when grand.CUST_NO is not null then parent.ACCOUNT_NAME when parent.CUST_NO is not null then acct.ACCOUNT_NAME else null end) end,
+        case when :sortBy = 'AN' then product.CARD_NO else (case when grand.CUST_NO is not null then acct.ACCOUNT_NAME else null end) end,
+        case when (:sortBy = 'CS' or :sortBy = 'CR') then product.CARD_NO else null end
+	]]>
+</sql-query>
+</hibernate-mapping>

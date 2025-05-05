@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.master.model.MstbPromoDetail" 
+    table="MSTB_PROMO_DETAIL"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="promoDetailNo"
+        type="java.lang.Integer"
+        column="PROMO_DETAIL_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">MSTB_PROMO_DETAIL_SQ1</param>
+        </generator>
+    </id>
+
+    <property
+        name="name"
+        type="java.lang.String"
+        column="NAME"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="type"
+        type="java.lang.String"
+        column="TYPE"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="promoType"
+        type="java.lang.String"
+        column="PROMO_TYPE"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="promoValue"
+        type="java.math.BigDecimal"
+        column="PROMO_VALUE"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="effectiveDtFrom"
+        type="java.sql.Timestamp"
+        column="EFFECTIVE_DT_FROM"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="effectiveDtTo"
+        type="java.sql.Timestamp"
+        column="EFFECTIVE_DT_TO"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="effectiveCutoffDate"
+        type="java.sql.Date"
+        column="EFFECTIVE_CUTOFF_DATE"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="version"
+        type="java.lang.Integer"
+        column="VERSION"
+        length="9"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- bi-directional many-to-one association to PmtbProductType -->
+    <many-to-one
+        name="pmtbProductType"
+        class="com.cdgtaxi.ibs.common.model.PmtbProductType"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PRODUCT_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByJobType"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="JOB_TYPE" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTableByVehicleModel"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="VEHICLE_MODEL" />
+    </many-to-one>
+    <many-to-one
+        name="mstbPromotion"
+        class="com.cdgtaxi.ibs.master.model.MstbPromotion"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="PROMO_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="creditDebitNote">
+	<return-scalar column="cust_no" 				type="string"/>
+	<return-scalar column="account_name" 			type="string"/>
+	<return-scalar column="note_no"					type="string"/>
+	<return-scalar column="reference_invoice_no"	type="string"/>
+	<return-scalar column="outstanding_amount"		type="string"/>
+	<return-scalar column="created_dt"				type="string"/>
+	<return-scalar column="note_type"				type="string"/>
+	<return-scalar column="cancel_dt"				type="string"/>
+	<return-scalar column="note_amount"				type="string"/>
+	<return-scalar column="admin_fee"				type="string"/>
+	<return-scalar column="gst"						type="string"/>
+	<return-scalar column="discount"				type="string"/>
+	<return-scalar column="promo_dis"				type="string"/>
+	<return-scalar column="cr_dr_amount"			type="string"/>
+	<return-scalar column="cancel_amount"			type="string"/>
+	<![CDATA[
+  select case when acct.cust_no is not null then acct.cust_no when parent.cust_no is not null then parent.cust_no else grandparent.cust_no end as cust_no,
+	case when acct.cust_no is not null then acct.account_name when parent.cust_no is not null then parent.account_name else grandparent.account_name end as account_name,
+	to_char(note_no) as note_no, to_char(invoice.INVOICE_NO) as REFERENCE_INVOICE_NO, trim(to_char(invoice.OUTSTANDING_AMOUNT, '999,999,990.00')) as OUTSTANDING_AMOUNT, to_char(note.CREATED_DT, 'dd/mm/yyyy') as CREATED_DT, note_type, to_char(note.cancel_dt, 'dd/mm/yyyy') as cancel_dt, 
+	case when note_type = 'C' then 0-(note_amount-promo_dis) else (note_amount-promo_dis) end as note_amount,
+	case when note_type = 'C' then 0-admin_fee else admin_fee end as admin_fee,
+	case when note_type = 'C' then 0-gst else gst end as gst,
+	case when note_type = 'C' then (case when note_txn_type='T' then prod_dis else discount end) else 
+		0-(case when note_txn_type='T' then prod_dis else discount end) end as discount,
+	case when note_type = 'C' then promo_dis else 0-promo_dis end as promo_dis,
+	trim(to_char(
+		(case when note_type = 'C' then 0-(case when note_txn_type='T' then (note_amount + gst + admin_fee - prod_dis - promo_dis) else (note_amount + gst - prod_dis) end)
+			else (case when note_txn_type='T' then (note_amount + gst + admin_fee - prod_dis - promo_dis) else (note_amount + gst - prod_dis) end) 
+		end) 
+	,'999,999,990.00')) as CR_DR_AMOUNT,
+	trim(to_char(
+		(case when note.cancel_dt is not null then 
+			(case when note_type = 'C' then 0-(case when note_txn_type='T' then (note_amount + gst + admin_fee - prod_dis - promo_dis) else (note_amount + gst - prod_dis) end)
+				else (case when note_txn_type='T' then (note_amount + gst + admin_fee - prod_dis - promo_dis) else (note_amount + gst - prod_dis) end) 
+			end)
+		else 0 end)
+	,'999,999,990.00')) as CANCEL_AMOUNT
+    from BMTB_NOTE note
+    inner join AMTB_ACCOUNT acct using (ACCOUNT_NO)
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grandparent on parent.PARENT_NO = grandparent.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grandparent.CUST_NO IS NOT NULL THEN grandparent.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+	inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+    inner join BMTB_INVOICE_HEADER invoice on note.ISSUED_INVOICE_HEADER_NO = invoice.INVOICE_HEADER_NO
+    where case when parent.account_no is null then acct.CUST_NO else case when grandparent.account_no is null then parent.CUST_NO else grandparent.CUST_NO end end like :acctNo
+    and case when parent.account_no is null then acct.ACCOUNT_NAME else case when grandparent.account_no is null then parent.ACCOUNT_NAME else grandparent.ACCOUNT_NAME end end like :acctName
+    and (:noteType is null or note_type = :noteType)
+    and ((:noteStart is null and :noteEnd is null)or(note.CREATED_DT between case when :noteStart is null then to_date(:noteEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:noteStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :noteEnd is null then to_date(:noteStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:noteEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and ((:cancelStart is null and :cancelEnd is null)or(note.CANCEL_DT between case when :cancelStart is null then to_date(:cancelEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:cancelStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :cancelEnd is null then to_date(:cancelStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:cancelEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and note.status not in ('P','L','R')
+    and (:entityNo is null or entity.entity_no = :entityNo)
+    order by case when :order = 'INVNO' then invoice.INVOICE_NO else null end, case when :order = 'CN' then account_name when :order = 'ND' then to_char(note.CREATED_DT) else note.note_type end
+	]]>
+</sql-query>
+</hibernate-mapping>

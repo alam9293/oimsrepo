@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+	<!-- ============================================================================================= -->
+	<!-- ============================================================================================= -->
+
+	<!-- DAOs for masters. -->
+	<bean id="constantDao" class="com.cdgtaxi.ibs.master.dao.ConstantDaoHibernate" parent="genericDao"/>
+	<bean id="setupDao" class="com.cdgtaxi.ibs.master.dao.SetupDaoHibernate" parent="genericDao"/>
+
+	<!-- Configurable Constants -->
+	<!-- ====================== -->
+	<bean id="configurableConstants" class="com.cdgtaxi.ibs.common.ConfigurableConstants" init-method="init">
+		<property name="constantDao" ref="constantDao"/>
+	</bean>
+	<!--    Master Managers     -->
+	<bean id="adminFeePlanManager" class="com.cdgtaxi.ibs.common.AdminFeeMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="earlyPaymentPlanManager" class="com.cdgtaxi.ibs.common.EarlyPaymentMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="GSTManager" class="com.cdgtaxi.ibs.common.GSTMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="latePaymentPlanManager" class="com.cdgtaxi.ibs.common.LatePaymentMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="volumeDiscountPlanManager" class="com.cdgtaxi.ibs.common.VolumeDiscountMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="rewardsPlanManager" class="com.cdgtaxi.ibs.common.RewardsMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="subscriptionPlanManager" class="com.cdgtaxi.ibs.common.SubscriptionMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="issuancePlanManager" class="com.cdgtaxi.ibs.common.IssuanceMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="salespersonManager" class="com.cdgtaxi.ibs.common.SalespersonMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="entityManager" class="com.cdgtaxi.ibs.common.EntityMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="productDiscountManager" class="com.cdgtaxi.ibs.common.ProductDiscountMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="creditTermManager" class="com.cdgtaxi.ibs.common.CreditTermMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="promotionManager" class="com.cdgtaxi.ibs.common.PromotionMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<bean id="bankManager" class="com.cdgtaxi.ibs.common.BankMasterManager" init-method="init">
+		<property name="setupDao" ref="setupDao"/>
+	</bean>
+	<!--      Master Setup      -->
+	<!-- ====================== -->
+	<bean id="masterSetup" class="com.cdgtaxi.ibs.common.MasterSetup">
+		<property name="masterManagers">
+			<map>
+				<entry key="AF" value-ref="adminFeePlanManager"/>
+				<entry key="EP" value-ref="earlyPaymentPlanManager"/>
+				<entry key="GST" value-ref="GSTManager"/>
+				<entry key="LP" value-ref="latePaymentPlanManager"/>
+				<entry key="VD" value-ref="volumeDiscountPlanManager"/>
+				<entry key="RW" value-ref="rewardsPlanManager"/>
+				<entry key="SF" value-ref="subscriptionPlanManager"/>
+				<entry key="IF" value-ref="issuancePlanManager"/>
+				<entry key="SP" value-ref="salespersonManager"/>
+				<entry key="ET" value-ref="entityManager"/>
+				<entry key="PD" value-ref="productDiscountManager"/>
+				<entry key="CT" value-ref="creditTermManager"/>
+				<entry key="BA" value-ref="bankManager"/>
+				<entry key="PM" value-ref="promotionManager"/>
+			</map>
+		</property>
+	</bean>
+</beans>

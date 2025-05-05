@@ -1,0 +1,22 @@
+1. properties.xml          - change database settings over here line 43-48
+						   - change driver name, url and schema line 57-61
+2. build-{projectname}.xml - update line 13 for which properties_{databasetype}.xml to use
+						   - update line 16-17 for package names
+                           - update line 89 for select tables to be generated(none for all)
+                           - update line 109 for m:n relationship tables
+3. run cmd [ant -f build_{projectname}.xml hbm2java] or use eclipse ant to run
+4. cut & paste generated files into destinated directory
+5. use eclipse: search "extends org.xfw.XAbstractEntity implements java.io.Serializable"
+   and replace with "extends org.xfw.XAbstractEntity implements com.wiz.common.model.Entity"
+6. use eclipse:
+   a. highlight all model java files
+   b. right click -> source -> clean up...
+   c. select "custom profile" and click configure
+   d. under "Missing Code" tab, check the box and select "default(1L)"
+   e. MAKE SURE REST OF THE TABS' CONTENTS ARE ALL UNCHECKED
+
+NOTE: please remember to remove away generated files/folders
+      after usage in middlegen directory
+      1. src folder
+      2. prefs.properties
+      3. velocity.log

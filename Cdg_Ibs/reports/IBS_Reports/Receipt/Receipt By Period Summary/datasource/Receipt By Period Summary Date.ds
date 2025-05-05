@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Receipt By Period Summary Date" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="RECEIPT_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CANCELLED_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="RECEIPT_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select RECEIPT_AMOUNT, CANCELLED_AMOUNT, payment.RECEIPT_DATE
+    from
+    (select sum(payment_amount) as RECEIPT_AMOUNT, trunc(RECEIPT_DT, 'J') as RECEIPT_DATE
+        from bmtb_payment_receipt payment
+        inner join mstb_master_table master on  master.master_no = payment.payment_mode
+		left join AMTB_ACCOUNT acct on payment.account_no = acct.account_no
+		left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.account_no
+		left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.account_no
+		inner join AMTB_ACCOUNT top on (case when grand.cust_no is not null then grand.account_no when parent.cust_no is not null then parent.account_no else acct.account_no end) = top.account_no
+		inner join FMTB_AR_CONT_CODE_MASTER ar on top.ar_control_code_no = ar.ar_control_code_no
+		inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+		left join AMTB_ACCT_SALESPERSON acct_sales on acct_sales.ACCOUNT_NO = payment.account_no
+		and payment.RECEIPT_DT between acct_sales.EFFECTIVE_DT_FROM 
+		and (case when acct_sales.EFFECTIVE_DT_TO is null then to_date('9999-12-31','yyyy-mm-dd hh24:mi:ss') else acct_sales.EFFECTIVE_DT_TO end)
+		where
+        master.master_code not like 'MEMO' and (master_code = '${3. Payment Mode#choice()#CC:PM}' or '${3. Payment Mode#choice()#CC:PM}' is null) and
+        (('${1. Receipt Start Date#date}' is null and '${2. Receipt End Date#date}' is null)or(payment.RECEIPT_DT between case when '${1. Receipt Start Date#date}' is null then to_date('${2. Receipt End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Receipt Start Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Receipt End Date#date}' is null then to_date('${1. Receipt Start Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Receipt End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    	and ('${4. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.entity_no = '${4. Entity#choice(1,2,3)#MASTER:EM}')
+		and ('${5. Sales Person#choice()#MASTER:SP}' is null or acct_sales.SALESPERSON_NO = '${5. Sales Person#choice()#MASTER:SP}')
+    group by trunc(RECEIPT_DT, 'J')) payment
+    left join
+    (select sum(payment_amount) as CANCELLED_AMOUNT, trunc(RECEIPT_DT, 'J') as RECEIPT_DATE
+        from bmtb_payment_receipt payment
+        inner join mstb_master_table master on  master.master_no = payment.payment_mode
+		left join AMTB_ACCOUNT acct on payment.account_no = acct.account_no
+		left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.account_no
+		left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.account_no
+		inner join AMTB_ACCOUNT top on (case when grand.cust_no is not null then grand.account_no when parent.cust_no is not null then parent.account_no else acct.account_no end) = top.account_no
+		inner join FMTB_AR_CONT_CODE_MASTER ar on top.ar_control_code_no = ar.ar_control_code_no
+		inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+		left join AMTB_ACCT_SALESPERSON acct_sales on acct_sales.ACCOUNT_NO = payment.account_no
+		and payment.RECEIPT_DT between acct_sales.EFFECTIVE_DT_FROM 
+		and (case when acct_sales.EFFECTIVE_DT_TO is null then to_date('9999-12-31','yyyy-mm-dd hh24:mi:ss') else acct_sales.EFFECTIVE_DT_TO end)
+		where
+        master.master_code not like 'MEMO' and CANCEL_DT is not null and (master_code = '${3. Payment Mode#choice()#CC:PM}' or '${3. Payment Mode#choice()#CC:PM}' is null) and
+        (('${1. Receipt Start Date#date}' is null and '${2. Receipt End Date#date}' is null)or(payment.RECEIPT_DT between case when '${1. Receipt Start Date#date}' is null then to_date('${2. Receipt End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Receipt Start Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Receipt End Date#date}' is null then to_date('${1. Receipt Start Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Receipt End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    	and ('${4. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.entity_no = '${4. Entity#choice(1,2,3)#MASTER:EM}')
+		and ('${5. Sales Person#choice()#MASTER:SP}' is null or acct_sales.SALESPERSON_NO = '${5. Sales Person#choice()#MASTER:SP}')
+    group by trunc(RECEIPT_DT, 'J')) cancel
+    on payment.RECEIPT_DATE = cancel.RECEIPT_DATE
+    order by RECEIPT_DATE</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

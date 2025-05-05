@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="prepaidUsageDetail">
+	<return-scalar column="account_no" 			type="string"/>
+	<return-scalar column="account_name"		type="string"/>
+	<return-scalar column="div_id"				type="string"/>
+	<return-scalar column="div_name"			type="string"/>
+	<return-scalar column="dept_id"				type="string"/>
+	<return-scalar column="dept_name"			type="string"/>
+	<return-scalar column="card_no"				type="string"/>
+	<return-scalar column="card_name"			type="string"/>
+	<return-scalar column="issue_date"			type="string"/>
+	<return-scalar column="value_expiry_date"	type="string"/>
+	<return-scalar column="card_expiry_date"	type="string"/>
+	<return-scalar column="card_status"			type="string"/>
+	<return-scalar column="months_subsc"		type="string"/>
+	<return-scalar column="purchase_amt"		type="string"/>
+	<return-scalar column="top_up"				type="string"/>
+	<return-scalar column="booking"				type="string"/>
+	<return-scalar column="trips"				type="string"/>
+	<return-scalar column="booking_percent"		type="string"/>
+	
+	<![CDATA[
+WITH purchase_info
+AS
+(
+  select product.product_no , sum(txn.APPLY_CARD_VALUE) as total_purchase, sum(case when txn.txn_type ='TOP_UP' then 1 else 0 end) as count_top_up
+  from pmtb_prepaid_card_txn txn
+  left join pmtb_product product on  txn.PMTB_PRODUCT = product.product_no
+  left join pmtb_prepaid_req req on txn.PMTB_PREPAID_REQ = req.req_no
+  left join bmtb_invoice_header header on header.invoice_header_no =  req.BMTB_INVOICE_HEADER
+  where txn.txn_type in ('ISSUE', 'TOP_UP')
+  and header.invoice_status = 'C'
+  group by product.product_no
+),
+trips_info
+AS
+(
+  select product.product_no, count(1) as total_trips, count(case when substr(trip.job_no, 0 , 1) in (1,2,3) then 1 end) as total_booking
+  from tmtb_acquire_txn trip
+  left join pmtb_product product on  trip.product_no = product.product_no
+  where
+  (
+    (:tripStartDate is null and :tripEndDate is null)
+    or
+    (
+      trip.trip_start_dt between 
+        case when :tripStartDate is null 
+        then 
+          to_date(:tripEndDate||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss')
+        else 
+          to_date(:tripStartDate||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss')
+        end
+       and 
+        case when :tripEndDate is null 
+        then 
+          to_date(:tripStartDate||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss')
+        else 
+          to_date(:tripEndDate||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss')
+        end
+    )
+  )
+  and trip.txn_status not in ('V', 'R')
+  group by product.product_no
+),
+usage_detail_info
+AS
+(
+  select 
+  top.cust_no as account_no, 
+  top.account_name as account_name,
+  case when grand.cust_no is not null then parent.code when parent.CUST_NO is not null then acct.code else null end as div_id,
+  case when grand.cust_no is not null then parent.account_name when parent.CUST_NO is not null then acct.account_name else null end as div_name,
+  case when grand.cust_no is not null then acct.CODE else null end as dept_id,
+  case when grand.cust_no is not null then acct.ACCOUNT_NAME else null end as dept_name,
+  product.CARD_NO as card_no,
+  product.NAME_ON_PRODUCT as card_name,
+  product.ISSUE_DATE as issue_date,
+  product.balance_expiry_date as value_expiry_date,
+  product.EXPIRY_DATE as card_expiry_date,
+  product.current_status as card_status,
+  case when last_eff_status.acct_status='T'
+    then MONTHS_BETWEEN(sysdate,last_eff_status.effective_dt)
+    else MONTHS_BETWEEN(sysdate,acct.created_dt)
+  end
+  as months_subsc,
+  purchase_info.total_purchase as purchase_amt,
+  purchase_info.count_top_up as top_up,
+  NVL(trips_info.total_booking, 0) as booking,
+  NVL(total_trips, 0) as trips,
+  round(NVL(trips_info.total_booking / total_trips * 100, 0), 0) as booking_percent
+  from pmtb_product product
+  left join AMTB_ACCOUNT acct on product.ACCOUNT_NO = acct.ACCOUNT_NO
+  left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+  left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+  left join AMTB_ACCOUNT top on (case when grand.cust_no is not null then grand.account_no when parent.cust_no is not null then parent.account_no else acct.account_no end) = top.account_no
+  left join AMTB_ACCT_TYPE type on top.ACCT_TYPE_NO = type.ACCT_TYPE_NO
+  left join FMTB_AR_CONT_CODE_MASTER ar on top.ar_control_code_no = ar.ar_control_code_no
+  left join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+  left join (select max(acct_status_no) as acct_status_no, account_no from AMTB_ACCT_STATUS where EFFECTIVE_DT < systimestamp group by account_no) temp_status on acct.account_no = temp_status.account_no
+  inner join AMTB_ACCT_STATUS last_eff_status on last_eff_status.acct_status_no = temp_status.acct_status_no
+  left join purchase_info purchase_info on product.product_no = purchase_info.product_no
+  left join trips_info trips_info on product.product_no = trips_info.product_no
+  where (purchase_info.product_no is not null or trips_info.product_no is not null)
+  and (:acctType is null or type.ACCT_TEMPLATE =:acctType)
+  and (:acctNo is null or top.cust_no =:acctNo)
+  and (:acctName is null or top.account_name like '%' || :acctName || '%')
+  and (:cardNo is null or product.card_no = :cardNo)
+  and (:cardStatus is null or product.current_status = :cardStatus)
+  and (:productTypeId is null or product.product_type_id = :productTypeId)
+  and
+    (
+      (:issueStartDate is null and :issueEndDate is null)
+      or
+      (
+        product.created_dt between 
+          case when :issueStartDate is null 
+          then 
+            to_date(:issueEndDate||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss')
+          else 
+            to_date(:issueStartDate||' 00:00:00', 'yyyy-mm-dd hh24:mi:ss')
+          end
+         and 
+          case when :issueEndDate is null 
+          then 
+            to_date(:issueStartDate||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss')
+          else 
+            to_date(:issueEndDate||' 23:59:59', 'yyyy-mm-dd hh24:mi:ss')
+          end
+      )
+   )
+   and (:entityNo is null or entity.ENTITY_NO = :entityNo)
+)
+select 
+account_no,
+account_name,
+div_id,
+div_name,
+dept_id,
+dept_name,
+card_no,
+card_name,
+to_char(issue_date, 'DD-MON-YYYY') as issue_date,
+to_char(value_expiry_date, 'DD-MON-YYYY') as value_expiry_date,
+to_char(card_expiry_date, 'DD-MON-YYYY') as card_expiry_date,
+card_status,
+decode(floor(months_subsc), 0, 1, floor(months_subsc)) as months_subsc,
+purchase_amt,
+top_up,
+booking,
+trips,
+booking_percent
+from usage_detail_info
+order by 
+  case :sortBy 
+    when 'NOM' then decode(floor(months_subsc), 0, 1, floor(months_subsc)) 
+    when 'TU' then top_up
+    when 'PA' then purchase_amt
+  end
+desc
+	]]>
+</sql-query>
+</hibernate-mapping>

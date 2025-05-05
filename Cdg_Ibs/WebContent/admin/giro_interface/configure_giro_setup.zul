@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="configureGiroSetupWindow" border="normal" use="com.cdgtaxi.ibs.admin.ui.ConfigureGiroSetupWindow"
+	title="Configure Giro Setup"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	width="98%">
+
+	<hbox>
+		<button label="Add" onClick="configureGiroSetupWindow.add()"/>
+		<button label="Delete" onClick="configureGiroSetupWindow.delete()"/>
+	</hbox>
+	<listbox id="setupList" 
+		onCreate="configureGiroSetupWindow.loadSetup()"
+		checkmark="true" multiple="true"
+	>
+   		<listhead sizable="true">
+			<listheader label="" 						sort="none"	width="25px"/>
+			<listheader label="Entity" 					sort="none"/>
+			<listheader label="Cut Off Day" 			sort="none"/>
+			<listheader label="Request Day" 			sort="none"/>
+			<listheader label="Request Time" 			sort="none"/>
+			<listheader label="Value Day" 				sort="none"/>
+			<listheader label="Invoice GIRO Day" 		sort="none"/>
+			<listheader label="Last Updated By" 		sort="none"/>
+			<listheader label="Last Updated Date Time" 	sort="none"/>
+<!--			<listheader label=""					 	sort="none"/>-->
+		</listhead>
+   	</listbox>
+   	<h:br/>
+   	<button label="Save" onClick="configureGiroSetupWindow.save()"/>
+   	<button label="Reset" onClick="configureGiroSetupWindow.loadSetup()"/>
+</window>

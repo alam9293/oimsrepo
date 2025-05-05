@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageLatePaymentPlanWindow"
+	title="Manage Late Payment Plans" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ManageLatePaymentPlanWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<listbox id="resultList" onSelect="manageLatePaymentPlanWindow.editPlan()" mold="paging">
+		<listhead sizable="false">
+			<listheader label="Late Payment Plan Name" sort="auto"/>
+			<listheader label="Delete" width="60px"/>
+		</listhead>
+		<listitem>
+			<listcell/>
+			<listcell/>
+<!--			<listcell>-->
+<!--				<image src="/images/delete.png" style="cursor:pointer"-->
+<!--					onClick="manageLatePaymentPlanWindow.deletePlan(self.getParent().getParent())"/>-->
+<!--			</listcell>-->
+		</listitem>
+	</listbox>
+	<button id="createBtn" label="New Late Payment Plan" onClick="manageLatePaymentPlanWindow.createPlan()" />
+</window>

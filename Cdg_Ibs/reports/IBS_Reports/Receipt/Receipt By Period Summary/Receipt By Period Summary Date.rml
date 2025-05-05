@@ -1,0 +1,272 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="100" grid-y="100" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/Receipt/Receipt By Period Summary/Receipt By Period Summary Date.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="iso-a4" page-width="11905" page-height="16837" orientation="Portrait" horizontal-page-count="1" margin-top="1020" margin-left="1020" margin-bottom="400" margin-right="1020" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="1. Receipt Start Date" enabled="Yes">${1. Receipt Start Date#date}</rml:param><rml:param xml:space="preserve" key="2. Receipt End Date" enabled="Yes">${2. Receipt End Date#date}</rml:param><rml:param xml:space="preserve" key="3. Payment Mode" enabled="Yes">${3. Payment Mode#choice()#CC:PM}</rml:param><rml:param xml:space="preserve" key="5. Sales Person" enabled="Yes">${5. Sales Person#choice()#MASTER:SP}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+    <rml:datasource name="Default" datasource-name="/IBS_Reports/Receipt/Receipt By Period Summary/datasource/Receipt By Period Summary Date.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="4. Entity">${4. Entity#choice(1,2,3)#MASTER:EM}</rml:param><rml:param xml:space="preserve" key="3. Payment Mode">${3. Payment Mode#choice()#CC:PM}</rml:param><rml:param xml:space="preserve" key="2. Receipt End Date">${2. Receipt End Date#date}</rml:param><rml:param xml:space="preserve" key="1. Receipt Start Date">${1. Receipt Start Date#date}</rml:param><rml:param xml:space="preserve" key="5. Sales Person">${5. Sales Person#choice()#MASTER:SP}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="detail">
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" data-source="Default" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:watermark report="" section="" enabled="No">
+        <rml:parameters>
+        </rml:parameters>
+      </rml:watermark>
+      <rml:section-header table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="739" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:vbox left="0" top="0" width="9864" height="500" style=""><rml:render-if xml:space="preserve" language="javascript">Data.getCount("RECEIPT_DATE").getValueOverAll() == 0</rml:render-if>
+          <rml:cell weight="100" left="0" top="0" width="9864" height="250" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" left="0" top="0" width="9864" height="250" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Summary By Date</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="100" left="0" top="250" width="9864" height="250" style="">
+            <rml:hbox left="0" top="250" width="9864" height="250" style="">
+              <rml:cell weight="3325" left="0" top="250" width="655" height="250" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if>
+                <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="0" top="250" width="655" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if><rml:control-source xml:space="preserve" type="Literal" running-value="No">S/N</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="11636" left="655" top="250" width="2295" height="250" style="">
+                <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="655" top="250" width="2295" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Date</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="11912" left="2950" top="250" width="2350" height="250" style="">
+                <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="2950" top="250" width="2350" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Receipt Amt ($)</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="11654" left="5300" top="250" width="2299" height="250" style="">
+                <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="5300" top="250" width="2299" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Cancelled Amt ($)</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="11473" left="7599" top="250" width="2265" height="250" style="">
+                <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="7599" top="250" width="2265" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Net Received ($)</rml:control-source>
+                </rml:field>
+              </rml:cell>
+            </rml:hbox>
+          </rml:cell>
+        </rml:vbox>
+        <rml:field text-align="Center" font-name="Arial" font-size="180" left="0" top="500" width="9864" height="239" style=""><rml:render-if xml:space="preserve" language="javascript">Data.getCount("RECEIPT_DATE").getValueOverAll() == 0</rml:render-if><rml:control-source xml:space="preserve" type="Literal" running-value="No">No Record Found</rml:control-source>
+        </rml:field>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" height="398" style="">
+        <rml:hbox left="0" top="0" width="9864" height="398" style="">
+          <rml:cell weight="3063" left="0" top="0" width="657" height="398" style="total">
+          </rml:cell>
+          <rml:cell weight="10720" left="657" top="0" width="2302" height="398" style="total">
+          </rml:cell>
+          <rml:cell weight="10903" left="2959" top="0" width="2341" height="398" style="total">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="2959" top="0" width="2341" height="398" border-style="Solid" border-left="No" border-right="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("RECEIPT_AMOUNT").getValueOverGroup()</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10708" left="5300" top="0" width="2299" height="398" style="total">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="5300" top="0" width="2299" height="398" border-style="Solid" border-left="No" border-right="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("CANCELLED_AMOUNT").getValueOverGroup()</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10543" left="7599" top="0" width="2265" height="398" style="total">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="7599" top="0" width="2265" height="398" border-style="Solid" border-left="No" border-right="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("RECEIPT_AMOUNT").getValueOverGroup()-Data.getSum("CANCELLED_AMOUNT").getValueOverGroup()</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header force-new-page="None" visible="No" height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer visible="No" height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" height="299" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:hbox left="0" top="0" width="9864" height="298" style="">
+          <rml:cell weight="3325" left="0" top="0" width="655" height="298" style="">
+            <rml:field text-align="Left" font-name="Arial" font-size="180" left="0" top="0" width="655" height="298" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getCount("RECEIPT_DATE").getRunningValueOverGroup()</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="11636" left="655" top="0" width="2295" height="298" style="">
+            <rml:field text-align="Left" font-name="Arial" font-size="180" left="655" top="0" width="2295" height="298" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="dd/MM/yyyy" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="RECEIPT_DATE" running-value="No">RECEIPT_DATE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="11912" left="2950" top="0" width="2350" height="298" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="2950" top="0" width="2350" height="298" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="RECEIPT_AMOUNT" running-value="No">RECEIPT_AMOUNT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="11654" left="5300" top="0" width="2299" height="298" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="5300" top="0" width="2299" height="298" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(CANCELLED_AMOUNT==null){
+	0;
+}else{
+	CANCELLED_AMOUNT
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="11473" left="7599" top="0" width="2265" height="298" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="7599" top="0" width="2265" height="298" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=RECEIPT_AMOUNT-CANCELLED_AMOUNT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:detail>
+      <rml:group field="RECEIPT_DATE" sort-order="Ascending" group-header-visible="Yes" group-footer-visible="Yes" group-on="All" group-data="">
+        <rml:group-header repeat="Yes" table-of-contents="No" visible="Yes" height="500" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+          <rml:vbox left="0" top="0" width="9864" height="500" style="">
+            <rml:cell weight="100" left="0" top="0" width="9864" height="250" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" left="0" top="0" width="9864" height="250" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Summary By Date</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="100" left="0" top="250" width="9864" height="250" style="">
+              <rml:hbox left="0" top="250" width="9864" height="250" style="">
+                <rml:cell weight="3325" left="0" top="250" width="655" height="250" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if>
+                  <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="0" top="250" width="655" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if><rml:control-source xml:space="preserve" type="Literal" running-value="No">S/N</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="11636" left="655" top="250" width="2295" height="250" style="">
+                  <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="655" top="250" width="2295" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Date</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="11912" left="2950" top="250" width="2350" height="250" style="">
+                  <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="2950" top="250" width="2350" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Receipt Amt ($)</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="11654" left="5300" top="250" width="2299" height="250" style="">
+                  <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="5300" top="250" width="2299" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Cancelled Amt ($)</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="11473" left="7599" top="250" width="2265" height="250" style="">
+                  <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="7599" top="250" width="2265" height="250" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Net Received ($)</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+              </rml:hbox>
+            </rml:cell>
+          </rml:vbox>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-header>
+        <rml:group-footer table-of-contents="No" visible="No" height="0" style="">
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-footer>
+      </rml:group>
+      <rml:ruler>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation report="" section="Section 1" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+    <rml:render-details mime-type="application/x-glint">
+      <rml:parameters><rml:param xml:space="preserve" key="Tree">No</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+    <rml:render-details mime-type="application/vnd.ms-excel">
+      <rml:parameters><rml:param xml:space="preserve" key="Snap">No</rml:param><rml:param xml:space="preserve" key="Paged">No</rml:param><rml:param xml:space="preserve" key="ForceNumbersAsText">No</rml:param><rml:param xml:space="preserve" key="Multiplier"></rml:param>
+      </rml:parameters>
+    </rml:render-details>
+    <rml:render-details mime-type="application/pdf">
+      <rml:parameters><rml:param xml:space="preserve" key="RenderAsImage">No</rml:param><rml:param xml:space="preserve" key="OwnerPassword"></rml:param><rml:param xml:space="preserve" key="CJKMappingURL"></rml:param><rml:param xml:space="preserve" key="AllowFillIn">No</rml:param><rml:param xml:space="preserve" key="AllowAssembly">No</rml:param><rml:param xml:space="preserve" key="Encryption">No</rml:param><rml:param xml:space="preserve" key="RenderAsImageDPI"></rml:param><rml:param xml:space="preserve" key="AllowModifyContents">No</rml:param><rml:param xml:space="preserve" key="EncryptionStrength">128 bits</rml:param><rml:param xml:space="preserve" key="AllowScreenReaders">No</rml:param><rml:param xml:space="preserve" key="AllowModifyAnnotations">No</rml:param><rml:param xml:space="preserve" key="BlankPageOnEmptyFile">No</rml:param><rml:param xml:space="preserve" key="AllowCopy">No</rml:param><rml:param xml:space="preserve" key="AllowDegradedPrinting">No</rml:param><rml:param xml:space="preserve" key="AllowPrinting">No</rml:param><rml:param xml:space="preserve" key="UserPassword"></rml:param><rml:param xml:space="preserve" key="Greyscale">No</rml:param><rml:param xml:space="preserve" key="RenderTextAPI">Yes</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+  </rml:rendering></rml:report>
+

@@ -1,0 +1,558 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="100" grid-y="100" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/Account/Customer Deposit Summary/Customer Deposit Summary.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="iso-a4" page-width="11905" page-height="16837" orientation="Portrait" horizontal-page-count="1" margin-top="1020" margin-left="1020" margin-bottom="396" margin-right="1020" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="1a. Account No" enabled="Yes">${1a. Account No#acctsearch#custId}</rml:param><rml:param xml:space="preserve" key="1b. Account Name" enabled="Yes">${1b. Account Name#acctsearch#custName}</rml:param><rml:param xml:space="preserve" key="2. Entity" enabled="Yes">${2. Entity#choice()#MASTER:EM}</rml:param><rml:param xml:space="preserve" key="printedBy" enabled="Yes">${printedBy}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+    <rml:datasource name="Default" datasource-name="/IBS_Reports/Account/Customer Deposit Summary/datasource/Customer Deposit Summary.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="1a. Account No">${1a. Account No}</rml:param><rml:param xml:space="preserve" key="2. Entity">${2. Entity#choice()#MASTER:EM}</rml:param><rml:param xml:space="preserve" key="1b. Account Name">${1b. Account Name}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+    <rml:datasource name="Entity" datasource-name="/IBS_Reports/Account/Customer Deposit Summary/datasource/Entity.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="2. Entity">${2. Entity#choice()#MASTER:EM}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="detail">
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" data-source="Default" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:watermark report="" section="" enabled="No">
+        <rml:parameters>
+        </rml:parameters>
+      </rml:watermark>
+      <rml:section-header table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="2200" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:vbox left="0" top="0" width="9864" height="1500" style=""><rml:render-if xml:space="preserve" language="javascript">Data.getCount("CUST_NO").getValueOverAll() == 0</rml:render-if>
+          <rml:cell weight="820" left="0" top="0" width="9864" height="300" style="">
+            <rml:hbox left="0" top="0" width="9864" height="300" style="">
+              <rml:cell weight="100" left="0" top="0" width="3288" height="300" style="">
+              </rml:cell>
+              <rml:cell weight="100" left="3288" top="0" width="3288" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="220" font-bold="Yes" left="3288" top="0" width="3288" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Integrated Billing System</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="100" left="6576" top="0" width="3288" height="300" style="">
+                <rml:field text-align="Right" font-name="Arial" font-size="180" left="6576" top="0" width="3288" height="300" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">="${#} of ${##}"</rml:control-source>
+                </rml:field>
+              </rml:cell>
+            </rml:hbox>
+          </rml:cell>
+          <rml:cell weight="820" left="0" top="300" width="9864" height="300" style="">
+            <rml:field text-align="Center" font-name="Arial" font-size="220" font-bold="No" left="0" top="300" width="9864" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Customer Deposit Report(Summary)</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="820" left="0" top="600" width="9864" height="300" style="">
+            <rml:hbox left="0" top="600" width="9864" height="300" style="">
+              <rml:cell weight="3767" left="0" top="600" width="1857" height="300" style="">
+                <rml:field font-name="Arial" font-size="200" font-bold="Yes" left="0" top="600" width="1857" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Selection criteria</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="16233" left="1857" top="600" width="8007" height="300" style="">
+                <rml:field font-name="Arial" font-size="200" font-bold="No" left="1857" top="600" width="8007" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">:</rml:control-source>
+                </rml:field>
+              </rml:cell>
+            </rml:hbox>
+          </rml:cell>
+          <rml:cell weight="820" left="0" top="900" width="9864" height="300" style="">
+            <rml:hbox left="0" top="900" width="9864" height="300" style="">
+              <rml:cell weight="14962" left="0" top="900" width="4919" height="300" style="">
+                <rml:hbox name="acctNo" left="0" top="900" width="4919" height="300" style=""><rml:render-if xml:space="preserve" language="javascript">Properties.getProperty("1a. Account No") != ""</rml:render-if>
+                  <rml:cell weight="7696" left="0" top="900" width="1858" height="300" style="">
+                    <rml:field font-name="Arial" font-size="180" font-bold="Yes" left="0" top="900" width="1858" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account No</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="452" left="1858" top="900" width="109" height="300" style="">
+                    <rml:field font-name="Arial" font-size="200" left="1858" top="900" width="109" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">:</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="12220" left="1967" top="900" width="2952" height="300" style="">
+                    <rml:field font-name="Arial" font-size="180" left="1967" top="900" width="2952" height="300" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="dd/MM/yyyy" date-format="Short" time-format="Short">
+                      </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Properties.getProperty("1a. Account No")</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+              <rml:cell weight="2659" left="4919" top="900" width="874" height="300" style="">
+              </rml:cell>
+              <rml:cell weight="12379" left="5793" top="900" width="4071" height="300" style="">
+                <rml:hbox name="acctName" left="5793" top="900" width="4071" height="300" style=""><rml:render-if xml:space="preserve" language="javascript">Properties.getProperty("1b. Account Name") != ""</rml:render-if>
+                  <rml:cell weight="11264" left="5793" top="900" width="1910" height="300" style="">
+                    <rml:field font-name="Arial" font-size="180" font-bold="Yes" left="5793" top="900" width="1910" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account Name</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="662" left="7703" top="900" width="112" height="300" style="">
+                    <rml:field font-name="Arial" font-size="200" left="7703" top="900" width="112" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">:</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="12075" left="7815" top="900" width="2049" height="300" style="">
+                    <rml:field font-name="Arial" font-size="180" left="7815" top="900" width="2049" height="300" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=Properties.getProperty("1b. Account Name")</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:hbox>
+          </rml:cell>
+          <rml:cell weight="820" left="0" top="1200" width="9864" height="300" style="">
+            <rml:hbox left="0" top="1200" width="9864" height="300" style="">
+              <rml:cell weight="14962" left="0" top="1200" width="4919" height="300" style="">
+                <rml:hbox name="entity" left="0" top="1200" width="4919" height="300" style=""><rml:render-if xml:space="preserve" language="javascript">Properties.getProperty("2. Entity") != ""</rml:render-if>
+                  <rml:cell weight="7696" left="0" top="1200" width="1858" height="300" style="">
+                    <rml:field font-name="Arial" font-size="180" font-bold="Yes" left="0" top="1200" width="1858" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Entity</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="452" left="1858" top="1200" width="109" height="300" style="">
+                    <rml:field font-name="Arial" font-size="200" left="1858" top="1200" width="109" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">:</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="12220" left="1967" top="1200" width="2952" height="300" style="">
+                    <rml:field font-name="Arial" font-size="180" left="1967" top="1200" width="2952" height="300" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="dd/MM/yyyy" date-format="Short" time-format="Short">
+                      </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Entity" field="ENTITY_NAME" running-value="No">Entity:ENTITY_NAME</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+              <rml:cell weight="2659" left="4919" top="1200" width="874" height="300" style="">
+              </rml:cell>
+              <rml:cell weight="12379" left="5793" top="1200" width="4071" height="300" style="">
+              </rml:cell>
+            </rml:hbox>
+          </rml:cell>
+        </rml:vbox>
+        <rml:field text-align="Center" font-name="Arial" font-size="180" left="0" top="1920" width="9864" height="280" can-grow="No" can-shrink="No" style=""><rml:render-if xml:space="preserve" language="javascript">Data.getCount("CUST_NO").getValueOverAll() == 0</rml:render-if><rml:control-source xml:space="preserve" type="Literal" running-value="No">No Record Found</rml:control-source>
+        </rml:field>
+        <rml:hbox left="0" top="1500" width="9864" height="420" style=""><rml:render-if xml:space="preserve" language="javascript">Data.getCount("CUST_NO").getValueOverAll() == 0</rml:render-if>
+          <rml:cell weight="3075" left="0" top="1500" width="650" height="420" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if>
+            <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="0" top="1500" width="650" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if><rml:control-source xml:space="preserve" type="Literal" running-value="No">S/N</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="6752" left="650" top="1500" width="1427" height="420" style="">
+            <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="650" top="1500" width="1427" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account No</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="11373" left="2077" top="1500" width="2404" height="420" style="">
+            <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="2077" top="1500" width="2404" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account Name</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="5171" left="4481" top="1500" width="1093" height="420" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="4481" top="1500" width="1093" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Deposit Amt ($)</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="5694" left="5574" top="1500" width="1204" height="420" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="5574" top="1500" width="1204" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Received Amt ($)</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="5170" left="6778" top="1500" width="1093" height="420" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="6778" top="1500" width="1093" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Refund Amt ($)</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="4648" left="7871" top="1500" width="983" height="420" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="7871" top="1500" width="983" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Offset Amt ($)</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="4775" left="8854" top="1500" width="1010" height="420" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="8854" top="1500" width="1010" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Balance ($)</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="960" style="">
+        <rml:hbox left="0" top="720" width="9864" height="240" style="">
+          <rml:cell weight="9977" left="0" top="720" width="3280" height="240" style="">
+            <rml:field font-name="Arial" font-size="180" left="0" top="720" width="3280" height="240" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">="Printed By: " + Properties.getProperty("printedBy")</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10023" left="3280" top="720" width="3295" height="240" style="">
+            <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="No" left="3280" top="720" width="3295" height="240" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">ComfortDelGro Taxi Business</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10000" left="6575" top="720" width="3289" height="240" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="6575" top="720" width="3289" height="240" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="dd/MM/yyyy hh:mm" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=new java.util.Date()</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:field font-name="Arial" font-size="200" left="0" top="0" width="9864" height="240" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        </rml:field>
+        <rml:field text-align="Center" font-name="Arial" font-size="200" left="0" top="480" width="9864" height="240" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">*** End of Report ***</rml:control-source>
+        </rml:field>
+        <rml:field font-name="Arial" font-size="200" left="0" top="240" width="9864" height="240" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        </rml:field>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="240" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:hbox left="0" top="0" width="9864" height="240" style="">
+          <rml:cell weight="3346" left="0" top="0" width="656" height="240" style="">
+            <rml:field text-align="Left" font-name="Arial" font-size="180" left="0" top="0" width="656" height="240" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getCount("CUST_NO").getRunningValueOverGroup()</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="7246" left="656" top="0" width="1420" height="240" style="">
+            <rml:field text-align="Left" font-name="Arial" font-size="180" left="656" top="0" width="1420" height="240" style="">
+              <rml:format type="Number" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="0" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="CUST_NO" running-value="No">CUST_NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="12261" left="2076" top="0" width="2404" height="240" style="">
+            <rml:field text-align="Left" font-name="Arial" font-size="180" left="2076" top="0" width="2404" height="240" style=""><rml:control-source xml:space="preserve" type="Field" field="ACCOUNT_NAME" running-value="No">ACCOUNT_NAME</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="5524" left="4480" top="0" width="1083" height="240" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="4480" top="0" width="1083" height="240" style="">
+              <rml:format type="Number" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="DEPOSIT_AMT" running-value="No">DEPOSIT_AMT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="6188" left="5563" top="0" width="1214" height="240" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="5563" top="0" width="1214" height="240" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="RECEIVED_AMT" running-value="No">RECEIVED_AMT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="5575" left="6777" top="0" width="1093" height="240" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="6777" top="0" width="1093" height="240" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(REFUND_AMT==null){
+	0;
+}else{
+	REFUND_AMT
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="5010" left="7870" top="0" width="983" height="240" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="7870" top="0" width="983" height="240" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(OFFSET_AMT==null){
+	0;
+}else{
+	OFFSET_AMT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="5150" left="8853" top="0" width="1011" height="240" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" left="8853" top="0" width="1011" height="240" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=RECEIVED_AMT-REFUND_AMT-OFFSET_AMT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:detail>
+      <rml:group field="CUST_NO" sort-order="Ascending" group-header-visible="Yes" group-footer-visible="Yes" group-on="All" group-data="">
+        <rml:group-header repeat="Yes" table-of-contents="No" height="1920" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+          <rml:vbox left="0" top="0" width="9864" height="1500" style="">
+            <rml:cell weight="820" left="0" top="0" width="9864" height="300" style="">
+              <rml:hbox left="0" top="0" width="9864" height="300" style="">
+                <rml:cell weight="100" left="0" top="0" width="3288" height="300" style="">
+                </rml:cell>
+                <rml:cell weight="100" left="3288" top="0" width="3288" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="220" font-bold="Yes" left="3288" top="0" width="3288" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Integrated Billing System</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="100" left="6576" top="0" width="3288" height="300" style="">
+                  <rml:field text-align="Right" font-name="Arial" font-size="180" left="6576" top="0" width="3288" height="300" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">="${#} of ${##}"</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+              </rml:hbox>
+            </rml:cell>
+            <rml:cell weight="820" left="0" top="300" width="9864" height="300" style="">
+              <rml:field text-align="Center" font-name="Arial" font-size="220" font-bold="No" left="0" top="300" width="9864" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Customer Deposit Report(Summary)</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="820" left="0" top="600" width="9864" height="300" style="">
+              <rml:hbox left="0" top="600" width="9864" height="300" style="">
+                <rml:cell weight="3767" left="0" top="600" width="1857" height="300" style="">
+                  <rml:field font-name="Arial" font-size="200" font-bold="Yes" left="0" top="600" width="1857" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Selection criteria</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="16233" left="1857" top="600" width="8007" height="300" style="">
+                  <rml:field font-name="Arial" font-size="200" font-bold="No" left="1857" top="600" width="8007" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">:</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+              </rml:hbox>
+            </rml:cell>
+            <rml:cell weight="820" left="0" top="900" width="9864" height="300" style="">
+              <rml:hbox left="0" top="900" width="9864" height="300" style="">
+                <rml:cell weight="14962" left="0" top="900" width="4919" height="300" style="">
+                  <rml:hbox name="acctNo" left="0" top="900" width="4919" height="300" style=""><rml:render-if xml:space="preserve" language="javascript">Properties.getProperty("1a. Account No") != ""</rml:render-if>
+                    <rml:cell weight="7696" left="0" top="900" width="1858" height="300" style="">
+                      <rml:field font-name="Arial" font-size="180" font-bold="Yes" left="0" top="900" width="1858" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account No</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="452" left="1858" top="900" width="109" height="300" style="">
+                      <rml:field font-name="Arial" font-size="200" left="1858" top="900" width="109" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">:</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="12220" left="1967" top="900" width="2952" height="300" style="">
+                      <rml:field font-name="Arial" font-size="180" left="1967" top="900" width="2952" height="300" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="dd/MM/yyyy" date-format="Short" time-format="Short">
+                        </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Properties.getProperty("1a. Account No")</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+                <rml:cell weight="2659" left="4919" top="900" width="874" height="300" style="">
+                </rml:cell>
+                <rml:cell weight="12379" left="5793" top="900" width="4071" height="300" style="">
+                  <rml:hbox name="acctName" left="5793" top="900" width="4071" height="300" style=""><rml:render-if xml:space="preserve" language="javascript">Properties.getProperty("1b. Account Name") != ""</rml:render-if>
+                    <rml:cell weight="11264" left="5793" top="900" width="1910" height="300" style="">
+                      <rml:field font-name="Arial" font-size="180" font-bold="Yes" left="5793" top="900" width="1910" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account Name</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="662" left="7703" top="900" width="112" height="300" style="">
+                      <rml:field font-name="Arial" font-size="200" left="7703" top="900" width="112" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">:</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="12075" left="7815" top="900" width="2049" height="300" style="">
+                      <rml:field font-name="Arial" font-size="180" left="7815" top="900" width="2049" height="300" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=Properties.getProperty("1b. Account Name")</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:hbox>
+            </rml:cell>
+            <rml:cell weight="820" left="0" top="1200" width="9864" height="300" style="">
+              <rml:hbox left="0" top="1200" width="9864" height="300" style="">
+                <rml:cell weight="14962" left="0" top="1200" width="4919" height="300" style="">
+                  <rml:hbox name="entity" left="0" top="1200" width="4919" height="300" style=""><rml:render-if xml:space="preserve" language="javascript">Properties.getProperty("2. Entity") != ""</rml:render-if>
+                    <rml:cell weight="7696" left="0" top="1200" width="1858" height="300" style="">
+                      <rml:field font-name="Arial" font-size="180" font-bold="Yes" left="0" top="1200" width="1858" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Entity</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="452" left="1858" top="1200" width="109" height="300" style="">
+                      <rml:field font-name="Arial" font-size="200" left="1858" top="1200" width="109" height="300" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">:</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="12220" left="1967" top="1200" width="2952" height="300" style="">
+                      <rml:field font-name="Arial" font-size="180" left="1967" top="1200" width="2952" height="300" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="dd/MM/yyyy" date-format="Short" time-format="Short">
+                        </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Entity" field="ENTITY_NAME" running-value="No">Entity:ENTITY_NAME</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+                <rml:cell weight="2659" left="4919" top="1200" width="874" height="300" style="">
+                </rml:cell>
+                <rml:cell weight="12379" left="5793" top="1200" width="4071" height="300" style="">
+                </rml:cell>
+              </rml:hbox>
+            </rml:cell>
+          </rml:vbox>
+          <rml:hbox left="0" top="1500" width="9864" height="420" style="">
+            <rml:cell weight="3075" left="0" top="1500" width="650" height="420" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if>
+              <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="0" top="1500" width="650" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if><rml:control-source xml:space="preserve" type="Literal" running-value="No">S/N</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="6752" left="650" top="1500" width="1427" height="420" style="">
+              <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="650" top="1500" width="1427" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account No</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="11373" left="2077" top="1500" width="2404" height="420" style="">
+              <rml:field text-align="Left" font-name="Arial" font-size="180" font-bold="Yes" left="2077" top="1500" width="2404" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Account Name</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="5171" left="4481" top="1500" width="1093" height="420" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="4481" top="1500" width="1093" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Deposit Amt ($)</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="5694" left="5574" top="1500" width="1204" height="420" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="5574" top="1500" width="1204" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Received Amt ($)</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="5170" left="6778" top="1500" width="1093" height="420" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="6778" top="1500" width="1093" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Refund Amt ($)</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="4648" left="7871" top="1500" width="983" height="420" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="7871" top="1500" width="983" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Offset Amt ($)</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="4775" left="8854" top="1500" width="1010" height="420" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="Yes" left="8854" top="1500" width="1010" height="420" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Balance ($)</rml:control-source>
+              </rml:field>
+            </rml:cell>
+          </rml:hbox>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-header>
+        <rml:group-footer table-of-contents="No" height="480" style="">
+          <rml:hbox left="0" top="0" width="9864" height="480" style="">
+            <rml:cell weight="3025" left="0" top="0" width="645" height="480" style="total">
+            </rml:cell>
+            <rml:cell weight="6712" left="645" top="0" width="1431" height="480" style="total">
+            </rml:cell>
+            <rml:cell weight="11268" left="2076" top="0" width="2404" height="480" style="total">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" left="2076" top="0" width="2404" height="480" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">Total</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="5082" left="4480" top="0" width="1084" height="480" style="total">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" left="4480" top="0" width="1084" height="480" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("DEPOSIT_AMT").getValueOverGroup()</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="5688" left="5564" top="0" width="1213" height="480" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" left="5564" top="0" width="1213" height="480" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("RECEIVED_AMT").getValueOverGroup()</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="5123" left="6777" top="0" width="1093" height="480" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" left="6777" top="0" width="1093" height="480" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("REFUND_AMT").getValueOverGroup()</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="4606" left="7870" top="0" width="983" height="480" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" left="7870" top="0" width="983" height="480" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("OFFSET_AMT").getValueOverGroup()</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="4733" left="8853" top="0" width="1011" height="480" style="total">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" left="8853" top="0" width="1011" height="480" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00;-#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("RECEIVED_AMT").getValueOverGroup()-Data.getSum("REFUND_AMT").getValueOverGroup()-Data.getSum("OFFSET_AMT").getValueOverGroup()</rml:control-source>
+              </rml:field>
+            </rml:cell>
+          </rml:hbox>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-footer>
+      </rml:group>
+      <rml:ruler>
+        <rml:mark value="650">
+        </rml:mark>
+        <rml:mark value="8850">
+        </rml:mark>
+        <rml:mark value="7870">
+        </rml:mark>
+        <rml:mark value="6770">
+        </rml:mark>
+        <rml:mark value="5570">
+        </rml:mark>
+        <rml:mark value="4480">
+        </rml:mark>
+        <rml:mark value="2070">
+        </rml:mark>
+        <rml:mark value="3280">
+        </rml:mark>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation section="Section 1" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+    <rml:render-details mime-type="application/x-glint">
+      <rml:parameters><rml:param xml:space="preserve" key="Tree">No</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+    <rml:render-details mime-type="application/vnd.ms-excel">
+      <rml:parameters><rml:param xml:space="preserve" key="Snap">No</rml:param><rml:param xml:space="preserve" key="Paged">No</rml:param><rml:param xml:space="preserve" key="ForceNumbersAsText">Yes</rml:param><rml:param xml:space="preserve" key="Multiplier"></rml:param>
+      </rml:parameters>
+    </rml:render-details>
+    <rml:render-details mime-type="application/pdf">
+      <rml:parameters><rml:param xml:space="preserve" key="RenderAsImage">No</rml:param><rml:param xml:space="preserve" key="OwnerPassword"></rml:param><rml:param xml:space="preserve" key="CJKMappingURL"></rml:param><rml:param xml:space="preserve" key="AllowFillIn">No</rml:param><rml:param xml:space="preserve" key="AllowAssembly">No</rml:param><rml:param xml:space="preserve" key="Encryption">No</rml:param><rml:param xml:space="preserve" key="RenderAsImageDPI"></rml:param><rml:param xml:space="preserve" key="AllowModifyContents">No</rml:param><rml:param xml:space="preserve" key="EncryptionStrength">128 bits</rml:param><rml:param xml:space="preserve" key="AllowScreenReaders">No</rml:param><rml:param xml:space="preserve" key="AllowModifyAnnotations">No</rml:param><rml:param xml:space="preserve" key="BlankPageOnEmptyFile">No</rml:param><rml:param xml:space="preserve" key="AllowCopy">No</rml:param><rml:param xml:space="preserve" key="AllowDegradedPrinting">No</rml:param><rml:param xml:space="preserve" key="AllowPrinting">No</rml:param><rml:param xml:space="preserve" key="UserPassword"></rml:param><rml:param xml:space="preserve" key="Greyscale">No</rml:param><rml:param xml:space="preserve" key="RenderTextAPI">Yes</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+  </rml:rendering></rml:report>
+

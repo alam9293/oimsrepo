@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="prepaidProduct">
+	<!-- 0 --><return-scalar column="CUST_NO" 						type="string"/>
+	<!-- 1 --><return-scalar column="ACCOUNT_NAME"	 				type="string"/>
+	<!-- 2 --><return-scalar column="ACCT_TYPE" 					type="string"/>
+	<!-- 3 --><return-scalar column="ACCOUNT_STATUS" 				type="string"/>
+	<!-- 4 --><return-scalar column="CARD_NO" 						type="string"/>
+	<!-- 5 --><return-scalar column="PAID_VALUE"	 				type="string"/>
+	<!-- 6 --><return-scalar column="VALUE_PLUS" 					type="string"/>
+	<!-- 7 --><return-scalar column="OLD_CARD_NO" 					type="string"/>
+	<!-- 8 --><return-scalar column="TRANSFER_VALUE"	 			type="string"/>
+	<!-- 9 --><return-scalar column="TRANSFER_CARD_NO_TO"			type="string"/>
+	<!-- 10--><return-scalar column="TRANSFER_CARD_VALUE_TO"		type="string"/>
+	<!-- 11--><return-scalar column="txf_card_date"	 				type="string"/>
+	<!-- 12--><return-scalar column="VALUE_USED"	 				type="string"/>
+	<!-- 13--><return-scalar column="REPLACEMENT_FEE"	 			type="string"/>
+	<!-- 14--><return-scalar column="CARD_BAL_EXCL_VALUE_USED"		type="string"/>
+	<!-- 15--><return-scalar column="card_expiry"	 				type="string"/>
+	<!-- 16--><return-scalar column="EXPIRED_VALUE"	 				type="string"/>
+	<!-- 17--><return-scalar column="CARD_STATUS"					type="string"/>
+	
+	<![CDATA[
+	select
+		'FAKE GROUPING' as FAKE_GROUPING, prepaid.*,
+		to_char(prepaid.replacement_dt, 'dd/MM/yyyy HH24:mi:ss') as txf_card_date,
+		case when prepaid.NEW_EXP_TIME is not null then to_char(prepaid.NEW_EXP_TIME, 'dd/MM/yyyy HH24:mi:ss') 
+		else to_char(prepaid.NEW_EXP_DATE, 'dd/MM/yyyy') end as card_expiry,
+		prepaid.CARD_BALANCE_EXCL_VALUE_USED - NVL(prepaid.TRANSFER_CARD_VALUE_TO,0) as CARD_BAL_EXCL_VALUE_USED,
+		NVL((select sum(BILLABLE_AMT)
+		from TMTB_ACQUIRE_TXN
+		where PRODUCT_NO = prepaid.PRODUCT_NO
+			AND TXN_STATUS in ('A','B')
+			AND TRIP_START_DT < prepaid.TRIP_TO_DT
+			AND (prepaid.TRIP_FROM_DT is null OR TRIP_START_DT >= prepaid.TRIP_FROM_DT)
+		group by PRODUCT_NO
+		),0) as VALUE_USED,
+		--to determine the last replacement record of a product cycle
+		case 
+			when prepaid.NEW_EXP_TIME is not null then 
+				case when prepaid.TRIP_TO_DT = to_date('31-DEC-9999')
+					and prepaid.NEW_EXP_TIME <= sysdate
+					and prepaid.CURRENT_STATUS = 'A' then prepaid.CREDIT_BALANCE 
+				end
+			else
+				case when prepaid.TRIP_TO_DT = to_date('31-DEC-9999')
+					and prepaid.NEW_EXP_DATE <= sysdate
+					and prepaid.CURRENT_STATUS = 'A' then prepaid.CREDIT_BALANCE 
+				end
+		end as EXPIRED_VALUE,
+		acct_type.ACCT_TYPE,
+		DECODE((
+			select distinct first_value(ACCT_STATUS) over (ORDER BY EFFECTIVE_DT DESC)
+			from AMTB_ACCT_STATUS
+			where 
+				EFFECTIVE_DT <= sysdate
+				AND ACCOUNT_NO = prepaid.ACCOUNT_NO
+		), 	'PA', 'PENDING ACTIVATION',
+			'A', 'ACTIVE',
+			'S', 'SUSPENDED',
+			'PS', 'PARENT SUSPENDED',
+			'C', 'CLOSED',
+			'T', 'TERMINATED') as ACCOUNT_STATUS,
+		DECODE(PREPAID.CURRENT_STATUS,
+			'N', 'PENDING ACTIVATION',
+			'A', 'ACTIVE',
+			'U', 'USED',
+			'S', 'SUSPENDED',
+			'PS', 'PARENT SUSPENDED',
+			'R', 'RECYCLED',
+			'T', 'TERMINATED'
+		) as CARD_STATUS
+	from(
+		select
+			prd.PRODUCT_NO, prd.CARD_NO, replace.PAID_VALUE, replace.VALUE_PLUS, replace.OLD_CARD_NO, 
+			replace.TRANSFER_VALUE, case when replace.OLD_CARD_NO is not null then replace.CREATED_DT end as replacement_dt,
+			(replace.PAID_VALUE+replace.VALUE_PLUS+NVL(replace.TRANSFER_VALUE,0)-NVL(replace.REPLACEMENT_FEE,0))as CARD_BALANCE_EXCL_VALUE_USED, 
+			replace.REPLACEMENT_FEE, replace.NEW_EXP_TIME, replace.NEW_EXP_DATE,
+			prd.CURRENT_STATUS, prd.CREDIT_BALANCE, case when replace.REPLACEMENT_REASON!=-1 then replace.CREATED_DT end as TRIP_FROM_DT, 
+			NVL((
+				select distinct first_value (CREATED_DT) OVER (ORDER BY CREATED_DT)
+				from PMTB_PRODUCT_REPLACEMENT
+				where PRODUCT_REPLACEMENT_NO != replace.PRODUCT_REPLACEMENT_NO
+				and PRODUCT_NO = replace.PRODUCT_NO
+				and CREATED_DT > replace.CREATED_DT
+			),to_date('31-DEC-9999')) as TRIP_TO_DT,
+			TOP_LEVEL.CUST_NO,
+			TOP_LEVEL.ACCOUNT_NAME,
+			TOP_LEVEL.ACCT_TYPE_NO,
+			TOP_LEVEL.ACCOUNT_NO,
+			(
+				select distinct first_value (NEW_CARD_NO) OVER (ORDER BY CREATED_DT)
+				from PMTB_PRODUCT_REPLACEMENT
+				where PRODUCT_REPLACEMENT_NO != replace.PRODUCT_REPLACEMENT_NO
+				and PRODUCT_NO = replace.PRODUCT_NO
+				and CREATED_DT > replace.CREATED_DT
+			) as TRANSFER_CARD_NO_TO,
+			(
+				select distinct first_value (TRANSFER_VALUE) OVER (ORDER BY CREATED_DT)
+				from PMTB_PRODUCT_REPLACEMENT
+				where PRODUCT_REPLACEMENT_NO != replace.PRODUCT_REPLACEMENT_NO
+				and PRODUCT_NO = replace.PRODUCT_NO
+				and CREATED_DT > replace.CREATED_DT
+			) as TRANSFER_CARD_VALUE_TO
+		from PMTB_PRODUCT prd
+		inner join PMTB_PRODUCT_REPLACEMENT replace on prd.PRODUCT_NO = replace.PRODUCT_NO and (replace.NEW_STATUS != 'T' OR replace.NEW_STATUS is NULL)
+		inner join AMTB_ACCOUNT LEVEL1 on prd.account_no = LEVEL1.account_no
+		left join AMTB_ACCOUNT LEVEL2 on LEVEL2.account_no = LEVEL1.parent_no
+		left join AMTB_ACCOUNT LEVEL3 on LEVEL3.account_no = LEVEL2.parent_no
+		inner join AMTB_ACCOUNT TOP_LEVEL on TOP_LEVEL.ACCOUNT_NO = (
+			CASE	
+				when LEVEL3.ACCOUNT_NO is not null then LEVEL3.ACCOUNT_NO
+				when LEVEL2.ACCOUNT_NO is not null then LEVEL2.ACCOUNT_NO
+				when LEVEL1.ACCOUNT_NO is not null then LEVEL1.ACCOUNT_NO
+			end)
+		inner join FMTB_AR_CONT_CODE_MASTER ar on TOP_LEVEL.ar_control_code_no = ar.ar_control_code_no
+   		inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+		where
+			exists (
+				select prd_type.PRODUCT_TYPE_ID
+				from PMTB_PRODUCT_TYPE prd_type
+				where
+					prd.PRODUCT_TYPE_ID = prd_type.PRODUCT_TYPE_ID
+					AND prd_type.PREPAID = 'Y'
+					AND (
+						:productTypeId is null OR prd_type.PRODUCT_TYPE_ID = :productTypeId
+					)
+			)
+			AND(
+				:expiryDateFrom is null OR prd.expiry_date between to_date(:expiryDateFrom ,'yyyy-mm-dd') and to_date(:expiryDateTo ,'yyyy-mm-dd')
+			)
+			AND(
+				:cardStatus is null OR prd.CURRENT_STATUS = :cardStatus
+			)
+			AND(
+				:cardNoFrom is null OR TO_NUMBER(prd.CARD_NO) between :cardNoFrom and :cardNoTo
+			)
+			AND(
+				:accountTypeNo is null OR (TOP_LEVEL.ACCT_TYPE_NO = :accountTypeNo)
+			)
+			AND(
+				:custNo is null OR (TOP_LEVEL.CUST_NO = :custNo)
+			)
+			AND(
+				:accountName is null OR (TOP_LEVEL.ACCOUNT_NAME like :accountName)
+			)
+			AND(
+				:accountStatus is null
+				OR (
+					select distinct first_value(ACCT_STATUS) over (ORDER BY EFFECTIVE_DT DESC)
+					from AMTB_ACCT_STATUS
+					where 
+						EFFECTIVE_DT <= sysdate
+						AND ACCOUNT_NO = TOP_LEVEL.ACCOUNT_NO
+				) = :accountStatus
+			)
+			and (:entityNo is null or entity.ENTITY_NO = :entityNo)
+	) prepaid
+	inner join AMTB_ACCT_TYPE acct_type on prepaid.ACCT_TYPE_NO = acct_type.ACCT_TYPE_NO
+	order by ACCOUNT_NAME, CARD_NO, replacement_dt NULLS first
+	]]>
+</sql-query>
+
+</hibernate-mapping>

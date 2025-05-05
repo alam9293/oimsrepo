@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Inventory Movement Report Summary" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="TYPE_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PRICE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OPENING_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OPENING_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_IN" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_IN_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_ISSUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_ISSUE_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STOCK_BALANCE_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select item_type.TYPE_NAME,
+    avg(item_type.PRICE) as price, avg(nvl(balance.OPENING_BALANCE, 0)) as OPENING_BALANCE, avg(nvl(balance.OPENING_BALANCE, 0)) * avg(item_type.PRICE) as opening_amt,
+    sum(case when stock.TXN_TYPE = 'I' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 when stock.TXN_TYPE = 'S' then 0 end) as stock_in,
+    sum(case when stock.TXN_TYPE = 'I' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 when stock.TXN_TYPE = 'S' then 0 end) * avg(item_type.PRICE) as stock_in_amt,
+    sum(case when stock.TXN_TYPE = 'I' then 0 when stock.TXN_TYPE = 'S' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 end) as stock_issue,
+    sum(case when stock.TXN_TYPE = 'I' then 0 when stock.TXN_TYPE = 'S' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 end) * avg(item_type.PRICE) as stock_issue_amt,
+    avg(nvl(balance.OPENING_BALANCE, 0)) + sum(case when stock.TXN_TYPE = 'I' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 when stock.TXN_TYPE = 'S' then 0 end) - sum(case when stock.TXN_TYPE = 'I' then 0 when stock.TXN_TYPE = 'S' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 end) as stock_balance,
+    (avg(nvl(balance.OPENING_BALANCE, 0)) + sum(case when stock.TXN_TYPE = 'I' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 when stock.TXN_TYPE = 'S' then 0 end) - sum(case when stock.TXN_TYPE = 'I' then 0 when stock.TXN_TYPE = 'S' then stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1 end)) * avg(item_type.PRICE) as stock_balance_amt
+    from IMTB_STOCK stock
+    inner join IMTB_ITEM_TYPE item_type on stock.ITEM_TYPE_NO = item_type.ITEM_TYPE_NO
+    left join IMTB_STOCK stock_in on stock.TXN_TYPE = 'S' and stock_in.TXN_TYPE = 'I' and stock.ITEM_TYPE_NO = stock_in.ITEM_TYPE_NO and stock.SERIAL_NO_START between stock_in.SERIAL_NO_START and stock_in.SERIAL_NO_END
+    left join IMTB_ISSUE issue on stock.STOCK_NO = issue.STOCK_NO
+    left join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+    left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+      left join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grand.CUST_NO IS NOT NULL THEN grand.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+      left join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+    left join (select ITEM_TYPE_NO,
+        sum(case when TXN_TYPE = 'I' then (SERIAL_NO_END - SERIAL_NO_START + 1) when TXN_TYPE = 'S' then (SERIAL_NO_START - SERIAL_NO_END - 1) end) as opening_balance
+        from IMTB_STOCK
+        where '${1. Stock In/Stock Issued Start Date#date#REQUIRED}' is null or to_timestamp('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') &gt; txn_dt
+        group by ITEM_TYPE_NO
+    ) balance on balance.ITEM_TYPE_NO = item_type.ITEM_TYPE_NO
+    where (('${1. Stock In/Stock Issued Start Date#date#REQUIRED}' is null and '${2. Stock In/Stock Issued End Date#date}' is null)or(stock.TXN_DT between case when '${1. Stock In/Stock Issued Start Date#date#REQUIRED}' is null then to_date('${2. Stock In/Stock Issued End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Stock In/Stock Issued End Date#date}' is null then to_date('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Stock In/Stock Issued End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end)or(issue_req.REQUEST_DT between case when '${1. Stock In/Stock Issued Start Date#date#REQUIRED}' is null then to_date('${2. Stock In/Stock Issued End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Stock In/Stock Issued End Date#date}' is null then to_date('${1. Stock In/Stock Issued Start Date#date#REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Stock In/Stock Issued End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and ('${3. Item Type#choice(1,2,3,4,6)#MASTER:IT}' is null or item_type.ITEM_TYPE_NO = '${3. Item Type#choice(1,2,3,4,6)#MASTER:IT}')
+    and ('${4. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.entity_no = '${4. Entity#choice(1,2,3)#MASTER:EM}')
+    group by item_type.TYPE_NAME
+    order by item_type.TYPE_NAME</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="editAcquirerPaymentTypeWindow"
+	title="Edit Acquirer Payment Type" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.EditAcquirerPaymentTypeWindow"
+	onCreate="editAcquirerPaymentTypeWindow.init()"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid width="99.7%">
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+   			<row>
+				<label sclass="fieldLabel required" value="Acquirer:" />
+				<listbox id="acquirerTypeListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="99%"
+   				/>
+				<label sclass="fieldLabel required" value="Payment Type:" />
+				<listbox id="valueTypeListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="99%"
+   				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel required" value="Effective Date From:" />
+				<datebox id="effDateFromDateBox" 
+   					width="91.5%" 
+   					format="dd/MM/yyyy"
+   				/>
+				<label sclass="fieldLabel" value="Effective Date To:" />
+				<datebox id="effDateToDateBox" 
+   					width="91.5%" 
+   					format="dd/MM/yyyy"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.EqualOrLaterThanNowConstraint')}"
+   				/>
+			</row>
+			
+		</rows>
+	</grid>
+	
+	<h:br/>
+ 	<grid><columns sizable="false"><column>Commission Details</column></columns></grid>
+	<grid>
+		<columns sizable="false">
+			<column width="5%"/>
+			<column width="30%" label="Commission Value"/>
+			<column width="30%" label="Commission Type"/>
+			<column width="20%" label="Effective Date From"/>
+			<column width="15%" label="Delete"/>
+		</columns>
+		<rows id="commission"><row spans="8"><button label="Add New Row" onClick="editAcquirerPaymentTypeWindow.addCommission()"/></row></rows>
+	</grid>
+	<h:br/>
+   	<grid><columns sizable="false"><column>Created</column></columns></grid>
+	<grid>
+		<columns>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+   				<label sclass="fieldLabel">By</label>
+   				<label id="createdByLabel"/>
+   				<label sclass="fieldLabel">Date</label>
+   				<label id="createdDateLabel"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Time</label>
+   				<label id="createdTimeLabel"/>
+   				<label />
+   				<label />
+   			</row>
+		</rows>
+	</grid>
+	<grid><columns sizable="false"><column>Last Updated</column></columns></grid>
+	<grid>
+		<columns>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+   				<label sclass="fieldLabel">By</label>
+   				<label id="lastUpdatedByLabel"/>
+   				<label sclass="fieldLabel">Date</label>
+   				<label id="lastUpdatedDateLabel"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Time</label>
+   				<label id="lastUpdatedTimeLabel"/>
+   				<label />
+   				<label />
+   			</row>
+   			<row spans="4">
+   			<hbox>
+   				<button label="Save" onClick="editAcquirerPaymentTypeWindow.save() " />
+   				<button label="Back" onClick="editAcquirerPaymentTypeWindow.back()" />
+   			</hbox></row>
+		</rows>
+	</grid>
+</window>

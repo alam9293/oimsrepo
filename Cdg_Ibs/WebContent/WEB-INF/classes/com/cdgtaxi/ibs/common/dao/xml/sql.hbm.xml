@@ -1,0 +1,874 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <!--
+        Created by the Middlegen Hibernate plugin 2.1
+
+        http://boss.bekk.no/boss/middlegen/
+        http://www.hibernate.org/
+    -->
+    <sql-query name="searchInvoiceCreditPrepaid">
+        <return-scalar column="REQUEST_DATE" type="java.sql.Date"/>
+        <return-scalar column="UPDATED_BY" type="string"/>
+        <return-scalar column="CARD_NO" type="string"/>
+        <return-scalar column="INVOICE_NO" type="string"/>
+
+
+        <![CDATA[
+		select req.request_date , req.updated_by , p.card_no  , inv.invoice_no from 
+		pmtb_prepaid_req req , pmtb_top_up_req top , Pmtb_Top_Up_Req_Card card, pmtb_product p , 
+		bmtb_invoice_header inv where
+	 	req.req_no = top.req_no and 
+	 	top.req_no = card.pmtb_top_up_req and
+	 	 card.pmtb_product = p.product_no and
+	 	  req.bmtb_invoice_header = inv.invoice_header_no 
+	 	  and (:cardNo is null or p.card_no = :cardNo) and
+		(:invoiceNo is null or inv.invoice_no = :invoiceNo) and
+			(:requestDateFromField is null or req.request_date between :requestDateFromField and :requestDateToField) 
+			and req.uri is not null
+		
+	]]>
+    </sql-query>
+
+    <!-- NonBillableDaoHibernate -->
+    <sql-query name="getBankInBanksForNonBillable">
+        <return alias="bank" class="com.cdgtaxi.ibs.common.model.FmtbBankCode"/>
+
+        <![CDATA[
+		select bank.*
+		from FMTB_BANK_CODE bank
+		inner join(
+			select distinct first_value(bank.BANK_CODE_NO) over (Partition by bank.ENTITY_NO,bank.BANK_CODE,bank.BRANCH_CODE order by bank.EFFECTIVE_DATE desc) as BANK_CODE_NO
+			from FMTB_BANK_CODE bank
+			inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = bank.ENTITY_NO
+			inner join FMTB_AR_CONT_CODE_MASTER ar on entity.ENTITY_NO = ar.ENTITY_NO
+			inner join(
+				select distinct first_value(detail.AR_CONTROL_CODE_NO) over (Partition by detail.MASTER_NO order by detail.EFFECTIVE_DATE desc) as AR_CONTROL_CODE_NO
+				from FMTB_BANK_PAYMENT_DETAIL detail
+				inner join FMTB_BANK_PAYMENT_MASTER master on detail.MASTER_NO = master.MASTER_NO
+				where
+					detail.EFFECTIVE_DATE <= sysdate
+					AND
+					master.acquirer_no in (
+						select distinct acquirer.acquirer_no
+						from TMTB_NON_BILLABLE_TXN txn
+						inner join TMTB_NON_BILLABLE_BATCH batch on txn.BATCH_ID = batch.BATCH_ID
+						inner join MSTB_ACQUIRER acquirer on batch.acquirer_no = acquirer.acquirer_no
+						where
+							batch.BATCH_ID in (:batchIds)
+					)
+			) temp on temp.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+			where bank.EFFECTIVE_DATE <= sysdate
+		) temp on temp.BANK_CODE_NO = bank.BANK_CODE_NO
+		order by bank.BANK_NAME, bank.BRANCH_NAME
+	]]>
+    </sql-query>
+
+    <!-- NonBillableDaoHibernate -->
+    <sql-query name="getPymtTypeByAcquirer">
+        <return alias="master" class="com.cdgtaxi.ibs.master.model.MstbMasterTable"/>
+
+        <![CDATA[
+	select master.*
+	from MSTB_MASTER_TABLE master
+	where master_no in (
+		select distinct pt.MASTER_NO
+		from MSTB_ACQUIRER_PYMT_TYPE pt
+		inner join MSTB_ACQUIRER a on pt.ACQUIRER_NO = a.ACQUIRER_NO
+		where
+			a.ACQUIRER_NO = ?
+			and
+			pt.EFFECTIVE_DT_FROM <= SYSDATE
+	)
+	order by master.master_value
+	]]>
+    </sql-query>
+
+    <!-- AdminDaoHibernate -->
+    <sql-query name="searchAcquirerMDR">
+        <return alias="mdr" class="com.cdgtaxi.ibs.master.model.MstbAcquirerMdr"/>
+        <return-join alias="acquirer" property="mdr.mstbAcquirer"/>
+
+        <![CDATA[
+	select {mdr.*}, {acquirer.*}
+	from (
+		select mdr.*,
+		(
+			select distinct first_value (EFFECTIVE_DATE) OVER (ORDER BY EFFECTIVE_DATE) 
+			from MSTB_ACQUIRER_MDR
+			where ACQUIRER_NO = mdr.ACQUIRER_NO 
+			and EFFECTIVE_DATE > mdr.EFFECTIVE_DATE
+		)-1 as EFFECTIVE_DATE_TO
+		from MSTB_ACQUIRER_MDR mdr
+	) mdr
+	LEFT OUTER JOIN mstb_Acquirer acquirer on mdr.acquirer_no = acquirer.acquirer_no
+	where
+		(
+			:acquirerNo is null
+			or
+			:acquirerNo = mdr.ACQUIRER_NO
+		)
+		and
+		(
+			:rate is null
+			or
+			:rate = mdr.RATE
+		)
+		and
+		(
+			(:effectiveDateFrom is null and :effectiveDateTo is null)
+			or
+			(mdr.EFFECTIVE_DATE <= :effectiveDateFrom and mdr.EFFECTIVE_DATE_TO is null)
+			or
+			(mdr.EFFECTIVE_DATE <= :effectiveDateTo and mdr.EFFECTIVE_DATE_TO is null)
+			or
+			(:effectiveDateFrom between mdr.EFFECTIVE_DATE and mdr.EFFECTIVE_DATE_TO)
+			or
+			(:effectiveDateTo between mdr.EFFECTIVE_DATE and mdr.EFFECTIVE_DATE_TO)
+			or
+			(mdr.EFFECTIVE_DATE >= :effectiveDateFrom and mdr.EFFECTIVE_DATE_TO <= :effectiveDateTo)
+		)
+	]]>
+    </sql-query>
+
+    <!-- AdminDaoHibernate -->
+    <sql-query name="searchGLBank">
+        <return alias="glBank" class="com.cdgtaxi.ibs.common.model.FmtbBankCode"/>
+        <return-join alias="entity" property="glBank.fmtbEntityMaster"/>
+        <return-join alias="master" property="glBank.mstbMasterTable"/>
+
+        <![CDATA[
+	select {glBank.*}, {entity.*}, {master.*}
+	from (
+		select glBank.*,
+		(
+			select distinct first_value (EFFECTIVE_DATE) OVER (ORDER BY EFFECTIVE_DATE) 
+			from FMTB_BANK_CODE
+			where EFFECTIVE_DATE > glBank.EFFECTIVE_DATE 
+			AND 
+			ENTITY_NO=glBank.ENTITY_NO 
+			AND 
+			BANK_CODE=glBank.BANK_CODE 
+			AND
+			BRANCH_CODE=glBank.BRANCH_CODE			
+		)-1 as EFFECTIVE_DATE_TO
+		from FMTB_BANK_CODE glBank
+	) glBank 
+	LEFT OUTER JOIN fmtb_Entity_Master entity on glBank.entity_no = entity.entity_no 
+	LEFT OUTER JOIN mstb_Master_Table master on glBank.tax_type = master.master_no 
+	where
+		(
+			:entityNo is null
+			or
+			:entityNo = glBank.ENTITY_NO
+		)
+		and
+		(
+			:bankCode is null
+			or
+			:bankCode = glBank.BANK_CODE
+		)
+		and
+		(
+			:branchCode is null
+			or
+			:branchCode = glBank.BRANCH_CODE
+		)
+		and
+		(
+			(:effectiveDateFrom is null and :effectiveDateTo is null)
+			or
+			(glBank.EFFECTIVE_DATE <= :effectiveDateFrom and glBank.EFFECTIVE_DATE_TO is null)
+			or
+			(glBank.EFFECTIVE_DATE <= :effectiveDateTo and glBank.EFFECTIVE_DATE_TO is null)
+			or
+			(:effectiveDateFrom between glBank.EFFECTIVE_DATE and glBank.EFFECTIVE_DATE_TO)
+			or
+			(:effectiveDateTo between glBank.EFFECTIVE_DATE and glBank.EFFECTIVE_DATE_TO)
+			or
+			(glBank.EFFECTIVE_DATE >= :effectiveDateFrom and glBank.EFFECTIVE_DATE_TO <= :effectiveDateTo)
+		)
+	]]>
+    </sql-query>
+
+    <!-- AdminDaoHibernate -->
+    <sql-query name="searchTransactionCode">
+        <return alias="txnCode" class="com.cdgtaxi.ibs.common.model.FmtbTransactionCode"/>
+        <return-join alias="entity" property="txnCode.fmtbEntityMaster"/>
+        <return-join alias="productType" property="txnCode.pmtbProductType"/>
+        <return-join alias="master" property="txnCode.mstbMasterTable"/>
+
+        <![CDATA[
+	select {txnCode.*}, {entity.*}, {productType.*}, {master.*}
+	from (
+		select txnCode.*,
+		(
+			select distinct first_value (EFFECTIVE_DATE) OVER (ORDER BY EFFECTIVE_DATE) 
+			from FMTB_TRANSACTION_CODE
+			where EFFECTIVE_DATE > txnCode.EFFECTIVE_DATE 
+			AND 
+			ENTITY_NO=txnCode.ENTITY_NO 
+			AND 
+			TXN_CODE=txnCode.TXN_CODE 
+		)-1 as EFFECTIVE_DATE_TO
+		from FMTB_TRANSACTION_CODE txnCode
+	) txnCode 
+	LEFT OUTER JOIN fmtb_Entity_Master entity on txnCode.entity_no = entity.entity_no 
+	LEFT OUTER JOIN pmtb_Product_Type productType on txnCode.product_type_id = productType.product_type_id 
+	LEFT OUTER JOIN mstb_Master_Table master on txnCode.tax_type = master.master_no 
+	 where
+		(
+			:entityNo is null
+			or
+			:entityNo = txnCode.ENTITY_NO
+		)
+		and
+		(
+			:txnType is null
+			or
+			:txnType = txnCode.TXN_TYPE
+		)
+		and
+		(
+			:taxType is null
+			or
+			:taxType = master.master_code
+		)
+		and
+		(
+			:txnCode is null
+			or
+			:txnCode = txnCode.TXN_CODE
+		)
+		and
+		(
+			(:effectiveDateFrom is null and :effectiveDateTo is null)
+			or
+			(txnCode.EFFECTIVE_DATE <= :effectiveDateFrom and txnCode.EFFECTIVE_DATE_TO is null)
+			or
+			(txnCode.EFFECTIVE_DATE <= :effectiveDateTo and txnCode.EFFECTIVE_DATE_TO is null)
+			or
+			(:effectiveDateFrom between txnCode.EFFECTIVE_DATE and txnCode.EFFECTIVE_DATE_TO)
+			or
+			(:effectiveDateTo between txnCode.EFFECTIVE_DATE and txnCode.EFFECTIVE_DATE_TO)
+			or
+			(txnCode.EFFECTIVE_DATE >= :effectiveDateFrom and txnCode.EFFECTIVE_DATE_TO <= :effectiveDateTo)
+		)
+	]]>
+    </sql-query>
+
+    <!-- NonBillableDaoHibernate -->
+    <sql-query name="searchNonBillableBatch">
+        <return-scalar column="BATCH_ID" type="long"/>
+        <return-scalar column="BATCH_NO" type="string"/>
+        <return-scalar column="SETTLEMENT_DATE" type="java.sql.Date"/>
+        <return-scalar column="NAME" type="string"/>
+        <return-scalar column="TID" type="string"/>
+        <return-scalar column="TXN_COUNT" type="long"/>
+        <return-scalar column="TXN_AMT" type="java.math.BigDecimal"/>
+        <return-scalar column="CREDIT_COUNT" type="long"/>
+        <return-scalar column="CREDIT_AMT" type="java.math.BigDecimal"/>
+        <return-scalar column="CREDIT_DATE" type="java.sql.Date"/>
+        <return-scalar column="STATUS" type="string"/>
+        <return-scalar column="COMPLETE_STATUS" type="string"/>
+        <return-scalar column="FILE_NAME" type="string"/>
+        <return-scalar column="UPLOAD_DT_STRING" type="string"/>
+
+        <![CDATA[
+		select distinct
+			batch.BATCH_ID,
+			batch.BATCH_NO, batch.SETTLEMENT_DATE, acq.NAME,
+			batch.TID, batch.TXN_COUNT, batch.TXN_AMT,
+			batch.CREDIT_COUNT, batch.CREDIT_AMT, bank_credit_date.CREDIT_DATE,
+			batch.STATUS, batch.COMPLETE_STATUS, batch.FILE_NAME , batch.UPLOAD_DT_STRING
+		from TMTB_NON_BILLABLE_BATCH batch
+		left join MSTB_ACQUIRER acq on batch.ACQUIRER_NO = acq.ACQUIRER_NO
+		left join TMTB_NON_BILLABLE_TXN txn on batch.BATCH_ID = txn.BATCH_ID
+		left join MSTB_ACQUIRER_PYMT_TYPE pymt_type on txn.PYMT_TYPE_NO = pymt_type.PYMT_TYPE_NO
+		left join MSTB_MASTER_TABLE master on pymt_type.MASTER_NO = master.MASTER_NO
+		left join (
+			SELECT DISTINCT BATCH_ID, bank_pymt.CREDIT_DATE
+			from BMTB_BANK_PAYMENT bank_pymt
+			inner join BMTB_BANK_PAYMENT_DETAIL pymt_dtl on bank_pymt.PAYMENT_NO = pymt_dtl.PAYMENT_NO
+		) bank_credit_date on batch.BATCH_ID = bank_credit_date.BATCH_ID
+		where
+			(:batchNo is null or batch.BATCH_NO like :batchNo)
+			and
+			(:mid is null or batch.MID = :mid)
+			and
+			(:tid is null or batch.TID = :tid)
+			and
+			(:settlementDateFrom is null or batch.SETTLEMENT_DATE >= :settlementDateFrom)
+			and
+			(:settlementDateTo is null or batch.SETTLEMENT_DATE <= :settlementDateTo)
+			and
+			(:creditDateFrom is null or bank_credit_date.CREDIT_DATE >= :creditDateFrom)
+			and
+			(:creditDateTo is null or bank_credit_date.CREDIT_DATE <= :creditDateTo)
+			and
+			(:acquirerNo is null or acq.ACQUIRER_NO = :acquirerNo)
+			and
+			(:masterCode is null or master.MASTER_CODE = :masterCode)
+			and
+			(:batchStatus is null or batch.STATUS = :batchStatus)
+			and
+			(:jobNo is null or txn.JOB_NO = :jobNo)
+			and
+			(:completeStatus is null or batch.COMPLETE_STATUS = :completeStatus)
+			and
+			(:interfaceMappingValue is null or master.INTERFACE_MAPPING_VALUE = :interfaceMappingValue)
+		order by batch.SETTLEMENT_DATE
+	]]>
+    </sql-query>
+
+    <sql-query name="searchNonBillableBatch2">
+        <return-scalar column="BATCH_ID" type="long"/>
+        <return-scalar column="BATCH_NO" type="string"/>
+        <return-scalar column="SETTLEMENT_DATE" type="java.sql.Date"/>
+        <return-scalar column="NAME" type="string"/>
+        <return-scalar column="TID" type="string"/>
+        <return-scalar column="TXN_COUNT" type="long"/>
+        <return-scalar column="TXN_AMT" type="java.math.BigDecimal"/>
+        <return-scalar column="CREDIT_COUNT" type="long"/>
+        <return-scalar column="CREDIT_AMT" type="java.math.BigDecimal"/>
+        <return-scalar column="CREDIT_DATE" type="java.sql.Date"/>
+        <return-scalar column="STATUS" type="string"/>
+        <return-scalar column="COMPLETE_STATUS" type="string"/>
+        <return-scalar column="FILE_NAME" type="string"/>
+        <return-scalar column="UPLOAD_DT_STRING" type="string"/>
+
+        <![CDATA[
+		select distinct
+			batch.BATCH_ID,
+			batch.BATCH_NO, batch.SETTLEMENT_DATE, acq.NAME,
+			batch.TID, batch.TXN_COUNT, batch.TXN_AMT,
+			batch.CREDIT_COUNT, batch.CREDIT_AMT, bank_credit_date.CREDIT_DATE,
+			batch.STATUS, batch.COMPLETE_STATUS, batch.FILE_NAME , batch.UPLOAD_DT_STRING
+		from TMTB_NON_BILLABLE_BATCH batch
+		left join MSTB_ACQUIRER acq on batch.ACQUIRER_NO = acq.ACQUIRER_NO
+		left join TMTB_NON_BILLABLE_TXN txn on batch.BATCH_ID = txn.BATCH_ID
+		left join MSTB_ACQUIRER_PYMT_TYPE pymt_type on txn.PYMT_TYPE_NO = pymt_type.PYMT_TYPE_NO
+		left join MSTB_MASTER_TABLE master on pymt_type.MASTER_NO = master.MASTER_NO
+		left join (
+			SELECT DISTINCT BATCH_ID, bank_pymt.CREDIT_DATE
+			from BMTB_BANK_PAYMENT bank_pymt
+			inner join BMTB_BANK_PAYMENT_DETAIL pymt_dtl on bank_pymt.PAYMENT_NO = pymt_dtl.PAYMENT_NO
+		) bank_credit_date on batch.BATCH_ID = bank_credit_date.BATCH_ID
+		where
+			txn.MATCHING_STATUS in (:matchingStatus) or COALESCE(:matchingStatus) is null
+			and
+			(:interfaceMappingValue is null or master.INTERFACE_MAPPING_VALUE = :interfaceMappingValue)
+		order by batch.SETTLEMENT_DATE
+	]]>
+    </sql-query>
+
+    <!-- BILL GEN: RewardsDaoHibernate -->
+    <sql-query name="getTotalLeftOverPts">
+        <return-scalar column="REWARD_ACCOUNT_NO" type="integer"/>
+        <return-scalar column="PTS" type="integer"/>
+        <![CDATA[
+		select ra.REWARD_ACCOUNT_NO, sum(rt.REWARDS_PTS) as PTS
+		from LRTB_REWARD_TXN rt
+		inner join LRTB_REWARD_ACCOUNT ra on rt.REWARD_ACCOUNT_NO = ra.REWARD_ACCOUNT_NO
+		where
+			ra.ACCOUNT_NO = :accountNo
+			AND :invoiceDT >= EXPIRE_DT
+			AND EXPIRED_BILLED_FLAG = 'N'
+		group by ra.REWARD_ACCOUNT_NO
+	]]>
+    </sql-query>
+
+    <!-- BILL GEN: RewardsDaoHibernate -->
+    <sql-query name="getTotalLeftOverForfeitedPts">
+        <return-scalar column="REWARD_ACCOUNT_NO" type="integer"/>
+        <return-scalar column="PTS" type="integer"/>
+        <![CDATA[
+		select ra.REWARD_ACCOUNT_NO, sum(rt.REWARDS_PTS) as PTS
+		from LRTB_REWARD_TXN rt
+		inner join LRTB_REWARD_ACCOUNT ra on rt.REWARD_ACCOUNT_NO = ra.REWARD_ACCOUNT_NO
+		where
+			ra.ACCOUNT_NO = :accountNo
+			AND :invoiceDT < EXPIRE_DT
+			AND EXPIRED_BILLED_FLAG = 'N'
+		group by ra.REWARD_ACCOUNT_NO
+	]]>
+    </sql-query>
+
+    <!-- BILL GEN: ProductTypeDaoHibernate -->
+    <sql-query name="getUnSubscribedExternalProductTypes">
+        <return alias="pt" class="com.cdgtaxi.ibs.common.model.PmtbProductType"/>
+
+        <![CDATA[
+	select distinct pt.*
+	from PMTB_PRODUCT_TYPE pt
+	inner join TMTB_ACQUIRE_TXN txn on pt.PRODUCT_TYPE_ID = txn.PRODUCT_TYPE_ID
+	where
+		pt.EXTERNAL_CARD = 'Y'
+		and txn.TXN_STATUS = 'A'
+		and account_no = :accountNo
+		and pt.PRODUCT_TYPE_ID not in(
+			select product_type_id
+			from AMTB_SUBSC_TO
+			where account_no = :accountNo
+		)
+	]]>
+    </sql-query>
+
+    <!-- ProductDaoHibernate  -->
+    <sql-query name="getNegativeExternalProduct">
+        <return-scalar column="CARD_NO" type="string"/>
+        <return-scalar column="product_type" type="string"/>
+        <return-scalar column="CREATE_DATE" type="timestamp"/>
+        <return-scalar column="CREATE_BY" type="string"/>
+        <return-scalar column="DISABLE_DELETE" type="string"/>
+        <![CDATA[
+	select
+		card.CARD_NO,
+		case
+			when pt.PRODUCT_TYPE_ID is not null then pt.NAME
+			when pt2.PRODUCT_TYPE_ID is not null then pt2.NAME
+		end as product_type,
+		card.CREATE_DATE,
+		card.CREATE_BY,
+		CASE when request.CARD_NO is not null then 'Y' else 'N' end as DISABLE_DELETE
+	from ASVW_NEGATIVE_LIST card
+	left join PMTB_PRODUCT_TYPE pt on pt.BIN_RANGE = SUBSTR(card.CARD_NO, 0, 6) AND pt.SUB_BIN_RANGE = SUBSTR(card.CARD_NO, 7, 4)
+	left join PMTB_PRODUCT_TYPE pt2 on pt.PRODUCT_TYPE_ID is null AND pt2.BIN_RANGE = SUBSTR(card.CARD_NO, 0, 6) AND pt2.SUB_BIN_RANGE = 'NA'
+	left join (
+		select distinct req.CARD_NO
+		from ITTB_AS_ADD_NEG_PROD_REQ req
+		inner join ITTB_AS_MASTER_REQ master on master.REQ_ID = req.REQ_ID
+		where master.req_status = 'P'
+	) request on request.CARD_NO = card.CARD_NO
+	WHERE
+		(:productTypeId is NULL OR
+			case when pt.PRODUCT_TYPE_ID is not null then pt.PRODUCT_TYPE_ID
+			else pt2.PRODUCT_TYPE_ID end = :productTypeId)
+		AND
+		(:cardNoStart is NULL OR
+			TO_NUMBER(card.CARD_NO) between :cardNoStart AND :cardNoEnd)
+	]]>
+    </sql-query>
+
+    <!-- ProductTypeDaoHibernate  -->
+    <sql-query name="getAccountSubscribedToExternalProductType">
+        <return-scalar column="ACCOUNT_NO" type="integer"/>
+        <![CDATA[
+	select acct.ACCOUNT_NO
+	from AMTB_ACCOUNT acct
+	inner join (
+		select distinct account_no, first_value(ACCT_STATUS) over (Partition by (ACCOUNT_NO) order by EFFECTIVE_DT desc) as ACCT_STATUS
+		from AMTB_ACCT_STATUS
+		where EFFECTIVE_DT <= sysdate
+	) Latest_Status on acct.ACCOUNT_NO = Latest_Status.ACCOUNT_NO
+		AND Latest_Status.ACCT_STATUS != 'C'
+	inner join AMTB_SUBSC_TO subsc on acct.ACCOUNT_NO = subsc.ACCOUNT_NO
+	where CUST_NO is not null
+		AND subsc.product_Type_Id = :productTypeId
+	]]>
+    </sql-query>
+
+    <!-- AccountDaoHibernate  -->
+    <sql-query name="checkPromotionOverlapping">
+        <return-scalar column="FOUND" type="integer"/>
+        <![CDATA[
+	select max(found) as found
+	from (
+		select count(ACCT_PROMOTION_NO) as found
+		from AMTB_ACCT_PROMOTION acct_promo
+		inner join AMTB_ACCOUNT acct ON acct_promo.ACCOUNT_NO = acct.ACCOUNT_NO
+		where ACCOUNT_NO = :custNo
+		AND promo_no = :promoNo
+		AND (
+			(EFFECTIVE_DATE_FROM <= :fromDate AND EFFECTIVE_DATE_TO IS NULL) --input from_date, input to_date is null
+			OR
+			(EFFECTIVE_DATE_FROM <= :toDate)
+			OR
+			(EFFECTIVE_DATE_FROM <= :fromDate AND EFFECTIVE_DATE_TO >= :toDate)
+			OR
+			(EFFECTIVE_DATE_TO IS NOT NULL AND EFFECTIVE_DATE_TO >= :fromDate)
+		)
+		UNION ALL
+		select count(req.ACCT_PROMOTION_REQ_NO) as found
+		from AMTB_ACCT_PROMOTION_REQ req
+		inner join AMTB_BILL_REQ bill_req on req.BILL_REQ_NO = bill_req.BILL_REQ_NO
+		inner join AMTB_ACCOUNT acct ON bill_req.ACCOUNT_NO = acct.ACCOUNT_NO
+		inner join (
+			select distinct bill_req_no, first_value(TO_STATUS) over (partition by bill_req_no order by flow_dt desc) as status
+			from AMTB_BILL_REQ_FLOW
+		) latest_flow on bill_req.BILL_REQ_NO = latest_flow.BILL_REQ_NO AND latest_flow.status = 'P'
+		where event in ('C','U')
+		AND acct.CUST_NO = :custNo
+		AND req.promo_no = :promoNo
+		AND (
+			(EFFECTIVE_DT_FROM <= :fromDate AND EFFECTIVE_DT_TO IS NULL) --input from_date, input to_date is null
+			OR
+			(:toDate IS NOT NULL EFFECTIVE_DT_FROM <= :toDate)
+			OR
+			(:fromDate IS NOT NULL AND :toDate IS NOT NULL AND EFFECTIVE_DT_FROM <= :fromDate AND EFFECTIVE_DT_TO >= :toDate)
+			OR
+			(EFFECTIVE_DT_TO IS NOT NULL AND EFFECTIVE_DT_TO >= :fromDate)
+		)
+	)
+	]]>
+    </sql-query>
+
+    <!-- ProductDaoHibernate  -->
+    <sql-query name="getDistinctCardHolderName">
+        <return-scalar column="CARD_HOLDER_NAME" type="string"/>
+        <![CDATA[
+	select distinct(prod.CARD_HOLDER_NAME) as CARD_HOLDER_NAME
+	from PMTB_PRODUCT prod
+	where
+	exists (
+		select account_no
+		from (
+			select acct1.ACCOUNT_NO
+			from AMTB_ACCOUNT acct1
+			where CUST_NO = :custNo
+			Union All
+			select acct1.ACCOUNT_NO
+			from AMTB_ACCOUNT acct1
+			inner join AMTB_ACCOUNT acct2 on acct1.PARENT_NO = acct2.ACCOUNT_NO
+			where acct2.CUST_NO = :custNo
+			Union All
+			select acct1.ACCOUNT_NO
+			from AMTB_ACCOUNT acct1
+			inner join AMTB_ACCOUNT acct2 on acct1.PARENT_NO = acct2.ACCOUNT_NO
+			inner join AMTB_ACCOUNT acct3 on acct2.PARENT_NO = acct3.ACCOUNT_NO
+			where acct3.CUST_NO = :custNo
+		) all_accounts
+		where prod.account_no = account_no
+	)
+	AND prod.CARD_HOLDER_NAME like :name
+	Order By CARD_HOLDER_NAME
+	]]>
+    </sql-query>
+
+
+    <sql-query name="getDistinctNameOnCards">
+        <return-scalar column="NAME_ON_PRODUCT" type="string"/>
+        <![CDATA[
+	select distinct(prod.NAME_ON_PRODUCT) as NAME_ON_PRODUCT
+	from PMTB_PRODUCT prod
+	where
+	exists (
+		select account_no
+		from (
+			select acct1.ACCOUNT_NO
+			from AMTB_ACCOUNT acct1
+			where CUST_NO = :custNo
+			Union All
+			select acct1.ACCOUNT_NO
+			from AMTB_ACCOUNT acct1
+			inner join AMTB_ACCOUNT acct2 on acct1.PARENT_NO = acct2.ACCOUNT_NO
+			where acct2.CUST_NO = :custNo
+			Union All
+			select acct1.ACCOUNT_NO
+			from AMTB_ACCOUNT acct1
+			inner join AMTB_ACCOUNT acct2 on acct1.PARENT_NO = acct2.ACCOUNT_NO
+			inner join AMTB_ACCOUNT acct3 on acct2.PARENT_NO = acct3.ACCOUNT_NO
+			where acct3.CUST_NO = :custNo
+		) all_accounts
+		where prod.account_no = account_no
+	)
+	and prod.NAME_ON_PRODUCT like :name
+	Order By NAME_ON_PRODUCT
+	]]>
+    </sql-query>
+
+    <!-- NonBillableDaoHibernate, used by GL -->
+    <sql-query name="getLatestNonBillableGLDetail">
+        <return-scalar column="detail_no" type="integer"/>
+
+        <![CDATA[
+    --select detail.*, master.*, sp.*, pt.*
+    --from FMTB_NON_BILLABLE_DETAIL detail
+    --inner join (
+      select distinct first_value (detail_no) over (partition by master_no order by EFFECTIVE_DATE desc) detail_no
+      from FMTB_NON_BILLABLE_DETAIL
+      where EFFECTIVE_DATE <= ?
+    --) temp on detail.DETAIL_NO = temp.DETAIL_NO
+    --inner join FMTB_NON_BILLABLE_MASTER master on detail.MASTER_NO = master.MASTER_NO
+    --inner join MSTB_MASTER_TABLE sp on master.service_provider = sp.MASTER_NO
+    --inner join MSTB_MASTER_TABLE pt on master.pymt_type_master_no = pt.MASTER_NO
+  ]]>
+    </sql-query>
+
+    <!-- NonBillableDaoHibernate, used by GL -->
+    <sql-query name="getLatestBankPaymentAdviseGLDetail">
+        <return-scalar column="detail_no" type="integer"/>
+
+        <![CDATA[
+    select distinct first_value (detail_no) over (partition by master_no order by EFFECTIVE_DATE desc) detail_no
+    from FMTB_BANK_PAYMENT_DETAIL
+    where EFFECTIVE_DATE <= ?
+  ]]>
+    </sql-query>
+
+
+    <sql-query name="getLastBalanceForfeitureAsAt">
+        <return alias="forfeiture" class="com.cdgtaxi.ibs.common.model.PmtbBalanceForfeiture"/>
+        <return-join alias="product" property="forfeiture.pmtbProduct"/>
+        <return-join alias="product_type" property="product.pmtbProductType"/>
+
+        <![CDATA[
+	SELECT {forfeiture.*}, {product.*}, {product_type.*}
+	FROM pmtb_balance_forfeiture forfeiture
+	LEFT JOIN
+	  (SELECT f.product_no,
+		MAX(f.forfeited_date) AS max_forfeited_date
+	  FROM pmtb_balance_forfeiture f
+	  WHERE f.forfeited_date <= :asAtDate
+	  GROUP BY f.product_no
+	  ) temp_forfeiture
+	ON temp_forfeiture.product_no          = forfeiture.product_no
+	AND temp_forfeiture.max_forfeited_date = forfeiture.forfeited_date
+	LEFT JOIN pmtb_product product
+	ON forfeiture.product_no = product.product_no
+	LEFT JOIN pmtb_product_type product_type
+	ON product.product_type_id=product_type.product_type_id
+	WHERE product.product_no  = :productNo
+	order by forfeited_date desc, balance_forfeiture_no desc
+  ]]>
+    </sql-query>
+
+    <!-- ProductDaoHibernate -->
+    <sql-query name="getAdminFee">
+        <return alias="first_detail" class="com.cdgtaxi.ibs.master.model.MstbAdminFeeDetail"/>
+
+        <![CDATA[
+		select {first_detail.*} from (
+		select detail.* from mstb_admin_fee_detail detail
+		inner join mstb_admin_fee_master master on detail.ADMIN_FEE_PLAN_NO = master.ADMIN_FEE_PLAN_NO
+		where master.ADMIN_FEE_PLAN_NO in (
+			select ADMIN_FEE_PLAN_NO from (
+				select * from amtb_acct_admin_fee acct_admin
+				where acct_admin.ACCOUNT_NO = :topAcctNo
+				and EFFECTIVE_DATE <= :runDate
+				order by EFFECTIVE_DATE desc
+			) where rownum =1
+		) and detail.EFFECTIVE_DT <= :runDate
+		order by detail.EFFECTIVE_DT desc
+	) first_detail where rownum = 1
+	]]>
+    </sql-query>
+
+    <sql-query name="searchNonBillableTxns">
+        <return alias="txn" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxn"/>
+        <return alias="crca1" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxnCrca"/>
+        <return alias="crca2" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxnCrca"/>
+        <return-join alias="batch" property="txn.tmtbNonBillableBatch"/>
+        <return-join alias="acq" property="batch.mstbAcquirer"/>
+
+        <![CDATA[
+	SELECT {txn.*},{crca1.*},{crca2.*},{batch.*},{acq.*} FROM TMTB_NON_BILLABLE_TXN txn
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca1
+	 ON (txn.pspreference1 = crca1.psp_ref_no)
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca2
+	 ON (txn.pspreference2 = crca2.psp_ref_no)
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_BATCH batch
+	 ON (txn.batch_id = batch.batch_id)
+	 LEFT OUTER JOIN MSTB_ACQUIRER acq
+     ON (acq.acquirer_no = batch.acquirer_no)
+	where (txn.batch_id in
+	(SELECT batch_id FROM TMTB_NON_BILLABLE_BATCH where batch_id in (:batchId)) or COALESCE(:batchId) is null)
+	and (crca1.psp_ref_no like :pspRefNo or crca2.psp_ref_no like :pspRefNo)
+	and (:merchantId is null or (crca1.submission_merchant_id like :merchantId or crca2.submission_merchant_id like :merchantId))
+	and txn.job_no like :jobNo
+	and txn.matching_status in (:matchingStatus)
+	and txn.matching_status not in ('T')
+    and (
+        (crca1.source in (:source) AND crca2.source in (:source))
+        OR
+        (crca1.source in (:source) AND crca2.source IS NULL)
+        OR
+        (crca1.source IS NULL AND crca2.source in (:source))
+    )
+    and (
+        (crca1.record_type not in (:recordType) AND crca2.record_type not in (:recordType))
+        OR
+        (crca1.record_type not in (:recordType) AND crca2.record_type IS NULL)
+        OR
+        (crca1.record_type IS NULL AND crca2.record_type not in (:recordType))
+    )
+	ORDER BY txn.batch_id desc, txn.txn_no desc
+]]>
+    </sql-query>
+
+    <sql-query name="searchNonBillableTxns2">
+        <return alias="txn" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxn"/>
+        <return alias="crca1" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxnCrca"/>
+        <return alias="crca2" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxnCrca"/>
+        <return-join alias="batch" property="txn.tmtbNonBillableBatch"/>
+        <return-join alias="acq" property="batch.mstbAcquirer"/>
+
+        <![CDATA[
+	SELECT {txn.*},{crca1.*},{crca2.*},{batch.*},{acq.*} FROM TMTB_NON_BILLABLE_TXN txn
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca1
+	 ON (txn.pspreference1 = crca1.psp_ref_no)
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca2
+	 ON (txn.pspreference2 = crca2.psp_ref_no)
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_BATCH batch
+	 ON (txn.batch_id = batch.batch_id)
+	 LEFT OUTER JOIN MSTB_ACQUIRER acq
+     ON (acq.acquirer_no = batch.acquirer_no)
+	where (txn.batch_id in
+	(SELECT batch_id FROM TMTB_NON_BILLABLE_BATCH where batch_id in (:batchId)) or COALESCE(:batchId) is null)
+	and (crca1.psp_ref_no like :pspRefNo or crca2.psp_ref_no like :pspRefNo)
+	and (:merchantId is null or (crca1.submission_merchant_id like :merchantId or crca2.submission_merchant_id like :merchantId))
+	and txn.job_no like :jobNo
+	and txn.matching_status in (:matchingStatus)
+	and txn.matching_status not in ('T')
+    and (
+        (crca1.source in (:source) AND crca2.source in (:source))
+        OR
+        (crca1.source in (:source) AND crca2.source IS NULL)
+        OR
+        (crca1.source IS NULL AND crca2.source in (:source))
+    )
+	ORDER BY txn.batch_id desc, txn.txn_no desc
+]]>
+    </sql-query>
+
+    <sql-query name="searchNonBillableTxnsWithMatchingStatues">
+        <return alias="txn" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxn"/>
+        <return-join alias="batch" property="txn.tmtbNonBillableBatch"/>
+        <return-join alias="acq" property="batch.mstbAcquirer"/>
+
+        <![CDATA[
+	SELECT {txn.*},{batch.*},{acq.*} FROM TMTB_NON_BILLABLE_TXN txn
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_BATCH batch
+	 ON (txn.batch_id = batch.batch_id)
+	 LEFT OUTER JOIN MSTB_ACQUIRER acq
+     ON (acq.acquirer_no = batch.acquirer_no)
+	where txn.batch_id in
+	(SELECT batch_id FROM TMTB_NON_BILLABLE_BATCH where batch_id in (:batchId))
+	and txn.job_no like :jobNo
+	and txn.matching_status in (:matchingStatus)
+	and acq.name in (:acquirer)
+	ORDER BY txn.batch_id desc, txn.txn_no desc
+]]>
+    </sql-query>
+
+    <sql-query name="retrieveCrca1">
+        <return alias="crca1" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxnCrca"/>
+
+        <![CDATA[
+	SELECT {crca1.*} FROM TMTB_NON_BILLABLE_TXN txn
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca1
+	 ON (txn.pspreference2 = crca1.psp_ref_no)
+	 where txn.txn_no = :txn_no
+]]>
+    </sql-query>
+
+    <sql-query name="retrieveCrca2">
+        <return alias="crca2" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxnCrca"/>
+
+        <![CDATA[
+	SELECT {crca2.*} FROM TMTB_NON_BILLABLE_TXN txn
+	LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca2
+	ON (txn.pspreference2 = crca2.psp_ref_no)
+	where txn.txn_no = :txn_no
+]]>
+    </sql-query>
+
+    <sql-query name="processAydenCompletenessCheck">
+        <return-scalar column="recon_count" type="long"/>
+        <return-scalar column="ayden_settlement_count" type="long"/>
+
+        <![CDATA[
+    SELECT recon_count, ayden_settlement_count_1 + ayden_settlement_count_2 as ayden_settlement_count FROM
+    (SELECT COUNT(DISTINCT(PSPREFERENCE1)) as ayden_settlement_count_1 FROM TMTB_NON_BILLABLE_TXN txn, TMTB_NON_BILLABLE_TXN_CRCA crca where batch_id = :batchId and txn.pspreference1 = crca.psp_ref_no),
+    (SELECT COUNT(DISTINCT(PSPREFERENCE2)) as ayden_settlement_count_2 FROM TMTB_NON_BILLABLE_TXN txn, TMTB_NON_BILLABLE_TXN_CRCA crca where batch_id = :batchId and txn.pspreference2 = crca.psp_ref_no),
+    (SELECT COUNT(DISTINCT(PSPREFERENCE1)) + COUNT(DISTINCT(PSPREFERENCE2)) as recon_count from TMTB_NON_BILLABLE_TXN where batch_id = :batchId)
+]]>
+
+    </sql-query>
+
+    <sql-query name="searchExcessCrca">
+        <return-scalar column="recordType" type="string"/>
+        <return-scalar column="paymentType" type="string"/>
+        <return-scalar column="count" type="long"/>
+        <return-scalar column="grossAmount" type="java.math.BigDecimal"/>
+        <return-scalar column="fileName" type="string"/>
+
+        <![CDATA[
+    SELECT ABS(SUM(crca1.gross_amount)) as grossAmount, crca1.record_type as recordType, crca1.payment_method as paymentType, count(1) as count, crca1.file_name as fileName FROM
+    TMTB_NON_BILLABLE_TXN_CRCA crca1
+    where (COALESCE(:fileName) is null or crca1.file_name in (:fileName)) and (COALESCE(:recordType) is null or crca1.record_type not in (:recordType))
+    and crca1.source in (:source)
+    and crca1.psp_ref_no not in (
+    SELECT PSPREFERENCE1 as psprefno from TMTB_NON_BILLABLE_TXN txn, TMTB_NON_BILLABLE_BATCH batch where txn.batch_id = batch.batch_id and PSPREFERENCE1 is not null and matching_status in (:matchingStatuses)
+    UNION
+    SELECT PSPREFERENCE2 as psprefno from TMTB_NON_BILLABLE_TXN txn, TMTB_NON_BILLABLE_BATCH batch where txn.batch_id = batch.batch_id and PSPREFERENCE2 is not null and matching_status in (:matchingStatuses))
+    GROUP BY (crca1.record_type,crca1.payment_method,crca1.file_name)
+    ORDER by crca1.file_name,crca1.record_type desc
+]]>
+
+    </sql-query>
+
+    <sql-query name="searchNonBillablePendingTxnsNotFoundInCrca">
+        <return alias="txn" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxn"/>
+        <return-join alias="batch" property="txn.tmtbNonBillableBatch"/>
+        <return-join alias="acq" property="batch.mstbAcquirer"/>
+
+        <![CDATA[
+     SELECT {txn.*},{batch.*},{acq.*} FROM TMTB_NON_BILLABLE_TXN txn
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca1
+	 ON (txn.pspreference1 = crca1.psp_ref_no)
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca2
+	 ON (txn.pspreference2 = crca2.psp_ref_no)
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_BATCH batch
+	 ON (txn.batch_id = batch.batch_id)
+	 LEFT OUTER JOIN MSTB_ACQUIRER acq
+     ON (acq.acquirer_no = batch.acquirer_no)
+     where txn.batch_id in (:batchId)
+     AND txn.matching_status in (:matchingStatus)
+     AND acq.name in (:acquirer)
+     AND (
+        (crca1.psp_ref_no IS NULL AND crca2.psp_ref_no IS NULL)
+     )
+	 ORDER BY txn.batch_id desc, txn.txn_no desc
+]]>
+
+    </sql-query>
+
+
+    <sql-query name="searchNonBillableChargebackRefundedTxns">
+    <return alias="txn" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxn"/>
+    <return alias="crca1" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxnCrca"/>
+    <return alias="crca2" class="com.cdgtaxi.ibs.common.model.TmtbNonBillableTxnCrca"/>
+    <return-join alias="batch" property="txn.tmtbNonBillableBatch"/>
+    <return-join alias="acq" property="batch.mstbAcquirer"/>
+
+    <![CDATA[
+	SELECT {txn.*},{crca1.*},{crca2.*},{batch.*},{acq.*} FROM TMTB_NON_BILLABLE_TXN txn
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca1
+	 ON (txn.pspreference1 = crca1.psp_ref_no)
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_TXN_CRCA crca2
+	 ON (txn.pspreference2 = crca2.psp_ref_no)
+	 LEFT OUTER JOIN TMTB_NON_BILLABLE_BATCH batch
+	 ON (txn.batch_id = batch.batch_id)
+	 LEFT OUTER JOIN MSTB_ACQUIRER acq
+     ON (acq.acquirer_no = batch.acquirer_no)
+	where (txn.batch_id in
+	(SELECT batch_id FROM TMTB_NON_BILLABLE_BATCH where batch_id in (:batchId)) or COALESCE(:batchId) is null)
+	and txn.matching_status in (:matchingStatus)
+	and txn.matching_status not in ('T')
+    and (
+        (crca1.record_type in (:recordType) AND crca2.record_type in (:recordType))
+        OR
+        (crca1.record_type in (:recordType) AND crca2.record_type IS NULL)
+        OR
+        (crca1.record_type IS NULL AND crca2.record_type in (:recordType))
+    )
+	ORDER BY txn.batch_id desc, txn.txn_no desc
+]]>
+    </sql-query>
+
+
+</hibernate-mapping>

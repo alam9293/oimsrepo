@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Timely Payment Statistics Acct Summary" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="ACCTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>
+    WITH INV_DETAIL AS
+  (
+    SELECT 
+      trunc(bih.invoice_date, 'MONTH') AS invoice_month,
+      top.cust_no AS cust_no,
+      bih.*
+    FROM bmtb_invoice_header bih
+    INNER JOIN amtb_account acct
+    ON bih.account_no = acct.account_no
+    LEFT JOIN amtb_account parent
+    ON acct.parent_no = parent.account_no
+    LEFT JOIN amtb_account grand
+    ON PARENT.parent_no = grand.account_no
+    LEFT JOIN amtb_account top
+    ON top.account_no = (
+        CASE
+          WHEN grand.account_no IS NOT NULL
+          THEN grand.account_no
+          WHEN parent.account_no IS NOT NULL
+          THEN parent.account_no
+          ELSE acct.account_no
+        END )
+    WHERE bih.req_no = '${1. Req No}'
+  ),
+  OUTSTANDING_ACCT AS (
+    SELECT 'Outstanding' as status, cust_no FROM INV_DETAIL bih
+    LEFT JOIN bmtb_bill_gen_req req  ON bih.req_no = req.req_no
+    WHERE bih.outstanding_amount &gt; 0
+  ),
+  ACTIVE_ACCT AS (
+    SELECT 'Active' as status, top.cust_no AS cust_no FROM
+    AMTB_ACCOUNT acct
+	LEFT JOIN amtb_account parent ON acct.parent_no = parent.account_no
+    LEFT JOIN amtb_account grand ON PARENT.parent_no = grand.account_no
+    LEFT JOIN amtb_account top
+    ON top.account_no = (
+        CASE
+          WHEN grand.account_no IS NOT NULL
+          THEN grand.account_no
+          WHEN parent.account_no IS NOT NULL
+          THEN parent.account_no
+          ELSE acct.account_no
+        END )
+   INNER JOIN fmtb_ar_cont_code_master ar ON top.ar_control_code_no = ar.ar_control_code_no
+   INNER JOIN fmtb_entity_master entity ON ar.entity_no =entity.entity_no
+   INNER JOIN bmtb_bill_gen_req req ON req.entity_no = entity.entity_no AND req.req_no = '${1. Req No}'
+   INNER JOIN 
+    (
+        SELECT ACCOUNT_NO, MAX(EFFECTIVE_DT) AS last_effective_dt FROM 
+        AMTB_ACCT_STATUS status 
+        where status.effective_dt &lt;= last_day(to_date('${2. Invoice Month}', 'yyyy-mm-dd'))
+        group by ACCOUNT_NO
+    ) temp_status ON temp_status.account_no = acct.account_no
+    INNER JOIN AMTB_ACCT_STATUS last_status ON last_status.account_no = temp_status.account_no  AND last_status.EFFECTIVE_DT = temp_status.last_effective_dt 
+    INNER JOIN 
+    (
+      select account_no, max(effective_date) as effective_date
+      FROM amtb_acct_bill_cycle
+      WHERE effective_date &lt;= (select request_date from bmtb_bill_gen_req where req_no = '${1. Req No}')
+      GROUP BY account_no
+    ) temp_bill_cycle ON temp_bill_cycle.account_no = acct.account_no
+    INNER JOIN amtb_acct_bill_cycle last_bill_cycle ON last_bill_cycle.account_no = temp_bill_cycle.account_no  AND last_bill_cycle.effective_date = temp_bill_cycle.effective_date 
+    WHERE 
+    acct.cust_no IS NOT NULL
+    AND last_status.acct_status = 'A'
+    AND last_bill_cycle.billing_cycle = (CASE WHEN req.setup_no IN (1,2) THEN 'W' WHEN req.setup_no='3' THEN 'M' ELSE 'N' END)
+  ), 
+  ACCTS AS (
+      SELECT cust_no, status FROM ACTIVE_ACCT
+      UNION
+      SELECT cust_no, status FROM OUTSTANDING_ACCT
+  )
+  SELECT count(distinct cust_no) AS accts FROM ACCTS
+  </ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

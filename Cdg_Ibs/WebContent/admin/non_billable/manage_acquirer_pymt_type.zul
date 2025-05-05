@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageAcquirerPaymentTypeWindow"
+	title="Manage Acquirer Payment Type" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ManageAcquirerPaymentTypeWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<grid width="99.7%">
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+   			<row>
+				<label sclass="fieldLabel" value="Acquirer:" />
+				<listbox id="acquirerTypeListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="99%"
+   					onSelect="manageAcquirerPaymentTypeWindow.populatePaymentType()"
+   				/>
+				<label sclass="fieldLabel" value="Payment Type:" />
+				<listbox id="valueTypeListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="99%"
+   				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Effective Date From:" />
+				<datebox id="effDateFromDateBox" 
+   					width="91.5%" 
+   					format="dd/MM/yyyy"
+   				/>
+				<label sclass="fieldLabel" value="Effective Date To:" />
+				<datebox id="effDateToDateBox" 
+   					width="91.5%" 
+   					format="dd/MM/yyyy"
+   				/>
+			</row>
+			<row spans="4"><hbox>
+   				<button label="Search" onClick="manageAcquirerPaymentTypeWindow.search() " />
+   				<button label="Reset"  onClick="manageAcquirerPaymentTypeWindow.reset() "/>
+   			</hbox></row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid>
+   		<columns sizable="false">
+			<column><label value="Result(s)"/></column>
+		</columns>
+	</grid>
+	
+	<listbox width="99.7%" id="resultList" onSelect="manageAcquirerPaymentTypeWindow.edit()">
+   		<listhead sizable="true">
+   		    <listheader label="Acquirer" 		width="50" 	 sort="auto"/>
+			<listheader label="Pymt Type"  		width="100"  sort="auto"/>
+			<listheader label="Eff. Date From"  width="50" 	 sort="auto"/>
+			<listheader label="Eff. Date To" 	width="50" 	 sort="auto"/>
+			<listheader label="Delete" 		    width="60px" sort="none"	/>
+		</listhead>
+		<listfoot>
+			<listfooter span="5">
+				<label value="No records found"/>
+			</listfooter>
+		</listfoot>
+   	</listbox>
+   	<h:br/>
+	<button id="createBtn" label="Create New Acquirer Payment Type" onClick="manageAcquirerPaymentTypeWindow.create()" />
+   
+</window>

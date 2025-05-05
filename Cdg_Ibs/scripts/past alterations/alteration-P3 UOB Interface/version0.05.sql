@@ -1,0 +1,2 @@
+insert into MSTB_MASTER_TABLE select MSTB_MASTER_TABLE_SQ1.nextVal as MASTER_NO, 'GIRC' as MASTER_TYPE, '102' as MASTER_CODE, null as INTERFACE_MAPPING_VALUE, 'BANK not found for payment receipt' as MASTER_VALUE, 'A' as MASTER_STATUS, 0 as VERSION from dual;
+insert into MSTB_MASTER_TABLE select MSTB_MASTER_TABLE_SQ1.nextVal as MASTER_NO, 'GIRC' as MASTER_TYPE, '103' as MASTER_CODE, null as INTERFACE_MAPPING_VALUE, 'BANK BRANCH not found for payment receipt' as MASTER_VALUE, 'A' as MASTER_STATUS, 0 as VERSION from dual;

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="editAdminFeePlanWindow"
+	title="Edit Admin Fee Plan" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.EditAdminFeePlanWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Admin Fee Plan Name"/>
+<!--				<label id="planNameLabel" />-->
+				<capstextbox id="planNameTB" width="98.75%" maxlength="80"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	
+	<listbox id="detailList" onSelect="editAdminFeePlanWindow.editDetail()" mold="paging" multiple="true">
+		<listhead sizable="false">
+			<listheader label="Admin Fee (%)" sort="auto"/>
+			<listheader label="Effective Date" sort="auto"/>
+			<listheader label="Delete" sort="none"/>
+		</listhead>
+	</listbox>
+	<button id="createBtn" label="New Detail" onClick="editAdminFeePlanWindow.addDetail()" />
+	<h:br/>
+	<h:br/>
+	
+	<button label="Save" id="save" onClick="editAdminFeePlanWindow.updatePlan()" />
+	<button label="Back" onClick="editAdminFeePlanWindow.back()" />
+</window>

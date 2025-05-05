@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Acquirer" type="JDBC" path="/IBS_Reports/Trips/Cashless Aging Report Detailed/datasource/Acquirer.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select name from MSTB_ACQUIRER where ACQUIRER_NO = '${6. Acquirer#choice(1,2,3,4,5)#MASTER:ACQ}'</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

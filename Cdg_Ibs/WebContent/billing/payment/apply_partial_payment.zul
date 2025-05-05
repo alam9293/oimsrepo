@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="applyPartialPaymentWindow" border="normal" use="com.cdgtaxi.ibs.billing.ui.ApplyPartialPaymentWindow"
+	title="Apply Partial Payment"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	width="98%">
+
+	<grid><columns sizable="false"><column>Payment Receipt</column></columns></grid>
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+   		<rows>
+   			<row>
+   				<label sclass="fieldLabel">Account No</label>
+   				<label id="accountNoLabel"/>
+   				<label sclass="fieldLabel">Name</label>
+   				<label id="accountNameLabel"/>
+   			</row>
+   			<row id="divisionDepartmentRow" visible="false">
+   				<label id="divisionLabel" visible="false" sclass="fieldLabel">Division</label>
+   				<label id="divisionNameLabel" visible="false"/>
+   				<label id="departmentLabel" visible="false" sclass="fieldLabel">Department</label>
+   				<label id="departmentNameLabel" visible="false"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Payment Mode</label>
+   				<label id="paymentModeLabel"/>
+   				<label sclass="fieldLabel">Payment Date</label>
+   				<label id="paymentDateLabel"/> 
+   			</row>
+   			
+   			<!-- CREDIT CARD INFORMATION DETAIL CAPTURING -->
+   			<row id="creditCardDetail_1" visible="false" >
+   				<label sclass="fieldLabel">Receipt Date</label>
+   				<label id="ccReceiptDateLabel"/>
+   				<label sclass="fieldLabel">Transaction Ref No.</label>
+   				<label id="ccTxnRefNoLabel"/>
+   			</row>
+   			<row id="creditCardDetail_2" visible="false" >
+   				<label sclass="fieldLabel">Payment Amount($)</label>
+   				<label id="ccPaymentAmountLabel"/>
+   			</row>
+   			
+   			<!-- AXS INFORMATION DETAIL CAPTURING -->
+   			<row id="axsDetail_1" visible="false" >
+   				<label sclass="fieldLabel">Receipt Date</label>
+   				<label id="axsReceiptDateLabel"/>
+   				<label sclass="fieldLabel">Transaction Ref No.</label>
+   				<label id="axsTxnRefNoLabel"/>
+   			</row>
+   			<row id="axsDetail_2" visible="false" >
+   				<label sclass="fieldLabel">Payment Amount($)</label>
+   				<label id="axsPaymentAmountLabel"/>
+   			</row>
+   			
+   			<!-- CHEQUE INFORMATION DETAIL CAPTURING -->
+   			<row id="cqDetail_1" visible="false" >
+   				<label sclass="fieldLabel">Receipt Date</label>
+   				<label id="cqReceiptDateLabel"/>
+   				<label sclass="fieldLabel">Cheque Date</label>
+   				<label id="cqChequeDateBoxLabel"/>
+   			</row>
+   			<row id="cqDetail_2" visible="false" >
+   				<label sclass="fieldLabel">Cheque No</label>
+   				<label id="cqChequeNoLabel"/>
+   				<label sclass="fieldLabel">Quick Cheque Deposit</label>
+   				<label id="cqQuickChequeDepositLabel"/>
+   			</row>
+   			<row id="cqDetail_3" visible="false" >
+   				<label sclass="fieldLabel">Bank</label>
+   				<label id="cqBankLabel"/>
+   				<label sclass="fieldLabel">Branch</label>
+   				<label id="cqBranchLabel"/>
+   			</row>
+   			<row id="cqDetail_4" visible="false" >
+   				<label sclass="fieldLabel">Payment Amount($)</label>
+   				<label id="cqPaymentAmountLabel"/>
+   			</row>
+   			
+   			<!-- GIRO INFORMATION DETAIL CAPTURING -->
+   			<row id="giroDetail_1" visible="false" >
+   				<label sclass="fieldLabel">Receipt Date</label>
+   				<label id="grReceiptDateLabel"/>
+   				<label sclass="fieldLabel">Transaction Ref No.</label>
+   				<label id="grTxnRefNoLabel"/>
+   			</row>
+   			<row id="giroDetail_2" visible="false" >
+   				<label sclass="fieldLabel">Bank</label>
+   				<label id="grBankLabel"/>
+   				<label sclass="fieldLabel">Branch</label>
+   				<label id="grBranchLabel"/>
+   			</row>
+   			<row id="giroDetail_3" visible="false" >
+   				<label sclass="fieldLabel">Payment Amount($)</label>
+   				<label id="grPaymentAmountLabel"/>
+   			</row>
+   			
+   			<!-- CASH INFORMATION DETAIL CAPTURING -->
+   			<row id="cashDetail_1" visible="false" >
+   				<label sclass="fieldLabel">Receipt Date</label>
+   				<label id="caReceiptDate"/>
+   				<label sclass="fieldLabel">Payment Amount($)</label>
+   				<label id="caPaymentAmountLabel"/>
+   			</row>
+   			
+   			<!-- CONTRA INFORMATION DETAIL CAPTURING -->
+   			<row id="contraDetail_1" visible="false" >
+   				<label sclass="fieldLabel">Receipt Date</label>
+   				<label id="contraReceiptDate"/>
+   				<label sclass="fieldLabel">Payment Amount($)</label>
+   				<label id="contraPaymentAmountLabel"/>
+   			</row>
+   			
+   			<!-- BANK TRANSFER INFORMATION DETAIL CAPTURING -->
+   			<row id="bankTransferDetail_1" visible="false" >
+   				<label sclass="fieldLabel">Receipt Date</label>
+   				<label id="btReceiptDateLabel"/>
+   				<label sclass="fieldLabel">Transaction Ref No.</label>
+   				<label id="btTxnRefNoLabel"/>
+   			</row>
+   			<row id="bankTransferDetail_2" visible="false" >
+   				<label sclass="fieldLabel">Bank</label>
+   				<label id="btBankLabel"/>
+   				<label sclass="fieldLabel">Branch</label>
+   				<label id="btBranchLabel"/>
+   			</row>
+   			<row id="bankTransferDetail_3" visible="false" >
+   				<label sclass="fieldLabel">Payment Amount($)</label>
+   				<label id="btPaymentAmountLabel"/>
+   			</row>
+   			
+   			<!-- OTHERS INFORMATION DETAIL CAPTURING -->
+   			<row id="othersDetail_1" visible="false" >
+   				<label sclass="fieldLabel">Receipt Date</label>
+   				<label id="othersReceiptDateLabel"/>
+   				<label sclass="fieldLabel">Transaction Ref No.</label>
+   				<label id="othersTxnRefNoLabel"/>
+   			</row>
+   			<row id="othersDetail_2" visible="false" >
+   				<label sclass="fieldLabel">Payment Amount($)</label>
+   				<label id="othersPaymentAmountLabel"/>
+   			</row>
+   		</rows>
+   	</grid>
+   	<h:br/>
+   	<grid><columns sizable="false"><column>Invoice Details</column></columns></grid>
+	<grid>
+		<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+   		<rows>
+   			<row>
+   				<label sclass="fieldLabel">Invoice No</label>
+   				<label id="invoiceNoLabel"/>
+   				<label sclass="fieldLabel">Total Invoice Amount($)</label>
+   				<label id="totalInvoiceAmountLabel"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Outstanding Amount($)</label>
+   				<label id="outstandingAmountLabel"/>
+   				<label sclass="fieldLabel">Invoice Status</label>
+   				<label id="invoiceStatusLabel"/>
+   			</row>
+   		</rows>
+   	</grid>
+   	<div id="multiUsageProductsDiv" visible="false">
+	   	<h:br/>
+	   	<grid><columns sizable="false"><column>Multi-Usage Products</column></columns></grid>
+		<listbox id="multiUsageProductsList"
+			mold="paging"
+			pageSize="10">
+	   		<listhead sizable="true">
+	   			<listheader label="Card No" sort="auto"/>
+				<listheader label="Name On Card" sort="auto"/>
+				<listheader label="Account Name" sort="auto"/>
+				<listheader label="Account Category" sort="auto"/>
+				<listheader label="New Txn($)" sort="auto" align="right"/>
+				<listheader label="Admin Fee($)" sort="auto" align="right"/>
+				<listheader label="GST($)" sort="auto" align="right"/>
+				<listheader label="Total New($)" sort="auto" align="right"/>
+				<listheader label="Amount Applied($)" sort="auto" align="right"/>
+				<listheader label="Outstanding($)" sort="auto" align="right"/>
+				<listheader label="Apply Amount($)" sort="auto"/>
+			</listhead>
+	   	</listbox>
+   	</div>
+   	<div id="otherProductsDiv" visible="false">
+	   	<h:br/>
+	   	<grid><columns sizable="false"><column>Other Products</column></columns></grid>
+		<listbox id="otherProductsList"
+			mold="paging"
+			pageSize="10">
+	   		<listhead sizable="true">
+				<listheader label="" sort="auto"/>
+				<listheader label="Account Name" sort="auto"/>
+				<listheader label="Account Category" sort="auto"/>
+				<listheader label="Total New($)" sort="auto" align="right"/>
+				<listheader label="Amount Applied($)" sort="auto" align="right"/>
+				<listheader label="Outstanding($)" sort="auto" align="right"/>
+				<listheader label="Apply Amount($)" sort="auto"/>
+			</listhead>
+	   	</listbox>
+   	</div>
+   	<div id="miscDiv" visible="false">
+	   	<h:br/>
+	   	<grid><columns sizable="false"><column>Miscellaneous</column></columns></grid>
+		<listbox id="miscList"
+			mold="paging"
+			pageSize="10">
+	   		<listhead sizable="true">
+				<listheader label="" sort="auto"/>
+				<listheader label="Account Name" sort="auto"/>
+				<listheader label="Account Category" sort="auto"/>
+				<listheader label="Total New($)" sort="auto" align="right"/>
+				<listheader label="Amount Applied($)" sort="auto" align="right"/>
+				<listheader label="Outstanding($)" sort="auto" align="right"/>
+				<listheader label="Apply Amount($)" sort="auto"/>
+			</listhead>
+	   	</listbox>
+   	</div>
+   	<h:br/>
+	<hbox>
+		<label sclass="fieldLabel">Total Applied Amount($)</label>
+		<label id="totalAppliedAmountLabel">0.00</label>
+	</hbox>
+	<h:br/>
+   	<button label="Apply" onClick="applyPartialPaymentWindow.apply()"/>
+   	<button label="Auto Populate" onClick="applyPartialPaymentWindow.autoPopulate()"/>
+   	<button label="Reset All" onClick="applyPartialPaymentWindow.clearAll()"/>
+   	<button label="Back" onClick="applyPartialPaymentWindow.back2()"/>
+</window>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="RoleFunction" type="JDBC" path="/IBS_Reports/UAM/RoleFunction/RoleFunction.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="MODULE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FUNCTION_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MENU1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MENU2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>SELECT L1||' Module' as module, FN as FUNCTION_NAME, L1 as menu1, L2 as menu2, NAME
+FROM (
+SELECT FN.DISPLAY_NAME FN, 
+CASE WHEN NVL(L1.RSRC_ID, 0) = 0 THEN (CASE WHEN NVL(L2.RSRC_ID, 0) = 0 THEN L3.DISPLAY_NAME ELSE L2.DISPLAY_NAME END) ELSE L1.DISPLAY_NAME END L1, 
+CASE WHEN NVL(L1.RSRC_ID, 0) = 0 THEN (CASE WHEN NVL(L2.RSRC_ID, 0) = 0 THEN '' ELSE L3.DISPLAY_NAME END) ELSE L2.DISPLAY_NAME END L2, 
+R.NAME 
+FROM SATB_RESOURCE FN, SATB_RESOURCE L3, SATB_RESOURCE L2, SATB_RESOURCE L1, SATB_ROLE_RESOURCE RR, SATB_ROLE R
+WHERE FN.PAR_RSRC_ID = L3.RSRC_ID (+)
+AND L3.PAR_RSRC_ID = L2.RSRC_ID(+)
+AND L2.PAR_RSRC_ID = L1.RSRC_ID(+)
+AND FN.RSRC_ID = RR.RSRC_ID
+AND RR.ROLE_ID = R.ROLE_ID
+AND FN.RSRC_ID &lt;&gt; 0
+AND FN.PAR_RSRC_ID NOT IN (0, 2)
+AND R.STATUS = 'A'
+AND (('${1. Role#choice()#MASTER:RL}' is null) or (R.ROLE_ID='${1. Role#choice()#MASTER:RL}'))
+)</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

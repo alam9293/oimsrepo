@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="viewBillingWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ViewBillingWindow"
+	onCreate="viewBillingWindow.init()"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Account Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Account No"/>
+				<label id="custNo"/>
+				<label sclass="fieldLabel" value="Account Status"/>
+				<hbox valign="center">
+				<vbox>
+					<label id="acctStatus"/>
+				</vbox><vbox>
+					<button label="View History" onClick="viewBillingWindow.viewStatusHistory()"/>
+				</vbox>
+			</hbox>
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Account Type"/>
+				<label id="acctType"/>
+				<label sclass="fieldLabel" value="Date Created"/>
+				<label id="createdDt"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid id="billingCycleGrid">
+		<!-- <auxhead><auxheader colspan="7">Billing Details</auxheader></auxhead> -->
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="23%" label="Billing Cycle"/>
+			<column width="23%" label="Volume Discount"/>
+			<column width="3%" align="center"/>
+			<column width="23%" label="Base Admin Fee"/>
+			<column width="3%" align="center"/>
+			<column width="23%" label="Effective Date"/>
+		</columns>
+		<rows id="billing"/>
+	</grid>
+	<button id="viewBillingCycleHistoryBtn" label="View Billing Cycle History" onClick="viewBillingWindow.viewBillingCycleHistory()"/>
+		<h:br/><h:br/><grid id="creditTermGrid">
+		<!-- <auxhead><auxheader colspan="4">Credit Term</auxheader></auxhead> -->
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="47.5%" label="Credit Term"/>
+			<column width="3%" align="center"/>
+			<column width="47.5%" label="Effective Date"/>
+		</columns>
+		<rows id="creditTerm"/>
+	</grid>
+	<button id="viewCreditTermHistoryBtn" label="View Credit Term History" onClick="viewBillingWindow.viewCreditTermHistory()"/>
+		<h:br/><h:br/><grid id="earlyPaymentGrid">
+		<!-- <auxhead><auxheader colspan="4">Early Payment</auxheader></auxhead> -->
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="47.5%" label="Early Payment"/>
+			<column width="3%" align="center"/>
+			<column width="47.5%" label="Effective Date"/>
+		</columns>
+		<rows id="earlyPayment"/>
+	</grid>
+	<button id="viewEarlyPaymentHistoryBtn" label="View Early Payment History" onClick="viewBillingWindow.viewEarlyPaymentHistory()"/>
+		<h:br/><h:br/><grid id="latePaymentGrid">
+		<!-- <auxhead><auxheader colspan="4">Late Payment</auxheader></auxhead> -->
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="47.5%" label="Late Payment"/>
+			<column width="3%" align="center"/>
+			<column width="47.5%" label="Effective Date"/>
+		</columns>
+		<rows id="latePayment"/>
+	</grid>
+	<button id="viewLatePaymentHistoryBtn" label="View Late Payment History" onClick="viewBillingWindow.viewLatePaymentHistory()"/>
+		<h:br/><h:br/><grid id="promotionGrid">
+		<!-- <auxhead><auxheader colspan="4">Promotion</auxheader></auxhead> -->
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="47.5%" label="Promotion"/>
+			<column width="3%" align="center"/>
+			<column width="23.75%" label="Effective Date From"/>
+			<column width="23.75%" label="Effective Date To"/>
+		</columns>
+		<rows id="promotion"/>
+	</grid>
+	<button id="viewPromotionHistoryBtn" label="View Promotion History" onClick="viewBillingWindow.viewPromotionHistory()"/>
+		<h:br/><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Customer Bank Information"/></column>
+		</columns>
+	</grid>
+	<grid id="customerBankGrid">
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row>
+			<label sclass="fieldLabel" value="Bank"/>
+			<label id="bank"/>
+			<label sclass="fieldLabel" value="Branch"/>
+			<label id="branch"/>
+		</row><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Bank Account No"/>
+			<label id="bankAcctNo"/>
+			<label/>
+		</row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Payment Mode"/></column>
+		</columns>
+	</grid>
+	<grid id="paymentModeGrid">
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Default Payment Mode"/>
+			<label id="paymentMode"/>
+			<label/>
+		</row><!-- <row spans="4">
+			<hbox>
+				<button label="Edit" onClick="viewBillingWindow.edit()"/>
+				<button label="Process Deposit" onClick="viewBillingWindow.viewDeposit()"/>
+				<button label="View History" onClick="viewBillingWindow.viewHistory()"/>
+			</hbox>
+		</row> --></rows>
+	</grid>
+	<button id="editBillingBtn" label="Edit" onClick="viewBillingWindow.edit()"/>
+	<button id="viewBillingHistoryBtn" label="View History" onClick="viewBillingWindow.viewHistory()"/>
+	<h:br/>
+	<h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Deposit Collection"/></column>
+		</columns>
+	</grid>
+	<grid id="depositCollectionGrid">
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row>
+			<label sclass="fieldLabel" value="Required Deposit($)"/>
+			<label id="requiredDeposit"/>
+			<label sclass="fieldLabel" value="Collected Deposit($)"/>
+			<label id="collectedDeposit"/>
+		</row><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Total Requested Deposit($)"/>
+			<label id="totalRequestedDeposit"/>
+			<label/>
+		</row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Invoice for Deposit"/></column>
+		</columns>
+	</grid>
+	<grid id="invoiceForDeposit">
+		<columns sizable="false">
+			<column width="2%"/>
+			<column width="16%" label="Invoice No"/>
+			<column width="16%" label="Invoice Date"/>
+			<column width="16%" align="right" label="Invoice Amount($)"/>
+			<column width="16%" align="right" label="Paid Amount($)"/>
+			<column width="16%" align="right" label="Outstanding Amount($)"/>
+			<column width="16%" label="Invoice Status"/>
+		</columns>
+		<rows id="invoices"/>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Collect Deposit"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row>
+			<label sclass="fieldLabel required" value="Deposit Amount($)"/>
+			<decimalbox id="depositAmt" maxlength="13" format="#######,##0.00" width="98.75%" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredAmountConstraint')}"/>
+			<label sclass="fieldLabel required" value="Invoice Date"/>
+			<datebox id="invoiceDate" width="91.5%" format="dd/MM/yyyy" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredEqualOrLaterThanCurrentDateConstraint')}"/>
+		</row><row spans="4">
+			<hbox>
+				<button id="depositBtn" label="Generate Misc. Invoice" onClick="viewBillingWindow.generateInvoice()"/>
+				<!-- <button label="Back" onClick="viewBillingWindow.back()"/> -->
+			</hbox>
+		</row></rows>
+	</grid>
+</window>

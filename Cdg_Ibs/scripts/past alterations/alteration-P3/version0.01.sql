@@ -1,0 +1,1 @@
+INSERT INTO SATB_RESOURCE (RSRC_ID,PAR_RSRC_ID,RSRC_NAME,RSRC_TYPE,URI,SEQUENCE,DISPLAY_NAME,DISPLAY,VERSION) VALUES (86,15,'Transfer Contact Person','U','/acct/transfer/transferContact.zul',7,'Transfer Contact Person','Y',0);

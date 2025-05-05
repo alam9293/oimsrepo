@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Deposit Refund Memo" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="PAYMENT_RECEIPT_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ENTITY_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="FROM_USER_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SUBJECT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="RECEIPT_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PAYMENT_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select 
+  bpr.payment_receipt_no,
+  fem.entity_name,
+  'IBS (' || bpr.created_by || ')' from_user_id,
+  'Cheque Issuance for Deposit Refund, Customer - ' || top.cust_no subject,
+  bpr.receipt_dt,  
+  acct.account_name,
+  bpr.payment_amount
+from bmtb_payment_receipt bpr
+inner join amtb_account acct on bpr.account_no = acct.account_no
+left join amtb_account parent on acct.parent_no = parent.account_no
+left join amtb_account grand on parent.parent_no = grand.account_no
+inner join amtb_account top on (case when grand.cust_no is not null then grand.account_no when parent.cust_no is not null then parent.account_no else acct.account_no end) = top.account_no
+inner join fmtb_ar_cont_code_master faccm on top.ar_control_code_no=faccm.ar_control_code_no
+inner join fmtb_entity_master fem using(ENTITY_NO)
+where 
+  bpr.payment_receipt_no = ${paymentReceiptNo}</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

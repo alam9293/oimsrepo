@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Invoice Report" type="JDBC" path="/IBS_Reports/Trips/Invoice Report/datasource/Invoice Report.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="ACCOUNT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_CATEGORY" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="E_INVOICE_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_FORMAT" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_PAYMENT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_TXN" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_30_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_60_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_90_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="MORE_90_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="CHARGE_TO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end as account_no,
+    case when acct.CUST_NO is not null then acct.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else grand.ACCOUNT_NAME end as account_name,
+    acct.ACCOUNT_CATEGORY, '' as e_invoice_flag,--acct.E_INVOICE_FLAG,
+    header.INVOICE_NO, header.INVOICE_DATE, header.INVOICE_FORMAT, header.PREV_BALANCE, header.PREV_PAYMENT, header.NEW_TXN, header.NEW_BALANCE,
+    header.LESS_30_DAYS, header.LESS_60_DAYS, header.LESS_90_DAYS, header.MORE_90_DAYS,
+    case when acct.INVOICE_FORMAT is not null then case when acct.ACCOUNT_CATEGORY not in ('CORP', 'APP', 'SAPP') then acct.ACCOUNT_NAME || '(' || acct.CODE || ')' else acct.ACCOUNT_NAME end when parent.INVOICE_FORMAT is not null then case when parent.ACCOUNT_CATEGORY not in ('CORP', 'APP', 'SAPP') then parent.ACCOUNT_NAME || '(' || parent.CODE || ')' else parent.ACCOUNT_NAME end else case when grand.ACCOUNT_CATEGORY not in ('CORP', 'APP', 'SAPP') then grand.ACCOUNT_NAME || '(' || grand.CODE || ')' else grand.ACCOUNT_NAME end end as charge_to,
+    salesperson.name
+    from BMTB_INVOICE_HEADER header
+    inner join AMTB_ACCOUNT acct on header.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    inner join (
+        select ACCOUNT_NO, max(EFFECTIVE_DT_FROM) as latest_effective from AMTB_ACCT_SALESPERSON where effective_dt_from &lt; systimestamp group by ACCOUNT_NO
+    ) last_acct_salesperson on last_acct_salesperson.ACCOUNT_NO = case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end
+    inner join AMTB_ACCT_SALESPERSON acct_salesperson on acct_salesperson.ACCOUNT_NO = last_acct_salesperson.ACCOUNT_NO and acct_salesperson.EFFECTIVE_DT_FROM = last_acct_salesperson.LATEST_EFFECTIVE
+    inner join MSTB_SALESPERSON salesperson on acct_salesperson.SALESPERSON_NO = salesperson.SALESPERSON_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on ar.AR_CONTROL_CODE_NO = case when acct.CUST_NO is not null then acct.AR_CONTROL_CODE_NO when parent.CUST_NO is not null then parent.AR_CONTROL_CODE_NO else grand.AR_CONTROL_CODE_NO end
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    where ('${1. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.ENTITY_NO = '${1. Entity#choice(1,2,3)#MASTER:EM}')
+    and (('${2. Invoice Start Date#date#REQUIRED}' is null and '${3. Invoice End Date#date}' is null)or(header.INVOICE_DATE between case when '${2. Invoice Start Date#date#REQUIRED}' is null then to_date('${3. Invoice End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Invoice Start Date#date#REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${3. Invoice End Date#date}' is null then to_date('${2. Invoice Start Date#date#REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${3. Invoice End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and (
+        ('${4. Invoice Type#choice(0,1,2,3)#NC:InvType:REQUIRED}' = '0') or
+        ('${4. Invoice Type#choice(0,1,2,3)#NC:InvType:REQUIRED}' = '1' and header.INVOICE_FORMAT = 'D') or
+        ('${4. Invoice Type#choice(0,1,2,3)#NC:InvType:REQUIRED}' = '2' and header.INVOICE_FORMAT = 'M') or
+        ('${4. Invoice Type#choice(0,1,2,3)#NC:InvType:REQUIRED}' = '3' and header.INVOICE_FORMAT in ('A', 'S', 'P'))
+    )
+    and ('${5. Opt for eInvoice#choice(Y,N)#NC:BOOLEAN}' is null or '' = '${5. Opt for eInvoice#choice(Y,N)#NC:BOOLEAN}')--acct.E_INVOICE_FLAG = '${5. Opt for eInvoice#choice(Y,N)#NC:BOOLEAN}')
+    and ('${6. Sales Person#choice()#MASTER:SP}' is null or salesperson.SALESPERSON_NO = '${6. Sales Person#choice()#MASTER:SP}')
+    order by case when '${7. Sort By#choice(CNIN,CNCN,IN)#NC:IR_ORDER:REQUIRED}' = 'CNIN' then case when acct.CUST_NO is not null then to_number(acct.CUST_NO) when parent.CUST_NO is not null then to_number(parent.CUST_NO) else to_number(grand.CUST_NO) end when '${7. Sort By#choice(CNIN,CNCN,IN)#NC:IR_ORDER:REQUIRED}' = 'IN' then header.INVOICE_NO else null end,
+    case when '${7. Sort By#choice(CNIN,CNCN,IN)#NC:IR_ORDER:REQUIRED}' = 'CNCN' then case when acct.ACCOUNT_NAME is not null then acct.CUST_NO when parent.ACCOUNT_NAME is not null then parent.CUST_NO else grand.ACCOUNT_NAME end else null end,
+    case when '${7. Sort By#choice(CNIN,CNCN,IN)#NC:IR_ORDER:REQUIRED}' = 'CNIN' then header.INVOICE_NO when '${7. Sort By#choice(CNIN,CNCN,IN)#NC:IR_ORDER:REQUIRED}' = 'CNCN' then case when acct.CUST_NO is not null then to_number(acct.CUST_NO) when parent.CUST_NO is not null then to_number(parent.CUST_NO) else to_number(grand.CUST_NO) end else null end</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

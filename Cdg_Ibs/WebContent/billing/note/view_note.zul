@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="viewNoteWindow"
+	title="Credit/Debit Note" border="normal" 
+	use="com.cdgtaxi.ibs.billing.ui.ViewNoteWindow"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Account No"/>
+				<label id="accountNoLabel" />
+				<label sclass="fieldLabel" value="Account Name"/>
+				<label id="nameLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Invoice No"/>
+				<label id="invoiceLabel" />
+				<label sclass="fieldLabel" value="Invoice Date"/>
+				<label id="invoiceDateLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Invoice Amount($)"/>
+				<label id="invoiceAmountLabel" />
+				<label sclass="fieldLabel" value="Outstanding Amount($)"/>
+				<label id="outstandingAmountLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Invoice Status"/>
+				<label id="invoiceStatusLabel" />
+				<label sclass="fieldLabel" value="Billed To"/>
+				<label id="billedToLabel" />
+			</row>
+		</rows>
+	</grid>
+	
+	<h:br />
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Note Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Note No"/>
+				<label id="noteNoLabel" />
+				<label sclass="fieldLabel" value="Status"/>
+				<label id="statusLabel" />
+			</row>
+			<row id="cancellationRow" visible="false">
+				<label sclass="fieldLabel" value="Cancellation Date / Time"/>
+				<label id="cancellationDateTimeLabel" />
+				<label sclass="fieldLabel" value="Cancellation Reason"/>
+				<label id="cancellationReasonLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Account"/>
+				<label id="accountLabel" />
+				<label sclass="fieldLabel" value="Billed Invoice"/>
+				<label id="appliedInvoiceLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="GL Txn"/>
+				<label id="glTxnLabel" />
+				<label sclass="fieldLabel" value="Reason"/>
+				<label id="noteReasonLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Note Type"/>
+				<label id="noteTypeLabel" />
+				<label sclass="fieldLabel" value="Note Amount($)"/>
+				<label id="noteAmountLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Admin Fee($)"/>
+				<label id="adminFeeLabel" value="-"/>
+				<label sclass="fieldLabel" value="GST($)"/>
+				<label id="gstAmountLabel" />
+				
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Discount($)"/>
+				<label id="discountLabel" />
+				<label sclass="fieldLabel" value="Promo Discount($)"/>
+				<label id="promoDiscountLabel" />
+			</row>
+			<row spans="1,3">
+				<label sclass="fieldLabel" value="Remarks"/>
+				<label id="remarksLabel" />
+			</row>
+		</rows>
+	</grid>
+	<h:br />
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Last Updated"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="By" />
+				<label id="lastUpdatedBy" value="-"/>
+				<label sclass="fieldLabel" value="Date/Time" />
+				<label id="lastUpdatedDate" value="-"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br />
+	<button id="cancelNoteButton" label="Cancel Note" disabled="true" onClick="viewNoteWindow.cancelNote()"/>
+	<button label="Back" onClick="viewNoteWindow.back()" />
+	<button id="printReceipt" label="Print Receipt" disabled="true" onClick="viewNoteWindow.printReceipt()" />
+</window>

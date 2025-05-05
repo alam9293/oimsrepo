@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="SearchTokenWindow" border="normal"
+	use="com.cdgtaxi.ibs.product.ui.SearchTokenWindow" title="Search Token"
+	width="98%" xmlns:h="http://www.w3.org/1999/xhtml">
+	<zscript><![CDATA[
+	import com.cdgtaxi.ibs.web.constraint.GreaterEqualZeroCustomConstraint;
+	Constraint geZeroLe999999 = new GreaterEqualZeroCustomConstraint(true, 999999, true);
+	Constraint geZeroLe9999d99 = new GreaterEqualZeroCustomConstraint(true, 9999.99, true);
+]]>
+    
+    </zscript>
+
+	<label id="processLabel" visible="false" sclass="fieldLabel">
+		Processing ...
+	</label>
+
+
+	<grid id="mainGrid">
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+		<row>
+				<label sclass="fieldLabel" value="Account No" />
+				<intbox id="accountNoIntBox" maxlength="6"
+   				onChange="SearchTokenWindow.searchAccountByAccountNo()"
+   				onOK="SearchTokenWindow.searchAccountByAccountNo()" 
+   				width="50%"
+   				/>
+				<label sclass="fieldLabel"
+					value="Account Name" />
+				<combobox id="accountNameComboBox"
+   					rows="1" 
+   					style="text-transform:uppercase"
+   					autodrop="true"
+   					autocomplete="false"
+   					width="90%"
+   					onChanging="SearchTokenWindow.searchAccountByAccountName(event.value)"
+   					onSelect="SearchTokenWindow.onSelectAccountName()"
+   					tooltiptext="Minimum search criteria is 3 characters" 
+   				/>
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Tokenize" />
+				<capstextbox id="tokenId" width="100%" maxlength="80" />
+				<label sclass="fieldLabel" value="Card No" />
+				<capstextbox id="cardNo" width="100%" />
+			</row>
+			<row>
+				<label value="Token Expiry Date From" sclass="fieldLabel" />
+				<datebox id="tokenDateFromField" width="91.5%" format="dd/MM/yyyy"/>
+				<label value="Token Expiry Date To" sclass="fieldLabel" />
+				<datebox id="tokenDateToField" width="91.5%" format="dd/MM/yyyy"/>
+			</row>
+			<row>
+				<label value="Credit Card Expiry Date From" sclass="fieldLabel" />
+				<datebox id="ccDateFromField" width="91.5%" format="dd/MM/yyyy"/>
+				<label value="Credit Card Expiry Date To" sclass="fieldLabel" />
+				<datebox id="ccDateToField" width="91.5%" format="dd/MM/yyyy"/>
+			</row>
+			<row spans="4">
+				<hbox>
+					<button label="Search"
+						onClick="SearchTokenWindow.search()" />
+					<button label="Reset"
+						onClick="SearchTokenWindow.reset()" />
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Result(s)"/></column>
+		</columns>
+	</grid>
+	
+	<listbox id="resultList" mold="paging"
+		onSelect="SearchTokenWindow.displayTokenDetails()" fixedLayout="true">
+		<listhead sizable="true" >
+			<listheader label="Account No" sort="auto" 			width="5%"/>
+			<listheader label="Account Name" sort="auto" 		width="11%"/>
+			<listheader label="Card No" sort="auto" 			width="6%"/>
+			<listheader label="Tokenize" sort="auto" 		width="10%"		align="right"/>
+			<listheader label="Token Expiry Date" sort="auto" 		width="10%"		align="right"/>
+		
+		</listhead>
+	</listbox>
+	<h:br/>
+</window>

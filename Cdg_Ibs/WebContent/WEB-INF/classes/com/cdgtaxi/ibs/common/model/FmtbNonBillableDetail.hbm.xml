@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.FmtbNonBillableDetail" 
+    table="FMTB_NON_BILLABLE_DETAIL"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="detailNo"
+        type="java.lang.Integer"
+        column="DETAIL_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">FMTB_NON_BILLABLE_DETAIL_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="fareAmountTxnCode"
+        type="java.lang.String"
+        column="FARE_AMOUNT_TXN_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="adminFeeTxnCode"
+        type="java.lang.String"
+        column="ADMIN_FEE_TXN_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    
+     <property
+        name="premiumAmountTxnCode"
+        type="java.lang.String"
+        column="PREMIUM_AMOUNT_TXN_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+   
+    <property
+        name="effectiveDate"
+        type="java.sql.Date"
+        column="EFFECTIVE_DATE"
+        not-null="true"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to FmtbNonBillableMaster -->
+    <many-to-one
+        name="fmtbNonBillableMaster"
+        class="com.cdgtaxi.ibs.common.model.FmtbNonBillableMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="MASTER_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to FmtbArContCodeMaster -->
+    <many-to-one
+        name="fmtbArContCodeMaster"
+        class="com.cdgtaxi.ibs.common.model.FmtbArContCodeMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="AR_CONTROL_CODE_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

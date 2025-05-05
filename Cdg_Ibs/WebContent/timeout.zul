@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Integrated Billing System - Timeout" ?>
+
+<zk>
+<label value="Session timed out! You will be redirected to login in 3 secs..."/>
+<timer id="redirectTimer" delay="3000" repeats="false" onTimer='
+	redirectTimer.start();
+	Executions.getCurrent().sendRedirect("/login.zul","_top");
+'/>
+</zk>

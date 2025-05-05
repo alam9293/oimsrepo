@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="recycleProductWindow"  border="normal" use="com.cdgtaxi.ibs.product.ui.RecycleProductWindow"
+	title="Recycle One Time Usage Product"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+		<columns sizable="false" id="test">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+		<!-- 
+			<row>
+			<div style="color:red"><label value="*One Time Usage Card Types" style="font-weight: bold;color: #000000;"/></div>
+				<listbox width="100%" id="otuCardTypes" rows="1" mold="select" onCreate="recycleProductWindow.getOTUCardTypes()"/>
+			</row>
+			 -->
+			<row>
+				<label sclass="fieldLabel required" value="Card No Start	" />
+				<decimalbox id="cardNoStart"  width="99%" />
+				<label sclass="fieldLabel" value="Card No End"  />
+				<decimalbox id="cardNoEnd"   width="98%"  />
+
+			</row>
+		</rows>
+	</grid>
+	
+	
+	<grid>
+		<rows>
+			<row spans="4">
+				<hbox>
+					<button label="Recycle" onClick="recycleProductWindow.recycle()" />
+					<button label="Proceed to Issue" onClick="recycleProductWindow.proceedToIssue()" />
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+	
+		
+</window>

@@ -1,0 +1,35 @@
+<zk>
+<!--	<system-config>-->
+<!--		<disable-event-thread/>-->
+<!--	</system-config>-->
+ 
+	<listener>
+		<description>
+			ThreadLocal Synchronization Listener
+		</description>
+		<listener-class>
+			org.zkoss.zkplus.util.ThreadLocalListener
+		</listener-class>
+	</listener>
+	<preference>
+		<name>ThreadLocal</name>
+		<value>
+			org.hibernate.context.ThreadLocalSessionContext=context;
+			org.springframework.security.context.ThreadLocalSecurityContextHolderStrategy=contextHolder;
+			org.springframework.transaction.support.TransactionSynchronizationManager=resources,synchronizations,currentTransactionName,currentTransactionReadOnly,actualTransactionActive;
+   			org.springframework.orm.hibernate3.SessionFactoryUtils=deferredCloseHolder;
+   			org.springframework.transaction.interceptor.TransactionAspectSupport=transactionInfoHolder;
+		</value>
+	</preference>
+	
+	<device-config>
+    	<device-type>ajax</device-type>    
+    	<timeout-uri>/timeout.zul</timeout-uri>    
+	</device-config>
+	
+	<!-- To turn off animation, reduce lag for low end graphics -->
+	<preference>
+		<name>org.zkoss.zul.Window.defaultActionOnShow</name>
+		<value></value>
+	</preference>
+</zk>

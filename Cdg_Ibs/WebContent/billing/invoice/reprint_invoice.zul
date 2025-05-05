@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="reprintInvoiceWindow" border="normal" use="com.cdgtaxi.ibs.billing.ui.ReprintInvoiceWindow"
+	title="Reprint Invoice"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	width="450px">
+	<grid>
+		<columns sizable="false">
+			<column width="50%"/>
+			<column width="50%"/>
+		</columns>
+   		<rows>
+   			<row>
+   				<label sclass="fieldLabel required" value="Account Name"/>
+   				<capstextbox id="customerNameTextBox"
+   					maxlength="80"
+   					width="98.75%"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel" value="Block No."/>
+   				<capstextbox id="blockNoTextBox"
+   					maxlength="10"
+   					width="98.75%"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel" value="Unit No."/>
+   				<capstextbox id="unitNoTextBox"
+   					maxlength="25"
+   					width="98.75%"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel required" value="Street Name"/>
+   				<capstextbox id="streetNameTextBox"
+   					maxlength="60"
+   					width="98.75%"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel" value="Building Name"/>
+   				<capstextbox id="buildingNameTextBox"
+   					maxlength="60"
+   					width="98.75%"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel" value="Area"/>
+   				<capstextbox id="areaTextBox"
+   					maxlength="60"
+   					width="98.75%"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel required" value="Country"/>
+   				<listbox id="countryListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="100%"
+   					onSelect="reprintInvoiceWindow.onSelectCountry(self)"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel required" value="City"/>
+   				<capstextbox id="cityTextBox"
+   					maxlength="35"
+   					width="98.75%"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel required" value="State"/>
+   				<capstextbox id="stateTextBox"
+   					maxlength="35"
+   					width="98.75%"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel required" value="Postal"/>
+   				<capstextbox id="postalTextBox"
+   					maxlength="10"
+   					width="98.75%"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel required" value="Billing Contact Person Name"/>
+   				<capstextbox id="billingContactTextBox"
+   					maxlength="170"
+   					width="98.75%"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel" value="Billed To"/>
+   				<capstextbox id="billedToTextBox"
+   					maxlength="80"
+   					width="98.75%"
+   				/>
+   			</row>
+   		</rows>
+   	</grid>
+   	<h:br/>
+	<button label="Reprint" onClick="reprintInvoiceWindow.reprint()"/>
+	<button label="Cancel" onClick="reprintInvoiceWindow.cancel()"/>
+</window>

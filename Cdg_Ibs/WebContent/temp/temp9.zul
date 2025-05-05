@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="temp9Window" border="normal"
+  title="Suspend/Reactivate Taxi Vouchers"
+  xmlns:h="http://www.w3.org/1999/xhtml">
+
+  <grid>
+    <columns sizable="false">
+      <column width="25%"/>
+      <column width="25%"/>
+      <column width="25%"/>
+      <column width="25%"/>
+    </columns>
+      <rows>
+        <row>
+          <label sclass="fieldLabel required">Reason:</label>
+          <listbox mold="select" width="98%">
+            <listitem label="Reason 1"/>
+            <listitem label="Reason 2"/>
+          </listbox>
+          <label/>
+          <label/>
+        </row>
+        <row spans="1,2,1">
+          <label sclass="fieldLabel">Remarks:</label>
+          <textbox rows="4" multiline="true" width="98%"/>
+          <label/>
+          <label/>
+        </row>
+      </rows>
+    </grid>
+    <h:br/>
+  <!--  The below grid is for Labeling Purpose  -->
+    <grid>
+      <columns>
+        <column>Selected Vouchers</column>
+      </columns>
+    </grid>
+    <listbox fixedLayout="true" id="resultList" checkmark="true" multiple="true">
+      <listhead sizable="true">
+        <listheader width="25px"/>
+        <listheader label="Account No" sort="auto"/>
+        <listheader label="Account Name" sort="auto"/>
+        <listheader label="Item Type" sort="auto"/>
+        <listheader label="Serial No" sort="auto"/>
+        <listheader label="Expiry Date" sort="auto"/>
+        <listheader label="Redemption Point" sort="auto"/>
+        <listheader label="Redemption Date" sort="auto"/>
+        <listheader label="Cashier ID" sort="auto"/>
+        <listheader label="Status" sort="auto"/>
+      </listhead>
+      <listitem>
+        <listcell/>
+        <listcell label="1"/>
+        <listcell label="TST"/>
+        <listcell label="$5 VOUCHER"/>
+        <listcell label="1"/>
+        <listcell label="01/01/2013"/>
+        <listcell label=""/>
+        <listcell label=""/>
+        <listcell label=""/>
+        <listcell label="ACTIVE"/>
+      </listitem>
+      <listitem>
+        <listcell/>
+        <listcell label="1"/>
+        <listcell label="TST"/>
+        <listcell label="$5 VOUCHER"/>
+        <listcell label="2"/>
+        <listcell label="01/01/2013"/>
+        <listcell label=""/>
+        <listcell label=""/>
+        <listcell label=""/>
+        <listcell label="ACTIVE"/>
+      </listitem>
+      <listitem>
+        <listcell/>
+        <listcell label="1"/>
+        <listcell label="TST"/>
+        <listcell label="$10 VOUCHER"/>
+        <listcell label="3"/>
+        <listcell label="01/01/2013"/>
+        <listcell label=""/>
+        <listcell label=""/>
+        <listcell label=""/>
+        <listcell label="ACTIVE"/>
+      </listitem>
+    </listbox>
+      <button label="Submit"/>
+      <button label="Back"/>
+</window>

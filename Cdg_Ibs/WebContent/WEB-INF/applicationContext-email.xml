@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+    <bean id="emailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host"><value>mail.wizvision.com</value></property>
+		<property name="username"><value>test@wizvision.com</value></property>
+		<property name="password"><value>Secure!123</value></property>
+		<property name="port"><value>25</value></property>
+	</bean>
+
+	<bean id="emailUtil" class="com.cdgtaxi.ibs.util.EmailUtil">
+		<property name="emailSender"><ref bean="emailSender"/></property>
+		<property name="from"><value>ibs_admin@wizvision.com</value></property>
+	</bean>
+</beans>

@@ -1,0 +1,786 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="100" grid-y="100" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/Revenue/Revenue/Revenue Misc.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="custom" page-width="47680" page-height="33680" orientation="Landscape" horizontal-page-count="1" margin-top="1020" margin-left="1020" margin-bottom="400" margin-right="1020" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="1. Entity" enabled="Yes">${1. Entity#choice()#MASTER:EM}</rml:param><rml:param xml:space="preserve" key="2. Invoice Start Date" enabled="Yes">${2. Invoice Start Date#date#REQUIRED}</rml:param><rml:param xml:space="preserve" key="3. Invoice End Date" enabled="Yes">${3. Invoice End Date#date}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+    <rml:datasource name="Headers" datasource-name="/IBS_Reports/Revenue/Revenue/datasource/Revenue Header.ds" tabulate="Yes">
+      <rml:parameters>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+    <rml:datasource name="Default" datasource-name="/IBS_Reports/Revenue/Revenue/datasource/Revenue Misc.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="1. Entity">${1. Entity#choice()#MASTER:EM}</rml:param><rml:param xml:space="preserve" key="3. Invoice End Date">${3. Invoice End Date#date}</rml:param><rml:param xml:space="preserve" key="2. Invoice Start Date">${2. Invoice Start Date#date#REQUIRED}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="detail">
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" data-source="Default" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:watermark report="" section="" enabled="No">
+        <rml:parameters>
+        </rml:parameters>
+      </rml:watermark>
+      <rml:section-header table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="800" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:hbox left="0" top="0" width="45640" height="600" style=""><rml:render-if xml:space="preserve" language="javascript">Data.getCount("INVOICE_HEADER_NO").getValueOverAll() == 0</rml:render-if>
+          <rml:cell weight="2978" left="0" top="0" width="1000" height="600" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="0" top="0" width="1000" height="600" border-style="Solid" border-radius="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">ACCT NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="13996" left="1000" top="0" width="4700" height="600" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="1000" top="0" width="4700" height="600" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">ACCT NAME</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="4170" left="5700" top="0" width="1400" height="600" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="5700" top="0" width="1400" height="600" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV DATE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="3307" left="7100" top="0" width="1110" height="600" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="7100" top="0" width="1110" height="600" border-style="Solid" border-radius="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="13075" left="8210" top="0" width="4391" height="600" style="">
+            <rml:vbox left="8210" top="0" width="4391" height="600" style="">
+              <rml:cell weight="1000" left="8210" top="0" width="4391" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="8210" top="0" width="4391" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="DOCKET_TF" running-value="No">Headers:DOCKET_TF</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1000" left="8210" top="300" width="4391" height="300" style="">
+                <rml:hbox left="8210" top="300" width="4391" height="300" style="">
+                  <rml:cell weight="10235" left="8210" top="300" width="2196" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="8210" top="300" width="2196" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10225" left="10406" top="300" width="2195" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="10406" top="300" width="2195" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="13100" left="12601" top="0" width="4399" height="600" style="">
+            <rml:vbox left="12601" top="0" width="4399" height="600" style="">
+              <rml:cell weight="1000" left="12601" top="0" width="4399" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="12601" top="0" width="4399" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="DOCKET_AF" running-value="No">Headers:DOCKET_AF</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1000" left="12601" top="300" width="4399" height="300" style="">
+                <rml:hbox left="12601" top="300" width="4399" height="300" style="">
+                  <rml:cell weight="10230" left="12601" top="300" width="2199" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="12601" top="300" width="2199" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10230" left="14800" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="14800" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="13101" left="17000" top="0" width="4400" height="600" style="">
+            <rml:vbox left="17000" top="0" width="4400" height="600" style="">
+              <rml:cell weight="1000" left="17000" top="0" width="4400" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="17000" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="CASH_VOC_TF" running-value="No">Headers:CASH_VOC_TF</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1000" left="17000" top="300" width="4400" height="300" style="">
+                <rml:hbox left="17000" top="300" width="4400" height="300" style="">
+                  <rml:cell weight="10230" left="17000" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="17000" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10230" left="19200" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="19200" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="13102" left="21400" top="0" width="4400" height="600" style="">
+            <rml:vbox left="21400" top="0" width="4400" height="600" style="">
+              <rml:cell weight="1000" left="21400" top="0" width="4400" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="21400" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="CASH_VOC_AF" running-value="No">Headers:CASH_VOC_AF</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1000" left="21400" top="300" width="4400" height="300" style="">
+                <rml:hbox left="21400" top="300" width="4400" height="300" style="">
+                  <rml:cell weight="10230" left="21400" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="21400" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10230" left="23600" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="23600" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="13101" left="25800" top="0" width="4400" height="600" style="">
+            <rml:vbox left="25800" top="0" width="4400" height="600" style="">
+              <rml:cell weight="1000" left="25800" top="0" width="4400" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="25800" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="STAFF_TRANSPORT" running-value="No">Headers:STAFF_TRANSPORT</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1000" left="25800" top="300" width="4400" height="300" style="">
+                <rml:hbox left="25800" top="300" width="4400" height="300" style="">
+                  <rml:cell weight="10230" left="25800" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="25800" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10230" left="28000" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="28000" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="13101" left="30200" top="0" width="4400" height="600" style="">
+            <rml:vbox left="30200" top="0" width="4400" height="600" style="">
+              <rml:cell weight="1000" left="30200" top="0" width="4400" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="30200" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="MIGR_INV" running-value="No">Headers:MIGR_INV</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1000" left="30200" top="300" width="4400" height="300" style="">
+                <rml:hbox left="30200" top="300" width="4400" height="300" style="">
+                  <rml:cell weight="10230" left="30200" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="30200" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10230" left="32400" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="32400" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="13099" left="34600" top="0" width="4400" height="600" style="">
+            <rml:vbox left="34600" top="0" width="4400" height="600" style="">
+              <rml:cell weight="1000" left="34600" top="0" width="4400" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="34600" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="MISC_GST" running-value="No">Headers:MISC_GST</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1000" left="34600" top="300" width="4400" height="300" style="">
+                <rml:hbox left="34600" top="300" width="4400" height="300" style="">
+                  <rml:cell weight="10230" left="34600" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="34600" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10230" left="36800" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="36800" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="13097" left="39000" top="0" width="4399" height="600" style="">
+            <rml:vbox left="39000" top="0" width="4399" height="600" style="">
+              <rml:cell weight="1000" left="39000" top="0" width="4399" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="39000" top="0" width="4399" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="MISC_NON_GST" running-value="No">Headers:MISC_NON_GST</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1000" left="39000" top="300" width="4399" height="300" style="">
+                <rml:hbox left="39000" top="300" width="4399" height="300" style="">
+                  <rml:cell weight="10232" left="39000" top="300" width="2199" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="39000" top="300" width="2199" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10228" left="41199" top="300" width="2200" height="300" style="">
+                    <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="41199" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="6668" left="43399" top="0" width="2241" height="600" style="">
+            <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="43399" top="0" width="2241" height="600" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">TOTAL</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:field text-align="Center" font-name="Arial" font-size="180" left="0" top="600" width="45640" height="200" style=""><rml:render-if xml:space="preserve" language="javascript">Data.getCount("INVOICE_HEADER_NO").getValueOverAll() == 0</rml:render-if><rml:control-source xml:space="preserve" type="Literal" running-value="No">No Record Found</rml:control-source>
+        </rml:field>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" height="400" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:hbox left="0" top="0" width="45640" height="400" style="">
+          <rml:cell weight="4602" left="0" top="0" width="1000" height="400" style="">
+            <rml:field text-align="Left" font-name="Arial" font-size="200" font-italic="No" left="0" top="0" width="1000" height="400" style=""><rml:control-source xml:space="preserve" type="Field" field="CUST_NO" running-value="No">CUST_NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="21630" left="1000" top="0" width="4700" height="400" style="">
+            <rml:field text-align="Left" font-name="arial" font-size="200" font-italic="No" left="1000" top="0" width="4700" height="400" style=""><rml:control-source xml:space="preserve" type="Field" field="ACCOUNT_NAME" running-value="No">ACCOUNT_NAME</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="6442" left="5700" top="0" width="1400" height="400" style="">
+            <rml:field text-align="Left" font-name="arial" font-size="200" font-italic="No" left="5700" top="0" width="1400" height="400" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="dd/MM/yyyy" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="INVOICE_DATE" running-value="No">INVOICE_DATE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="5108" left="7100" top="0" width="1110" height="400" style="">
+            <rml:field text-align="Left" font-name="arial" font-size="200" font-italic="No" left="7100" top="0" width="1110" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Number" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="0" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="INVOICE_NO" running-value="No">INVOICE_NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10080" left="8210" top="0" width="2190" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="8210" top="0" width="2190" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(DOC_TF==null){
+	0;
+}else{
+	DOC_TF;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10123" left="10400" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="10400" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(DOC_TF_DIS==null){
+	0;
+}else{
+	DOC_TF_DIS;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10124" left="12600" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="12600" top="0" width="2200" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(DOC_AF==null){
+	0;
+}else{
+	DOC_AF;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10124" left="14800" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="14800" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="Yes" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(DOC_AF_DIS==null){
+	0;
+}else{
+	DOC_AF_DIS;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10124" left="17000" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="17000" top="0" width="2200" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(CV_TF==null){
+	0;
+}else{
+	CV_TF;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10123" left="19200" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="19200" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(CV_TF_DIS==null){
+	0;
+}else{
+	CV_TF_DIS;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10123" left="21400" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="21400" top="0" width="2200" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(CV_AF==null){
+	0;
+}else{
+	CV_AF;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10124" left="23600" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="23600" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(CV_AF_DIS==null){
+	0;
+}else{
+	CV_AF_DIS;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10123" left="25800" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="25800" top="0" width="2200" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(STAFF==null){
+	0;
+}else{
+	STAFF;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10123" left="28000" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="28000" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(STAFF_DIS==null){
+	0;
+}else{
+	STAFF_DIS;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10121" left="30200" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="30200" top="0" width="2200" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(MIGR==null){
+	0;
+}else{
+	MIGR;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10122" left="32400" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="32400" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(MIGR_DIS==null){
+	0;
+}else{
+	MIGR_DIS;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10122" left="34600" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="34600" top="0" width="2200" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(MISC_GST==null){
+	0;
+}else{
+	MISC_GST;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10122" left="36800" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="36800" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(MISC_GST_DIS==null){
+	0;
+}else{
+	MISC_GST_DIS;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10121" left="39000" top="0" width="2200" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="39000" top="0" width="2200" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(MISC_NON_GST==null){
+	0;
+}else{
+	MISC_NON_GST;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10117" left="41200" top="0" width="2199" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="41200" top="0" width="2199" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(MISC_NON_GST_DIS==null){
+	0;
+}else{
+	MISC_NON_GST_DIS;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10302" left="43399" top="0" width="2241" height="400" style="">
+            <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="43399" top="0" width="2241" height="400" border-style="Solid" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(TOTAL==null){
+	0;
+}else{
+	TOTAL;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:detail>
+      <rml:group field="CUST_NO" sort-order="None" group-header-visible="Yes" group-footer-visible="Yes" group-on="All" group-data="">
+        <rml:group-header repeat="Yes" table-of-contents="No" height="600" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+          <rml:hbox left="0" top="0" width="45640" height="600" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if>
+            <rml:cell weight="2978" left="0" top="0" width="1000" height="600" style="">
+              <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="0" top="0" width="1000" height="600" border-style="Solid" border-radius="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">ACCT NO</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="13996" left="1000" top="0" width="4700" height="600" style="">
+              <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="1000" top="0" width="4700" height="600" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">ACCT NAME</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="4170" left="5700" top="0" width="1400" height="600" style="">
+              <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="5700" top="0" width="1400" height="600" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV DATE</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="3307" left="7100" top="0" width="1110" height="600" style="">
+              <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="7100" top="0" width="1110" height="600" border-style="Solid" border-radius="0" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV NO</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="13075" left="8210" top="0" width="4391" height="600" style="">
+              <rml:vbox left="8210" top="0" width="4391" height="600" style="">
+                <rml:cell weight="1000" left="8210" top="0" width="4391" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="8210" top="0" width="4391" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="DOCKET_TF" running-value="No">Headers:DOCKET_TF</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1000" left="8210" top="300" width="4391" height="300" style="">
+                  <rml:hbox left="8210" top="300" width="4391" height="300" style="">
+                    <rml:cell weight="10235" left="8210" top="300" width="2196" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="8210" top="300" width="2196" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10225" left="10406" top="300" width="2195" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="10406" top="300" width="2195" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="13100" left="12601" top="0" width="4399" height="600" style="">
+              <rml:vbox left="12601" top="0" width="4399" height="600" style="">
+                <rml:cell weight="1000" left="12601" top="0" width="4399" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="12601" top="0" width="4399" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="DOCKET_AF" running-value="No">Headers:DOCKET_AF</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1000" left="12601" top="300" width="4399" height="300" style="">
+                  <rml:hbox left="12601" top="300" width="4399" height="300" style="">
+                    <rml:cell weight="10230" left="12601" top="300" width="2199" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="12601" top="300" width="2199" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10230" left="14800" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="14800" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="13101" left="17000" top="0" width="4400" height="600" style="">
+              <rml:vbox left="17000" top="0" width="4400" height="600" style="">
+                <rml:cell weight="1000" left="17000" top="0" width="4400" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="17000" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="CASH_VOC_TF" running-value="No">Headers:CASH_VOC_TF</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1000" left="17000" top="300" width="4400" height="300" style="">
+                  <rml:hbox left="17000" top="300" width="4400" height="300" style="">
+                    <rml:cell weight="10230" left="17000" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="17000" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10230" left="19200" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="19200" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="13102" left="21400" top="0" width="4400" height="600" style="">
+              <rml:vbox left="21400" top="0" width="4400" height="600" style="">
+                <rml:cell weight="1000" left="21400" top="0" width="4400" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="21400" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="CASH_VOC_AF" running-value="No">Headers:CASH_VOC_AF</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1000" left="21400" top="300" width="4400" height="300" style="">
+                  <rml:hbox left="21400" top="300" width="4400" height="300" style="">
+                    <rml:cell weight="10230" left="21400" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="21400" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10230" left="23600" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="23600" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="13101" left="25800" top="0" width="4400" height="600" style="">
+              <rml:vbox left="25800" top="0" width="4400" height="600" style="">
+                <rml:cell weight="1000" left="25800" top="0" width="4400" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="25800" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="STAFF_TRANSPORT" running-value="No">Headers:STAFF_TRANSPORT</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1000" left="25800" top="300" width="4400" height="300" style="">
+                  <rml:hbox left="25800" top="300" width="4400" height="300" style="">
+                    <rml:cell weight="10230" left="25800" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="25800" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10230" left="28000" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="28000" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="13101" left="30200" top="0" width="4400" height="600" style="">
+              <rml:vbox left="30200" top="0" width="4400" height="600" style="">
+                <rml:cell weight="1000" left="30200" top="0" width="4400" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="30200" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="MIGR_INV" running-value="No">Headers:MIGR_INV</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1000" left="30200" top="300" width="4400" height="300" style="">
+                  <rml:hbox left="30200" top="300" width="4400" height="300" style="">
+                    <rml:cell weight="10230" left="30200" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="30200" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10230" left="32400" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="32400" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="13099" left="34600" top="0" width="4400" height="600" style="">
+              <rml:vbox left="34600" top="0" width="4400" height="600" style="">
+                <rml:cell weight="1000" left="34600" top="0" width="4400" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="34600" top="0" width="4400" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="MISC_GST" running-value="No">Headers:MISC_GST</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1000" left="34600" top="300" width="4400" height="300" style="">
+                  <rml:hbox left="34600" top="300" width="4400" height="300" style="">
+                    <rml:cell weight="10230" left="34600" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="34600" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10230" left="36800" top="300" width="2200" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="36800" top="300" width="2200" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="13097" left="39000" top="0" width="4399" height="600" style="">
+              <rml:vbox left="39000" top="0" width="4399" height="600" style="">
+                <rml:cell weight="1000" left="39000" top="0" width="4399" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" vertical-align="Center" left="39000" top="0" width="4399" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-bottom="Yes" can-grow="No" can-shrink="No" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="MISC_NON_GST" running-value="No">Headers:MISC_NON_GST</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1000" left="39000" top="300" width="4399" height="300" style="">
+                  <rml:hbox left="39000" top="300" width="4399" height="300" style="">
+                    <rml:cell weight="10278" left="39000" top="300" width="2209" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" left="39000" top="300" width="2209" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" border-bottom="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL AMOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10182" left="41209" top="300" width="2190" height="300" style="">
+                      <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" left="41209" top="300" width="2190" height="300" border-style="Solid" border-left="Yes" border-right="Yes" border-top="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">DISCOUNT</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="6668" left="43399" top="0" width="2241" height="600" style="">
+              <rml:field text-align="Center" font-name="Arial" font-size="180" font-bold="Yes" font-italic="No" vertical-align="Bottom" left="43399" top="0" width="2241" height="600" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">TOTAL</rml:control-source>
+              </rml:field>
+            </rml:cell>
+          </rml:hbox>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-header>
+        <rml:group-footer table-of-contents="No" height="400" style="">
+          <rml:hbox left="0" top="0" width="45640" height="400" style="">
+            <rml:cell weight="28588" left="0" top="0" width="8210" height="400" style="">
+            </rml:cell>
+            <rml:cell weight="7627" left="8210" top="0" width="2190" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="8210" top="0" width="2190" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="DOC_TF" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7662" left="10400" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="10400" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="DOC_TF_DIS" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7662" left="12600" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="12600" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="DOC_AF" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7662" left="14800" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="14800" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="DOC_AF_DIS" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7661" left="17000" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="17000" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="CV_TF" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7661" left="19200" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" vertical-align="Top" left="19200" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="CV_TF_DIS" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7661" left="21400" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="21400" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="CV_AF" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7660" left="23600" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="23600" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="CV_AF_DIS" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7661" left="25800" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="25800" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="STAFF" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7661" left="28000" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="28000" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="STAFF_DIS" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7661" left="30200" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="30200" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="MIGR" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7660" left="32400" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="32400" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="MIGR_DIS" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7661" left="34600" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="34600" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" lock-handles="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="MISC_GST" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7660" left="36800" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="36800" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="MISC_GST_DIS" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7660" left="39000" top="0" width="2200" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="39000" top="0" width="2200" height="400" border-style="Solid" border-left="No" border-right="No" style=""><rml:control-source xml:space="preserve" type="Operation" field="MISC_NON_GST" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7655" left="41200" top="0" width="2199" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="41200" top="0" width="2199" height="400" border-style="Solid" border-left="No" border-right="Yes" style=""><rml:control-source xml:space="preserve" type="Operation" field="MISC_NON_GST_DIS" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7797" left="43399" top="0" width="2241" height="400" style="">
+              <rml:field text-align="Right" font-name="arial" font-size="200" font-italic="No" left="43399" top="0" width="2241" height="400" border-style="Solid" border-left="Yes" border-right="Yes" style=""><rml:control-source xml:space="preserve" type="Operation" field="TOTAL" operation="Sum" running-value="No" range="All"></rml:control-source>
+              </rml:field>
+            </rml:cell>
+          </rml:hbox>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-footer>
+      </rml:group>
+      <rml:ruler>
+        <rml:mark value="43400">
+        </rml:mark>
+        <rml:mark value="41210">
+        </rml:mark>
+        <rml:mark value="39000">
+        </rml:mark>
+        <rml:mark value="36800">
+        </rml:mark>
+        <rml:mark value="34590">
+        </rml:mark>
+        <rml:mark value="32390">
+        </rml:mark>
+        <rml:mark value="30190">
+        </rml:mark>
+        <rml:mark value="28000">
+        </rml:mark>
+        <rml:mark value="25800">
+        </rml:mark>
+        <rml:mark value="23600">
+        </rml:mark>
+        <rml:mark value="21400">
+        </rml:mark>
+        <rml:mark value="19200">
+        </rml:mark>
+        <rml:mark value="17000">
+        </rml:mark>
+        <rml:mark value="14800">
+        </rml:mark>
+        <rml:mark value="12600">
+        </rml:mark>
+        <rml:mark value="10400">
+        </rml:mark>
+        <rml:mark value="8210">
+        </rml:mark>
+        <rml:mark value="7100">
+        </rml:mark>
+        <rml:mark value="5700">
+        </rml:mark>
+        <rml:mark value="1000">
+        </rml:mark>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation section="Section 1" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+    <rml:render-details mime-type="application/vnd.ms-excel">
+      <rml:parameters><rml:param xml:space="preserve" key="Snap">No</rml:param><rml:param xml:space="preserve" key="Paged">No</rml:param><rml:param xml:space="preserve" key="ForceNumbersAsText">No</rml:param><rml:param xml:space="preserve" key="Multiplier"></rml:param>
+      </rml:parameters>
+    </rml:render-details>
+  </rml:rendering></rml:report>
+

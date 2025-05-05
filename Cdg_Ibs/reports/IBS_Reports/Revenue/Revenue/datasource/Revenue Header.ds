@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Revenue Header" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="VOL_DIS" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ELY_PMT_DIS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PROMO_DIS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ISSUANCE_FEE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="RPLC_AMT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SUBSCRIPTION_FEE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PMT_INT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEPOSIT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DOCKET_TF" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DOCKET_AF" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CASH_VOC_TF" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CASH_VOC_AF" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MISC_GST" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MISC_NON_GST" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MIGR_INV" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STAFF_TRANSPORT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select code1.description as VOL_DIS,
+    code2.description as ELY_PMT_DIS,
+    code3.description as PROMO_DIS,
+    code16.description as ISSUANCE_FEE,
+    code4.description as RPLC_AMT,
+    code5.description as SUBSCRIPTION_FEE,
+    code6.description as LATE_PMT_INT,
+    code7.description as DEPOSIT,
+    code8.description as DOCKET_TF,
+    code9.description as DOCKET_AF,
+    code10.description as CASH_VOC_TF,
+    code11.description as CASH_VOC_AF,
+    code12.description as MISC_GST,
+    code13.description as MISC_NON_GST,
+    code14.description as MIGR_INV,
+    code15.description as STAFF_TRANSPORT from FMTB_TRANSACTION_CODE code1
+    left join FMTB_TRANSACTION_CODE code2 on code2.TXN_CODE = 'DEPAYT'
+    left join FMTB_TRANSACTION_CODE code3 on code3.TXN_CODE = 'PRODIS'
+    left join FMTB_TRANSACTION_CODE code4 on code4.TXN_CODE = 'CRPLFEE'
+    left join FMTB_TRANSACTION_CODE code16 on code16.TXN_CODE = 'ISSUFEE'
+    left join FMTB_TRANSACTION_CODE code5 on code5.TXN_CODE = 'SUBFEE'
+    left join FMTB_TRANSACTION_CODE code6 on code6.TXN_CODE = 'ILATEP'
+    left join FMTB_TRANSACTION_CODE code7 on code7.TXN_CODE = 'DEPOSIT'
+    left join FMTB_TRANSACTION_CODE code8 on code8.TXN_CODE = 'TFDOC' and code8.TXN_TYPE = 'MS'
+    left join FMTB_TRANSACTION_CODE code9 on code9.TXN_CODE = 'AFDOC' and code9.TXN_TYPE = 'MS'
+    left join FMTB_TRANSACTION_CODE code10 on code10.TXN_CODE = 'TFFVCV' and code10.TXN_TYPE = 'MS'
+    left join FMTB_TRANSACTION_CODE code11 on code11.TXN_CODE = 'AFFVCV' and code11.TXN_TYPE = 'MS'
+    left join FMTB_TRANSACTION_CODE code12 on code12.TXN_CODE = 'MISCEG' and code12.TXN_TYPE = 'MS'
+    left join FMTB_TRANSACTION_CODE code13 on code13.TXN_CODE = 'MISCE' and code13.TXN_TYPE = 'MS'
+    left join FMTB_TRANSACTION_CODE code14 on code14.TXN_CODE = 'DMINV' and code14.TXN_TYPE = 'MS'
+    left join FMTB_TRANSACTION_CODE code15 on code15.TXN_CODE = 'STAFF' and code15.TXN_TYPE = 'MS'
+    where code1.TXN_CODE = 'VOLDIS'</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

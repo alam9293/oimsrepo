@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="searchAccountForIssueMiscInvoiceWindow"
+	title="Search Account" border="normal" 
+	use="com.cdgtaxi.ibs.billing.ui.SearchAccountForIssueMiscInvoiceWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<grid>
+		<columns sizable="false">
+			<column width="15%" />
+			<column width="25%" />
+			<column width="15%" />
+			<column width="45%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Account No"/>
+				<intbox id="accountNoIntBox" 
+					maxlength="6" 
+					onChange="searchAccountForIssueMiscInvoiceWindow.searchBillableAccountByAccountNo()"
+   					onOK="searchAccountForIssueMiscInvoiceWindow.searchBillableAccountByAccountNo()"  
+					width="98.75%"
+				/>
+				<label sclass="fieldLabel" value="Account Name"/>
+   				<combobox id="accountNameComboBox"
+   					rows="1" 
+   					style="text-transform:uppercase"
+   					autodrop="true"
+   					autocomplete="false"
+   					width="91.5%"
+   					onChanging="searchAccountForIssueMiscInvoiceWindow.searchBillableAccountByAccountName(event.value)"
+   					onSelect="searchAccountForIssueMiscInvoiceWindow.onSelectAccountName()"
+   					tooltiptext="Minimum search criteria is 3 characters"
+   				/>
+			</row>
+   			<row id="divisionDepartmentRow" visible="false">
+   				<label id="divisionLabel" visible="false" sclass="fieldLabel" value="Division"/>
+   				<listbox id="divisionListBox" 
+   					mold="select"
+   					multiple="false"
+   					visible="false"
+   					width="100%"
+   					onSelect="searchAccountForIssueMiscInvoiceWindow.onSelectDivision(self)"
+   				/>
+   				<label id="departmentLabel" visible="false" sclass="fieldLabel" value="Department"/>
+   				<listbox id="departmentListBox" 
+   					mold="select"
+   					multiple="false"
+   					visible="false"
+   					width="100%"
+   					onSelect="searchAccountForIssueMiscInvoiceWindow.onSelectDepartment(self)"
+   				/>
+   			</row>
+			<row spans="4"><hbox>
+				<button label="Search" onClick="searchAccountForIssueMiscInvoiceWindow.searchAccount()" />
+				<button label="Reset" onClick="searchAccountForIssueMiscInvoiceWindow.reset()"/>
+			</hbox></row>
+		</rows>
+	</grid>
+	<grid>
+		<columns>
+			<column label="Search Results:"/>
+		</columns>
+	</grid>
+	<listbox id="resultList" mold="paging"
+			onSelect="searchAccountForIssueMiscInvoiceWindow.issueMiscInvoice()">
+		<listhead sizable="true">
+			<listheader label="Acct No" width="50" sort="auto" />
+			<listheader label="Category" sort="auto" />
+			<listheader label="Billed To" sort="auto" />
+		</listhead>
+	</listbox>
+
+</window>

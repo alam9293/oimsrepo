@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.FmtbBankCode" 
+    table="FMTB_BANK_CODE"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="bankCodeNo"
+        type="java.lang.Integer"
+        column="BANK_CODE_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">FMTB_BANK_CODE_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="bankCode"
+        type="java.lang.String"
+        column="BANK_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="glCode"
+        type="java.lang.String"
+        column="GL_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="costCentre"
+        type="java.lang.String"
+        column="COST_CENTRE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="bankName"
+        type="java.lang.String"
+        column="BANK_NAME"
+        not-null="true"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="branchCode"
+        type="java.lang.String"
+        column="BRANCH_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="branchName"
+        type="java.lang.String"
+        column="BRANCH_NAME"
+        not-null="true"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="isDefault"
+        type="java.lang.String"
+        column="IS_DEFAULT"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="effectiveDate"
+        type="java.sql.Date"
+        column="EFFECTIVE_DATE"
+        not-null="true"
+        length="7"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="isDefaultGiroBank"
+        type="java.lang.String"
+        column="IS_DEFAULT_GIRO_BANK"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="bankAcctName"
+        type="java.lang.String"
+        column="BANK_ACCT_NAME"
+        not-null="true"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="bankAcctNo"
+        type="java.lang.String"
+        column="BANK_ACCT_NO"
+        not-null="true"
+        length="25"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to MstbMasterTable -->
+    <many-to-one
+        name="mstbMasterTable"
+        class="com.cdgtaxi.ibs.master.model.MstbMasterTable"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="TAX_TYPE" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to FmtbEntityMaster -->
+    <many-to-one
+        name="fmtbEntityMaster"
+        class="com.cdgtaxi.ibs.common.model.FmtbEntityMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ENTITY_NO" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to BmtbPaymentReceipt -->
+    <set
+        name="bmtbPaymentReceipts"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="BANK_IN" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.BmtbPaymentReceipt"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>

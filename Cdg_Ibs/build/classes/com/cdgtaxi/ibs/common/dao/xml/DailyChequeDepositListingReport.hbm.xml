@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="dailyChequeDepositListing">
+	<return-scalar column="BANK_NAME" type="string"/>
+	<return-scalar column="BRANCH_NAME" type="string"/>
+	<return-scalar column="CHEQUE_NO"	type="string"/>
+	<return-scalar column="RECEIPT_DT" type="string"/>
+	<return-scalar column="PAYMENT_AMOUNT" type="string"/>
+
+	<![CDATA[
+select bank.BANK_NAME, branch.BRANCH_NAME, receipt.CHEQUE_NO, to_char(receipt.RECEIPT_DT,'dd-mm-yyyy') as RECEIPT_DT, to_char(receipt.PAYMENT_AMOUNT,'999,999,999.00') as PAYMENT_AMOUNT FROM
+    BMTB_PAYMENT_RECEIPT receipt
+    inner join AMTB_ACCOUNT account using(ACCOUNT_NO)
+    left join AMTB_ACCOUNT parent on account.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grandparent on parent.PARENT_NO = grandparent.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on 
+    case 
+        when account.CUST_NO is not null then account.AR_CONTROL_CODE_NO 
+        when parent.CUST_NO is not null then parent.AR_CONTROL_CODE_NO
+        else grandparent.AR_CONTROL_CODE_NO
+    end = ar.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on ar.ENTITY_NO = entity.ENTITY_NO
+    inner join MSTB_BANK_MASTER bank on bank.BANK_MASTER_NO = receipt.BANK
+    inner join MSTB_BRANCH_MASTER branch on branch.BRANCH_MASTER_NO = receipt.BRANCH
+    where ((:receivedStartDate is null and :receivedEndDate is null)or(receipt.RECEIPT_DT between case when :receivedStartDate is null then to_date(:receivedEndDate, 'yyyy-mm-dd hh24:mi:ss') else to_date(:receivedStartDate, 'yyyy-mm-dd hh24:mi:ss') end and case when :receivedEndDate is null then to_date(:receivedStartDate, 'yyyy-mm-dd hh24:mi:ss') else to_date(:receivedEndDate, 'yyyy-mm-dd hh24:mi:ss') end))
+    and (:entity is null or entity.ENTITY_NO = :entity)
+    and (:quickCheckDeposit is null or receipt.QUICK_CHEQUE_DEPOSIT = :quickCheckDeposit)
+    and receipt.CHEQUE_NO is not null and receipt.CANCEL_DT is null
+    order by case when :order = 'BANK' then bank.BANK_NAME when :order = 'BRANCH' then branch.BRANCH_NAME else receipt.CHEQUE_NO end
+	]]>
+</sql-query>
+</hibernate-mapping>

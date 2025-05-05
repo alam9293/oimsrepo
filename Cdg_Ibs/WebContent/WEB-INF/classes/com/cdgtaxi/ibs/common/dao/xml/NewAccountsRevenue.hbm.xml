@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="newAccountsRevenue">
+	<return-scalar column="cust_no" 		type="string"/>
+	<return-scalar column="account_name" 	type="string"/>
+	<return-scalar column="created_dt"		type="string"/>
+	<return-scalar column="salesperson_no"	type="string"/>
+	<return-scalar column="name"			type="string"/>
+	<return-scalar column="types"			type="string"/>
+	<return-scalar column="jan_usage"		type="string"/>
+	<return-scalar column="feb_usage"		type="string"/>
+	<return-scalar column="mar_usage"		type="string"/>
+	<return-scalar column="apr_usage"		type="string"/>
+	<return-scalar column="may_usage"		type="string"/>
+	<return-scalar column="jun_usage"		type="string"/>
+	<return-scalar column="jul_usage"		type="string"/>
+	<return-scalar column="aug_usage"		type="string"/>
+	<return-scalar column="sep_usage"		type="string"/>
+	<return-scalar column="oct_usage"		type="string"/>
+	<return-scalar column="nov_usage"		type="string"/>
+	<return-scalar column="dec_usage"		type="string"/>
+	<return-scalar column="total_usage"		type="string"/>
+	<![CDATA[
+  select
+    acct.CUST_NO,
+    acct.ACCOUNT_NAME,
+    to_char(acct.CREATED_DT, 'dd/mm/yyyy') as CREATED_DT,
+    to_char(sales.SALESPERSON_NO) as SALESPERSON_NO,
+    sales.NAME,
+    subscriptions.types,
+    nvl(acct_usage.jan_usage, 0) as jan_usage,
+    nvl(acct_usage.feb_usage, 0) as feb_usage,
+    nvl(acct_usage.mar_usage, 0) as mar_usage,
+    nvl(acct_usage.apr_usage, 0) as apr_usage,
+    nvl(acct_usage.may_usage, 0) as may_usage,
+    nvl(acct_usage.jun_usage, 0) as jun_usage,
+    nvl(acct_usage.jul_usage, 0) as jul_usage,
+    nvl(acct_usage.aug_usage, 0) as aug_usage,
+    nvl(acct_usage.sep_usage, 0) as sep_usage,
+    nvl(acct_usage.oct_usage, 0) as oct_usage,
+    nvl(acct_usage.nov_usage, 0) as nov_usage,
+    nvl(acct_usage.dec_usage, 0) as dec_usage,
+    nvl(acct_usage.total_usage, 0) as total_usage
+    from AMTB_ACCOUNT acct
+    left join (
+	select ACCOUNT_NO, listagg(PRODUCT_TYPE_ID,',') within group (order by product_type_id) as types from AMTB_SUBSC_TO group by ACCOUNT_NO
+    ) subscriptions on acct.ACCOUNT_NO = subscriptions.ACCOUNT_NO
+    left join (
+		select 
+			case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end as acct_no,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '01' then header.NEW_TXN else 0 end) as jan_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '02' then header.NEW_TXN else 0 end) as feb_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '03' then header.NEW_TXN else 0 end) as mar_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '04' then header.NEW_TXN else 0 end) as apr_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '05' then header.NEW_TXN else 0 end) as may_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '06' then header.NEW_TXN else 0 end) as jun_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '07' then header.NEW_TXN else 0 end) as jul_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '08' then header.NEW_TXN else 0 end) as aug_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '09' then header.NEW_TXN else 0 end) as sep_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '10' then header.NEW_TXN else 0 end) as oct_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '11' then header.NEW_TXN else 0 end) as nov_usage,
+			sum(case when to_char(header.INVOICE_DATE, 'mm') = '12' then header.NEW_TXN else 0 end) as dec_usage,
+			sum(new_txn) as total_usage, acct_sales.SALESPERSON_NO
+			from BMTB_INVOICE_HEADER header
+			left join BMTB_INVOICE_DEPOSIT_TXN deposit on deposit.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+			inner join AMTB_ACCOUNT acct on acct.ACCOUNT_NO = header.ACCOUNT_NO and deposit.INVOICE_DEPOSIT_TXN_NO is null
+			left join AMTB_ACCOUNT parent on parent.ACCOUNT_NO = acct.PARENT_NO
+			left join AMTB_ACCOUNT grand on grand.ACCOUNT_NO = parent.PARENT_NO
+			inner join AMTB_ACCT_SALESPERSON acct_sales on acct_sales.ACCOUNT_NO=(
+				CASE 
+					WHEN grand.account_no IS NOT NULL THEN grand.account_no
+					WHEN parent.account_no IS NOT NULL THEN parent.account_no
+					ELSE acct.account_no 
+				END
+			)
+			inner join (
+				select header.INVOICE_HEADER_NO, max(acct_sales.EFFECTIVE_DT_FROM) as last_effective_dt_from from BMTB_INVOICE_HEADER header
+					inner join AMTB_ACCOUNT acct on header.ACCOUNT_NO = acct.ACCOUNT_NO
+					left join AMTB_ACCOUNT parent on parent.ACCOUNT_NO = acct.PARENT_NO
+					left join AMTB_ACCOUNT grand on grand.ACCOUNT_NO = parent.PARENT_NO
+					
+					inner join AMTB_ACCT_SALESPERSON acct_sales on acct_sales.ACCOUNT_NO=(
+						CASE 
+							WHEN grand.account_no IS NOT NULL THEN grand.account_no
+							WHEN parent.account_no IS NOT NULL THEN parent.account_no
+							ELSE acct.account_no 
+						END
+					)
+					where (header.INVOICE_DATE+1) > acct_sales.EFFECTIVE_DT_FROM
+					group by header.INVOICE_HEADER_NO
+			) last_acct_sales on header.INVOICE_HEADER_NO = last_acct_sales.INVOICE_HEADER_NO and acct_sales.EFFECTIVE_DT_FROM = last_acct_sales.last_effective_dt_from
+		
+		where (:usageYear is null or to_char(header.INVOICE_DATE, 'YYYY') = :usageYear)-- and header.NEW_TXN > 0
+		group by case when acct.CUST_NO is not null then acct.ACCOUNT_NO when parent.CUST_NO is not null then parent.ACCOUNT_NO else grand.ACCOUNT_NO end,acct_sales.SALESPERSON_NO
+    ) acct_usage on acct.ACCOUNT_NO = acct_usage.ACCT_NO
+	inner join (
+		select account_no, max(EFFECTIVE_DT_FROM) as LAST_EFFECTIVE_DT_FROM
+		    from AMTB_ACCT_SALESPERSON
+		    where systimestamp >= EFFECTIVE_DT_FROM
+		    and (systimestamp <= EFFECTIVE_DT_TO or EFFECTIVE_DT_TO is null)
+		    group by account_no
+	) last_acct_sales on last_acct_sales.ACCOUNT_NO = acct.ACCOUNT_NO
+	inner join AMTB_ACCT_SALESPERSON acct_sales on acct_sales.ACCOUNT_NO = last_acct_sales.ACCOUNT_NO and acct_sales.EFFECTIVE_DT_FROM = last_acct_sales.LAST_EFFECTIVE_DT_FROM
+    inner join MSTB_SALESPERSON sales on sales.SALESPERSON_NO = case when acct_usage.SALESPERSON_NO is null then acct_sales.SALESPERSON_NO else acct_usage.SALESPERSON_NO end
+	inner join FMTB_AR_CONT_CODE_MASTER ar on ar.AR_CONTROL_CODE_NO = acct.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on ar.ENTITY_NO = entity.ENTITY_NO
+    inner join (
+		select ACCOUNT_NO, max(EFFECTIVE_DT) as latest from AMTB_ACCT_STATUS where EFFECTIVE_DT < current_timestamp group by ACCOUNT_NO
+    ) last_acct_status on last_acct_status.ACCOUNT_NO = acct.ACCOUNT_NO
+    inner join AMTB_ACCT_STATUS acct_status on acct_status.ACCOUNT_NO = last_acct_status.ACCOUNT_NO and last_acct_status.latest = acct_status.EFFECTIVE_DT and (:acctStatus is null or acct_status.ACCT_STATUS = :acctStatus)
+    left join AMTB_CORPORATE_DETAIL corp_detail on acct.ACCOUNT_NO = corp_detail.ACCOUNT_NO
+    left join AMTB_PERSONAL_DETAIL pers_detail on acct.ACCOUNT_NO = pers_detail.ACCOUNT_NO
+    left join MSTB_MASTER_TABLE industry on case when corp_detail.INDUSTRY is not null then corp_detail.INDUSTRY else pers_detail.INDUSTRY end = industry.MASTER_NO
+    where (:acctTypeNo is null or acct.ACCT_TYPE_NO = :acctTypeNo)
+    and ((:joinedStart is null and :joinedEnd is null)or(acct.CREATED_DT between case when :joinedStart is null then to_date(:joinedEnd, 'yyyy-mm-dd hh24:mi:ss') else to_date(:joinedStart, 'yyyy-mm-dd hh24:mi:ss') end and case when :joinedEnd is null then to_date(:joinedStart, 'yyyy-mm-dd hh24:mi:ss') else to_date(:joinedEnd, 'yyyy-mm-dd hh24:mi:ss') end))
+    and (:entityNo is null or entity.ENTITY_NO = :entityNo)
+    and (:industryCode is null or industry.MASTER_CODE = :industryCode)
+    and (:salespersonNo is null or sales.SALESPERSON_NO = :salespersonNo)
+    order by sales.SALESPERSON_NO, acct.CREATED_DT
+	]]>
+</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Payment Receipt Summary" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="PAYMENT_RECEIPT_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="RECEIPT_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PAYMENT_MODE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_GST_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EXCESS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PAYMENT_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REF" type="String" />
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select receipt.PAYMENT_RECEIPT_NO,
+    receipt.RECEIPT_DT,
+    case when acct.CUST_NO is not null then acct.ACCOUNT_NAME when parent.CUST_NO is not null then parent.ACCOUNT_NAME else grand.ACCOUNT_NAME end as name,
+    case when acct.CUST_NO is not null then acct.CUST_NO when parent.CUST_NO is not null then parent.CUST_NO else grand.CUST_NO end as ref,
+	payment_mode.master_value || case when receipt.CHEQUE_NO is not null then ' ' || receipt.CHEQUE_NO else '' end as payment_mode,
+    entity.ENTITY_GST_NO,
+    receipt.PAYMENT_AMOUNT - applied.amount as excess,
+    receipt.PAYMENT_AMOUNT
+    from BMTB_PAYMENT_RECEIPT receipt
+    left join (select payment_receipt_no, sum(applied_amount) as amount from BMTB_PAYMENT_RECEIPT_DETAIL group by payment_receipt_no) applied on applied.PAYMENT_RECEIPT_NO = receipt.PAYMENT_RECEIPT_NO
+    left join MSTB_MASTER_TABLE payment_mode on payment_mode.master_no = receipt.payment_mode
+    left join AMTB_ACCOUNT acct on receipt.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on parent.account_no = acct.parent_no
+    left join AMTB_ACCOUNT grand on grand.account_no = parent.parent_no
+    left join FMTB_AR_CONT_CODE_MASTER ar on ar.AR_CONTROL_CODE_NO = case when acct.cust_no is not null then acct.AR_CONTROL_CODE_NO when parent.CUST_NO is not null then parent.AR_CONTROL_CODE_NO else grand.AR_CONTROL_CODE_NO end
+    left join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    where receipt.PAYMENT_RECEIPT_NO = '${1. Receipt No}'</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

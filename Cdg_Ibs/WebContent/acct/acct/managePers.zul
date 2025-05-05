@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="persWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ManagePersAcctWindow"
+	xmlns:h="http://www.w3.org/1999/xhtml" width="98%" onCreate="persWindow.init()">
+	<tabbox width="100%" id="acctTabbox">
+		<tabs/>
+		<tabpanels/>
+	</tabbox>
+</window>

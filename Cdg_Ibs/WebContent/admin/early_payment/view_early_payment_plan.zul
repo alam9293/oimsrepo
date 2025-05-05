@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="viewEarlyPaymentPlanWindow"
+	title="View Early Payment Plan" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ViewEarlyPaymentPlanWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Early Payment Plan Name"/>
+				<label id="planNameLbl"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	
+	<listbox id="detailList" onSelect="viewEarlyPaymentPlanWindow.editDetail()" mold="paging" multiple="true">
+		<listhead sizable="false">
+			<listheader label="Early Payment (%)" sort="auto"/>
+			<listheader label="Effective Date" sort="auto"/>
+		</listhead>
+	</listbox>
+	<button label="Back" onClick="viewEarlyPaymentPlanWindow.back()" />
+</window>

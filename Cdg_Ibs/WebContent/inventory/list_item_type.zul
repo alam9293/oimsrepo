@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageItemTypeWindow"
+	title="Manage Inventory Item Types" border="normal" 
+	use="com.cdgtaxi.ibs.inventory.ui.ManageItemTypeWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<listbox id="resultList" mold="paging" onSelect="manageItemTypeWindow.viewItemType()">
+		<listhead sizable="false">
+			<listheader label="Item Type Name" 		sort="auto"/>
+			<listheader label="Unit Price($)" 		sort="auto" width="100px" align="right"/>
+			<listheader label="Total Items" 		sort="auto" width="150px"/>
+			<listheader label="Items Stock Balance" sort="auto" width="150px"/>
+			<listheader label="Items Reserved" 		sort="auto" width="150px"/>
+			<listheader label="Items Issued"		sort="auto" width="150px"/>
+			<listheader label="Items Redeemed" 		sort="auto" width="150px"/>
+			<listheader label="Delete" 				sort="none" width="50px"/>
+		</listhead>
+		<listitem>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+			<listcell>
+				<image src="/images/delete.png" style="cursor:pointer"
+					onClick="manageItemTypeWindow.deleteItemType(self.getParent().getParent())"/>
+			</listcell>
+		</listitem>
+	</listbox>
+	<button id="createItemTypeBtn" label="New Item Type" onClick="manageItemTypeWindow.createItemType()" />
+</window>

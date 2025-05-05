@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="createProductTypeWindow" border="normal" use="com.cdgtaxi.ibs.product.ui.CreateProductTypeWindow"
+	title="Create Product Type"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+	<columns sizable="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+	</columns>
+   		<rows>
+   			<row spans="1,1,2">
+   				<label sclass="fieldLabel required" value="Product Type ID:" />
+				<capstextbox id="id" maxlength="2" width="98.75%" />
+				<label />
+			
+			</row>
+   			<row>
+   				<label sclass="fieldLabel required" value="Name:" />
+				<capstextbox id="name" maxlength="80" width="98.75%" />
+				<label sclass="fieldLabel required" value="No of Digit(s):" />
+				<intbox id="no_of_digits" width="94%" constraint="no negative" maxlength="2" />
+			</row>
+   		  <row>
+   				<label sclass="fieldLabel required" value="Cardless Product:"/>
+ 				<listbox width="100%" id="cardlessListBox" rows="1" mold="select" onSelect="createProductTypeWindow.cardlessCheck()" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(1)"/>
+ 				<label sclass="fieldLabel required" value="Virtual Product:"/>
+ 				<listbox width="95%" id="virtualListBox" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(1)"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel" value="BIN Number:" />
+   				<intbox id="bin" width="98.75%" maxlength="6"/>
+   				<label sclass="fieldLabel" value="SUB Bin:" />
+   				<intbox id="sub_bin" width="94%" maxlength="4"/>
+   			</row>
+   			<row>	
+   				<label sclass="fieldLabel required" value="Issuable:" />
+				<listbox width="100%"  id="issuable" rows="1" mold="select" onSelect="createProductTypeWindow.issuableCheck()" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+				<label sclass="fieldLabel required" value="Name on Card:" />
+   				<listbox width="95%" id="name_on_card" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+   			</row>
+			<row>
+				<label sclass="fieldLabel required" value="Batch Issue:" />
+   				<listbox width="100%" onSelect="createProductTypeWindow.batchIssueCheck()" id="batch_issue" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+   				<label sclass="fieldLabel required" value="Issue Type:" />
+				<listbox width="95%" id="issue_type" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getIssueTypeList());self.setSelectedIndex(0)"/>
+			</row>
+   			<row>
+   				<label sclass="fieldLabel required" value="Fixed Value:" />
+				<listbox width="100%"  id="fixed_value" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+				<label sclass="fieldLabel required" value="Credit Limit:" />
+				<listbox width="95%" id="credit_limit" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel required" value="Luhn Check:" />
+   				<listbox width="100%" id="luhn_check" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+				<label sclass="fieldLabel required" value="Default Card Status:" />
+				<listbox  width="95%" id="card_status" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getCardStatus());self.setSelectedIndex(0)"/>
+			</row>
+			<row>
+				<label sclass="fieldLabel required" value="External Card:" />
+				<listbox width="100%"  id="negative_file_check" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+				<label sclass="fieldLabel required" value="Usage Limitation:" />
+				<listbox width="95%" id="usage_limitation" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+   			</row>
+			<row>
+				<label sclass="fieldLabel required" value="Validity Period:"  />
+				<listbox width="100%"  id="validity_period" rows="1" mold="select" onSelect="createProductTypeWindow.ValidityPeriodCheck()" onCreate="createProductTypeWindow.populateValidityPeriodListBox()"/>
+				<label sclass="fieldLabel required" value="Default Expiry (Months):" />
+				<intbox id="default_expiry" width="94%" constraint="no negative"  maxlength="3" />
+			</row>
+			<row>
+				<label sclass="fieldLabel required" value="Replacement Fees:"  />
+   				<decimalbox value="0.00"  width="98.75%" id="replacementFees" format="#######,##0.00" maxlength="10" constraint="no negative" />
+				<label  sclass="fieldLabel" value="Interface Mapping Value:" />
+				<capstextbox id="interface_mapping_value" width="94%"   maxlength="80" />
+			</row>
+   			<row>
+				<label sclass="fieldLabel required" value="Login Registration:" />
+				<listbox width="100%"  id="loginRegistrationListBox" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+				<label sclass="fieldLabel required" value="Hotel:" />
+				<listbox width="95%" id="hotelListBox" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+   			</row>
+   			<row>
+				<label sclass="fieldLabel required" value="Prepaid:" />
+				<listbox width="100%"  id="prepaidListBox" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+				<label sclass="fieldLabel required" value="Contactless:" />
+				<listbox width="95%" id="contactlessListBox" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getYesNoBlankStatus());self.setSelectedIndex(0)"/>
+   			</row>
+   			<row>
+				<label sclass="fieldLabel" value="SMS Format:" />
+				<listbox width="100%"  id="smsFormatListBox" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getSMSFormatList());self.setSelectedIndex(0)"/>
+				<label sclass="fieldLabel" value="SMS Expiry Format:" />
+				<listbox width="94%"  id="smsExpiryFormatListBox" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getSMSExpiryFormatList());self.setSelectedIndex(0)"/>
+			</row>
+   			<row>
+				<label sclass="fieldLabel" value="SMS Top-Up Format:" />
+				<listbox width="100%"  id="smsTopUpFormatListBox" rows="1" mold="select" onCreate="self.getItems().addAll(createProductTypeWindow.getSMSTopUpFormatList());self.setSelectedIndex(0)"/>
+				<label sclass="fieldLabel" value="Default Balance Expiry (Months)" />
+				<intbox id="defaultBalanceExpMonthsField" width="94%" maxlength="2" />
+   			</row>
+ 			<row>
+ 				<label sclass="fieldLabel required" value="Topup Fee" />
+				<decimalbox id="topupFeeField" width="100%" value="0.00" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>
+				<label sclass="fieldLabel required" value="Transfer Fee" />
+				<decimalbox id="transferFeeField"  width="94%" value="0.00" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>
+   			</row>
+			<row spans="4">
+				<hbox>
+   					<button label="Save" onClick="createProductTypeWindow.saveProductTypes()" />
+   					<button label="Back" onClick="createProductTypeWindow.cancel()" />
+   				</hbox>
+   			</row>
+   		</rows>
+   	</grid>
+   	<h:br/>
+</window>

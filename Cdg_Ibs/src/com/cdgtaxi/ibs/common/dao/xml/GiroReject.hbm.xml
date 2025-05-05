@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<sql-query name="giroReject">
+	<return-scalar column="CUST_NO" 			     type="string"/>
+	<return-scalar column="ACCOUNT_NAME" 		   type="string"/>
+	<return-scalar column="ACCT_TYPE"			     type="string"/>
+	<return-scalar column="ENTITY_NAME" 		   type="string"/>
+	<return-scalar column="RETURN_FILE_NAME"   type="string"/>
+	<return-scalar column="BANK_CODE" 			   type="string"/>
+	<return-scalar column="BRANCH_CODE" 		   type="string"/>
+	<return-scalar column="BANK_ACCT_NO"		   type="string"/>
+	<return-scalar column="TRANSACTION_CODE" 	 type="string"/>
+	<return-scalar column="TOTAL_AMOUNT_SENT"  type="string"/>
+	<return-scalar column="PARTICULARS" 		   type="string"/>
+	<return-scalar column="REFERENCE" 			   type="string"/>
+	<return-scalar column="CLEAR_FATE" 			   type="string"/>
+	<return-scalar column="REJECTION_CODE"		 type="string"/>
+	<return-scalar column="INVOICE_NO"			   type="string"/>
+	<return-scalar column="INVOICE_DATE"		   type="string"/>
+  <return-scalar column="REJECTED_AMOUNT"    type="string"/>
+  <return-scalar column="OUTSTANDING_AMOUNT" type="string"/>
+	<return-scalar column="NAME"				       type="string"/>
+	<return-scalar column="REJECTION_REASON"	 type="string"/>
+	<return-scalar column="REJECTED_BY"			   type="string"/>
+	<![CDATA[
+	select 
+		acct.CUST_NO,
+		acct.ACCOUNT_NAME,
+		acct_type.ACCT_TYPE,
+		entity.ENTITY_NAME,
+		hdr.RETURN_FILE_NAME,
+		'''' || rj.BANK_CODE as BANK_CODE,
+		'''' || rj.BRANCH_CODE as BRANCH_CODE,
+		'''' || rj.BANK_ACCT_NO as BANK_ACCT_NO,
+		rj.TRANSACTION_CODE,
+    --the total amount sent to bank
+		rj.GIRO_AMOUNT as TOTAL_AMOUNT_SENT,
+		rj.PARTICULARS,
+		rj.REFERENCE,
+		rj.CLEAR_FATE,
+		rj.REJECTION_CODE,
+		inv.INVOICE_NO,
+		to_char(inv.INVOICE_DATE, 'dd/MM/yyyy') as INVOICE_DATE,
+    sum(dtl.GIRO_AMOUNT) as REJECTED_AMOUNT,
+    inv.OUTSTANDING_AMOUNT,
+		latest_sales.NAME,
+		rj.REJECTION_REASON,
+		rj.REJECTED_BY
+	from ITTB_GIRO_UOB_DETAIL dtl
+	inner join ITTB_GIRO_UOB_REJECTED rj on dtl.UOB_REJECTED_NO = rj.UOB_REJECTED_NO
+	inner join AMTB_ACCOUNT acct on rj.ACCOUNT_NO = acct.ACCOUNT_NO
+	inner join AMTB_ACCT_TYPE acct_type on acct.ACCT_TYPE_NO = acct_type.ACCT_TYPE_NO
+	inner join (
+		select
+			distinct acct_sales.ACCOUNT_NO, 
+				first_value(sales.NAME) over (partition by acct_sales.ACCOUNT_NO order by acct_sales.EFFECTIVE_DT_FROM desc) as NAME,
+				first_value(sales.SALESPERSON_NO) over (partition by acct_sales.ACCOUNT_NO order by acct_sales.EFFECTIVE_DT_FROM desc) as SALESPERSON_NO
+		from AMTB_ACCT_SALESPERSON acct_sales
+		inner join MSTB_SALESPERSON sales on sales.SALESPERSON_NO = acct_sales.SALESPERSON_NO
+		where
+			(acct_sales.EFFECTIVE_DT_FROM <= sysdate and acct_sales.EFFECTIVE_DT_TO is null)
+			OR
+			(acct_sales.EFFECTIVE_DT_FROM <= sysdate and acct_sales.EFFECTIVE_DT_TO >= sysdate)
+	) latest_sales on latest_sales.ACCOUNT_NO = acct.ACCOUNT_NO
+	inner join BMTB_INVOICE_HEADER inv on dtl.INVOICE_HEADER_NO = inv.INVOICE_HEADER_NO
+	inner join ITTB_GIRO_UOB_HEADER hdr on dtl.UOB_HEADER_NO = hdr.UOB_HEADER_NO
+	inner join ITTB_GIRO_REQ req on hdr.REQ_NO = req.REQ_NO
+	inner join ITTB_GIRO_SETUP setup on req.SETUP_NO = setup.SETUP_NO
+	inner join FMTB_ENTITY_MASTER entity on setup.ENTITY_NO = entity.ENTITY_NO
+	where
+		(:entityNo is null OR :entityNo = entity.ENTITY_NO)
+		AND
+		(:valueDateFrom is null OR hdr.VALUE_DATE between to_date(:valueDateFrom,'yyyy-MM-dd') AND to_date(:valueDateTo,'yyyy-MM-dd'))
+		AND
+		(:acctTypeNo is null OR :acctTypeNo = acct_type.ACCT_TYPE_NO)
+		AND
+		(:salesPersonNo is null OR :salesPersonNo = latest_sales.SALESPERSON_NO)
+		AND
+		(:rejectedCode is null OR :rejectedCode = rj.REJECTION_CODE)
+		AND
+		(:rejectedBy is null OR :rejectedBy = rj.REJECTED_BY)
+  group by 
+    acct.CUST_NO,
+    acct.ACCOUNT_NAME,
+    acct_type.ACCT_TYPE,
+    entity.ENTITY_NAME,
+    hdr.RETURN_FILE_NAME,
+    rj.BANK_CODE,
+    rj.BRANCH_CODE,
+    rj.BANK_ACCT_NO,
+    rj.TRANSACTION_CODE,
+    rj.GIRO_AMOUNT ,
+    rj.PARTICULARS,
+    rj.REFERENCE,
+    rj.CLEAR_FATE,
+    rj.REJECTION_CODE,
+    inv.INVOICE_NO,
+    inv.INVOICE_DATE,
+    inv.OUTSTANDING_AMOUNT,
+    latest_sales.NAME,
+    rj.REJECTION_REASON,
+    rj.REJECTED_BY
+	order by
+    hdr.RETURN_FILE_NAME, entity.ENTITY_NAME
+	]]>
+</sql-query>
+
+</hibernate-mapping>

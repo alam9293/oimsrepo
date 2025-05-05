@@ -1,0 +1,59 @@
+<?page title="Issue Draft Invoice" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Issue Draft Invoice" border="normal">
+		<label id="errorLB" style="color:red" value="" visible="false" />
+		<grid>
+			<columns sizable="false">
+				<column>Search Account</column>
+			</columns>
+		</grid>
+		<grid>
+			<columns sizable="false">
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+				<column width="25%" />
+			</columns>
+
+			<rows>
+				<row>
+					Name:
+					<textbox id="nameTB" maxlength="32" />
+					<label id="nameTBBlank1" />
+					<label id="nameTBBlank2" />
+				</row>
+				<row>
+					Type:
+					<listbox id="accountTypeDDL" mold="select">
+						<listitem value="" label="-" />
+						<listitem value="corp" label="CORPORATE" />
+						<listitem value="div" label="DIVISION" />
+						<listitem value="dept" label="DEPARTMENT" />
+						<listitem value="App" label="INDIVIDUAL" />
+					</listbox>
+					<label id="divisionDDLBlank1" />
+					<label id="divisionDDLBlank2" />
+				</row>
+
+				<row spans="4">
+					<button label="Search" onClick="win.searchNote()" />
+				</row>
+			</rows>
+
+		</grid>
+		<separator spacing="20px" />
+		<grid>
+			<columns>
+				<column>Search Results:</column>
+			</columns>
+		</grid>
+		<listbox id="resultList" onSelect="">
+			<listhead sizable="true">
+				<listheader label="No." width="10%" sort="auto" />
+				<listheader label="Name" width="30%" sort="auto" />
+				<listheader label="Type" width="30%" sort="auto" />
+				<listheader label="Status" width="30%" sort="auto" />
+			</listhead>
+		</listbox>
+	</window>
+</zk>

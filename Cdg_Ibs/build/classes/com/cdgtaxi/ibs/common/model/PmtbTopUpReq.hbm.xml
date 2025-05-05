@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <joined-subclass name="com.cdgtaxi.ibs.common.model.PmtbTopUpReq" extends="com.cdgtaxi.ibs.common.model.PmtbPrepaidReq" table="PMTB_TOP_UP_REQ" lazy="false">
+        <key>
+            <column name="REQ_NO" />
+        </key>
+        <property name="totalAmount" type="java.math.BigDecimal">
+            <column name="TOTAL_AMOUNT" />
+        </property>
+        <many-to-one name="mstbCreditTermMaster" class="com.cdgtaxi.ibs.master.model.MstbCreditTermMaster" fetch="join">
+            <column name="CREDIT_TERM_PLAN_NO" />
+        </many-to-one>
+        <set
+	        name="pmtbTopUpReqCards"
+	        lazy="true"
+	        inverse="true"
+			cascade="all"
+   		 >
+        <key>
+            <column name="PMTB_TOP_UP_REQ" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.PmtbTopUpReqCard"
+        />
+    	</set>
+    </joined-subclass>
+</hibernate-mapping>
+

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Integrated Billing System - Login" ?>
+
+<div style="position:absolute;top:35%;left:35%;">
+<window title="Login" border="none" width="300px" 
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	onOK="submitLogin()">
+	
+<zscript>
+import com.cdgtaxi.ad.ComfortDelgroADService;
+import com.cdgtaxi.ibs.web.constraint.RequiredConstraint;
+import org.zkoss.zkplus.spring.SpringUtil;
+
+public void submitLogin(){
+	//By doing this, the component will init the validation before submitting html form
+	loginId.getValue();
+	password.getValue();
+  
+  //Domain
+  RequiredConstraint.validate(domain);
+  domainTextbox.setValue((String)domain.getSelectedItem().getValue());
+	
+	Clients.submitForm("loginForm");
+}
+
+public void populateDomains(Combobox combobox){
+  Map adProperties = (Map)SpringUtil.getBean("adProperties");
+  String disableAD = (String)adProperties.get("ad.disable");
+  
+  if(disableAD==null || !disableAD.equals("true")){
+    final String[] domains = ComfortDelgroADService.getAllSupportedDomains();
+    for(String domain: domains){
+      Comboitem item = new Comboitem();
+      item.setLabel(domain);
+      item.setValue(domain);
+      combobox.appendChild(item);
+    }
+  }
+  else{
+    Comboitem item = new Comboitem();
+    item.setLabel("TestDomain");
+    item.setValue("TestDomain");
+    combobox.appendChild(item);
+  }
+  
+  if(combobox.getChildren().size() == 1)
+    combobox.setSelectedIndex(0);
+}
+</zscript>
+
+    <h:form id="loginForm" name="loginForm" action="j_acegi_security_check" method="POST">
+    	<grid>
+    		<rows>
+    			<row>Login Id: <textbox id="loginId" 
+    									name="j_username"
+    									maxlength="80" 
+    									constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+    							/>
+    			</row>
+    			<row>Password: <textbox id="password" 
+    									type="password" 
+    									name="j_password" 
+    									maxlength="64" 
+    									constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredPasswordConstraint')}"
+    							/>
+    			</row>
+          <row>Domain: <combobox id="domain" 
+                      readonly="true"
+                      onCreate="populateDomains(self)"/>
+          </row>
+    			<row spans="2">
+           <hbox>
+					   <button label="Login" onClick="submitLogin()"/>
+    			 </hbox>
+          </row>
+    		</rows>
+    	</grid>
+      <textbox id="domainTextbox" visible="false" name="j_domain"/>
+      
+    	<div align="center" if="${sessionScope['SINGLE_SIGN_ON']=='N'}">
+    		<label style="color:red" value="Login failed. Please try again." if="${param.login_error==1}"/>
+    		<label style="color:red" value="Account locked." if="${param.login_error==2}"/>
+    		<label style="color:red" value="Account inactive." if="${param.login_error==3}"/>
+    		<label style="color:red" value="Account suspended." if="${param.login_error==4}"/>
+    		<label style="color:red" value="Authentication Service Error." if="${param.login_error==5}"/>
+    	</div>
+    </h:form>
+    
+</window>
+</div>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Item Type Revenue and Profit Report " type="JDBC" path="/IBS_Reports/Revenue/Item Type Revenue and Profit Report/datasource/Item Type Revenue and Profit Report .ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="TXN_DT" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TYPE_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="ISSUE_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ISSUE_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EXPIRY_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EXPIRY_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REDEEM_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REDEEM_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOT_REDEEM_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NOT_REDEEM_VALUE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="HANDLING_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NET" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select trunc(stock.TXN_DT, 'MM') as TXN_DT, TYPE_NAME, sum(ISSUE_AMT) as ISSUE_AMT, sum(ISSUE_AMT) * avg(PRICE) as ISSUE_VALUE, sum(EXPIRY_AMT) as EXPIRY_AMT, sum(EXPIRY_AMT) * avg(PRICE) as EXPIRY_VALUE, sum(REDEEM_AMT) as REDEEM_AMT, sum(REDEEM_AMT) * avg(PRICE) as REDEEM_VALUE,
+    sum(EXPIRY_AMT) - sum(REDEEM_AMT) as NOT_REDEEM_AMT, (sum(EXPIRY_AMT) - sum(REDEEM_AMT)) * avg(PRICE) as NOT_REDEEM_VALUE, sum(nvl(handling.handling_fee, 0)) as HANDLING_FEE, sum(-nvl(handling.discount, 0)) as DISCOUNT, ((sum(EXPIRY_AMT) - sum(REDEEM_AMT)) * avg(PRICE)) + sum(nvl(handling.handling_fee, 0)) + sum(nvl(handling.discount, 0)) as net from IMTB_ITEM_TYPE type
+    inner join (
+        select ITEM_TYPE_NO, trunc(txn_dt, 'DDD') as txn_dt, sum(issue_amt) as issue_amt, sum(expiry_amt) as expiry_amt, sum(redeem_amt) as redeem_amt from (
+        select stock.ITEM_TYPE_NO, trunc(txn_dt, 'DDD') as txn_dt, sum(stock.SERIAL_NO_END - stock.SERIAL_NO_START + 1) as issue_amt, 0 as expiry_amt, 0 as redeem_amt from IMTB_STOCK stock
+	  		inner join IMTB_ISSUE issue on stock.STOCK_NO = issue.STOCK_NO
+      		inner join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+	  		left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+	  		left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+	  		left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+	  		inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grand.CUST_NO IS NOT NULL THEN grand.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+	  		inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+        	where TXN_TYPE = 'S'
+        	and ('${4. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.entity_no = '${4. Entity#choice(1,2,3)#MASTER:EM}')
+	  		group by stock.ITEM_TYPE_NO, trunc(txn_dt, 'DDD')
+        union
+        select item.ITEM_TYPE_NO, trunc(issue.EXPIRY_DATE, 'DDD') as txn_dt, 0, count(item.ITEM_NO), 0 from IMTB_ITEM item 
+        	inner join IMTB_ISSUE issue on item.ISSUE_NO = issue.ISSUE_NO
+			inner join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+			left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+			left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+			left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+			inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grand.CUST_NO IS NOT NULL THEN grand.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+			inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+        	where issue.EXPIRY_DATE is not null 
+        	and ('${4. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.entity_no = '${4. Entity#choice(1,2,3)#MASTER:EM}')
+	   		group by item.ITEM_TYPE_NO, trunc(issue.EXPIRY_DATE, 'DDD')
+        union
+        select item.ITEM_TYPE_NO, trunc(issue.EXPIRY_DATE, 'DDD') as txn_dt, 0, 0, count(item.ITEM_NO) from IMTB_ITEM item 
+        	inner join IMTB_ISSUE issue on item.ISSUE_NO = issue.ISSUE_NO
+	  		inner join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+	  		left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+	  		left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+	  		left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+	  		inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grand.CUST_NO IS NOT NULL THEN grand.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+	 		inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+        	where issue.EXPIRY_DATE is not null and status = 'R' 
+        	and ('${4. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.entity_no = '${4. Entity#choice(1,2,3)#MASTER:EM}')
+	  		group by item.ITEM_TYPE_NO, trunc(issue.EXPIRY_DATE, 'DDD')
+        ) group by ITEM_TYPE_NO, trunc(txn_dt, 'DDD')
+    ) stock on type.ITEM_TYPE_NO = stock.ITEM_TYPE_NO
+    left join (
+        select stock.ITEM_TYPE_NO, trunc(stock.txn_dt, 'DDD') as txn_dt, sum(issue.HANDLING_FEE) as handling_fee, sum(-issue.discount) as discount from IMTB_ISSUE issue 
+        inner join IMTB_STOCK stock on issue.STOCK_NO = stock.STOCK_NO 
+        inner join IMTB_ISSUE_REQ issue_req on issue.ISSUE_NO = issue_req.ISSUE_REQ_NO
+	    left join AMTB_ACCOUNT acct on issue_req.ACCOUNT_NO = acct.ACCOUNT_NO
+	    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+	    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+	    inner join FMTB_AR_CONT_CODE_MASTER ar on ar.ar_control_code_no = CASE WHEN grand.CUST_NO IS NOT NULL THEN grand.ar_control_code_no  WHEN parent.CUST_NO IS NOT NULL THEN parent.ar_control_code_no ELSE acct.ar_control_code_no END
+	    inner join FMTB_ENTITY_MASTER entity on ar.entity_no =entity.entity_no
+	    where ('${4. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.entity_no = '${4. Entity#choice(1,2,3)#MASTER:EM}')
+        group by stock.ITEM_TYPE_NO, trunc(stock.txn_dt, 'DDD')
+    ) handling on handling.txn_dt = stock.txn_dt and handling.ITEM_TYPE_NO = type.ITEM_TYPE_NO
+    where (('${1. Start Month#date()#MMMYY:REQUIRED}' is null and '${2. End Month#date()#MMMYY}' is null)or(stock.txn_dt between case when '${1. Start Month#date()#MMMYY:REQUIRED}' is null then to_date(substr('${2. End Month#date()#MMMYY}',0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date(substr('${1. Start Month#date()#MMMYY:REQUIRED}',0,8)||'01 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. End Month#date()#MMMYY}' is null then last_day(to_date(substr('${1. Start Month#date()#MMMYY:REQUIRED}',0,8)||'01 23:59:59', 'yyyy-mm-dd hh24:mi:ss')) else last_day(to_date('${2. End Month#date()#MMMYY} 23:59:59', 'yyyy-mm-dd hh24:mi:ss')) end))
+    and ('${3. Item Type#choice(1,2,3,4,6)#MASTER:IT}' is null or type.ITEM_TYPE_NO = '${3. Item Type#choice(1,2,3,4,6)#MASTER:IT}')
+    group by trunc(stock.TXN_DT, 'MM'), TYPE_NAME
+    order by TYPE_NAME, trunc(stock.TXN_DT, 'MM')</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

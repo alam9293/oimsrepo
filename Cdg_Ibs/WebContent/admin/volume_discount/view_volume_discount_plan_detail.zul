@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="viewVolumeDiscountPlanDetailWindow"
+	title="View Volume Discount Plan Detail" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ViewVolumeDiscountPlanDetailWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row spans="1,1,2" id="messageRow">
+				<label />
+				<label />
+				<label id="message" sclass="fieldLabel" style="color:red" value="The record has taken effect, no changes allowed."/>
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Volume Discount Plan Name"/>
+				<label id="planNameLabel" />
+				<label sclass="fieldLabel" value="Plan Type"/>
+				<label id="planTypeLabel" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Start Date"/>
+				<label id="startDateLabel" />
+				<label />
+				<label />
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	
+	<grid id="spendTierGrid" visible="false" width="600px">
+		<auxhead><auxheader colspan="3" label="Spending Tiers"/></auxhead>
+		<columns sizable="false">
+			<column label="Spending Range (Min) ($)" width="180px"/>
+			<column label="Spending Range (Max) ($)" width="180px"/>
+			<column label="Discount (%)" 			 width="100px"/>
+		</columns>
+		<rows id="spendTierRows">
+			<row id="spendTierRow">
+				<label id="spendMinLabel"/>
+				<label id="spendMaxDBLabel"/>
+				<label id="discountPerDollarIBLabel"/>
+			</row>
+		</rows>
+	</grid>
+	
+	<grid id="tripTierGrid" visible="false" width="600px">
+		<auxhead><auxheader colspan="3" label="Trip Tiers"/></auxhead>
+		<columns sizable="false">
+			<column label="Trip Range (Min)" sclass="requiredHeader" width="180px"/>
+			<column label="Trip Range (Max)" sclass="requiredHeader" width="180px"/>
+			<column label="Discount (%)" sclass="requiredHeader" width="100px"/>
+		</columns>
+		<rows id="tripTierRows">
+			<row id="tripTierRow">
+				<label id="tripMinLabel"/>
+				<label id="tripMaxDBLabel"/>
+				<label id="discountPerTripIBLabel"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid><columns sizable="false"><column>Created</column></columns></grid>
+	<grid>
+		<columns>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+   				<label sclass="fieldLabel">By</label>
+   				<label id="createdByLabel"/>
+   				<label sclass="fieldLabel">Date</label>
+   				<label id="createdDateLabel"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Time</label>
+   				<label id="createdTimeLabel"/>
+   				<label />
+   				<label />
+   			</row>
+		</rows>
+	</grid>
+	<grid><columns sizable="false"><column>Last Updated</column></columns></grid>
+	<grid>
+		<columns>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+   				<label sclass="fieldLabel">By</label>
+   				<label id="lastUpdatedByLabel"/>
+   				<label sclass="fieldLabel">Date</label>
+   				<label id="lastUpdatedDateLabel"/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Time</label>
+   				<label id="lastUpdatedTimeLabel"/>
+   				<label />
+   				<label />
+   			</row>
+		</rows>
+	</grid>
+	
+	<h:br />
+	<button label="Back" onClick="viewVolumeDiscountPlanDetailWindow.back()" />
+</window>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="editSubscriptionFeePlanWindow"
+	title="Edit Subscription Fee Plan" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.EditSubscriptionFeePlanWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Subscription Fee Plan Name"/>
+<!--				<label id="planNameLabel" />-->
+				<capstextbox id="planNameTB" width="98.75%" maxlength="80"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	
+	<listbox id="detailList" onSelect="editSubscriptionFeePlanWindow.editDetail()" mold="paging" multiple="true">
+		<listhead sizable="false">
+			<listheader label="Subscription Fee ($)" sort="auto"/>
+			<listheader label="Recurring Period (Months)" sort="auto" width="170px"/>
+			<listheader label="Effective Date" sort="auto"/>
+			<listheader label="Delete" width="60px" sort="none"/>
+		</listhead>
+	</listbox>
+	<button id="createBtn" label="New Detail" onClick="editSubscriptionFeePlanWindow.addDetail()" />
+	<h:br/>
+	<h:br/>
+	
+	<button label="Save" id="save" onClick="editSubscriptionFeePlanWindow.updatePlan()" />
+	<button label="Back" onClick="editSubscriptionFeePlanWindow.back()" />
+</window>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Daily Cheque Deposit Listing" type="JDBC" path="/IBS_Reports/Receipt/Daily Cheque Deposit Listing/datasource/Daily Cheque Deposit Listing.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="BANK_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="BRANCH_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="CHEQUE_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="RECEIPT_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PAYMENT_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select bank.BANK_NAME, branch.BRANCH_NAME, receipt.CHEQUE_NO, receipt.RECEIPT_DT, receipt.PAYMENT_AMOUNT FROM
+    BMTB_PAYMENT_RECEIPT receipt
+    inner join AMTB_ACCOUNT account using(ACCOUNT_NO)
+    left join AMTB_ACCOUNT parent on account.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grandparent on parent.PARENT_NO = grandparent.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar on 
+    case 
+        when account.CUST_NO is not null then account.AR_CONTROL_CODE_NO 
+        when parent.CUST_NO is not null then parent.AR_CONTROL_CODE_NO
+        else grandparent.AR_CONTROL_CODE_NO
+    end = ar.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on ar.ENTITY_NO = entity.ENTITY_NO
+    inner join MSTB_BANK_MASTER bank on bank.BANK_MASTER_NO = receipt.BANK
+    inner join MSTB_BRANCH_MASTER branch on branch.BRANCH_MASTER_NO = receipt.BRANCH
+    where (('${1. Received Start Date#date}' is null and '${2. Received End Date#date}' is null)or(receipt.RECEIPT_DT between case when '${1. Received Start Date#date}' is null then to_date('${2. Received End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Received Start Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Received End Date#date}' is null then to_date('${1. Received Start Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Received End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and ('${3. Entity#choice()}' is null or entity.ENTITY_NO = '${3. Entity#choice()}')
+    and ('${4. Quick Check Deposit#choice()}' is null or receipt.QUICK_CHEQUE_DEPOSIT = '${4. Quick Check Deposit#choice()}')
+    and receipt.CHEQUE_NO is not null and receipt.CANCEL_DT is null
+    order by case when '${5. Order#choice()}' = 'BANK' then bank.BANK_NAME when '${5. Order#choice()}' = 'BRANCH' then branch.BRANCH_NAME else receipt.CHEQUE_NO end</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

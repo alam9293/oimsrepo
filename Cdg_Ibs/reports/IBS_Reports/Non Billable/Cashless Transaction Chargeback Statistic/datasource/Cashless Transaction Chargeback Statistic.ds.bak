@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Cashless Transaction Chargeback Statistic" type="JDBC" path="/IBS_Reports/Non Billable/Cashless Transaction Chargeback Statistic/datasource/Cashless Transaction Chargeback Statistic.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="MASTER_VALUE" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="MASTER_CODE" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="CHARGEBACK_DATE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NO_OF_TXN" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TXN_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADMIN_GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INSURANCE_PREMIUM_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INSURANCE_PREMIUM_GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select pymt_type_master.MASTER_VALUE, provider.MASTER_CODE, to_char(txn.CHARGEBACK_REFUND_DATE, 'dd/mm/yyyy') as CHARGEBACK_DATE, count(txn.TXN_ID) as no_of_txn, sum(txn.CHARGEBACK_REFUND_FARE_AMT) as txn_amt, sum(txn.CHARGEBACK_REFUND_ADMIN_FEE) as admin,
+    sum(txn.CHARGEBACK_REFUND_GST) as admin_gst,
+    sum(nvl(txn.PREMIUM_AMOUNT,0)) as insurance_premium_amount,
+    sum(nvl(txn.PREMIUM_GST,0)) as insurance_premium_gst, sum(txn.CHARGEBACK_REFUND_FARE_AMT + txn.CHARGEBACK_REFUND_ADMIN_FEE + txn.CHARGEBACK_REFUND_GST + nvl(txn.PREMIUM_AMOUNT,0) + nvl(txn.PREMIUM_GST,0)) as total from TMTB_NON_BILLABLE_TXN txn
+    inner join MSTB_ACQUIRER_PYMT_TYPE pymt_type on txn.PYMT_TYPE_NO = pymt_type.PYMT_TYPE_NO
+    inner join MSTB_MASTER_TABLE pymt_type_master on pymt_type.MASTER_NO = pymt_type_master.MASTER_NO
+    inner join FMTB_NON_BILLABLE_MASTER non_master on non_master.SERVICE_PROVIDER = txn.SERVICE_PROVIDER and non_master.PYMT_TYPE_MASTER_NO = pymt_type.MASTER_NO
+    inner join (select MASTER_NO, max(EFFECTIVE_DATE) as EFFECTIVE_DATE from FMTB_NON_BILLABLE_DETAIL where EFFECTIVE_DATE &lt; current_date group by MASTER_NO) last_non_detail on non_master.MASTER_NO = last_non_detail.MASTER_NO
+    inner join FMTB_NON_BILLABLE_DETAIL non_detail on last_non_detail.MASTER_NO = non_detail.MASTER_NO and last_non_detail.EFFECTIVE_DATE = last_non_detail.EFFECTIVE_DATE
+    inner join FMTB_AR_CONT_CODE_MASTER ar on non_detail.AR_CONTROL_CODE_NO = ar.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on entity.ENTITY_NO = ar.ENTITY_NO
+    inner join MSTB_MASTER_TABLE provider on txn.SERVICE_PROVIDER = provider.MASTER_NO
+    where txn.status = 'B'
+    and (('${1. Chargeback Start Date#date}' is null and '${2. Chargeback End Date#date}' is null)or(txn.CHARGEBACK_REFUND_DATE between case when '${1. Chargeback Start Date#date}' is null then to_date('${2. Chargeback End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${1. Chargeback Start Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${2. Chargeback End Date#date}' is null then to_date('${1. Chargeback Start Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Chargeback End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+    and ('${3. Entity#choice(1,2,3)#MASTER:EM}' is null or entity.ENTITY_NO = '${3. Entity#choice(1,2,3)#MASTER:EM}')
+    and ('${4. Company Code#choice(CCPL,CTPL)#CC:SPR}' is null or provider.MASTER_CODE = '${4. Company Code#choice(CCPL,CTPL)#CC:SPR}')
+    and ((${5. Payment Type#choice(0,1,2,3)#NC:PT} = 0) or (${5. Payment Type#choice(0,1,2,3)#NC:PT} = 2 and pymt_type_master.MASTER_CODE not in ('N', 'F', 'C', 'E', 'Z')) or (${5. Payment Type#choice(0,1,2,3)#NC:PT} = 3 and pymt_type_master.MASTER_CODE in ('N', 'F', 'C')) or (${5. Payment Type#choice(0,1,2,3)#NC:PT} = 4 and pymt_type_master.MASTER_CODE in ('E', 'Z')) or (${5. Payment Type#choice(0,1,2,3)#NC:PT} = 5 and pymt_type_master.MASTER_CODE in ('DA')))
+    and (txn.MATCHING_STATUS is NULL or txn.MATCHING_STATUS != 'T')
+    group by pymt_type_master.MASTER_VALUE, provider.MASTER_CODE, txn.CHARGEBACK_REFUND_DATE
+    order by txn.CHARGEBACK_REFUND_DATE</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

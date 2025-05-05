@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.common.model.IttbGiroUobRejected" 
+    table="ITTB_GIRO_UOB_REJECTED"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="uobRejectedNo"
+        type="java.lang.Long"
+        column="UOB_REJECTED_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">ITTB_GIRO_UOB_REJECTED_SQ1</param>
+        </generator>
+    </id>
+    <version name="version" column="VERSION"/>
+
+    <property
+        name="bankCode"
+        type="java.lang.String"
+        column="BANK_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="branchCode"
+        type="java.lang.String"
+        column="BRANCH_CODE"
+        not-null="true"
+        length="10"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="bankAcctNo"
+        type="java.lang.String"
+        column="BANK_ACCT_NO"
+        not-null="true"
+        length="25"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="transactionCode"
+        type="int"
+        column="TRANSACTION_CODE"
+        not-null="true"
+        length="2"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="giroAmount"
+        type="java.math.BigDecimal"
+        column="GIRO_AMOUNT"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="particulars"
+        type="java.lang.String"
+        column="PARTICULARS"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="reference"
+        type="java.lang.String"
+        column="REFERENCE"
+        not-null="true"
+        length="12"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="clearFate"
+        type="int"
+        column="CLEAR_FATE"
+        not-null="true"
+        length="1"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="rejectionCode"
+        type="int"
+        column="REJECTION_CODE"
+        not-null="true"
+        length="3"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="rejectionReason"
+        type="java.lang.String"
+        column="REJECTION_REASON"
+        length="255"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="rejectedBy"
+        type="java.lang.String"
+        column="REJECTED_BY"
+        not-null="true"
+        length="20"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to IttbGiroUobDetail -->
+    <set
+        name="ittbGiroUobDetails"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+    >
+        <key>
+            <column name="UOB_REJECTED_NO" />
+        </key>
+        <one-to-many 
+            class="com.cdgtaxi.ibs.common.model.IttbGiroUobDetail"
+        />
+    </set>
+    <!-- bi-directional many-to-one association to AmtbAccount -->
+    <many-to-one
+        name="amtbAccount"
+        class="com.cdgtaxi.ibs.common.model.AmtbAccount"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ACCOUNT_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

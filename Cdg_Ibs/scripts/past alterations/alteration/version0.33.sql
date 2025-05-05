@@ -1,0 +1,1 @@
+alter table PMTB_PRODUCT_REPLACEMENT rename column EMBROSS_FLAG to EMBOSS_FLAG;

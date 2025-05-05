@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="searchInvoiceWindow"
+	title="Search Invoice" border="normal" 
+	use="com.cdgtaxi.ibs.billing.ui.SearchInvoiceWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
+	width="98%">
+	<grid id="searchFieldGrid">
+		<columns sizable="false">
+			<column width="15%" />
+			<column width="35%" />
+			<column width="15%" />
+			<column width="35%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Account No" />
+				<intbox id="accountNoIntBox" 
+					maxlength="6" 
+					onChange="searchInvoiceWindow.searchBillableAccountByAccountNo()"
+					onOK="searchInvoiceWindow.searchBillableAccountByAccountNo()" 
+					width="98.75%"
+				/>
+				<label sclass="fieldLabel" value="Account Name" />
+   				<combobox id="accountNameComboBox"
+   					rows="1" 
+   					style="text-transform:uppercase"
+   					autodrop="true"
+   					autocomplete="false"
+   					width="91.5%"
+   					onChanging="searchInvoiceWindow.searchBillableAccountByAccountName(event.value)"
+   					onSelect="searchInvoiceWindow.onSelectAccountName()"
+   					tooltiptext="Minimum search criteria is 3 characters"
+   				/>
+			</row>
+   			<row id="divisionDepartmentRow" visible="false">
+   				<label id="divisionLabel" visible="false" sclass="fieldLabel" value="Division" />
+   				<listbox id="divisionListBox" 
+   					mold="select"
+   					multiple="false"
+   					visible="false"
+   					width="100%"
+   					onSelect="searchInvoiceWindow.onSelectDivision(self)"
+   				/>
+   				<label id="departmentLabel" visible="false" sclass="fieldLabel" value="Department" />
+   				<listbox id="departmentListBox" 
+   					mold="select"
+   					multiple="false"
+   					visible="false"
+   					width="100%"
+   					onSelect="searchInvoiceWindow.onSelectDepartment(self)"
+   				/>
+   			</row>
+			<row>
+				<label sclass="fieldLabel" value="Invoice No From" />
+				<longbox id="invoiceNoFromLB" maxlength="32" width="98.75%"
+					onBlur="searchInvoiceWindow.updateInvoiceNoTo()"/>
+				<label sclass="fieldLabel" value="Invoice No To" />
+				<longbox id="invoiceNoToLB" maxlength="32" width="98.75%" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Invoice Date From" />
+				<datebox id="invoiceDateFromDB" format="dd/MM/yyyy" width="91.5%"
+					onBlur="searchInvoiceWindow.updateInvoiceDateTo()"/>
+				<label sclass="fieldLabel" value="Invoice Date To" />
+				<datebox id="invoiceDateToDB" format="dd/MM/yyyy" width="91.5%" />
+			</row>
+			<row>
+				<label sclass="fieldLabel" value="Invoice Status" />
+				<listbox id="invoiceStatusDDL" mold="select" width="100%" />
+			</row>
+			<row spans="4"><hbox>
+				<button label="Search" onClick="searchInvoiceWindow.searchInvoice()" />
+				<button label="Reset" onClick="searchInvoiceWindow.reset()" />
+			</hbox></row>
+		</rows>
+	</grid>
+	<grid>
+		<columns>
+			<column label="Search Results:" />
+		</columns>
+	</grid>
+	<listbox id="resultList" mold="paging"
+		onSelect="searchInvoiceWindow.displayInvoiceDetails()" fixedLayout="true">
+		<listhead sizable="true" >
+			<listheader label="Acct No" sort="auto" 			width="5%"/>
+			<listheader label="Account Name" sort="auto" 		width="11%"/>
+			<listheader label="Invoice No" sort="auto" 			width="6%"/>
+			<listheader label="Invoice Amt($)" sort="auto" 		width="10%"		align="right"/>
+			<listheader label="Applied Amt($)" sort="auto" 		width="10%"		align="right"/>
+			<listheader label="Outstanding Amt($)" sort="auto" 	width="9%"		align="right"/>
+			<listheader label="Dr/Cr Amt($)" sort="auto" 		width="9%"		align="right"/>
+			<listheader label="Invoice Date" sort="auto" 		width="8%"/>
+			<listheader label="Invoice Status" sort="auto" 		width="9%"/>
+			<listheader label="Billed To" sort="auto" 			width="8%"/>
+			<listheader label="Tax Invoice" sort="auto"	    width="7%"/>
+			<listheader 										width="10%"/>
+		</listhead>
+	</listbox>
+   	<grid id="gridButton" visible="false">
+   		<columns>
+				<column >
+					<button label="Export To PDF" id="pdfPreviewBtn" onClick="searchInvoiceWindow.exportResult()"/>
+				</column>
+		</columns>
+   	</grid>
+</window>

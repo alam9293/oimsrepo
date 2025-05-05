@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="createLatePaymentPlanWindow"
+	title="Create Late Payment Plan" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.CreateLatePaymentPlanWindow"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel required" value="Late Payment Plan Name"/>
+				<capstextbox id="planTB" width="98.75%" maxlength="80"
+					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>
+			</row>
+		</rows>
+	</grid>
+	
+	<h:br />
+	<button label="Save" onClick="createLatePaymentPlanWindow.createPlan()"/>
+	<button label="Back" onClick="createLatePaymentPlanWindow.back()" />
+</window>

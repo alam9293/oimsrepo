@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="manageMasterListWindow"
+	title="Manage Master List" border="normal" 
+	use="com.cdgtaxi.ibs.common.ui.ManageMasterListWindow"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	
+	<grid>
+	<columns sizable="false">
+			<column width="10%" label="Master Grouping" sclass="header"/>
+			<column width="30%" label="Type (select one)" sclass="header"/>
+			<column width="10%" label="Values" sclass="header"/>
+			<column width="50%" label="Details" sclass="header"/>
+		</columns>
+		<rows>
+			<row valign="top">
+				<listbox id="groupLB" height="400px"
+					onSelect="manageMasterListWindow.populateGroupingItems()"/>
+				<listbox id="typeLB" height="400px"
+					onSelect="manageMasterListWindow.populateItems()"/>
+				<listbox id="tableLB" height="400px"
+					 onSelect="manageMasterListWindow.populateTableDetails()"/>
+				<vbox>
+					<grid>
+						<columns sizable="false" visible="false">
+							<column width="140px"/>
+							<column width="400px"/>
+						</columns>
+						<rows>
+							<row>
+								<label sclass="fieldLabel" value="Type"/>
+								<label id="typeLabel"/>
+							</row>
+							<row id="codeTBRow">
+								<label sclass="fieldLabel required" value="Code"/>
+								<capstextbox id="codeTB" width="99%" maxlength="5"
+									constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>
+							</row>
+							<row id="codeLabelRow" visible="false">
+								<label sclass="fieldLabel" value="Code"/>
+								<label id="codeLabel"/>
+							</row>
+							<row valign="top">
+								<label sclass="fieldLabel required" value="Value"/>
+<!--								<vbox>-->
+									<fckeditor id="valueFE" toolbarSet="basic" height="200px" width="99%"
+										customConfigurationsPath="/scripts/fckconfig.js"/>
+<!--									<capstextbox id="valueTB" width="98%" rows="2" maxlength="500"/>-->
+<!--								</vbox>-->
+							</row>
+							<row valign="top">
+								<label sclass="fieldLabel" value="Interface Mapping Value" />
+								<textbox id="interfaceMapValueTB" width="99%" maxlength="80"/>
+							</row>
+							<row>
+								<label sclass="fieldLabel required" value="Status"/>
+								<radiogroup id="statusRG">
+									<radio id="statusActive" label="Active" value="A"/>
+									<radio id="statusInactive" label="Inactive" value="I"/>
+								</radiogroup>
+							</row>
+						</rows>
+					</grid>
+					<hbox>
+						<button id="createButton" label="Create" onClick="manageMasterListWindow.saveTable()" visible="false"/>
+						<button id="updateButton" label="Save" onClick="manageMasterListWindow.updateTable()" visible="false"/>
+					</hbox>
+				</vbox>
+			</row>
+   		</rows>
+   	</grid>
+</window>

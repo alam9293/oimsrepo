@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Revenue" type="JDBC" path="/IBS_Reports/Revenue/Revenue/datasource/Revenue.ds" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="CUST_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_HEADER_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_TXN" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="CC_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CC_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CC_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FV_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FV_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FV_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="HC_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="HC_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="HC_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="HV_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="HV_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="HV_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OV_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OV_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OV_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PC_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PC_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PC_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PS_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PS_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PS_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="C9_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="C9_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="C9_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="C8_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="C8_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="C8_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="C7_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="C7_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="C7_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="J8_FARE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="J8_ADMIN_FEE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="J8_PRODUCT_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="VOLUME_DISCOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EARLY_PAYMENT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ISSUANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REPLACEMENT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="SUBSCRIPTION" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEBIT_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREDIT_AMT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PROMO_DIS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="DEPOSIT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="MISC" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_INTEREST" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security name="" />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>select case when acct.CUST_NO is not null then acct.CUST_NO
+        when parent.CUST_NO is not null then parent.CUST_NO
+        when grand.CUST_NO is not null then grand.CUST_NO end as CUST_NO,
+        case when acct.CUST_NO is not null then acct.ACCOUNT_NAME
+        when parent.CUST_NO is not null then parent.ACCOUNT_NAME
+        when grand.CUST_NO is not null then grand.ACCOUNT_NAME end as ACCOUNT_NAME,
+        header.INVOICE_HEADER_NO, header.INVOICE_NO, header.INVOICE_DATE, header.NEW_TXN,
+        cc_summary.FARE as CC_FARE, cc_summary.ADMIN_FEE as CC_ADMIN_FEE, cc_summary.PRODUCT_DISCOUNT as CC_PRODUCT_DISCOUNT, fv_summary.FARE as FV_FARE, fv_summary.ADMIN_FEE as FV_ADMIN_FEE, fv_summary.PRODUCT_DISCOUNT as FV_PRODUCT_DISCOUNT, hc_summary.FARE as HC_FARE, hc_summary.ADMIN_FEE as HC_ADMIN_FEE, hc_summary.PRODUCT_DISCOUNT as HC_PRODUCT_DISCOUNT, hv_summary.FARE as HV_FARE, hv_summary.ADMIN_FEE as HV_ADMIN_FEE, hv_summary.PRODUCT_DISCOUNT as HV_PRODUCT_DISCOUNT, ov_summary.FARE as OV_FARE, ov_summary.ADMIN_FEE as OV_ADMIN_FEE, ov_summary.PRODUCT_DISCOUNT as OV_PRODUCT_DISCOUNT, pc_summary.FARE as PC_FARE, pc_summary.ADMIN_FEE as PC_ADMIN_FEE, pc_summary.PRODUCT_DISCOUNT as PC_PRODUCT_DISCOUNT,
+        ps_summary.FARE as PS_FARE, ps_summary.ADMIN_FEE as PS_ADMIN_FEE, ps_summary.PRODUCT_DISCOUNT as PS_PRODUCT_DISCOUNT,
+        c9_summary.FARE as C9_FARE, c9_summary.ADMIN_FEE as C9_ADMIN_FEE, c9_summary.PRODUCT_DISCOUNT as C9_PRODUCT_DISCOUNT,
+        c8_summary.FARE as C8_FARE, c8_summary.ADMIN_FEE as C8_ADMIN_FEE, c8_summary.PRODUCT_DISCOUNT as C8_PRODUCT_DISCOUNT,
+        c7_summary.FARE as C7_FARE, c7_summary.ADMIN_FEE as C7_ADMIN_FEE, c7_summary.PRODUCT_DISCOUNT as C7_PRODUCT_DISCOUNT,
+        j8_summary.FARE as J8_FARE, j8_summary.ADMIN_FEE as J8_ADMIN_FEE, j8_summary.PRODUCT_DISCOUNT as J8_PRODUCT_DISCOUNT,
+        vd_summary.NEW_TXN + vd_summary.ADMIN_FEE as volume_discount, ep_summary.NEW_TXN + ep_summary.ADMIN_FEE as early_payment, if_summary.TOTAL_NEW as issuance, rf_summary.TOTAL_NEW as replacement, sf_summary.TOTAL_NEW as subscription, gst_summary.TOTAL_GST as gst, debit_note.DEBIT_AMT, -credit_note.CREDIT_AMT as CREDIT_AMT, pd_summary.TOTAL_NEW as promo_dis, dp_summary.TOTAL_NEW as deposit, ms_summary.TOTAL_NEW as misc, lp_summary.TOTAL_NEW as LATE_INTEREST from BMTB_INVOICE_HEADER header
+    left join BMTB_INVOICE_SUMMARY vd_summary on vd_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO and vd_summary.SUMMARY_TYPE = 'VD'
+    left join BMTB_INVOICE_SUMMARY ep_summary on ep_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO and ep_summary.SUMMARY_TYPE = 'EP' and ep_summary.ADMIN_FEE &lt;&gt; 0
+    left join BMTB_INVOICE_SUMMARY lp_summary on lp_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO and lp_summary.SUMMARY_TYPE = 'LP'
+    left join (select INVOICE_HEADER_NO, sum(GST) as total_gst from BMTB_INVOICE_SUMMARY group by INVOICE_HEADER_NO) gst_summary on gst_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select INVOICE_HEADER_NO, sum(TOTAL_NEW)-sum(GST) as total_new from BMTB_INVOICE_SUMMARY where SUMMARY_TYPE = 'IF' group by INVOICE_HEADER_NO) if_summary on if_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select INVOICE_HEADER_NO, sum(TOTAL_NEW)-sum(GST) as total_new from BMTB_INVOICE_SUMMARY where SUMMARY_TYPE = 'RF' group by INVOICE_HEADER_NO) rf_summary on rf_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select INVOICE_HEADER_NO, sum(TOTAL_NEW)-sum(GST) as total_new from BMTB_INVOICE_SUMMARY where SUMMARY_TYPE = 'SF' group by INVOICE_HEADER_NO) sf_summary on sf_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select header.INVOICE_HEADER_NO, sum(detail.DEDUCTED_PROMO_DIS) as total_new from BMTB_INVOICE_DETAIL detail inner join BMTB_INVOICE_SUMMARY summary on summary.INVOICE_SUMMARY_NO = detail.INVOICE_SUMMARY_NO inner join BMTB_INVOICE_HEADER header on header.INVOICE_HEADER_NO = summary.INVOICE_HEADER_NO where detail.DEDUCTED_PROMO_DIS &gt; 0 and header.invoice_status != 'D' group by header.INVOICE_HEADER_NO) pd_summary on pd_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select INVOICE_HEADER_NO, sum(TOTAL_NEW)-sum(GST) as total_new from BMTB_INVOICE_SUMMARY where SUMMARY_TYPE = 'DP' group by INVOICE_HEADER_NO) dp_summary on dp_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select INVOICE_HEADER_NO, sum(TOTAL_NEW)-sum(GST) as total_new from BMTB_INVOICE_SUMMARY where SUMMARY_TYPE = 'MS' group by INVOICE_HEADER_NO) ms_summary on ms_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'CC' group by summary.INVOICE_HEADER_NO) cc_summary on cc_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'FV' group by summary.INVOICE_HEADER_NO) fv_summary on fv_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'HC' group by summary.INVOICE_HEADER_NO) hc_summary on hc_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'HV' group by summary.INVOICE_HEADER_NO) hv_summary on hv_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'OV' group by summary.INVOICE_HEADER_NO) ov_summary on ov_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'PC' group by summary.INVOICE_HEADER_NO) pc_summary on pc_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'PS' group by summary.INVOICE_HEADER_NO) ps_summary on ps_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'C9' group by summary.INVOICE_HEADER_NO) c9_summary on c9_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'C8' group by summary.INVOICE_HEADER_NO) c8_summary on c8_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'C7' group by summary.INVOICE_HEADER_NO) c7_summary on c7_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select summary.INVOICE_HEADER_NO, sum(details.FARE) as FARE, sum(details.ADMIN_FEE) as ADMIN_FEE, -sum(details.PRODUCT_DISCOUNT) as PRODUCT_DISCOUNT from BMTB_INVOICE_SUMMARY summary
+    left join (select INVOICE_SUMMARY_NO, sum(NEW_TXN) as fare, sum(ORI_ADMIN_FEE) as admin_fee, sum(PROD_DIS) as product_discount from BMTB_INVOICE_DETAIL group by INVOICE_SUMMARY_NO) details on details.INVOICE_SUMMARY_NO = summary.INVOICE_SUMMARY_NO
+    where summary.PRODUCT_TYPE_ID = 'J8' group by summary.INVOICE_HEADER_NO) j8_summary on j8_summary.INVOICE_HEADER_NO = header.INVOICE_HEADER_NO
+    left join (select header.INVOICE_HEADER_NO, sum(credit_note.NOTE_AMOUNT + credit_note.ADMIN_FEE - credit_note.DISCOUNT - credit_note.PROD_DIS) as credit_amt from BMTB_INVOICE_HEADER header
+    inner join BMTB_INVOICE_SUMMARY summary on header.INVOICE_HEADER_NO = summary.INVOICE_HEADER_NO
+    inner join BMTB_INVOICE_DETAIL detail on summary.INVOICE_SUMMARY_NO = detail.INVOICE_SUMMARY_NO
+    inner join BMTB_INVOICE_TXN txn on detail.INVOICE_DETAIL_NO = txn.INVOICE_DETAIL_NO
+    inner join BMTB_NOTE credit_note on txn.INVOICE_TXN_NO = credit_note.BILLED_INVOICE_TXN_NO and credit_note.NOTE_TYPE = 'C'
+    where header.invoice_status != 'D'
+    group by header.INVOICE_HEADER_NO) credit_note on header.INVOICE_HEADER_NO = credit_note.INVOICE_HEADER_NO
+    left join (select header.INVOICE_HEADER_NO, sum(debit_note.NOTE_AMOUNT + debit_note.ADMIN_FEE - debit_note.DISCOUNT - debit_note.PROD_DIS) as debit_amt from BMTB_INVOICE_HEADER header
+    inner join BMTB_INVOICE_SUMMARY summary on header.INVOICE_HEADER_NO = summary.INVOICE_HEADER_NO
+    inner join BMTB_INVOICE_DETAIL detail on summary.INVOICE_SUMMARY_NO = detail.INVOICE_SUMMARY_NO
+    inner join BMTB_INVOICE_TXN txn on detail.INVOICE_DETAIL_NO = txn.INVOICE_DETAIL_NO
+    inner join BMTB_NOTE debit_note on txn.INVOICE_TXN_NO = debit_note.BILLED_INVOICE_TXN_NO and debit_note.NOTE_TYPE = 'D'
+    where header.invoice_status != 'D'
+    group by header.INVOICE_HEADER_NO) debit_note on header.INVOICE_HEADER_NO = debit_note.INVOICE_HEADER_NO
+    inner join AMTB_ACCOUNT acct on header.ACCOUNT_NO = acct.ACCOUNT_NO
+    left join AMTB_ACCOUNT parent on acct.PARENT_NO = parent.ACCOUNT_NO
+    left join AMTB_ACCOUNT grand on parent.PARENT_NO = grand.ACCOUNT_NO
+    inner join FMTB_AR_CONT_CODE_MASTER ar_master on case when acct.CUST_NO is not null then acct.AR_CONTROL_CODE_NO when parent.CUST_NO is not null then parent.AR_CONTROL_CODE_NO else grand.AR_CONTROL_CODE_NO end = ar_master.AR_CONTROL_CODE_NO
+    inner join FMTB_ENTITY_MASTER entity on ar_master.ENTITY_NO = entity.ENTITY_NO and ('${1. Entity#choice()#MASTER:EM}' is null or '${1. Entity#choice()#MASTER:EM}' = entity.ENTITY_NO)
+    where (('${2. Invoice Start Date#date#REQUIRED}' is null and '${3. Invoice End Date#date}' is null)or(header.INVOICE_DATE between case when '${2. Invoice Start Date#date#REQUIRED}' is null then to_date('${3. Invoice End Date#date} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') else to_date('${2. Invoice Start Date#date#REQUIRED} 00:00:00', 'yyyy-mm-dd hh24:mi:ss') end and case when '${3. Invoice End Date#date}' is null then last_day(to_date('${2. Invoice Start Date#date#REQUIRED} 23:59:59', 'yyyy-mm-dd hh24:mi:ss')) else to_date('${3. Invoice End Date#date} 23:59:59', 'yyyy-mm-dd hh24:mi:ss') end))
+and header.invoice_status != 'D'
+    order by header.INVOICE_NO</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

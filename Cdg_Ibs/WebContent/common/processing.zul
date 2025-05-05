@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window border="normal" use="com.cdgtaxi.ibs.common.ui.ProcessingWindow"
+	closable="false"
+	title="Status"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<label>Processing ...</label>
+	<timer id="timer" delay="10" repeats="true" onTimer="self.getParent().detach()"/>
+</window>

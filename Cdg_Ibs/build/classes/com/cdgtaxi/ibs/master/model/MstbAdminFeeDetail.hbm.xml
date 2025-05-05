@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.cdgtaxi.ibs.master.model.MstbAdminFeeDetail" 
+    table="MSTB_ADMIN_FEE_DETAIL"
+    dynamic-update="true"
+    dynamic-insert="true"
+>
+    <meta attribute="implement-equals" inherit="false">true</meta>
+
+    <id
+        name="adminFeePlanDetailNo"
+        type="java.lang.Integer"
+        column="ADMIN_FEE_PLAN_DETAIL_NO"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <generator class="sequence">
+            <param name="sequence">MSTB_ADMIN_FEE_DETAIL_SQ1</param>
+        </generator>
+    </id>
+	<version name="version" column="VERSION"/>
+
+    <property
+        name="effectiveDt"
+        type="java.sql.Timestamp"
+        column="EFFECTIVE_DT"
+        not-null="true"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="adminFee"
+        type="java.math.BigDecimal"
+        column="ADMIN_FEE"
+        not-null="true"
+        length="5"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdDt"
+        type="java.sql.Timestamp"
+        column="CREATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="createdBy"
+        type="java.lang.String"
+        column="CREATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedDt"
+        type="java.sql.Timestamp"
+        column="UPDATED_DT"
+        length="11"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+    <property
+        name="updatedBy"
+        type="java.lang.String"
+        column="UPDATED_BY"
+        length="80"
+    >
+        <meta attribute="use-in-tostring">true</meta>
+        <meta attribute="use-in-equals">true</meta>
+    </property>
+   
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to MstbAdminFeeMaster -->
+    <many-to-one
+        name="mstbAdminFeeMaster"
+        class="com.cdgtaxi.ibs.master.model.MstbAdminFeeMaster"
+        not-null="true"
+    >
+        <meta attribute="use-in-equals">true</meta>
+        <column name="ADMIN_FEE_PLAN_NO" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

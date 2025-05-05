@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="viewAppWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ViewApplicationWindow"
+	title="View Personal Application"
+	onCreate="self.loadApp(com.cdgtaxi.ibs.common.NonConfigurableConstants.ACCOUNT_TEMPLATES_PERSONAL)"
+	width="98%"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Personal Application Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Application No"/>
+				<label id="appNo"/>
+				<label sclass="fieldLabel" value="Application Date"/>
+				<label id="appDate" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Application Status"/>
+				<label id="appStatus"/>
+				<label sclass="fieldLabel" value="Account No"/>
+				<label id="custNo"/>
+			</row><row spans="1,1,2">
+				<label sclass="fieldLabel" value="Account Type"/>
+				<label id="acctType"/>
+				<label sclass="fieldLabel" value=""/>
+			</row><row>
+				<label sclass="fieldLabel" value="Salutation"/>
+				<label id="salutation" value="-"/>
+				<label sclass="fieldLabel" value="Name"/>
+				<label id="acctName" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Name On Card"/>
+				<label id="nameOnCard" value="-"/>
+				<label sclass="fieldLabel" value="NRIC / Passport Number"/>
+				<label id="nric" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Date of Birth"/>
+				<label id="birthdate" value="-"/>
+				<label sclass="fieldLabel" value="Home No."/>
+				<label id="tel" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Email"/>
+				<label id="email" value="-"/>
+				<label sclass="fieldLabel" value="Mobile No."/>
+				<label id="mobile" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Office No."/>
+				<label id="office" value="-"/>
+				<label sclass="fieldLabel" value="Race"/>
+				<label id="mainContactRace" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Block No."/>
+				<label id="blkNo" value="-"/>
+				<label sclass="fieldLabel" value="Unit No."/>
+				<label id="unitNo" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Street Name"/>
+				<label id="street" value="-"/>
+				<label sclass="fieldLabel" value="Building Name"/>
+				<label id="building" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Area"/>
+				<label id="area" value="-"/>
+				<label sclass="fieldLabel" value="Country"/>
+				<label id="country"/>
+			</row><row>
+				<label sclass="fieldLabel" value="City"/>
+				<label id="city"/>
+				<label sclass="fieldLabel" value="State"/>
+				<label id="state"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Postal"/>
+				<label id="postal" value="-"/>
+				<label sclass="fieldLabel" value="Information Source"/>
+				<label id="infoSource" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Entity"/>
+				<label id="entity"/>
+				<label sclass="fieldLabel" value="AR Control Account"/>
+				<label id="arAcct"/>
+			</row>
+		    <row>
+	 	 		<label sclass="fieldLabel" value="Cabcharge Recurring Indicator"/>
+				<label id="recurring"/>
+				<label/>
+				<label/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Billing Address"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows id="billAddress">
+			<row spans="1,1,2">
+				<label sclass="fieldLabel" value="Same as Main Address"/>
+				<label id="billAdd"/>
+				<label value=""/>
+			</row>
+			<row visible="false">
+				<label sclass="fieldLabel" value="Block No."/>
+				<label id="billBlkNo" value="-"/>
+				<label sclass="fieldLabel" value="Unit No."/>
+				<label id="billUnitNo" value="-"/>
+			</row><row visible="false">
+				<label sclass="fieldLabel" value="Street Name"/>
+				<label id="billStreet"/>
+				<label sclass="fieldLabel" value="Building Name"/>
+				<label id="billBuilding" value="-"/>
+			</row><row visible="false">
+				<label sclass="fieldLabel" value="Area"/>
+				<label id="billArea" value="-"/>
+				<label sclass="fieldLabel" value="Country"/>
+				<label id="billCountry"/>
+			</row><row visible="false">
+				<label sclass="fieldLabel" value="City"/>
+				<label id="billCity"/>
+				<label sclass="fieldLabel" value="State"/>
+				<label id="billState"/>
+			</row><row spans="1,1,2" visible="false">
+				<label sclass="fieldLabel" value="Postal"/>
+				<label id="billPostal"/>
+				<label value=""/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Shipping Address"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows id="shipAddress">
+			<row spans="1,1,2">
+				<label sclass="fieldLabel" value="Same as Main Address"/>
+				<label id="shipAdd"/>
+				<label value=""/>
+			</row>
+			<row visible="false">
+				<label sclass="fieldLabel" value="Block No."/>
+				<label id="shipBlkNo" value="-"/>
+				<label sclass="fieldLabel" value="Unit No."/>
+				<label id="shipUnitNo" value="-"/>
+			</row><row visible="false">
+				<label sclass="fieldLabel" value="Street Name"/>
+				<label id="shipStreet"/>
+				<label sclass="fieldLabel" value="Building Name"/>
+				<label id="shipBuilding" value="-"/>
+			</row><row visible="false">
+				<label sclass="fieldLabel" value="Area"/>
+				<label id="shipArea" value="-"/>
+				<label sclass="fieldLabel" value="Country"/>
+				<label id="shipCountry"/>
+			</row><row visible="false">
+				<label sclass="fieldLabel" value="City"/>
+				<label id="shipCity"/>
+				<label sclass="fieldLabel" value="State"/>
+				<label id="shipState"/>
+			</row><row spans="1,1,2" visible="false">
+				<label sclass="fieldLabel" value="Postal"/>
+				<label id="shipPostal"/>
+				<label value=""/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Employment Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Job Status"/>
+				<label id="jobStatus"/>
+				<label sclass="fieldLabel" value="Occupation"/>
+				<label id="occupation" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Industry"/>
+				<label id="industry" value="-"/>
+				<label sclass="fieldLabel" value="Name of Employer"/>
+				<label id="employerName" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Block No."/>
+				<label id="empBlkNo" value="-"/>
+				<label sclass="fieldLabel" value="Unit No."/>
+				<label id="empUnitNo" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Street Name"/>
+				<label id="empStreet" value="-"/>
+				<label sclass="fieldLabel" value="Building Name"/>
+				<label id="empBuilding" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Area"/>
+				<label id="empArea" value="-"/>
+				<label sclass="fieldLabel" value="Country"/>
+				<label id="empCountry"/>
+			</row><row>
+				<label sclass="fieldLabel" value="City"/>
+				<label id="empCity"/>
+				<label sclass="fieldLabel" value="State"/>
+				<label id="empState"/>
+			</row><row spans="1,1,2">
+				<label sclass="fieldLabel" value="Postal"/>
+				<label id="empPostal" value="-"/>
+				<label value=""/>
+			</row><row>
+				<label sclass="fieldLabel" value="Monthly Income"/>
+				<label id="monthlyIncome" value="-"/>
+				<label sclass="fieldLabel" value="Length of Employment(Years)"/>
+				<label id="empLength" value="-"/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Product Subscription"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false">
+			<column width="3%"/>
+			<column width="21%"><label value="Product Type"/></column>
+			<column width="16%"><label value="Product Discount"/></column>
+			<column width="3%" align="center"/>
+			<column width="16%"><label value="Loyalty Plan"/></column>
+			<column width="3%" align="center"/>
+			<column width="16%"><label value="Subscription Fee"/></column>
+			<column width="3%" align="center"/>
+			<column width="16%"><label value="Issuance Fee"/></column>
+			<column width="3%" align="center"/>
+		</columns>
+		<rows id="prodSubscribe"/>
+	</grid>
+	<h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Invoice Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+	  <columns sizable="false" width="100%" visible="false">
+	    <column width="25%" />
+	    <column width="25%" />
+	    <column width="25%" />
+	    <column width="25%" />
+	  </columns>
+	  <rows>
+    	<row>
+				<label sclass="fieldLabel" value="Opt-In eInvoice"/>
+				<label id="eInvoice" value="-"/>
+				<label sclass="fieldLabel" value="Invoice Printing"/>
+				<label id="invoicePrinting" value="-"/>
+		</row>
+		<row>
+				<label sclass="fieldLabel" value="Outsource Printing"/>
+				<label id="outsourcePrinting"/>
+				<label sclass="fieldLabel" value="Print Tax Invoice only" visible="false"/>
+				<label id="printTaxInvOnly" value="-" visible="false"/> 
+			</row>
+	  </rows>
+	</grid>
+	<h:br />
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Assessment"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Approving Officer"/>
+				<label id="approveOfficers"/>
+				<label sclass="fieldLabel" value="Credit Limit($)"/>
+				<label id="creditLimit" value="-"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Deposit Amount($)"/>
+				<label id="deposit" value="-"/>
+				<label sclass="fieldLabel" value="Sales Person"/>
+				<label id="salesPerson"/>
+			</row><row>
+				<label sclass="fieldLabel" value="Volume Discount"/>
+				<hbox widths="95%,5%">
+					<label id="volumeDiscount"/>
+					<image src="/images/question.png" style="cursor: help" onClick="viewAppWindow.displayVolumeDiscount()"/>
+				</hbox>
+				<label sclass="fieldLabel" value="Admin Fees"/>
+				<hbox widths="95%,5%">
+					<label id="adminFees"/>
+					<image src="/images/question.png" style="cursor: help" onClick="viewAppWindow.displayAdminFee()"/>
+				</hbox>
+			</row><row>
+				<label sclass="fieldLabel" value="Early Payment Discount"/>
+				<hbox widths="95%,5%">
+					<label id="earlyDiscount" value="-"/>
+					<image src="/images/question.png" style="cursor: help" onClick="viewAppWindow.displayEarlyDiscount()"/>
+				</hbox>
+				<label sclass="fieldLabel" value="Late Payment Interest"/>
+				<hbox widths="95%,5%">
+					<label id="lateInterest"/>
+					<image src="/images/question.png" style="cursor: help" width="5%" onClick="viewAppWindow.displayLateInterest()"/>
+				</hbox>
+			</row><row>
+				<label sclass="fieldLabel" value="Requester"/>
+				<label id="requester" value="-"/>
+				<label sclass="fieldLabel" value="Request Date"/>
+				<label id="reqDate" value="-"/>
+			</row><row spans="1,1,2">
+				<label sclass="fieldLabel" value="Request Time"/>
+				<label id="reqTime" value="-"/>
+				<label/>
+			</row><row valign="top" spans="1,3">
+				<label sclass="fieldLabel" value="Remarks"/>
+				<label id="remarks" multiline="true" value="-"/> 
+			</row><row valign="top" spans="1,3" visible="false">
+				<label sclass="fieldLabel" id="approver1Label" multiline="true" value="First Approver Remarks"/>
+				<label id="approver1Remarks" multiline="true" value="-"/> 
+			</row><row valign="top" spans="1,3" visible="false">
+				<label sclass="fieldLabel" id="approver2Label" multiline="true" value="Second Approver Remarks"/>
+				<label id="approver2Remarks" multiline="true" value="-"/> 
+			</row>
+			<row spans="4"><hbox>
+				<button label="Back" onClick="viewAppWindow.back()"/>
+				<button id="copyBtn" label="Copy" onClick="viewAppWindow.copy()"/>
+			</hbox></row>
+		</rows>
+	</grid>
+</window>

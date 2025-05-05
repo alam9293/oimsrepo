@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="viewLoyaltyPlanWindow"
+	title="Loyalty Plan Details" border="normal" 
+	use="com.cdgtaxi.ibs.reward.ui.EditPlanWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row spans="1,1,2">
+				<label sclass="fieldLabel required" value="Loyalty Plan Name"/>
+				<capstextbox id="planNameTextBox" width="98.75%"
+					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+					maxlength="80"
+				/>
+				<label/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	
+	<listbox id="detailList" onSelect="viewLoyaltyPlanWindow.editDetail()" mold="paging" multiple="true">
+		<listhead sizable="false">
+			<listheader label="Plan Type" sort="auto"/>
+			<listheader label="Start Date" sort="auto"/>
+			<listheader label="End Date" sort="auto"/>
+			<listheader label="Delete"		width="60px" sort="none"/>
+		</listhead>
+	</listbox>
+	<button id="createDetailBtn" label="New Detail" onClick="viewLoyaltyPlanWindow.addDetail()" />
+	<h:br/>
+	<h:br/>
+	
+	<button label="Save" onClick="viewLoyaltyPlanWindow.updatePlan()" />
+	<button label="Back" onClick="viewLoyaltyPlanWindow.back()" />
+</window>

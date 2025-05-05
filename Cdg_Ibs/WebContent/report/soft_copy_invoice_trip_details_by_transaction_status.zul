@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="byTransactionStatusWindow" border="normal" use="com.cdgtaxi.ibs.report.ui.SoftCopyInvoiceTripDetailsByTransactionStatusWindow"
+	title="Trips Detail"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+		<columns sizable="false">
+			<column width="30%"/>
+			<column width="70%"/>
+		</columns>
+   		<rows>
+   			<row> 
+   				<label sclass="fieldLabel">Account No</label>
+   				<intbox id="accountNoIntBox" maxlength="6"
+   				onChange="byTransactionStatusWindow.searchAccountByAccountNo()"
+   				onOK="byTransactionStatusWindow.searchAccountByAccountNo()" 
+   				width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel required">Account Name</label>
+   				<combobox id="accountNameComboBox"
+   					rows="1" 
+   					style="text-transform:uppercase"
+   					autodrop="true"
+   					autocomplete="false"
+   					width="50%"
+   					onChanging="byTransactionStatusWindow.searchAccountByAccountName(event.value)"
+   					onSelect="byTransactionStatusWindow.onSelectAccountName()"
+   					tooltiptext="Minimum search criteria is 3 characters" 
+   				/>
+   			</row>
+   			<row id="divisionRow" visible="false">
+   				<label id="divisionLabel" sclass="fieldLabel" value="Division / Sub Applicant"/>
+   				<listbox id="divisionListBox" 
+   					mold="select"
+   					multiple="false"
+   					onSelect="byTransactionStatusWindow.onSelectDivision(self)"
+   					width="50%"
+   				/>
+   			</row>
+   			<row id="departmentRow" visible="false">
+   				<label id="departmentLabel" sclass="fieldLabel" value="Department"/>
+   				<listbox id="departmentListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="50%"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel required">Trip Start Date</label>
+   				<datebox id="tripStartDateBox" 
+   					format="dd/MM/yyyy"
+   					width="50%"
+   					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Trip End Date</label>
+   				<datebox id="tripEndDateBox" 
+   					format="dd/MM/yyyy"
+   					width="50%"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Product Type</label>
+				<listbox id="productTypeListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="50%"
+   				/>
+   			</row>
+   			<row>
+   				<label sclass="fieldLabel">Transaction Status</label>
+				<listbox id="transactionStatusListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel">Card No</label>
+   				<decimalbox id="cardNoDecimalBox"
+   					maxlength="19" 
+   					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel required">Sort By</label>
+   				<listbox id="sortByList" 
+   					mold="select"
+   					multiple="false"
+   					width="50%"
+   				/>
+   			</row>
+   			<row> 
+   				<label sclass="fieldLabel required" id="reportFormatLabel">Report Format:</label>
+   				<listbox id="reportFormat" 
+   					mold="select"
+   					multiple="false"
+   					onCreate="byTransactionStatusWindow.populateReportFormatList(self)"
+   					width="50%"
+   				/>
+   			</row>
+   			<row spans="2">
+   				<hbox>
+   					<button label="Generate" onClick="byTransactionStatusWindow.generate()"/>
+   					<button label="Reset" onClick="byTransactionStatusWindow.reset()"/>
+   				</hbox>
+   			</row>
+   		</rows>
+   	</grid>
+   	
+</window>

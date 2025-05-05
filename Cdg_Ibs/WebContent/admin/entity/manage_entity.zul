@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageEntityWindow"
+	title="Manage Entities" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ManageEntityWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<listbox id="resultList" onSelect="manageEntityWindow.edit()" mold="paging">
+		<listhead sizable="false">
+			<listheader label="Entity Name" sort="auto"/>
+			<listheader label="Entity Code" sort="auto"/>
+			<listheader label="RCB No." sort="auto"/>
+			<listheader label="GST No." sort="auto"/>
+			<listheader label="Currency" sort="auto"/>
+			<listheader label="Delete" width="60px" sort="none"/>
+		</listhead>
+		<listitem>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+<!--			<listcell>-->
+<!--				<image src="/images/delete.png" style="cursor:pointer"-->
+<!--					onClick="manageEntityWindow.delete(self.getParent().getParent())"/>-->
+<!--			</listcell>-->
+		</listitem>
+	</listbox>
+	<button id="createBtn" label="New Entity" onClick="manageEntityWindow.create()" />
+</window>

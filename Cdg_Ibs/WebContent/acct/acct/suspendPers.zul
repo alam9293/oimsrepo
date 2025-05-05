@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="suspendPersWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.SuspendPersWindow"
+	title=""
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	onCreate="suspendPersWindow.init()"
+	width="100%">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Suspension Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row>
+			<label sclass="fieldLabel" value="Name"/>
+			<label id="acctName"/>
+			<label sclass="fieldLabel required" value="Suspension Reason"/>
+			<listbox id="suspendReasonList" width="100%" rows="1" mold="select" onCreate="self.getChildren().addAll(suspendPersWindow.getSuspendReasons());self.setSelectedIndex(0)"/>
+		</row><row>
+			<label sclass="fieldLabel required" value="Suspension Start Date"/>
+			<datebox id="suspendDate" width="91.5%" format="dd/MM/yyyy" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredEqualOrLaterThanCurrentDateConstraint')}"/>
+			<label sclass="fieldLabel" value="Suspension End Date"/>
+			<datebox id="reactivateDate" width="91.5%" format="dd/MM/yyyy"/>
+		</row><row valign="top" spans="1,3">
+			<label sclass="fieldLabel required" value="Remarks"/>
+			<capstextbox id="remarks" rows="4" width="99.6%" constraint="${c:new('com.cdgtaxi.ibs.web.constraint.LaterThanNowConstraint')}"/> 
+		</row><row spans="4"><hbox>
+			<button label="Suspend" onClick="suspendPersWindow.suspend()"/>
+			<button label="Back" onClick="suspendPersWindow.back()"/>
+		</hbox></row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Sub Applicants"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%">
+			<column width="auto" label="Name"/>
+			<column width="auto" label="Type"/>
+			<column width="auto" label="Status"/>
+			<column width="auto" label="Credit Balance"/>
+			<column width="auto" label="Credit Limit"/>
+		</columns>
+		<rows id="childrenAccts"/>
+	</grid>
+</window>

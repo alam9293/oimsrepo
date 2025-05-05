@@ -1,0 +1,220 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="20" grid-y="20" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/Account/Card Issuance Letter/Card Issuance Letter By Batch SRpt.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="iso-a4" page-width="11905" page-height="16837" orientation="Portrait" horizontal-page-count="1" margin-top="400" margin-left="1020" margin-bottom="396" margin-right="1020" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="1. Contact Person No" enabled="Yes">${1. Contact Person No}</rml:param><rml:param xml:space="preserve" key="2. Product Type" enabled="Yes">${2. Product Type#choice(CC,OV,FV)#MASTER:PT}</rml:param><rml:param xml:space="preserve" key="3. Card No Start" enabled="Yes">${3. Card No Start}</rml:param><rml:param xml:space="preserve" key="4. Card No End" enabled="Yes">${4. Card No End}</rml:param><rml:param xml:space="preserve" key="01a. Account No" enabled="Yes">${01a. Account No#acctsearch#custId}</rml:param><rml:param xml:space="preserve" key="01b. Name" enabled="Yes">${01b. Name#acctsearch#custName}</rml:param><rml:param xml:space="preserve" key="01c. Division" enabled="Yes">${01c. Division#acctsearch#div}</rml:param><rml:param xml:space="preserve" key="01d. Department" enabled="Yes">${01d. Department#acctsearch#dept}</rml:param><rml:param xml:space="preserve" key="5. Issue Start Date" enabled="Yes">${5. Issue Start Date#date}</rml:param><rml:param xml:space="preserve" key="6. Issue End Date" enabled="Yes">${6. Issue End Date#date}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+    <rml:datasource name="Batch Issued Cards" datasource-name="/IBS_Reports/Account/Card Issuance Letter/datasource/Batch Issued Card.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="1. Contact Person No">${1. Contact Person No}</rml:param><rml:param xml:space="preserve" key="01c. Division">${01c. Division#acctsearch#div}</rml:param><rml:param xml:space="preserve" key="01b. Name">${01b. Name#acctsearch#custName}</rml:param><rml:param xml:space="preserve" key="01a. Account No">${01a. Account No#acctsearch#custId}</rml:param><rml:param xml:space="preserve" key="4. Card No End">${4. Card No End}</rml:param><rml:param xml:space="preserve" key="3. Card No Start">${3. Card No Start}</rml:param><rml:param xml:space="preserve" key="6. Issue End Date">${6. Issue End Date#date}</rml:param><rml:param xml:space="preserve" key="5. Issue Start Date">${5. Issue Start Date#date}</rml:param><rml:param xml:space="preserve" key="01d. Department">${01d. Department#acctsearch#dept}</rml:param><rml:param xml:space="preserve" key="2. Product Type">${2. Product Type#choice(CC,OV,FV)#MASTER:PT}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="General Format">
+      <rml:item name="TextElement.FontSize" value="160">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Arial">
+      </rml:item>
+    </rml:style>
+    <rml:style name="General Format Header">
+      <rml:item name="CubeMeasure.TextAlignment" value="Center">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="160">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Arial">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="detail">
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table.field">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table.label">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" data-source="Batch Issued Cards" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:watermark report="" section="" enabled="No">
+        <rml:parameters>
+        </rml:parameters>
+      </rml:watermark>
+      <rml:section-header table-of-contents="No" height="20" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:ruler>
+          <rml:mark value="900">
+          </rml:mark>
+          <rml:mark value="460">
+          </rml:mark>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer height="860" style="">
+        <rml:field left="4000" top="200" width="1000" height="500" style=""><rml:control-source xml:space="preserve" type="Script" running-value="No">='${#}'</rml:control-source>
+        </rml:field>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" height="2040" style=""><rml:control-source xml:space="preserve" type="Field" datasource="customer data source" field="CUST_NO" running-value="No">customer data source:CUST_NO</rml:control-source>
+        <rml:hbox left="0" top="0" width="9800" height="300" style="">
+          <rml:cell weight="8377" left="0" top="0" width="2736" height="300" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-underline="No" left="0" top="0" width="2736" height="300" style=""><rml:control-source xml:space="preserve" type="Field" field="START_CARD_NO" running-value="No">START_CARD_NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="9489" left="2736" top="0" width="3099" height="300" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-underline="No" left="2736" top="0" width="3099" height="300" style=""><rml:control-source xml:space="preserve" type="Field" field="END_CARD_NO" running-value="No">END_CARD_NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="12134" left="5835" top="0" width="3965" height="300" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-underline="No" left="5835" top="0" width="3965" height="300" style=""><rml:control-source xml:space="preserve" type="Field" field="ACCOUNTNAMECODE" running-value="No">ACCOUNTNAMECODE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+          <rml:mark value="1200">
+          </rml:mark>
+          <rml:mark value="960">
+          </rml:mark>
+          <rml:mark value="560">
+          </rml:mark>
+        </rml:ruler>
+      </rml:detail>
+      <rml:group field="ACCOUNT_NAME" sort-order="None" group-header-visible="Yes" group-footer-visible="Yes" group-on="All" group-data="">
+        <rml:group-header table-of-contents="No" height="280" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+          <rml:hbox left="0" top="0" width="13700" height="200" style="">
+            <rml:cell weight="6110" left="0" top="0" width="2700" height="200" style="">
+              <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-underline="No" left="0" top="0" width="2700" height="200" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Card No. From</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="7014" left="2700" top="0" width="3099" height="200" style="">
+              <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-underline="No" left="2700" top="0" width="3099" height="200" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Card No. To</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="16876" left="5799" top="0" width="7459" height="200" style="">
+              <rml:field font-name="Arial" font-size="180" font-bold="Yes" font-underline="No" left="5799" top="0" width="7459" height="200" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">Division/Department</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1000" left="13258" top="0" width="442" height="200" style="">
+            </rml:cell>
+          </rml:hbox>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-header>
+        <rml:group-footer table-of-contents="No" height="5220" style="">
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-footer>
+      </rml:group>
+      <rml:ruler>
+        <rml:mark value="9760">
+        </rml:mark>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation section="Section 1" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+    <rml:render-details mime-type="application/x-glint">
+      <rml:parameters><rml:param xml:space="preserve" key="Tree">No</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+    <rml:render-details mime-type="text/csv">
+      <rml:parameters><rml:param xml:space="preserve" key="Encoding">UTF-8</rml:param><rml:param xml:space="preserve" key="Qualifier">None</rml:param><rml:param xml:space="preserve" key="Separator">Comma</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+    <rml:render-details mime-type="application/rtf">
+      <rml:parameters><rml:param xml:space="preserve" key="Comments"></rml:param><rml:param xml:space="preserve" key="Word2003">No</rml:param><rml:param xml:space="preserve" key="Author"></rml:param><rml:param xml:space="preserve" key="Company"></rml:param>
+      </rml:parameters>
+    </rml:render-details>
+  </rml:rendering></rml:report>
+

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="manageGLControlCodeWindow"
+	title="Manage AR Control Accounts" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.ManageGLControlCodeWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
+	width="98%">
+	
+	<!--  The below grid is for Labeling Purpose 	-->
+   	<grid>
+	   	<columns>
+	   		<column>Search AR Control Account</column>
+	   	</columns>
+   	</grid>
+	<grid>
+		<columns sizable="false" visible="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="50%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel" value="Entity"/>
+   				<combobox id="entityCB"
+					autodrop="true"
+					readonly="true"
+   					width="91.5%"
+   					style="background-color:white"
+   					onChanging="self.open()"
+   				/>
+   				<div/>
+			</row>
+			<row spans="3">
+				<hbox>
+					<button label="Search" onClick="manageGLControlCodeWindow.search()" />
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+	
+	<h:br/>
+	<grid>
+	   	<columns>
+	   		<column>AR Control Accounts</column>
+	   	</columns>
+   	</grid>
+	<listbox id="resultList" onSelect="manageGLControlCodeWindow.editPlan()" mold="paging">
+		<listhead sizable="false">
+			<listheader label="Entity" sort="auto"/>
+			<listheader label="GL Control Code" sort="auto"/>
+<!--			<listheader label="Tax Type" sort="auto" width="100px"/>-->
+			<listheader label="Delete" width="60px"/>
+		</listhead>
+		<listitem>
+			<listcell/>
+			<listcell/>
+			<listcell/>
+<!--			<listcell>-->
+<!--				<image src="/images/delete.png" style="cursor:pointer"-->
+<!--					onClick="manageGLControlCodeWindow.deletePlan(self.getParent().getParent())"/>-->
+<!--			</listcell>-->
+		</listitem>
+	</listbox>
+	
+	<h:br/>
+	<button id="createBtn" label="New AR Control Account" onClick="manageGLControlCodeWindow.createPlan()" />
+</window>

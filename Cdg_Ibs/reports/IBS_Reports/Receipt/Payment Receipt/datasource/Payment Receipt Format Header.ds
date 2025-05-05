@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:datasource xmlns:ds="http://www.elixirtech.com/DataSource" name="Payment Receipt Format Header.ds" type="JDBC" description="">
+  <ds:schema case-sensitive="Yes">
+    <ds:column name="CUSTOMER_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 3" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS 4" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADDRESS_POSTAL" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_HEADER_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REQ_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DEBT_TO" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="INVOICE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_STATUS" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="INVOICE_FORMAT" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="DUE_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STATEMENT_PERIOD_FROM_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="STATEMENT_PERIOD_TO_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PREV_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_PAYMENT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_TXN" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="NEW_BALANCE" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_30_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_60_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LESS_90_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="MORE_90_DAYS" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="PREV_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="REDEEMED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="NEW_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TOTAL_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_DEPOSIT" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ACCOUNT_EXCESS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="OVERDUE_INVOICE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="TXN_CUTOFF_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_INTEREST" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="EARLY_PAYMENT_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="OUTSTANDING_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TOTAL_FARE_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="TOTAL_NO_OF_TRIP" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="REMARKS" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FILE_NO" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="UPDATED_BY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="UPDATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="VERSION" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="BILLED_FLAG" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_AMOUNT" type="Double">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="LAST_LATE_PAYMENT_CHARGED_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREATED_BY" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CREATED_DT" type="Timestamp">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="AWARDED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="EXPIRED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ADJUSTED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="FORFEITED_REWARDS_PTS" type="Double">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_BANK_ACCT_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_DATE" type="Date">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 1" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 2" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 3" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY ADDRESS 4" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_GST_REGISTRATION_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_COMPANY_REGISTRATION_NO" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENQUIRES_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="PAYABLE_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LATE_PAYMENT_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="ENTITY_NAME" type="String">
+      <ds:attribute name="Nullable" nullable="no" />
+    </ds:column>
+    <ds:column name="BILLING_CONTACT" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="CUSTOMER_ID" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="LOGO" type="Blob">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+    <ds:column name="GIRO_CLAUSE" type="String">
+      <ds:attribute name="Nullable" nullable="yes" />
+    </ds:column>
+  </ds:schema>
+  <ds:security />
+  <ds:jdbc connection-type="POOL" connection-pool="/IBS_Reports/ConnectionPool/IBS Connection Pool.pool" connection-pool-timeout="0" callable-statement="No" connection-reuse="0" nulls-to-strings="No" read-only="Yes" auto-commit="Yes">
+    <ds:sql>SELECT
+  acct.account_name customer_name,
+  case when acp.address_block is not null then acp.address_block || ' ' || acp.address_street
+  else acp.address_street 
+	end "ADDRESS 1",
+  case
+	    when acp.address_building is not null AND acp.address_unit is not null then acp.address_unit || ' ' || acp.address_building
+	    when acp.address_unit is not null then acp.address_unit
+      when acp.address_building is not null then acp.address_building
+  end "ADDRESS 2",
+  acp.address_area "ADDRESS 3",
+  case
+    when country.master_value = 'SINGAPORE' then country.master_value || ' ' || acp.address_postal
+    else country.master_value || ' ' || acp.address_state || ' ' || acp.address_city || ' ' ||acp.address_postal
+  end "ADDRESS 4",
+  address_postal,
+  bph.*,
+  case when acct_fem.ENTITY_BLOCK is not null then acct_fem.ENTITY_BLOCK || ' ' || acct_fem.ENTITY_STREET
+  else acct_fem.ENTITY_STREET
+  end "ENTITY ADDRESS 1",
+  case 
+    when acct_fem.ENTITY_BUILDING is not null AND acct_fem.ENTITY_UNIT is not null then acct_fem.ENTITY_UNIT || ' ' || acct_fem.ENTITY_BUILDING
+    when acct_fem.ENTITY_UNIT is not null then acct_fem.ENTITY_UNIT
+    when acct_fem.ENTITY_BUILDING is not null then acct_fem.ENTITY_BUILDING
+  end "ENTITY ADDRESS 2",
+  acct_fem.ENTITY_AREA "ENTITY ADDRESS 3",
+  case
+    when acct_fem_country.master_value = 'SINGAPORE' then acct_fem_country.master_value || ' ' || acct_fem.entity_postal
+    else acct_fem_country.master_value || ' ' || acct_fem.entity_state || ' ' || acct_fem.entity_city || ' ' ||acct_fem.entity_postal
+  end "ENTITY ADDRESS 4",
+   'GST REGISTRATION NO ' || acct_fem.ENTITY_GST_NO ENTITY_GST_REGISTRATION_NO,
+  'COMPANY REGISTRATION NO ' || acct_fem.ENTITY_RCB_NO ENTITY_COMPANY_REGISTRATION_NO,
+  'For billing enquiries, please call ' || acct_fem.ENTITY_TEL || ' or email ' || acct_fem.ENTITY_EMAIL ENQUIRES_CLAUSE,
+  acct_fem.ENTITY_NAME ENTITY_NAME
+  
+From bmtb_payment_receipt bph
+--joining the invoice account
+INNER JOIN AMTB_ACCOUNT acct ON bph.account_no = acct.account_no
+--retrieving joined account main billing contact
+INNER JOIN AMTB_ACCT_MAIN_CONTACT aamc ON acct.account_no = aamc.account_no and aamc.main_contact_type = 'B'
+INNER JOIN AMTB_CONTACT_PERSON acp ON acp.contact_person_no = aamc.contact_person_no
+INNER JOIN MSTB_MASTER_TABLE country ON acp.address_country = country.master_no
+LEFT JOIN MSTB_MASTER_TABLE main_salutation ON acp.MAIN_CONTACT_SAL = main_salutation.master_no
+LEFT JOIN MSTB_MASTER_TABLE sub_salutation ON acp.SUB_CONTACT_SAL = sub_salutation.master_no
+--if itself is toplevel, this left join will return the entity master
+INNER JOIN FMTB_AR_CONT_CODE_MASTER acct_faccm ON acct_faccm.AR_CONTROL_CODE_NO = acct.AR_CONTROL_CODE_NO
+INNER JOIN FMTB_ENTITY_MASTER acct_fem ON acct_faccm.ENTITY_NO = acct_fem.ENTITY_NO
+INNER JOIN MSTB_MASTER_TABLE acct_fem_country ON acct_fem.ENTITY_COUNTRY = acct_fem_country.MASTER_NO
+where PAYMENT_RECEIPT_NO = '${1. Receipt No}'</ds:sql>
+  </ds:jdbc>
+</ds:datasource>
+

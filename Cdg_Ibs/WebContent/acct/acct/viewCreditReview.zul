@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="viewCreditLimitWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ViewCreditLimitWindow"
+	title="View Credit Limit History"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	onCreate="viewCreditLimitWindow.init()"
+	width="90%">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Account Details"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%" visible="false">
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+			<column width="25%"/>
+		</columns>
+		<rows><row spans="1,1,2">
+			<label sclass="fieldLabel" value="Name"/>
+			<label id="acctName"/>
+			<label/>
+		</row></rows>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Credit Limits"/></column>
+		</columns>
+	</grid>
+	<grid>
+		<columns sizable="false" width="100%">
+			<column width="10%" label="Review Type"/>
+			<column width="14%" label="Old Credit Limit($)" align="right"/>
+			<column width="15%" label="New Credit Limit($)" align="right"/>
+			<column width="15%" label="Effective Date From"/>
+			<column width="13%" label="Effective Date To"/>
+			<column width="auto" label="Approver"/>
+			<column width="auto" label="Remarks"/>
+		</columns>
+		<rows id="creditLimits"/>
+	</grid><h:br/>
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Credit Review History"/></column>
+		</columns>
+	</grid>
+	<grid id="creditReviewGrid">
+		<columns id="columns" sizable="true" width="100%">
+			<column width="10%" label="Review Type"/>
+			<column width="14%" align="right" label="Old Credit Limit($)"/>
+			<column width="15%" align="right" label="New Credit Limit($)"/>
+			<column width="15%" label="Effective Date From"/>
+			<column width="13%" label="Effective Date To"/>
+			<column width="auto" label="Status"/>
+			<column width="auto" label="Requester"/>
+			<column width="auto" label="Approver"/>
+			<column width="auto" label="Remarks"/>
+		</columns>
+		<rows id="creditReviews"><group label="View" open="false"/></rows>
+	</grid>
+</window>

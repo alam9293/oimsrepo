@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window title="Print Invoice" border="normal" 
+	id="printInvoiceWindow"
+	use="com.cdgtaxi.ibs.billing.ui.PrintInvoiceWindow"
+	xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
+	width="98%">
+	<grid><columns sizable="false"><column label="Print invoices by bill gen request no."/></columns></grid>
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel required" value="Entity"/>
+				<listbox id="entityListBox" 
+   					mold="select"
+   					multiple="false"
+   					width="99%"
+   					onSelect="printInvoiceWindow.searchBillGenRequest()"
+   				/>
+				<label sclass="fieldLabel required" value="Bill Gen Request No"/>
+				<intbox id="billGenRequestNoIntBox"
+   					maxlength="9"
+   					width="98%"
+   					format="#"
+   					onChange="printInvoiceWindow.searchBillGenRequest()"
+   					onOK="printInvoiceWindow.searchBillGenRequest()"
+   				/>
+			</row>
+			<row id="billGenInfoRow1" visible="false">
+				<label sclass="fieldLabel" value="Bill Gen Setup"/>
+				<label id="billGenSetupLabel" />
+				<label sclass="fieldLabel" value="Request Date"/>
+				<label id="requestDateLabel" />
+			</row>
+			<row id="billGenInfoRow2" visible="false">
+				<label sclass="fieldLabel" value="Status"/>
+				<label id="statusLabel" />
+				<label />
+				<label />
+			</row>
+		</rows>
+	</grid>
+	<grid><columns sizable="false"><column label="Print invoices by account no."/></columns></grid>
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel required" value="Account No From"/>
+				<intbox id="accountNoFromIntBox"
+   					maxlength="6"
+   					width="98%"
+   					format="#"
+   					disabled="true"
+   				/>
+				<label sclass="fieldLabel required" value="Account No To"/>
+				<intbox id="accountNoToIntBox"
+   					maxlength="6"
+   					width="98%"
+   					format="#"
+   					disabled="true"
+   				/>
+			</row>
+		</rows>
+	</grid>
+	<h:br/>
+	<grid><columns sizable="false"><column label="Print invoices by invoice no."/></columns></grid>
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel required" value="Invoice No From"/>
+				<longbox id="invoiceNoFromLongBox"
+   					maxlength="18"
+   					width="98%"
+   					format="#"
+   				/>
+				<label sclass="fieldLabel required" value="Invoice No To"/>
+				<longbox id="invoiceNoToLongBox"
+   					maxlength="18"
+   					width="98%"
+   					format="#"
+   				/>
+			</row>
+		</rows>
+	</grid>
+	<h:br />
+	<grid><columns sizable="false"><column label="Select Printer(s)"/></columns></grid>
+	<listbox id="printerListBox" 
+		width="50%" 
+		mold="select"
+   		multiple="true"
+   		height="150px"
+   		/>
+   	<h:br />	
+	<h:br />
+	<button label="Print" onClick="printInvoiceWindow.print()" />
+	<button label="Reset" onClick="printInvoiceWindow.reset()" />
+</window>

@@ -1,0 +1,1592 @@
+<?xml version="1.0" standalone="yes"?>
+
+<rml:report keep-page-count="Yes" cache-all-properties="Yes" grid-enabled="Yes" grid-x="100" grid-y="100" style="" xmlns:rml="http://www.elixirtech.com/ElixirReport/RML">
+  <rml:metadata version="2" location="/IBS_Reports/Revenue/Revenue/Revenue Summary.rml">
+  </rml:metadata>
+  <rml:security encrypted="No" read-only="No" hide-internals="No">
+  </rml:security>
+  <rml:layout-master-set>
+    <rml:page-setup name="Default" paper="custom" page-width="47678" page-height="33675" orientation="Landscape" horizontal-page-count="1" margin-top="1020" margin-left="1020" margin-bottom="400" margin-right="1020" column-count="1" column-spacing="0" row-spacing="0" column-layout="Down Then Across">
+    </rml:page-setup>
+  </rml:layout-master-set>
+  <rml:parameters><rml:param xml:space="preserve" key="1. Entity" enabled="Yes">${1. Entity#choice()#MASTER:EM}</rml:param><rml:param xml:space="preserve" key="2. Invoice Start Date" enabled="Yes">${2. Invoice Start Date#date#REQUIRED}</rml:param><rml:param xml:space="preserve" key="3. Invoice End Date" enabled="Yes">${3. Invoice End Date#date}</rml:param>
+  </rml:parameters>
+  <rml:datasources>
+    <rml:datasource name="Headers" datasource-name="/IBS_Reports/Revenue/Revenue/datasource/Revenue Header.ds" tabulate="Yes">
+      <rml:parameters>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+    <rml:datasource name="DataSource 1" datasource-name="/IBS_Reports/Revenue/Revenue/datasource/Revenue.ds" tabulate="Yes">
+      <rml:parameters><rml:param xml:space="preserve" key="1. Entity">${1. Entity#choice()#MASTER:EM}</rml:param><rml:param xml:space="preserve" key="3. Invoice End Date">${3. Invoice End Date#date}</rml:param><rml:param xml:space="preserve" key="2. Invoice Start Date">${2. Invoice Start Date#date#REQUIRED}</rml:param>
+      </rml:parameters>
+      <rml:filters>
+      </rml:filters>
+    </rml:datasource>
+  </rml:datasources>
+  <rml:styles>
+    <rml:style name="detail">
+      <rml:item name="Common.KeepTogether" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field">
+      <rml:item name="Grid.AutoWrap" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="field.literal" base-name="field">
+      <rml:item name="RawElement.Growable" value="No">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-footer">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="group-header">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="page.label">
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontUnderline" value="No">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontColor" value="Black">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="page.text">
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontUnderline" value="No">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontColor" value="Black">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="rect">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="Common.BackgroundColor" value="rgb(255,255,255)">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="section.label">
+      <rml:item name="TextElement.FontSize" value="400">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontUnderline" value="No">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontColor" value="Black">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="section.text">
+      <rml:item name="TextElement.FontSize" value="400">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontUnderline" value="No">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="TextElement.FontColor" value="Black">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+    </rml:style>
+    <rml:style name="simple.label">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="RawElement.BorderWidth" value="20">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="simple.text">
+      <rml:item name="RawElement.BorderStyle" value="Solid">
+      </rml:item>
+      <rml:item name="RawElement.BorderColor" value="rgb(0,0,0)">
+      </rml:item>
+      <rml:item name="TextElement.FontSize" value="240">
+      </rml:item>
+      <rml:item name="RawElement.PaddingRight" value="40">
+      </rml:item>
+      <rml:item name="RawElement.BorderWidth" value="20">
+      </rml:item>
+      <rml:item name="Rectangle.BorderBottom" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontBold" value="No">
+      </rml:item>
+      <rml:item name="RawElement.PaddingLeft" value="40">
+      </rml:item>
+      <rml:item name="Rectangle.BorderRight" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontItalic" value="No">
+      </rml:item>
+      <rml:item name="Rectangle.BorderTop" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="TextElement.FontName" value="Serif">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="No">
+      </rml:item>
+      <rml:item name="Rectangle.BorderLeft" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="sub-report">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+    <rml:style name="table">
+      <rml:item name="RawElement.Growable" value="Yes">
+      </rml:item>
+      <rml:item name="RawElement.Shrinkable" value="Yes">
+      </rml:item>
+    </rml:style>
+  </rml:styles>
+  <rml:stylesheets>
+  </rml:stylesheets>
+  <rml:sections>
+    <rml:section name="Section 1" page-setup-ref="Default" data-source="DataSource 1" border-style="None" border-color="Black" show-header="Yes" show-footer="Yes" show-page-header="Yes" show-page-footer="Yes" keep-blank-pages="No" reset-page-count="No" style="">
+      <rml:watermark report="" section="" enabled="No">
+        <rml:parameters>
+        </rml:parameters>
+      </rml:watermark>
+      <rml:section-header table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="1199" fill="No" style="Default"><rml:render-if xml:space="preserve" language="javascript">Data.getCount("INVOICE_HEADER_NO").getValueOverAll() == 0</rml:render-if><rml:on-render-end xml:space="preserve" language="javascript"></rml:on-render-end><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:field text-align="Center" font-name="Arial" font-size="180" left="0" top="999" width="45640" height="200" can-grow="Yes" can-shrink="Yes" style=""><rml:render-if xml:space="preserve" language="javascript"></rml:render-if><rml:control-source xml:space="preserve" type="Literal" running-value="No">No Record Found</rml:control-source>
+        </rml:field>
+        <rml:hbox name="" Keep_Together="No" left="0" top="0" width="45640" height="1000" fill="No" lock-handles="No" style="General Format Header"><rml:render-if xml:space="preserve" language="javascript"></rml:render-if><rml:on-render-begin xml:space="preserve" language="javascript"></rml:on-render-begin>
+          <rml:cell weight="9630" left="0" top="0" width="976" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="0" top="0" width="976" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">ACCT NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="44297" left="976" top="0" width="4492" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="976" top="0" width="4492" height="1000" border-style="Solid" border-left="No" can-grow="Yes" can-shrink="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">ACCT NAME</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="13482" left="5468" top="0" width="1367" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="5468" top="0" width="1367" height="1000" border-style="Solid" border-left="No" can-grow="Yes" can-shrink="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV DATE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10593" left="6835" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="6835" top="0" width="1074" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="11422" left="7909" top="0" width="1158" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="7909" top="0" width="1158" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV AMT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="31777" left="9067" top="0" width="3222" height="1000" style="">
+            <rml:vbox left="9067" top="0" width="3222" height="1000" style="">
+              <rml:cell weight="600" left="9067" top="0" width="3222" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="9067" top="0" width="3222" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                  <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                  </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">CORPORATE CARD</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1400" left="9067" top="300" width="3222" height="700" style="">
+                <rml:hbox left="9067" top="300" width="3222" height="700" style="">
+                  <rml:cell weight="10067" left="9067" top="300" width="1081" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="9067" top="300" width="1081" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="9996" left="10148" top="300" width="1073" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="10148" top="300" width="1073" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="9937" left="11221" top="300" width="1068" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="11221" top="300" width="1068" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="31776" left="12289" top="0" width="3222" height="1000" style="">
+            <rml:vbox left="12289" top="0" width="3222" height="1000" style="">
+              <rml:cell weight="600" left="12289" top="0" width="3222" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="12289" top="0" width="3222" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                  <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                  </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FIXED VALUE E-VOUCHER</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1400" left="12289" top="300" width="3222" height="700" style="">
+                <rml:hbox left="12289" top="300" width="3222" height="700" style="">
+                  <rml:cell weight="10067" left="12289" top="300" width="1081" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="12289" top="300" width="1081" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="9996" left="13370" top="300" width="1073" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="13370" top="300" width="1073" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="9937" left="14443" top="300" width="1068" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="14443" top="300" width="1068" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="31778" left="15511" top="0" width="3223" height="1000" style="">
+            <rml:vbox left="15511" top="0" width="3223" height="1000" style="">
+              <rml:cell weight="600" left="15511" top="0" width="3223" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="15511" top="0" width="3223" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                  <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                  </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">HOTEL CARD</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1400" left="15511" top="300" width="3223" height="700" style="">
+                <rml:hbox left="15511" top="300" width="3223" height="700" style="">
+                  <rml:cell weight="10065" left="15511" top="300" width="1081" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="15511" top="300" width="1081" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10062" left="16592" top="300" width="1081" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="16592" top="300" width="1081" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="9873" left="17673" top="300" width="1061" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="17673" top="300" width="1061" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="31778" left="18734" top="0" width="3223" height="1000" style="">
+            <rml:vbox left="18734" top="0" width="3223" height="1000" style="">
+              <rml:cell weight="600" left="18734" top="0" width="3223" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="18734" top="0" width="3223" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                  <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                  </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">HOTEL E-VOUCHER</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1400" left="18734" top="300" width="3223" height="700" style="">
+                <rml:hbox left="18734" top="300" width="3223" height="700" style="">
+                  <rml:cell weight="9981" left="18734" top="300" width="1072" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="18734" top="300" width="1072" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10086" left="19806" top="300" width="1083" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="19806" top="300" width="1083" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="9933" left="20889" top="300" width="1068" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="20889" top="300" width="1068" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="31912" left="21957" top="0" width="3236" height="1000" style="">
+            <rml:vbox left="21957" top="0" width="3236" height="1000" style="">
+              <rml:cell weight="600" left="21957" top="0" width="3236" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="21957" top="0" width="3236" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                  <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                  </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">OPEN VALUE E-VOUCHER</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1400" left="21957" top="300" width="3236" height="700" style="">
+                <rml:hbox left="21957" top="300" width="3236" height="700" style="">
+                  <rml:cell weight="9940" left="21957" top="300" width="1072" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="21957" top="300" width="1072" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10102" left="23029" top="300" width="1089" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="23029" top="300" width="1089" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="9958" left="24118" top="300" width="1075" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="24118" top="300" width="1075" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="31710" left="25193" top="0" width="3216" height="1000" style="">
+            <rml:vbox left="25193" top="0" width="3216" height="1000" style="">
+              <rml:cell weight="600" left="25193" top="0" width="3216" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="25193" top="0" width="3216" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                  <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                  </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PERSONAL CARD</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1400" left="25193" top="300" width="3216" height="700" style="">
+                <rml:hbox left="25193" top="300" width="3216" height="700" style="">
+                  <rml:cell weight="9963" left="25193" top="300" width="1068" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="25193" top="300" width="1068" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10018" left="26261" top="300" width="1073" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="26261" top="300" width="1073" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10019" left="27334" top="300" width="1075" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="27334" top="300" width="1075" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="31708" left="28409" top="0" width="3216" height="1000" style="">
+            <rml:vbox left="28409" top="0" width="3216" height="1000" style="">
+              <rml:cell weight="600" left="28409" top="0" width="3216" height="300" style="">
+                <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="28409" top="0" width="3216" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                  <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                  </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PREMIER SERVICE</rml:control-source>
+                </rml:field>
+              </rml:cell>
+              <rml:cell weight="1400" left="28409" top="300" width="3216" height="700" style="">
+                <rml:hbox left="28409" top="300" width="3216" height="700" style="">
+                  <rml:cell weight="9983" left="28409" top="300" width="1070" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="28409" top="300" width="1070" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="10039" left="29479" top="300" width="1076" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="29479" top="300" width="1076" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                  <rml:cell weight="9978" left="30555" top="300" width="1070" height="700" style="">
+                    <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="30555" top="300" width="1070" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                      <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                      </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                    </rml:field>
+                  </rml:cell>
+                </rml:hbox>
+              </rml:cell>
+            </rml:vbox>
+          </rml:cell>
+          <rml:cell weight="10660" left="31625" top="0" width="1081" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="31625" top="0" width="1081" height="1000" border-style="Solid" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="VOL_DIS" running-value="No">Headers:VOL_DIS</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10593" left="32706" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="32706" top="0" width="1074" height="1000" border-style="Solid" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="ELY_PMT_DIS" running-value="No">Headers:ELY_PMT_DIS</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10592" left="33780" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="33780" top="0" width="1074" height="1000" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="PROMO_DIS" running-value="No">Headers:PROMO_DIS</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10592" left="34854" top="0" width="1074" height="1000">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="34854" top="0" width="1074" height="1000" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="ISSUANCE_FEE" running-value="No">Headers:ISSUANCE_FEE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10592" left="35928" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="35928" top="0" width="1074" height="1000" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="RPLC_AMT" running-value="No">Headers:RPLC_AMT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10592" left="37002" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="37002" top="0" width="1074" height="1000" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="SUBSCRIPTION_FEE" running-value="No">Headers:SUBSCRIPTION_FEE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10590" left="38076" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="38076" top="0" width="1074" height="1000" border-style="Solid" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="LATE_PMT_INT" running-value="No">Headers:LATE_PMT_INT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10591" left="39150" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="39150" top="0" width="1074" height="1000" border-style="Solid" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="DEPOSIT" running-value="No">Headers:DEPOSIT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10590" left="40224" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="40224" top="0" width="1074" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">MISC</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10587" left="41298" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="41298" top="0" width="1074" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">CREDIT AMT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10584" left="42372" top="0" width="1074" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="42372" top="0" width="1074" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">DEBIT AMT</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="10576" left="43446" top="0" width="1073" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="43446" top="0" width="1073" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">GST</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="11030" left="44519" top="0" width="1121" height="1000" style="">
+            <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="44519" top="0" width="1121" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+              </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">Grand Total</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-header>
+      <rml:section-footer table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:section-footer>
+      <rml:page-header height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-header>
+      <rml:page-footer height="0" style="">
+        <rml:ruler>
+        </rml:ruler>
+      </rml:page-footer>
+      <rml:detail table-of-contents="No" can-grow="Yes" can-shrink="Yes" height="400" fill="No" style="Default"><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+        <rml:hbox name="" Keep_Together="No" left="0" top="0" width="45640" height="400" fill="No" lock-handles="No" style="General Format Header"><rml:render-if xml:space="preserve" language="javascript"></rml:render-if><rml:on-render-begin xml:space="preserve" language="javascript"></rml:on-render-begin>
+          <rml:cell weight="1050" left="0" top="0" width="976" height="400" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="0" top="0" width="976" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Field" field="CUST_NO" running-value="No">CUST_NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="4830" left="976" top="0" width="4492" height="400" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="976" top="0" width="4492" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style=""><rml:control-source xml:space="preserve" type="Field" field="ACCOUNT_NAME" running-value="No">ACCOUNT_NAME</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1470" left="5468" top="0" width="1367" height="400" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="5468" top="0" width="1367" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="dd/MM/yyyy" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="INVOICE_DATE" running-value="No">INVOICE_DATE</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1155" left="6835" top="0" width="1074" height="400" style="">
+            <rml:field font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="6835" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Number" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="0" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="INVOICE_NO" running-value="No">INVOICE_NO</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1245" left="7909" top="0" width="1158" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="7909" top="0" width="1158" height="400" border-style="Solid" border-left="No" border-right="Yes" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="NEW_TXN" running-value="No">NEW_TXN</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1163" left="9067" top="0" width="1081" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="9067" top="0" width="1081" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(CC_FARE == null){
+	0;
+}else{
+	CC_FARE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1156" left="10148" top="0" width="1075" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="10148" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(CC_ADMIN_FEE == null){
+	0;
+}else{
+	CC_ADMIN_FEE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1146" left="11223" top="0" width="1065" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="11223" top="0" width="1065" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(CC_PRODUCT_DISCOUNT == null){
+	0;
+}else{
+	CC_PRODUCT_DISCOUNT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1163" left="12288" top="0" width="1081" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="12288" top="0" width="1081" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(FV_FARE == null){
+	0;
+}else{
+	FV_FARE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1156" left="13369" top="0" width="1075" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="13369" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(FV_ADMIN_FEE == null){
+	0;
+}else{
+	FV_ADMIN_FEE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1147" left="14444" top="0" width="1066" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="14444" top="0" width="1066" height="400" border-style="Solid" border-left="No" border-right="Yes" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(FV_PRODUCT_DISCOUNT == null){
+	0;
+}else{
+	FV_PRODUCT_DISCOUNT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1161" left="15510" top="0" width="1080" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="15510" top="0" width="1080" height="400" border-style="Solid" border-left="Yes" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(HC_FARE == null){
+	0;
+}else{
+	HC_FARE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1156" left="16590" top="0" width="1075" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="16590" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(HC_ADMIN_FEE == null){
+	0;
+}else{
+	HC_ADMIN_FEE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1147" left="17665" top="0" width="1067" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="17665" top="0" width="1067" height="400" border-style="Solid" border-left="No" border-right="Yes" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(HC_PRODUCT_DISCOUNT == null){
+	0;
+}else{
+	HC_PRODUCT_DISCOUNT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1162" left="18732" top="0" width="1081" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="18732" top="0" width="1081" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(HV_FARE == null){
+	0;
+}else{
+	HV_FARE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1156" left="19813" top="0" width="1075" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="19813" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(HV_ADMIN_FEE == null){
+	0;
+}else{
+	HV_ADMIN_FEE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1148" left="20888" top="0" width="1068" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="20888" top="0" width="1068" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(HV_PRODUCT_DISCOUNT == null){
+	0;
+}else{
+	HV_PRODUCT_DISCOUNT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1168" left="21956" top="0" width="1086" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="21956" top="0" width="1086" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(OV_FARE == null){
+	0;
+}else{
+	OV_FARE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1149" left="23042" top="0" width="1068" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="23042" top="0" width="1068" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" lock-handles="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(OV_ADMIN_FEE == null){
+	0;
+}else{
+	OV_ADMIN_FEE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1166" left="24110" top="0" width="1084" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="24110" top="0" width="1084" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(OV_PRODUCT_DISCOUNT == null){
+	0;
+}else{
+	OV_PRODUCT_DISCOUNT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1143" left="25194" top="0" width="1063" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="25194" top="0" width="1063" height="400" border-style="Solid" border-left="Yes" border-right="No" border-top="No" border-bottom="No" lock-handles="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(PC_FARE == null){
+	0;
+}else{
+	PC_FARE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1156" left="26257" top="0" width="1075" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="26257" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(PC_ADMIN_FEE == null){
+	0;
+}else{
+	PC_ADMIN_FEE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1154" left="27332" top="0" width="1073" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="27332" top="0" width="1073" height="400" border-style="Solid" border-left="No" border-right="Yes" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(PC_PRODUCT_DISCOUNT == null){
+	0;
+}else{
+	PC_PRODUCT_DISCOUNT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1155" left="28405" top="0" width="1074" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="28405" top="0" width="1074" height="400" border-style="Solid" border-left="Yes" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(PS_FARE == null){
+	0;
+}else{
+	PS_FARE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1156" left="29479" top="0" width="1075" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="29479" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(PS_ADMIN_FEE == null){
+	0;
+}else{
+	PS_ADMIN_FEE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1147" left="30554" top="0" width="1067" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="30554" top="0" width="1067" height="400" border-style="Solid" border-left="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(PS_PRODUCT_DISCOUNT == null){
+	0;
+}else{
+	PS_PRODUCT_DISCOUNT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1162" left="31621" top="0" width="1081" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="31621" top="0" width="1081" height="400" border-style="Solid" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(VOLUME_DISCOUNT == null){
+	0;
+}else{
+	VOLUME_DISCOUNT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1155" left="32702" top="0" width="1074" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="32702" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(EARLY_PAYMENT == null){
+	0;
+}else{
+	EARLY_PAYMENT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1155" left="33776" top="0" width="1074" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="33776" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(PROMO_DIS == null){
+	0;
+}else{
+	PROMO_DIS;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1155" left="34850" top="0" width="1075" height="400">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="34850" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(ISSUANCE == null){
+	0;
+}else{
+	ISSUANCE;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1155" left="35925" top="0" width="1075" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="35925" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(REPLACEMENT == null){
+	0;
+}else{
+	REPLACEMENT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1155" left="37000" top="0" width="1075" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="37000" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(SUBSCRIPTION == null){
+	0;
+}else{
+	SUBSCRIPTION;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1155" left="38075" top="0" width="1075" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="38075" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" lock-handles="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(LATE_INTEREST == null){
+	0;
+}else{
+	LATE_INTEREST;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1154" left="39150" top="0" width="1074" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="39150" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(DEPOSIT == null){
+	0;
+}else{
+	DEPOSIT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1154" left="40224" top="0" width="1074" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="40224" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(MISC == null){
+	0;
+}else{
+	MISC;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1154" left="41298" top="0" width="1074" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="41298" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(CREDIT_AMT == null){
+	0;
+}else{
+	CREDIT_AMT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1154" left="42372" top="0" width="1074" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="42372" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(DEBIT_AMT == null){
+	0;
+}else{
+	DEBIT_AMT;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1153" left="43446" top="0" width="1073" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="43446" top="0" width="1073" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=if(GST == null){
+	0;
+}else{
+	GST;
+}</rml:control-source>
+            </rml:field>
+          </rml:cell>
+          <rml:cell weight="1203" left="44519" top="0" width="1121" height="400" style="">
+            <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="44519" top="0" width="1121" height="400" border-style="Solid" border-left="No" border-right="No" border-top="No" border-bottom="No" style="">
+              <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+              </rml:format><rml:control-source xml:space="preserve" type="Field" field="NEW_TXN" running-value="No">NEW_TXN</rml:control-source>
+            </rml:field>
+          </rml:cell>
+        </rml:hbox>
+        <rml:ruler>
+        </rml:ruler>
+      </rml:detail>
+      <rml:group field="INVOICE_HEADER_NO" sort-order="None" group-header-visible="Yes" group-footer-visible="Yes" group-on="All" group-data="">
+        <rml:group-header repeat="Yes" table-of-contents="No" height="1000" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No"></rml:control-source>
+          <rml:hbox name="" Keep_Together="No" left="0" top="0" width="45640" height="1000" fill="No" lock-handles="No" style="General Format Header"><rml:render-if xml:space="preserve" language="javascript"></rml:render-if><rml:on-render-begin xml:space="preserve" language="javascript"></rml:on-render-begin><rml:on-render-end xml:space="preserve" language="javascript"></rml:on-render-end>
+            <rml:cell weight="9630" left="0" top="0" width="976" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="0" top="0" width="976" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">ACCT NO</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="44297" left="976" top="0" width="4492" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="976" top="0" width="4492" height="1000" border-style="Solid" border-left="No" can-grow="Yes" can-shrink="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">ACCT NAME</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="13482" left="5468" top="0" width="1367" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="5468" top="0" width="1367" height="1000" border-style="Solid" border-left="No" can-grow="Yes" can-shrink="Yes" style=""><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV DATE</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10593" left="6835" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="6835" top="0" width="1074" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV NO</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="11422" left="7909" top="0" width="1158" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="7909" top="0" width="1158" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">INV AMT</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="31777" left="9067" top="0" width="3222" height="1000" style="">
+              <rml:vbox left="9067" top="0" width="3222" height="1000" style="">
+                <rml:cell weight="600" left="9067" top="0" width="3222" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="9067" top="0" width="3222" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                    <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                    </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">CORPORATE CARD</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1400" left="9067" top="300" width="3222" height="700" style="">
+                  <rml:hbox left="9067" top="300" width="3222" height="700" style="">
+                    <rml:cell weight="10067" left="9067" top="300" width="1081" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="9067" top="300" width="1081" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="9996" left="10148" top="300" width="1073" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="10148" top="300" width="1073" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="9937" left="11221" top="300" width="1068" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="11221" top="300" width="1068" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="31776" left="12289" top="0" width="3222" height="1000" style="">
+              <rml:vbox left="12289" top="0" width="3222" height="1000" style="">
+                <rml:cell weight="600" left="12289" top="0" width="3222" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="12289" top="0" width="3222" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                    <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                    </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FIXED VALUE E-VOUCHER</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1400" left="12289" top="300" width="3222" height="700" style="">
+                  <rml:hbox left="12289" top="300" width="3222" height="700" style="">
+                    <rml:cell weight="10067" left="12289" top="300" width="1081" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="12289" top="300" width="1081" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="9996" left="13370" top="300" width="1073" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="13370" top="300" width="1073" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="9937" left="14443" top="300" width="1068" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="14443" top="300" width="1068" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="31778" left="15511" top="0" width="3223" height="1000" style="">
+              <rml:vbox left="15511" top="0" width="3223" height="1000" style="">
+                <rml:cell weight="600" left="15511" top="0" width="3223" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="15511" top="0" width="3223" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                    <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                    </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">HOTEL CARD</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1400" left="15511" top="300" width="3223" height="700" style="">
+                  <rml:hbox left="15511" top="300" width="3223" height="700" style="">
+                    <rml:cell weight="10065" left="15511" top="300" width="1081" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="15511" top="300" width="1081" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10062" left="16592" top="300" width="1081" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="16592" top="300" width="1081" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="9873" left="17673" top="300" width="1061" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="17673" top="300" width="1061" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="31778" left="18734" top="0" width="3223" height="1000" style="">
+              <rml:vbox left="18734" top="0" width="3223" height="1000" style="">
+                <rml:cell weight="600" left="18734" top="0" width="3223" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="18734" top="0" width="3223" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                    <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                    </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">HOTEL E-VOUCHER</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1400" left="18734" top="300" width="3223" height="700" style="">
+                  <rml:hbox left="18734" top="300" width="3223" height="700" style="">
+                    <rml:cell weight="9981" left="18734" top="300" width="1072" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="18734" top="300" width="1072" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10086" left="19806" top="300" width="1083" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="19806" top="300" width="1083" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="9933" left="20889" top="300" width="1068" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="20889" top="300" width="1068" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="31912" left="21957" top="0" width="3236" height="1000" style="">
+              <rml:vbox left="21957" top="0" width="3236" height="1000" style="">
+                <rml:cell weight="600" left="21957" top="0" width="3236" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="21957" top="0" width="3236" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                    <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                    </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">OPEN VALUE E-VOUCHER</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1400" left="21957" top="300" width="3236" height="700" style="">
+                  <rml:hbox left="21957" top="300" width="3236" height="700" style="">
+                    <rml:cell weight="9940" left="21957" top="300" width="1072" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="21957" top="300" width="1072" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10102" left="23029" top="300" width="1089" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="23029" top="300" width="1089" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="9958" left="24118" top="300" width="1075" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="24118" top="300" width="1075" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="31710" left="25193" top="0" width="3216" height="1000" style="">
+              <rml:vbox left="25193" top="0" width="3216" height="1000" style="">
+                <rml:cell weight="600" left="25193" top="0" width="3216" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="25193" top="0" width="3216" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                    <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                    </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PERSONAL CARD</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1400" left="25193" top="300" width="3216" height="700" style="">
+                  <rml:hbox left="25193" top="300" width="3216" height="700" style="">
+                    <rml:cell weight="9963" left="25193" top="300" width="1068" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="25193" top="300" width="1068" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10018" left="26261" top="300" width="1073" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="26261" top="300" width="1073" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10019" left="27334" top="300" width="1075" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="27334" top="300" width="1075" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="31708" left="28409" top="0" width="3216" height="1000" style="">
+              <rml:vbox left="28409" top="0" width="3216" height="1000" style="">
+                <rml:cell weight="600" left="28409" top="0" width="3216" height="300" style="">
+                  <rml:field text-align="Center" font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="28409" top="0" width="3216" height="300" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                    <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                    </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PREMIER SERVICE</rml:control-source>
+                  </rml:field>
+                </rml:cell>
+                <rml:cell weight="1400" left="28409" top="300" width="3216" height="700" style="">
+                  <rml:hbox left="28409" top="300" width="3216" height="700" style="">
+                    <rml:cell weight="9983" left="28409" top="300" width="1070" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="28409" top="300" width="1070" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FARE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="10039" left="29479" top="300" width="1076" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="29479" top="300" width="1076" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">FULL ADMIN FEE</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                    <rml:cell weight="9978" left="30555" top="300" width="1070" height="700" style="">
+                      <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="30555" top="300" width="1070" height="700" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                        <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                        </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">PROD ADMIN FEE DIS</rml:control-source>
+                      </rml:field>
+                    </rml:cell>
+                  </rml:hbox>
+                </rml:cell>
+              </rml:vbox>
+            </rml:cell>
+            <rml:cell weight="10660" left="31625" top="0" width="1081" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="31625" top="0" width="1081" height="1000" border-style="Solid" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="VOL_DIS" running-value="No">Headers:VOL_DIS</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10593" left="32706" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="32706" top="0" width="1074" height="1000" border-style="Solid" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="ELY_PMT_DIS" running-value="No">Headers:ELY_PMT_DIS</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10592" left="33780" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="33780" top="0" width="1074" height="1000" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="PROMO_DIS" running-value="No">Headers:PROMO_DIS</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10592" left="34854" top="0" width="1074" height="1000">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="34854" top="0" width="1074" height="1000" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="ISSUANCE_FEE" running-value="No">Headers:ISSUANCE_FEE</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10592" left="35928" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="35928" top="0" width="1074" height="1000" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="RPLC_AMT" running-value="No">Headers:RPLC_AMT</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10592" left="37002" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="37002" top="0" width="1074" height="1000" border-style="Solid" style=""><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="SUBSCRIPTION_FEE" running-value="No">Headers:SUBSCRIPTION_FEE</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10590" left="38076" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="38076" top="0" width="1074" height="1000" border-style="Solid" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="LATE_PMT_INT" running-value="No">Headers:LATE_PMT_INT</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10591" left="39150" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="39150" top="0" width="1074" height="1000" border-style="Solid" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Field" datasource="Headers" field="DEPOSIT" running-value="No">Headers:DEPOSIT</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10590" left="40224" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="40224" top="0" width="1074" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">MISC</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10587" left="41298" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="41298" top="0" width="1074" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">CREDIT AMT</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10584" left="42372" top="0" width="1074" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="42372" top="0" width="1074" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">DEBIT AMT</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="10576" left="43446" top="0" width="1073" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="43446" top="0" width="1073" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">GST</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="11030" left="44519" top="0" width="1121" height="1000" style="">
+              <rml:field font-name="Arial" font-size="200" font-bold="Yes" vertical-align="Bottom" left="44519" top="0" width="1121" height="1000" border-style="Solid" can-grow="Yes" can-shrink="Yes" style="">
+                <rml:format type="Date/Time" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" date-format="Medium" time-format="Medium">
+                </rml:format><rml:control-source xml:space="preserve" type="Literal" running-value="No">Grand Total</rml:control-source>
+              </rml:field>
+            </rml:cell>
+          </rml:hbox>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-header>
+        <rml:group-footer table-of-contents="No" height="400" style="">
+          <rml:hbox name="" Keep_Together="No" left="0" top="0" width="45640" height="400" fill="No" lock-handles="No" style="General Format Header"><rml:render-if xml:space="preserve" language="javascript"></rml:render-if><rml:on-render-begin xml:space="preserve" language="javascript"></rml:on-render-begin>
+            <rml:cell weight="1050" left="0" top="0" width="976" height="400" style="">
+            </rml:cell>
+            <rml:cell weight="4830" left="976" top="0" width="4492" height="400" style="">
+            </rml:cell>
+            <rml:cell weight="1470" left="5468" top="0" width="1367" height="400" style="">
+            </rml:cell>
+            <rml:cell weight="1155" left="6835" top="0" width="1074" height="400" style="">
+            </rml:cell>
+            <rml:cell weight="1245" left="7909" top="0" width="1158" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="7909" top="0" width="1158" height="400" border-style="Solid" border-left="No" border-right="Yes" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("NEW_TXN").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1163" left="9067" top="0" width="1081" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="9067" top="0" width="1081" height="400" border-style="Solid" border-left="Yes" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("CC_FARE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1156" left="10148" top="0" width="1075" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="10148" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("CC_ADMIN_FEE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1146" left="11223" top="0" width="1065" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="11223" top="0" width="1065" height="400" border-style="Solid" border-left="No" border-right="Yes" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("CC_PRODUCT_DISCOUNT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1163" left="12288" top="0" width="1081" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="12288" top="0" width="1081" height="400" border-style="Solid" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("FV_FARE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1156" left="13369" top="0" width="1075" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="13369" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("FV_ADMIN_FEE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1147" left="14444" top="0" width="1066" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="14444" top="0" width="1066" height="400" border-style="Solid" border-left="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("FV_PRODUCT_DISCOUNT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1161" left="15510" top="0" width="1080" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="15510" top="0" width="1080" height="400" border-style="Solid" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("HC_FARE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1156" left="16590" top="0" width="1075" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="16590" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("HC_ADMIN_FEE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1147" left="17665" top="0" width="1067" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="17665" top="0" width="1067" height="400" border-style="Solid" border-left="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("HC_PRODUCT_DISCOUNT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1162" left="18732" top="0" width="1081" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="18732" top="0" width="1081" height="400" border-style="Solid" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("HV_FARE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1156" left="19813" top="0" width="1075" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="19813" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("HV_ADMIN_FEE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1148" left="20888" top="0" width="1068" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="20888" top="0" width="1068" height="400" border-style="Solid" border-left="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("HV_PRODUCT_DISCOUNT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1168" left="21956" top="0" width="1086" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="21956" top="0" width="1086" height="400" border-style="Solid" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("OV_FARE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1149" left="23042" top="0" width="1068" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="23042" top="0" width="1068" height="400" border-style="Solid" border-left="No" border-right="No" lock-handles="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("OV_ADMIN_FEE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1166" left="24110" top="0" width="1084" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="24110" top="0" width="1084" height="400" border-style="Solid" border-left="No" border-right="Yes" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("OV_PRODUCT_DISCOUNT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1143" left="25194" top="0" width="1063" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="25194" top="0" width="1063" height="400" border-style="Solid" border-left="Yes" border-right="No" lock-handles="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("PC_FARE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1156" left="26257" top="0" width="1075" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="26257" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("PC_ADMIN_FEE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1154" left="27332" top="0" width="1073" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="27332" top="0" width="1073" height="400" border-style="Solid" border-left="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("PC_PRODUCT_DISCOUNT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1155" left="28405" top="0" width="1074" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="28405" top="0" width="1074" height="400" border-style="Solid" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("PS_FARE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1156" left="29479" top="0" width="1075" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="29479" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("PS_ADMIN_FEE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1147" left="30554" top="0" width="1067" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="30554" top="0" width="1067" height="400" border-style="Solid" border-left="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("PS_PRODUCT_DISCOUNT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1162" left="31621" top="0" width="1081" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="31621" top="0" width="1081" height="400" border-style="Solid" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("VOLUME_DISCOUNT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1155" left="32702" top="0" width="1074" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="32702" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("EARLY_PAYMENT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1155" left="33776" top="0" width="1074" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="33776" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("PROMO_DIS").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1155" left="34850" top="0" width="1075" height="400">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="34850" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("ISSUANCE").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1155" left="35925" top="0" width="1075" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="35925" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("REPLACEMENT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1155" left="37000" top="0" width="1075" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="37000" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("SUBSCRIPTION").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1155" left="38075" top="0" width="1075" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="38075" top="0" width="1075" height="400" border-style="Solid" border-left="No" border-right="No" lock-handles="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("LATE_INTEREST").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1154" left="39150" top="0" width="1074" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="39150" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("DEPOSIT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1154" left="40224" top="0" width="1074" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="40224" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" border-bottom="Yes" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("MISC").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1154" left="41298" top="0" width="1074" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="41298" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("CREDIT_AMT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1154" left="42372" top="0" width="1074" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="42372" top="0" width="1074" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("DEBIT_AMT").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1153" left="43446" top="0" width="1073" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="43446" top="0" width="1073" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("GST").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+            <rml:cell weight="1203" left="44519" top="0" width="1121" height="400" style="">
+              <rml:field text-align="Right" font-name="Arial" font-size="180" font-bold="No" vertical-align="Bottom" left="44519" top="0" width="1121" height="400" border-style="Solid" border-left="No" border-right="No" style="">
+                <rml:format type="Currency" min-integer-digits="1" max-integer-digits="12" min-fraction-digits="2" max-fraction-digits="2" grouping-used="Yes" grouping-size="3" decimal-separator-always-shown="Yes" custom-pattern="#,##0.00" date-format="Short" time-format="Short">
+                </rml:format><rml:control-source xml:space="preserve" type="Script" running-value="No">=Data.getSum("NEW_TXN").getValueOverGroup();</rml:control-source>
+              </rml:field>
+            </rml:cell>
+          </rml:hbox>
+          <rml:ruler>
+          </rml:ruler>
+        </rml:group-footer>
+      </rml:group>
+      <rml:ruler>
+        <rml:mark value="38090">
+        </rml:mark>
+        <rml:mark value="37020">
+        </rml:mark>
+        <rml:mark value="35940">
+        </rml:mark>
+        <rml:mark value="34840">
+        </rml:mark>
+        <rml:mark value="33760">
+        </rml:mark>
+        <rml:mark value="44480">
+        </rml:mark>
+        <rml:mark value="43430">
+        </rml:mark>
+        <rml:mark value="42380">
+        </rml:mark>
+        <rml:mark value="41300">
+        </rml:mark>
+        <rml:mark value="40230">
+        </rml:mark>
+        <rml:mark value="39180">
+        </rml:mark>
+        <rml:mark value="32720">
+        </rml:mark>
+        <rml:mark value="31630">
+        </rml:mark>
+        <rml:mark value="30540">
+        </rml:mark>
+        <rml:mark value="29450">
+        </rml:mark>
+        <rml:mark value="27330">
+        </rml:mark>
+        <rml:mark value="26250">
+        </rml:mark>
+        <rml:mark value="25190">
+        </rml:mark>
+        <rml:mark value="24100">
+        </rml:mark>
+        <rml:mark value="21950">
+        </rml:mark>
+        <rml:mark value="28420">
+        </rml:mark>
+        <rml:mark value="23000">
+        </rml:mark>
+        <rml:mark value="20870">
+        </rml:mark>
+        <rml:mark value="19780">
+        </rml:mark>
+        <rml:mark value="18730">
+        </rml:mark>
+        <rml:mark value="17650">
+        </rml:mark>
+        <rml:mark value="16580">
+        </rml:mark>
+        <rml:mark value="13370">
+        </rml:mark>
+        <rml:mark value="14430">
+        </rml:mark>
+        <rml:mark value="15500">
+        </rml:mark>
+        <rml:mark value="10130">
+        </rml:mark>
+        <rml:mark value="12260">
+        </rml:mark>
+        <rml:mark value="11250">
+        </rml:mark>
+        <rml:mark value="9060">
+        </rml:mark>
+        <rml:mark value="7890">
+        </rml:mark>
+        <rml:mark value="6830">
+        </rml:mark>
+        <rml:mark value="5450">
+        </rml:mark>
+      </rml:ruler>
+    </rml:section>
+  </rml:sections>
+  <rml:sequence>
+    <rml:section-invocation section="Section 1" enabled="Yes">
+      <rml:parameters>
+      </rml:parameters>
+    </rml:section-invocation>
+  </rml:sequence>
+  <rml:rendering>
+    <rml:render-details mime-type="application/x-glint">
+      <rml:parameters><rml:param xml:space="preserve" key="Tree">No</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+    <rml:render-details mime-type="application/vnd.ms-excel">
+      <rml:parameters><rml:param xml:space="preserve" key="Snap">No</rml:param><rml:param xml:space="preserve" key="Paged">No</rml:param><rml:param xml:space="preserve" key="ForceNumbersAsText">No</rml:param><rml:param xml:space="preserve" key="Multiplier"></rml:param>
+      </rml:parameters>
+    </rml:render-details>
+    <rml:render-details mime-type="application/pdf">
+      <rml:parameters><rml:param xml:space="preserve" key="RenderAsImage">No</rml:param><rml:param xml:space="preserve" key="OwnerPassword"></rml:param><rml:param xml:space="preserve" key="CJKMappingURL"></rml:param><rml:param xml:space="preserve" key="AllowFillIn">No</rml:param><rml:param xml:space="preserve" key="AllowAssembly">No</rml:param><rml:param xml:space="preserve" key="Encryption">No</rml:param><rml:param xml:space="preserve" key="RenderAsImageDPI"></rml:param><rml:param xml:space="preserve" key="AllowModifyContents">No</rml:param><rml:param xml:space="preserve" key="EncryptionStrength">128 bits</rml:param><rml:param xml:space="preserve" key="AllowScreenReaders">No</rml:param><rml:param xml:space="preserve" key="AllowModifyAnnotations">No</rml:param><rml:param xml:space="preserve" key="BlankPageOnEmptyFile">No</rml:param><rml:param xml:space="preserve" key="AllowDegradedPrinting">No</rml:param><rml:param xml:space="preserve" key="AllowCopy">No</rml:param><rml:param xml:space="preserve" key="UserPassword"></rml:param><rml:param xml:space="preserve" key="AllowPrinting">No</rml:param><rml:param xml:space="preserve" key="RenderTextAPI">Yes</rml:param><rml:param xml:space="preserve" key="Greyscale">No</rml:param>
+      </rml:parameters>
+    </rml:render-details>
+  </rml:rendering></rml:report>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="viewTransfersAcctWindow" border="normal" use="com.cdgtaxi.ibs.acct.ui.ViewTransfersAcctWindow"
+	onCreate="viewTransfersAcctWindow.init()"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+    	<columns sizable="false">
+			<column><label value="Transfer Requests"/></column>
+		</columns>
+	</grid>
+	<listbox id="requests" mold="paging" onSelect="viewTransfersAcctWindow.selectRequest(self.getSelectedItem())">
+   		<listhead sizable="false">
+   			<listheader label="From Salesperson" width="auto" sort="auto"/>
+			<listheader label="To Salesperson" width="auto" sort="auto"/>
+			<listheader label="Effective Date" width="auto" sort="auto"/>
+			<listheader label="Count of accounts" width="13.5%" sort="auto"/>
+		</listhead>
+   	</listbox>
+</window>

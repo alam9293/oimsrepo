@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window id="createBankWindow"
+	title="Create Bank" border="normal" 
+	use="com.cdgtaxi.ibs.admin.ui.CreateBankWindow"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+	<grid>
+		<columns sizable="false">
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+			<column width="25%" />
+		</columns>
+		<rows>
+			<row>
+				<label sclass="fieldLabel required" value="Bank Code"/>
+				<capstextbox id="bankCodeTB" width="98.75%" maxlength="4"
+					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>
+				<label sclass="fieldLabel required" value="Bank Name"/>
+				<capstextbox id="bankNameTB" width="98.75%" maxlength="80"
+					constraint="${c:new('com.cdgtaxi.ibs.web.constraint.RequiredConstraint')}"/>
+			</row>
+		</rows>
+	</grid>
+	
+	<h:br />
+	<listbox id="branchList" onSelect="createBankWindow.editBranch()" mold="paging" multiple="true">
+		<listhead sizable="false">
+			<listheader label="Branch Code" sort="auto"/>
+			<listheader label="Branch Name" sort="auto"/>
+			<listheader label="Delete" 		sort="none" width="60px"/>
+		</listhead>
+	</listbox>
+	<button label="New Branch" onClick="createBankWindow.addBranch()" />
+	
+	<h:br/>
+	<h:br/>
+	<button label="Save" onClick="createBankWindow.create()"/>
+	<button label="Back" onClick="createBankWindow.back()" />
+</window>

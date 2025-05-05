@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<window id="reportWindow" border="normal" use="com.cdgtaxi.ibs.report.ui.CashlessAgingReportSummary"
+	xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<grid>
+		<rows id="reportParams" onCreate="reportWindow.populateReportParameters(self);">
+			<row> 
+				<label sclass="fieldLabel required" id="reportFormatLabel">Report Format:</label>
+				<listbox id="reportFormat" 
+					mold="select"
+					multiple="false"
+ 					onCreate="reportWindow.populateReportFormatList(self)"
+				/>
+			</row>
+			<row spans="2">
+				<hbox>
+					<button label="Generate" onClick="reportWindow.generate()"/>
+				</hbox>
+			</row>
+		</rows>
+	</grid>	
+</window>
